@@ -1,0 +1,21 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  width: 400px;
+  font-weight: 300;
+  margin: auto;
+  margin-top: 80px;
+
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
+}
+
+.header {
+  @include mixins.row-space-between-center();
+
+  .title {
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,145 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  width: config.$content-width;
+  max-width: config.$max-widthHeigh;
+
+  @include mixins.row-space-between-center();
+
+  @include mixins.mobile {
+    width: 100%;
+  }
+
+  @include mixins.tablet {
+    width: 100%;
+  }
+
+  @include mixins.desktop {
+    padding: 12px 0px;
+  }
+
+  .logo {
+    cursor: pointer;
+  }
+}
+
+.largeMenu {
+  width: 100%;
+  @include mixins.row-space-between-center();
+
+  @include mixins.tablet {
+    padding: 0px 12px;
+    width: 100%;
+  }
+
+  .largeNavigation {
+    width: 50%;
+    @include mixins.row-space-between-center();
+
+    @include mixins.tablet {
+      width: 60%;
+    }
+  }
+}
+
+.nav {
+  border-bottom: 1px solid config.$background;
+  font-weight: bold !important;
+  cursor: pointer;
+
+  &:hover {
+    color: config.$gold3;
+  }
+
+  @include mixins.mobile {
+    border-bottom: 1px solid config.$gold1;
+  }
+  @include mixins.tablet {
+    border-bottom: 1px solid config.$gold1;
+  }
+}
+
+.nav::after {
+  content: "";
+  display: block;
+  width: 0;
+  border-bottom: 1px solid config.$gold3;
+  transition: width 0.3s;
+
+  @include mixins.mobile {
+    border-bottom: 1px solid config.$gold1;
+  }
+  @include mixins.tablet {
+    border-bottom: 1px solid config.$gold1;
+  }
+}
+
+.nav:hover::after {
+  width: 100%;
+}
+
+.navActive {
+  border-bottom: 1px solid config.$gold3;
+  color: config.$gold3;
+  font-weight: bold !important;
+
+  @include mixins.mobile {
+    border-bottom: 1px solid config.$gold1;
+  }
+  @include mixins.tablet {
+    border-bottom: 1px solid config.$gold1;
+  }
+}
+
+.smallMenu {
+  width: 100%;
+
+  .menuIcon {
+    background: config.$gold1;
+    cursor: pointer;
+  }
+
+  .topBar {
+    width: 100%;
+    padding: 12px;
+    height: 80px;
+    @include mixins.row-space-between-center();
+  }
+
+  .menuMobile {
+    position: fixed;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    text-align: right;
+    align-items: center;
+    width: 100%;
+    padding: 12px;
+    background: config.$gold1;
+    box-shadow: config.$card-shadow;
+
+    p {
+      padding: 8px 0px;
+      color: config.$black;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+
+      button {
+        @include mixins.button(config.$black, config.$black, config.$gold3);
+        margin: 12px 0px;
+        cursor: pointer;
+
+        @include mixins.desktop {
+          &:hover {
+            background: config.$white;
+            color: config.$black;
+          }
+        }
+      }
+    }
+  }
+}

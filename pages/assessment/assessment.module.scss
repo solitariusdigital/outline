@@ -1,0 +1,167 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  font-weight: 300;
+  margin: auto;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  margin-top: 80px;
+
+  @include mixins.mobile {
+    width: 100%;
+    padding: 0px 12px;
+  }
+
+  @include mixins.tablet {
+    width: 100%;
+    padding: 0px 12px;
+  }
+
+  .header {
+    max-width: 500px;
+    margin: auto;
+    @include mixins.row-space-between-center();
+    justify-content: space-around;
+    text-align: center;
+
+    @include mixins.mobile {
+      width: 100%;
+    }
+  }
+
+  .progress {
+    margin: auto;
+    max-width: 500px;
+  }
+
+  .selectContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    gap: 12px;
+    text-align: center;
+    width: 100%;
+    font-size: config.$tiny-font;
+    direction: rtl;
+
+    .item,
+    .activeItem {
+      padding: 8px;
+      background: config.$white;
+      box-shadow: config.$card-shadow;
+      color: config.$black;
+      justify-content: center;
+      cursor: pointer;
+      @include mixins.border-radius();
+
+      @include mixins.desktop {
+        &:hover {
+          background: config.$gold3;
+          color: config.$white;
+        }
+      }
+    }
+
+    .activeItem {
+      background: config.$gold3;
+      color: config.$white;
+    }
+  }
+
+  .form {
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+
+    .input {
+      width: 100%;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .bar {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+      }
+
+      .label {
+        color: config.$grey;
+        font-size: config.$small-font;
+        margin-bottom: 8px;
+
+        span {
+          color: config.$red;
+          font-size: config.$tiny-font;
+        }
+      }
+
+      input,
+      select {
+        @include mixins.input();
+        width: 100%;
+      }
+
+      textarea {
+        @include mixins.textarea();
+      }
+
+      p {
+        display: flex;
+        flex-direction: row-reverse;
+      }
+    }
+
+    .button {
+      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      margin-top: 40px;
+    }
+
+    .action {
+      margin: auto;
+      width: 100px;
+      margin-top: 40px;
+      border-bottom: 1px solid config.$gold3;
+      color: config.$gold3;
+      cursor: pointer;
+
+      @include mixins.desktop {
+        &:hover {
+          border-bottom: 1px solid config.$black;
+          color: config.$black;
+        }
+      }
+    }
+  }
+
+  .imagePreview {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .image {
+      @include mixins.border-radius();
+    }
+  }
+
+  // input file
+  label.file input[type="file"] {
+    position: absolute;
+    top: -1000px;
+  }
+  .file {
+    cursor: pointer;
+    border: 1px solid config.$gold3;
+    padding: 8px;
+    color: config.$grey;
+    display: inline-block;
+    margin-bottom: 20px;
+    height: 50px;
+    @include mixins.border-radius();
+  }
+  .file:hover {
+    color: config.$black;
+    border: 1px solid config.$black;
+  }
+}

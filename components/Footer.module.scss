@@ -1,0 +1,105 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 250px;
+  border-top-left-radius: 200px;
+  background: config.$gold1;
+  padding: 12px;
+  height: 100%;
+  min-height: 250px;
+
+  .scroll {
+    background: config.$gold1;
+    border-radius: 50px;
+    position: relative;
+    bottom: 20px;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: config.$content-width;
+    margin: auto;
+
+    @include mixins.mobile {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+
+    button {
+      @include mixins.button(config.$black, config.$black, config.$gold3);
+      margin: 12px;
+
+      @include mixins.desktop {
+        &:hover {
+          cursor: pointer;
+          background: config.$white;
+          color: config.$black;
+        }
+      }
+    }
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    min-width: 100px;
+    margin: 20px 0px;
+    background: config.$black;
+    @include mixins.border-radius();
+    cursor: pointer;
+  }
+
+  .information {
+    display: flex;
+    flex-direction: column;
+
+    @include mixins.mobile {
+      margin-top: 20px;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      margin: 8px 0px;
+
+      p {
+        font-weight: 300;
+        margin: 0px 12px;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.copyright {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .action {
+      margin: 0px 8px;
+    }
+  }
+}

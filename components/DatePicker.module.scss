@@ -1,0 +1,91 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  font-weight: 300;
+  margin-top: 20px;
+
+  .input {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+
+    .bar {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    .label {
+      color: config.$grey;
+      font-size: config.$small-font;
+      margin-bottom: 4px;
+
+      span {
+        color: config.$red;
+        font-size: config.$tiny-font;
+      }
+    }
+
+    input {
+      @include mixins.input();
+      width: 100%;
+    }
+
+    p {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+  }
+
+  .timeContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    gap: 12px;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .time,
+  .activeTime {
+    padding: 8px;
+    background: config.$white;
+    box-shadow: config.$card-shadow;
+    color: config.$black;
+    cursor: pointer;
+    @include mixins.border-radius();
+
+    @include mixins.desktop {
+      &:hover {
+        background: config.$gold3;
+        color: config.$white;
+      }
+    }
+  }
+
+  .activeTime {
+    background: config.$gold3;
+    color: config.$white;
+  }
+
+  .button {
+    @include mixins.button(config.$gold1, config.$gold3, config.$black);
+    margin-top: 20px;
+  }
+
+  .alert {
+    color: config.$red;
+  }
+
+  .message {
+    color: config.$black;
+    font-weight: bold;
+  }
+}

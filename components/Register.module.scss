@@ -1,0 +1,104 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  font-weight: 300;
+
+  .title {
+    text-align: center;
+    font-size: config.$big-font;
+    margin-bottom: 12px;
+    font-weight: bold;
+  }
+
+  button {
+    @include mixins.button(config.$gold1, config.$gold3, config.$black);
+  }
+}
+
+.formAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12px 0px;
+}
+
+.input {
+  margin: 12px 0;
+
+  .bar {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .label {
+    color: config.$grey;
+    font-size: config.$small-font;
+    margin-bottom: 4px;
+
+    span {
+      color: config.$red;
+      font-size: config.$tiny-font;
+    }
+  }
+
+  input {
+    @include mixins.input();
+    width: 100%;
+  }
+
+  p {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}
+
+.activationContainer {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0px;
+
+  .activationCode {
+    display: flex;
+    flex-direction: row-reverse;
+
+    p {
+      margin: 0px 4px;
+      height: 35px;
+    }
+  }
+}
+
+.imagePreview {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  .image {
+    @include mixins.border-radius();
+  }
+}
+
+// input file
+label.file input[type="file"] {
+  position: absolute;
+  top: -1000px;
+}
+.file {
+  cursor: pointer;
+  border: 1px solid config.$gold3;
+  padding: 8px;
+  color: config.$grey;
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 100%;
+  height: 50px;
+  @include mixins.border-radius();
+}
+.file:hover {
+  color: config.$black;
+  border: 1px solid config.$black;
+}

@@ -1,0 +1,340 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  margin: auto;
+  font-weight: 300;
+  min-height: 500px;
+  margin-top: 80px;
+
+  @include mixins.mobile {
+    width: 100%;
+  }
+
+  @include mixins.tablet {
+    width: 100%;
+    padding: 0px 12px;
+  }
+
+  .headerHero {
+    @include mixins.row-space-between-center();
+    padding: 12px;
+    text-align: center;
+    margin: 0px auto;
+
+    p {
+      font-weight: bold;
+      font-size: config.$med-font;
+      margin-right: 8px;
+    }
+  }
+
+  .portal {
+    width: 100%;
+
+    @include mixins.mobile {
+      padding: 0px 12px;
+    }
+
+    .navigation {
+      @include mixins.row-space-between-center();
+      justify-content: space-around;
+      height: 40px;
+      width: 350px;
+      padding: 8px;
+      margin: auto;
+      border-radius: 50px;
+      background: config.$white;
+      box-shadow: config.$card-shadow;
+      border: 1px solid config.$gold3;
+
+      @include mixins.mobile {
+        width: 100%;
+      }
+    }
+
+    .nav {
+      font-weight: bold !important;
+      cursor: pointer;
+
+      @include mixins.desktop {
+        &:hover {
+          color: config.$gold3;
+        }
+      }
+    }
+
+    .navActive {
+      color: config.$gold3;
+      font-weight: bold !important;
+    }
+  }
+
+  .button {
+    margin: 20px 0px;
+
+    button {
+      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      margin: auto;
+    }
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    gap: 12px;
+    margin: auto;
+    direction: rtl;
+
+    @include mixins.tablet {
+      grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    }
+    @include mixins.mobile {
+      display: flex;
+      flex-direction: column;
+    }
+
+    button {
+      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      margin: auto;
+      margin-top: 20px;
+    }
+
+    .item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px;
+      margin: 0px auto;
+      box-shadow: config.$card-shadow;
+      background: config.$white;
+      text-align: right;
+      cursor: pointer;
+      @include mixins.border-radius();
+
+      @include mixins.desktop {
+        &:hover {
+          position: relative;
+          bottom: 5px;
+        }
+      }
+
+      .title {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .row,
+  .subRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .image {
+      border-radius: 50%;
+      margin-left: 12px;
+    }
+
+    .greyTitle {
+      color: config.$grey;
+    }
+
+    .time {
+      font-weight: bold;
+      direction: ltr;
+    }
+
+    .icon {
+      margin-left: 8px;
+    }
+  }
+
+  .row {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .action {
+    margin-top: 20px;
+    width: 70px;
+    @include mixins.row-space-between-center();
+  }
+
+  .logout {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    color: config.$grey;
+    cursor: pointer;
+
+    p {
+      border-bottom: 1px solid config.$grey;
+    }
+  }
+
+  .details {
+    width: 500px;
+    margin: auto;
+    text-align: center;
+
+    .input {
+      margin-top: 30px;
+      text-align: center;
+
+      .label {
+        color: config.$grey;
+        text-align: right;
+        margin-bottom: 8px;
+      }
+
+      textarea {
+        @include mixins.textarea();
+      }
+
+      select {
+        @include mixins.input();
+        width: 100%;
+      }
+    }
+
+    button {
+      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      margin: 12px;
+      margin-top: 40px;
+    }
+
+    .assessment {
+      padding: 12px;
+      margin-top: 20px;
+      background: config.$white;
+      box-shadow: config.$card-shadow;
+      @include mixins.border-radius();
+      text-align: right;
+
+      .row {
+        margin: 8px 0px;
+        direction: rtl;
+
+        .age {
+          direction: ltr;
+        }
+      }
+
+      .subRow {
+        flex-wrap: wrap;
+
+        p {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .rowDoctor {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      direction: rtl;
+      margin-top: 40px;
+      margin-bottom: 20px;
+
+      .title {
+        margin-right: 8px;
+      }
+
+      .image {
+        border-radius: 50%;
+      }
+    }
+
+    .header {
+      margin-bottom: 20px;
+      @include mixins.row-space-between-center();
+    }
+
+    .title {
+      font-weight: bold;
+    }
+
+    .text {
+      box-shadow: config.$card-shadow;
+      background: config.$white;
+      margin-top: 20px;
+      padding: 16px;
+      text-align: right;
+      @include mixins.border-radius();
+    }
+
+    .imageContainer {
+      position: relative;
+      height: 300px;
+
+      .imagePopup {
+        position: absolute;
+        width: 100%;
+        height: 600px;
+        z-index: 2;
+        box-shadow: config.$image-shadow;
+        @include mixins.border-radius();
+      }
+
+      .image {
+        @include mixins.border-radius();
+      }
+    }
+
+    @include mixins.mobile {
+      width: 100%;
+    }
+  }
+}
+
+.imageSelector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+
+  .image {
+    border-bottom: 1px solid config.$gold3;
+    cursor: pointer;
+
+    &:hover {
+      border-bottom: 1px solid config.$black;
+    }
+  }
+}
+
+.analytics {
+  width: 350px;
+  margin: 20px auto;
+  box-shadow: config.$card-shadow;
+  background: config.$white;
+  padding: 12px;
+  @include mixins.border-radius();
+
+  .row {
+    margin: 4px 0px;
+    @include mixins.row-space-between-center();
+  }
+
+  @include mixins.mobile {
+    width: 100%;
+  }
+
+  p {
+    font-weight: bold;
+  }
+
+  .grey {
+    color: config.$grey;
+    font-weight: 300;
+  }
+}

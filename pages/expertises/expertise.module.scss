@@ -1,0 +1,65 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  margin: auto;
+  font-weight: 300;
+  text-align: center;
+  margin-top: 80px;
+
+  @include mixins.mobile {
+    width: 100%;
+    padding: 0px 12px;
+  }
+
+  @include mixins.tablet {
+    width: 100%;
+    padding: 0px 12px;
+  }
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+}
+
+.information {
+  padding: 50px 100px;
+  margin: 20px auto;
+  text-align: right;
+
+  @include mixins.mobile {
+    background: config.$white;
+    box-shadow: config.$card-shadow;
+    padding: 12px;
+    @include mixins.border-radius();
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 8px 0px;
+
+    .icon {
+      position: relative;
+      top: 8px;
+      margin-left: 8px;
+    }
+  }
+
+  h2 {
+    font-weight: bold;
+  }
+
+  .title {
+    font-weight: bold;
+    font-size: config.$med-font;
+    margin: 12px 0px;
+  }
+
+  .items {
+    margin: 12px 0px;
+  }
+}

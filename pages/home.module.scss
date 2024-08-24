@@ -1,0 +1,323 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.heroHeader {
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  height: 320px;
+  width: 100%;
+  margin: auto;
+  margin-top: 80px;
+  max-width: config.$max-widthHeigh;
+
+  .heroImage {
+    position: relative !important;
+    object-position: 50% 30%;
+    @include mixins.background-anime();
+  }
+
+  @include mixins.desktop {
+    height: 500px;
+  }
+
+  .header {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: config.$max-widthHeigh;
+    width: config.$content-width;
+    text-align: center;
+
+    @include mixins.mobile {
+      transform: translateY(-40%);
+    }
+
+    button {
+      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      margin: 12px;
+    }
+
+    h1,
+    h2 {
+      color: config.$white;
+      margin-bottom: 12px;
+      font-family: config.$font-gilan;
+    }
+  }
+}
+
+.bannerContainer {
+  position: relative;
+  bottom: 80px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  gap: 12px;
+  margin: auto;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  direction: rtl;
+
+  p {
+    font-weight: 300;
+  }
+
+  @include mixins.tablet {
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    width: 100%;
+    padding: 0px 12px;
+  }
+
+  @include mixins.mobile {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    width: 100%;
+    bottom: 0px;
+    padding: 0px 12px;
+    margin: 12px 0px;
+  }
+
+  .banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background: config.$white;
+    box-shadow: config.$card-shadow;
+    border-top: 6px solid config.$gold3;
+    @include mixins.border-radius();
+  }
+}
+
+.heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  padding: 12px;
+
+  h1 {
+    margin-bottom: 12px;
+  }
+
+  @include mixins.mobile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.expertise {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 60px;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  @include mixins.mobile {
+    width: 100%;
+    padding: 0px 12px;
+    margin-top: 60px;
+  }
+
+  @include mixins.tablet {
+    width: 100%;
+    padding: 0px 12px;
+  }
+}
+
+.lifeStyleContainer {
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  margin: auto;
+
+  @include mixins.mobile {
+    width: 100%;
+    padding: 0px 12px;
+  }
+
+  @include mixins.tablet {
+    width: 100%;
+    padding: 0px 12px;
+  }
+}
+
+.lifeStyle {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  gap: 12px;
+  margin: 60px auto;
+  width: 100%;
+  text-align: right;
+  align-items: center;
+  background: config.$white;
+  box-shadow: config.$card-shadow;
+  @include mixins.border-radius();
+
+  p {
+    font-weight: 300;
+    padding: 50px;
+
+    @include mixins.mobile {
+      padding: 12px;
+    }
+  }
+
+  @include mixins.tablet {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  @include mixins.mobile {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .image {
+    @include mixins.border-radius();
+  }
+}
+
+.doctorsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  gap: 12px;
+  margin: auto;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  direction: rtl;
+  font-weight: 300;
+
+  @include mixins.tablet {
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    width: 100%;
+    padding: 12px;
+    margin: 40px auto;
+  }
+
+  @include mixins.mobile {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    text-align: center;
+    width: 100%;
+    padding: 12px;
+  }
+
+  .items {
+    box-shadow: config.$card-shadow;
+    padding: 12px;
+    text-align: right;
+    background: config.$white;
+    @include mixins.border-radius();
+    @include mixins.row-space-between-center();
+
+    @include mixins.desktop {
+      &:hover {
+        cursor: pointer;
+        position: relative;
+        bottom: 5px;
+      }
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .image {
+        border-radius: 50%;
+      }
+    }
+
+    .info {
+      margin-right: 20px;
+
+      .name {
+        font-weight: bold;
+        font-size: config.$med-font;
+      }
+    }
+  }
+}
+
+.videoContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  gap: 12px;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  margin: auto;
+
+  @include mixins.tablet {
+    width: 100%;
+  }
+
+  @include mixins.tablet {
+    padding: 12px;
+    margin: 40px auto;
+  }
+
+  p {
+    font-weight: 300;
+    margin: 12px 0px;
+  }
+
+  .boxContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    width: 350px;
+    margin: 0px auto;
+
+    @include mixins.mobile {
+      width: 100%;
+    }
+
+    button {
+      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      width: 100%;
+      margin: 12px 0px;
+    }
+
+    .box {
+      height: 500px;
+      width: 100%;
+      box-shadow: config.$card-shadow;
+
+      .video {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        @include mixins.border-radius();
+      }
+    }
+  }
+
+  @include mixins.mobile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0px 12px;
+  }
+}
+
+.notFound {
+  margin: auto;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  margin-top: 150px;
+  text-align: center;
+
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
+}
