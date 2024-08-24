@@ -47,8 +47,8 @@ export default function Booking() {
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://belleclass.com",
-          siteName: "Belle Class",
+          url: "https://outline.com",
+          siteName: "Outline",
         }}
       />
       {!currentUser ? (

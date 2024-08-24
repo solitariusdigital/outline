@@ -18,8 +18,8 @@ export default function Doctor({ doctor }) {
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://belleclass.com",
-          siteName: "Belle Class",
+          url: "https://outline.com",
+          siteName: "Outline",
         }}
       />
       <div className={classes.information}>

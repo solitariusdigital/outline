@@ -44,8 +44,8 @@ export default function Index() {
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://belleclass.com",
-          siteName: "Belle Class",
+          url: "https://outline.com",
+          siteName: "Outline",
         }}
       />
       {!currentUser && (

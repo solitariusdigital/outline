@@ -66,7 +66,7 @@ export default function Footer() {
       </div>
       <div className={classes.copyright}>
         <p>کليه حقوق اين وب اپلیکیشن به بل کلاس تعلق دارد</p>
-        <p>belleclass.com @Copyright 2023</p>
+        <p>outline.com @Copyright 2023</p>
       </div>
     </div>
   );
