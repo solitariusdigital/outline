@@ -7,6 +7,7 @@ import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { createVisitApi, getUsersApi, createUserApi } from "@/services/api";
 import moment from "moment-jalaali";
+import Router from "next/router";
 import Kavenegar from "kavenegar";
 
 export default function DatePicker() {
@@ -94,7 +95,10 @@ export default function DatePicker() {
     //   },
     //   function (response, status) {}
     // );
-    window.location.assign("/portal");
+    Router.push({
+      pathname: `/portal/${currentUser.permission}`,
+      query: { id: currentUser["_id"], p: currentUser.permission },
+    });
   };
 
   const setUserId = async () => {

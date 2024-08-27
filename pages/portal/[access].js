@@ -1,5 +1,6 @@
 import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
+import { useRouter } from "next/router";
 import classes from "./portal.module.scss";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
@@ -15,13 +16,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
 import { getVisitApi, updateVisitApi, getUserApi } from "@/services/api";
-import Kavenegar from "kavenegar";
 
 export default function Access({ visits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
-  const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
-  const [alert, setAlert] = useState("");
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!currentUser) {
@@ -48,13 +48,6 @@ export default function Access({ visits, users }) {
     margin: "8px 0px",
   };
 
-  const showAlert = (message) => {
-    setAlert(message);
-    setTimeout(() => {
-      setAlert("");
-    }, 3000);
-  };
-
   const actionVisit = async (id, type) => {
     const message = `${
       type === "done" ? "تکمیل نوبت مطمئنی؟" : "لغو نوبت مطمئنی؟"
@@ -71,7 +64,7 @@ export default function Access({ visits, users }) {
           break;
       }
       await updateVisitApi(visitData);
-      Router.push("/portal");
+      router.replace(router.asPath);
     }
   };
 
@@ -138,7 +131,18 @@ export default function Access({ visits, users }) {
                   <div className={classes.item} key={index}>
                     {currentUser.permission === "admin" && (
                       <Fragment>
-                        <div className={classes.row} style={margin}>
+                        <div
+                          className={classes.row}
+                          style={margin}
+                          onClick={() =>
+                            Router.push({
+                              pathname: `/patient`,
+                              query: {
+                                id: item.user?._id,
+                              },
+                            })
+                          }
+                        >
                           <p className={classes.greyTitle}>بیمار</p>
                           <p className={classes.title}>{item.user?.name}</p>
                         </div>
@@ -164,10 +168,6 @@ export default function Access({ visits, users }) {
                     <div className={classes.row} style={margin}>
                       <p className={classes.greyTitle}>تاریخ ثبت</p>
                       <p>{convertDate(item.createdAt)}</p>
-                    </div>
-                    <div className={classes.row} style={margin}>
-                      <p className={classes.greyTitle}>تاریخ ثبت</p>
-                      <p>{convertDate(item.date)}</p>
                     </div>
                     <div className={classes.row} style={margin}>
                       {item.canceled ? (
