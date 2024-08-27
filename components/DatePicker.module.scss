@@ -62,14 +62,14 @@
 
     @include mixins.desktop {
       &:hover {
-        background: config.$purple;
+        background: config.$blue;
         color: config.$white;
       }
     }
   }
 
   .activeTime {
-    background: config.$purple;
+    background: config.$blue;
     color: config.$white;
   }
 

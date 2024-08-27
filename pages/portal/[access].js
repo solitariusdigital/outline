@@ -5,9 +5,8 @@ import TimelapseIcon from "@mui/icons-material/Timelapse";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import Image from "next/legacy/image";
 import Person4Icon from "@mui/icons-material/Person4";
-import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import HomeIcon from "@mui/icons-material/Home";
 import Router from "next/router";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
@@ -15,11 +14,11 @@ import userModel from "@/models/User";
 import { convertDate } from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
-import Kavenegar from "kavenegar";
 import { NextSeo } from "next-seo";
 import { getVisitApi, updateVisitApi, getUserApi } from "@/services/api";
+import Kavenegar from "kavenegar";
 
-export default function Access({ visits, doctors, users }) {
+export default function Access({ visits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
@@ -62,20 +61,20 @@ export default function Access({ visits, doctors, users }) {
 
   const actionVisit = async (id, type) => {
     const message = `${
-      type === "done" ? "تکمیل مراجعه مطمئنی؟" : "لغو مراجعه مطمئنی؟"
+      type === "done" ? "تکمیل نوبت مطمئنی؟" : "لغو نوبت مطمئنی؟"
     }`;
     const confirm = window.confirm(message);
     if (confirm) {
-      let recordData = await getVisitApi(id);
+      let visitData = await getVisitApi(id);
       switch (type) {
         case "done":
-          recordData.completed = true;
+          visitData.completed = true;
           break;
         case "cancel":
-          recordData.canceled = true;
+          visitData.canceled = true;
           break;
       }
-      await updateVisitApi(recordData);
+      await updateVisitApi(visitData);
       Router.push("/portal");
     }
   };
@@ -88,8 +87,8 @@ export default function Access({ visits, doctors, users }) {
   return (
     <Fragment>
       <NextSeo
-        title="پرتال بیمار اوت لاین"
-        description="رزرو مراجعه حضوری"
+        title="پورتال بیمار اوت لاین"
+        description="رزرو نوبت آنلاین"
         openGraph={{
           type: "website",
           locale: "fa_IR",
@@ -100,9 +99,9 @@ export default function Access({ visits, doctors, users }) {
       {currentUser && (
         <div className={classes.container}>
           <div className={classes.headerHero}>
+            <HomeIcon onClick={() => Router.push("/")} className="icon" />
             <p>{currentUser.name ? currentUser.name : currentUser.phone}</p>
             {currentUser.permission === "patient" && <Person4Icon />}
-            {currentUser.permission === "doctor" && <HealthAndSafetyIcon />}
             {currentUser.permission === "admin" && <MilitaryTechIcon />}
           </div>
           <div className={classes.portal}>
@@ -113,27 +112,25 @@ export default function Access({ visits, doctors, users }) {
                   <p className={classes.grey}>کل بیمارها</p>
                 </div>
               )}
-
               <Fragment>
                 <div className={classes.row}>
                   <p>{displayVisits.length}</p>
-                  <p className={classes.grey}>تعداد مراجعه</p>
+                  <p className={classes.grey}>تعداد نوبت</p>
                 </div>
                 <div className={classes.row}>
                   <p>
-                    {displayVisits.filter((record) => record.completed).length}
+                    {displayVisits.filter((visit) => visit.completed).length}
                   </p>
-                  <p className={classes.grey}>مراجعه تکمیل</p>
+                  <p className={classes.grey}>نوبت تکمیل شده</p>
                 </div>
                 <div className={classes.row}>
                   <p>
-                    {displayVisits.filter((record) => record.canceled).length}
+                    {displayVisits.filter((visit) => visit.canceled).length}
                   </p>
-                  <p className={classes.grey}>مراجعه لغو</p>
+                  <p className={classes.grey}>نوبت لغو شده</p>
                 </div>
               </Fragment>
             </div>
-
             <div className={classes.button}>
               <button onClick={() => Router.push("/booking")}>
                 رزرو نوبت آنلاین
@@ -171,21 +168,29 @@ export default function Access({ visits, doctors, users }) {
                       </div>
                     </div>
                     <div className={classes.row} style={margin}>
-                      <p className={classes.greyTitle}>ثبت</p>
+                      <p className={classes.greyTitle}>تاریخ ثبت</p>
                       <p>{convertDate(item.createdAt)}</p>
                     </div>
                     <div className={classes.row} style={margin}>
                       <p className={classes.greyTitle}>موضوع</p>
                       <p className={classes.title}>{item.title}</p>
                     </div>
-                    {(currentUser.permission === "admin" ||
-                      currentUser.permission === "doctor") && (
+                    {currentUser.permission === "admin" && (
                       <Fragment>
                         <div className={classes.row} style={margin}>
                           <p className={classes.greyTitle}>بیمار</p>
                           <p className={classes.title}>{item.user?.name}</p>
                         </div>
-                        <div className={classes.row} style={margin}>
+                        <div
+                          className={classes.row}
+                          style={margin}
+                          onClick={() =>
+                            window.open(
+                              `tel:+98${item.user?.phone.substring(1)}`,
+                              "_self"
+                            )
+                          }
+                        >
                           <p className={classes.greyTitle}>موبایل</p>
                           <p className={classes.title}>{item.user?.phone}</p>
                         </div>
@@ -199,7 +204,7 @@ export default function Access({ visits, doctors, users }) {
                               className={classes.icon}
                               sx={{ color: "#d40d12" }}
                             />
-                            <p>مراجعه لغو</p>
+                            <p>نوبت لغو شده</p>
                           </div>
                           <p>{convertDate(item.updatedAt)}</p>
                         </div>
@@ -212,7 +217,7 @@ export default function Access({ visits, doctors, users }) {
                                   className={classes.icon}
                                   sx={{ color: "#57a361" }}
                                 />
-                                <p>مراجعه تکمیل</p>
+                                <p>نوبت تکمیل شده</p>
                               </div>
                               <p>{convertDate(item.updatedAt)}</p>
                             </div>
@@ -221,9 +226,9 @@ export default function Access({ visits, doctors, users }) {
                               <div className={classes.subRow}>
                                 <TimelapseIcon
                                   className={classes.icon}
-                                  sx={{ color: "#b69119" }}
+                                  sx={{ color: "#2d2b7f" }}
                                 />
-                                <p>زمان مراجعه</p>
+                                <p>زمان نوبت</p>
                               </div>
                               <p className={classes.time}>{item.time}</p>
                             </div>
@@ -231,8 +236,7 @@ export default function Access({ visits, doctors, users }) {
                         </Fragment>
                       )}
                     </div>
-                    {(currentUser.permission === "admin" ||
-                      currentUser.permission === "doctor") &&
+                    {currentUser.permission === "admin" &&
                       !item.canceled &&
                       !item.completed && (
                         <div className={classes.action}>
@@ -254,7 +258,7 @@ export default function Access({ visits, doctors, users }) {
             </div>
           </div>
           <div className={classes.logout} onClick={() => logOut()}>
-            <p>خروج از پرتال</p>
+            <p>خروج از پورتال</p>
           </div>
         </div>
       )}

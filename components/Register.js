@@ -7,6 +7,8 @@ import secureLocalStorage from "react-secure-storage";
 import Router from "next/router";
 import { createUserApi, getUsersApi } from "@/services/api";
 import Kavenegar from "kavenegar";
+import Image from "next/legacy/image";
+import logo from "@/assets/logo.png";
 
 export default function Register() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -132,7 +134,7 @@ export default function Register() {
   return (
     <Fragment>
       <div className={classes.form}>
-        <h2>پرتال اوت لاین</h2>
+        <h2>پورتال اوت لاین</h2>
         <p className="message">ورود به خدمات آنلاین</p>
         <div className={classes.input}>
           <div className={classes.bar}>
@@ -198,6 +200,9 @@ export default function Register() {
             <button onClick={() => handleRegister()}>ورود / ​ثبت نام</button>
           )}
         </div>
+      </div>
+      <div className={classes.logo}>
+        <Image width={150} height={150} src={logo} alt="logo" priority />
       </div>
     </Fragment>
   );

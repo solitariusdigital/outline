@@ -9,26 +9,30 @@
   width: config.$content-width;
   margin: auto;
   font-weight: 300;
-  height: 100vh;
+  padding: 20px 0px;
 
   @include mixins.mobile {
     width: calc(100% - 24px);
   }
-
   @include mixins.tablet {
     width: calc(100% - 24px);
   }
 
   .headerHero {
     @include mixins.row-space-between-center();
-    padding: 12px;
-    text-align: center;
-    margin: 0px auto;
+    width: 100%;
+    max-width: 350px;
+    margin: auto;
+    color: config.$blue;
 
     p {
       font-weight: bold;
       font-size: config.$med-font;
-      margin-right: 8px;
+    }
+
+    @include mixins.mobile {
+      width: 100%;
+      max-width: 100%;
     }
   }
 

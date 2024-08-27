@@ -7,6 +7,8 @@ import logo from "@/assets/logo.png";
 import Router from "next/router";
 
 export default function Home() {
+  const { currentUser, setCurrentUser } = useContext(StateContext);
+
   const locationLink =
     "https://www.google.com/maps/place/Eshareh+Advertising+Agency/@35.7743132,51.3941519,17z/data=!4m6!3m5!1s0x3f8e0651f88334cf:0xbf2b6076f1e9fc52!8m2!3d35.7746884!4d51.3941131!16s%2Fg%2F1tg6j0hh?entry=ttu";
 
@@ -37,6 +39,11 @@ export default function Home() {
           >
             رزرو نوبت آنلاین
           </div>
+          {currentUser && (
+            <div className={classes.nav} onClick={() => Router.push("/portal")}>
+              پورتال
+            </div>
+          )}
           <div
             className={classes.nav}
             onClick={() => window.open(locationLink)}
@@ -45,7 +52,7 @@ export default function Home() {
           </div>
           <div
             className={classes.nav}
-            onClick={() => window.open("tel:++989106100914", "_self")}
+            onClick={() => window.open("tel:+989106100914", "_self")}
           >
             تماس با ما
           </div>

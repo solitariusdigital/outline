@@ -7,15 +7,7 @@ import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 // import { Calendar, utils } from "react-modern-calendar-datepicker";
 // import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  createVisitApi,
-  getDoctorApi,
-  updateDoctorApi,
-  getUserApi,
-  getUsersApi,
-  updateUserApi,
-  createUserApi,
-} from "@/services/api";
+import { createVisitApi, getUsersApi, createUserApi } from "@/services/api";
 import Kavenegar from "kavenegar";
 
 export default function DatePicker() {
@@ -87,18 +79,18 @@ export default function DatePicker() {
       toFarsiNumber(time).slice(0, 2) + ":" + toFarsiNumber(time).slice(2)
     }`;
 
-    const api = Kavenegar.KavenegarApi({
-      apikey: kavenegarKey,
-    });
-    api.VerifyLookup(
-      {
-        receptor: phone,
-        token: reserveDate,
-        token2: reserveTime,
-        template: "confirmation",
-      },
-      function (response, status) {}
-    );
+    // const api = Kavenegar.KavenegarApi({
+    //   apikey: kavenegarKey,
+    // });
+    // api.VerifyLookup(
+    //   {
+    //     receptor: phone,
+    //     token: reserveDate,
+    //     token2: reserveTime,
+    //     template: "confirmation",
+    //   },
+    //   function (response, status) {}
+    // );
     window.location.assign("/portal");
   };
 
@@ -235,7 +227,7 @@ export default function DatePicker() {
         )}
         <div className={classes.bar}>
           <p className={classes.label}>
-            موضوع مراجعه
+            موضوع نوبت
             <span>*</span>
           </p>
           <CloseIcon
@@ -245,7 +237,7 @@ export default function DatePicker() {
           />
         </div>
         <input
-          placeholder="فیلر صورت"
+          placeholder="بوتاکس"
           type="text"
           id="title"
           name="title"
@@ -262,7 +254,7 @@ export default function DatePicker() {
         disabled={disableButton}
         onClick={() => createVisit()}
       >
-        ثبت
+        ثبت نوبت
       </button>
     </div>
   );

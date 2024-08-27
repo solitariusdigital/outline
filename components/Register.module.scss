@@ -66,14 +66,10 @@
   }
 }
 
-.imagePreview {
+.logo {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-  .image {
-    @include mixins.border-radius();
-  }
+  flex-direction: column;
+  align-items: center;
 }
 
 // input file

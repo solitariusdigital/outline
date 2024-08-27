@@ -62,17 +62,6 @@ p {
   min-height: 100vh;
 }
 
-.menu {
-  position: fixed;
-  z-index: 50;
-  top: 0px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  background: config.$background;
-  height: 80px;
-}
-
 .icon {
   @include mixins.desktop {
     &:hover {
@@ -111,4 +100,10 @@ p {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.Calendar__day.-selected,
+.Calendar__day.-selectedStart,
+.Calendar__day.-selectedEnd {
+  background: config.$blue !important;
 }

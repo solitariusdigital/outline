@@ -40,8 +40,8 @@ $screen-fourK: 6000px;
   @include desktop {
     &:hover {
       cursor: pointer;
-      background: config.$black;
-      color: config.$purple;
+      background: $subColor;
+      color: $color2;
     }
   }
 }
