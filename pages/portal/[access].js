@@ -3,7 +3,6 @@ import { StateContext } from "@/context/stateContext";
 import classes from "./portal.module.scss";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import Image from "next/legacy/image";
 import Person4Icon from "@mui/icons-material/Person4";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import HomeIcon from "@mui/icons-material/Home";
@@ -22,17 +21,14 @@ export default function Access({ visits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
-
   const [alert, setAlert] = useState("");
-  const doctorDefault =
-    "https://belleclass.storage.iran.liara.space/doctors/belleclass.png";
 
   useEffect(() => {
     if (!currentUser) {
       Router.push("/portal");
     } else {
       const fetchData = async () => {
-        // inject doctor/user info into visit object
+        // inject user info into visit object
         const visitsData = await Promise.all(
           visits.map(async (visit) => {
             const [userData] = await Promise.all([getUserApi(visit.userId)]);
@@ -140,41 +136,6 @@ export default function Access({ visits, users }) {
               <Fragment>
                 {displayVisits.map((item, index) => (
                   <div className={classes.item} key={index}>
-                    <div className={classes.subRow} style={margin}>
-                      <div className={classes.image}>
-                        <Image
-                          className={classes.image}
-                          src={
-                            item.doctor?.image
-                              ? item.doctor?.image
-                              : doctorDefault
-                          }
-                          placeholder="blur"
-                          blurDataURL={
-                            item.doctor?.image
-                              ? item.doctor?.image
-                              : doctorDefault
-                          }
-                          alt="image"
-                          width={70}
-                          height={70}
-                          objectFit="cover"
-                          loading="eager"
-                        />
-                      </div>
-                      <div>
-                        <h2 className={classes.title}>{item.doctor?.name}</h2>
-                        <p>{item.doctor?.education}</p>
-                      </div>
-                    </div>
-                    <div className={classes.row} style={margin}>
-                      <p className={classes.greyTitle}>تاریخ ثبت</p>
-                      <p>{convertDate(item.createdAt)}</p>
-                    </div>
-                    <div className={classes.row} style={margin}>
-                      <p className={classes.greyTitle}>موضوع</p>
-                      <p className={classes.title}>{item.title}</p>
-                    </div>
                     {currentUser.permission === "admin" && (
                       <Fragment>
                         <div className={classes.row} style={margin}>
@@ -196,6 +157,14 @@ export default function Access({ visits, users }) {
                         </div>
                       </Fragment>
                     )}
+                    <div className={classes.row} style={margin}>
+                      <p className={classes.greyTitle}>موضوع</p>
+                      <p className={classes.title}>{item.title}</p>
+                    </div>
+                    <div className={classes.row} style={margin}>
+                      <p className={classes.greyTitle}>تاریخ ثبت</p>
+                      <p>{convertDate(item.createdAt)}</p>
+                    </div>
                     <div className={classes.row} style={margin}>
                       {item.canceled ? (
                         <div className={classes.row}>

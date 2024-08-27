@@ -7,7 +7,6 @@ import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 
 export default function RootLayout({ children }) {
-  const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const [appLoader, setAppLoader] = useState(false);
