@@ -5,6 +5,7 @@
   width: 400px;
   font-weight: 300;
   margin: 20px auto;
+  margin-bottom: 80px;
 
   @include mixins.mobile {
     width: calc(100% - 24px);

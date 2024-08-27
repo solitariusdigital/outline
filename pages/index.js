@@ -40,7 +40,15 @@ export default function Home() {
             رزرو نوبت آنلاین
           </div>
           {currentUser && (
-            <div className={classes.nav} onClick={() => Router.push("/portal")}>
+            <div
+              className={classes.nav}
+              onClick={() =>
+                Router.push({
+                  pathname: `/portal/${currentUser.permission}`,
+                  query: { id: currentUser["_id"], p: currentUser.permission },
+                })
+              }
+            >
               پورتال
             </div>
           )}

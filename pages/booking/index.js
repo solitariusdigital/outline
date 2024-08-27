@@ -22,18 +22,23 @@ export default function Booking() {
           siteName: "Outline",
         }}
       />
-      {!currentUser ? (
-        <div className="register">
-          <Register></Register>
-        </div>
-      ) : (
+      {currentUser ? (
         <div className={classes.container}>
           <SwitchAccountIcon
             className="icon"
-            onClick={() => Router.push("/portal")}
+            onClick={() =>
+              Router.push({
+                pathname: `/portal/${currentUser.permission}`,
+                query: { id: currentUser["_id"], p: currentUser.permission },
+              })
+            }
             sx={{ color: "#2d2b7f" }}
           />
           <DatePicker />
+        </div>
+      ) : (
+        <div className="register">
+          <Register></Register>
         </div>
       )}
     </Fragment>

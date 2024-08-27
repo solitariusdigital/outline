@@ -262,7 +262,6 @@ export default function DatePicker() {
           dir="rtl"
         />
       </div>
-      {alert && <p className="alert">{alert}</p>}
       {selectedDate && <p className={classes.message}>{selectedDate} ساعت</p>}
       <button
         className={classes.button}
@@ -271,6 +270,7 @@ export default function DatePicker() {
       >
         ثبت نوبت
       </button>
+      {alert && <p className="alert">{alert}</p>}
     </div>
   );
 }

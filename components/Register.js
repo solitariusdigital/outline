@@ -89,7 +89,10 @@ export default function Register() {
       if (userData) {
         setCurrentUser(userData);
         secureLocalStorage.setItem("currentUser", JSON.stringify(userData));
-        Router.push("/portal");
+        Router.push({
+          pathname: `/portal/${userData.permission}`,
+          query: { id: userData["_id"], p: userData.permission },
+        });
       } else {
         await createUser();
       }
@@ -121,7 +124,10 @@ export default function Register() {
       } else {
         setCurrentUser(userData);
         secureLocalStorage.setItem("currentUser", JSON.stringify(userData));
-        Router.push("/portal");
+        Router.push({
+          pathname: `/portal/${userData.permission}`,
+          query: { id: userData["_id"], p: userData.permission },
+        });
       }
     } catch (error) {
       showAlert("خطا در برقراری ارتباط");

@@ -7,15 +7,6 @@ import { NextSeo } from "next-seo";
 export default function Index() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
 
-  useEffect(() => {
-    if (currentUser) {
-      Router.push({
-        pathname: `/portal/${currentUser.permission}`,
-        query: { id: currentUser["_id"], p: currentUser.permission },
-      });
-    }
-  }, [currentUser]);
-
   return (
     <Fragment>
       <NextSeo
