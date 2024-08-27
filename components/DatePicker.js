@@ -4,10 +4,9 @@ import classes from "./DatePicker.module.scss";
 import { toFarsiNumber } from "@/services/utility";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
-// import { Calendar, utils } from "react-modern-calendar-datepicker";
-// import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { createVisitApi, getUsersApi, createUserApi } from "@/services/api";
+import moment from "moment-jalaali";
 import Kavenegar from "kavenegar";
 
 export default function DatePicker() {
@@ -23,6 +22,8 @@ export default function DatePicker() {
   );
   const [day, setDay] = useState(null);
   const [time, setTime] = useState("");
+  const [dateObject, setDateObject] = useState("");
+
   const [alert, setAlert] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [times, setTimes] = useState({
@@ -66,7 +67,9 @@ export default function DatePicker() {
     let visit = {
       title: title,
       userId: userId,
+      doctor: "DR",
       time: selectedDate,
+      date: dateObject,
       completed: false,
       canceled: false,
     };
@@ -134,6 +137,9 @@ export default function DatePicker() {
   };
 
   const displayDate = (time) => {
+    let gregorian = convertPersianToGregorian(day);
+    setDateObject(gregorian);
+
     let updatedTime = { ...times };
     Object.keys(times).forEach((item) =>
       item === time ? (updatedTime[item] = true) : (updatedTime[item] = false)
@@ -155,6 +161,15 @@ export default function DatePicker() {
         setAlert("");
       }, 3000);
     }
+  };
+
+  const convertPersianToGregorian = (persianDate) => {
+    const { day, month, year } = persianDate;
+    const gregorianDate = moment(
+      `${year}/${month}/${day}`,
+      "jYYYY/jM/jD"
+    ).toDate();
+    return gregorianDate.toISOString();
   };
 
   return (

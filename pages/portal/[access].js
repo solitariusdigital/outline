@@ -166,6 +166,10 @@ export default function Access({ visits, users }) {
                       <p>{convertDate(item.createdAt)}</p>
                     </div>
                     <div className={classes.row} style={margin}>
+                      <p className={classes.greyTitle}>تاریخ ثبت</p>
+                      <p>{convertDate(item.date)}</p>
+                    </div>
+                    <div className={classes.row} style={margin}>
                       {item.canceled ? (
                         <div className={classes.row}>
                           <div className={classes.subRow}>

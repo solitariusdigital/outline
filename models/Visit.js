@@ -4,8 +4,9 @@ const VisitSchema = new Schema(
   {
     title: String,
     userId: String,
-    doctorId: String,
+    doctor: String,
     time: String,
+    date: Date,
     completed: Boolean,
     canceled: Boolean,
   },
