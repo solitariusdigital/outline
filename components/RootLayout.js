@@ -2,7 +2,6 @@ import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import { useRouter } from "next/router";
 import Menu from "@/components/Menu";
-import Footer from "@/components/Footer";
 import secureLocalStorage from "react-secure-storage";
 import { getUserApi } from "@/services/api";
 import Image from "next/legacy/image";
@@ -23,13 +22,18 @@ export default function RootLayout({ children }) {
       let elemHeight = element.getBoundingClientRect().height;
       setHeroHeight(elemHeight);
     }
-    if (window.innerWidth < 700) {
-      setScreenSize("mobile");
-    } else if (window.innerWidth > 700 && window.innerWidth < 1400) {
-      setScreenSize("tablet");
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    let screenSize;
+    if (width < 700) {
+      screenSize = "mobile";
+    } else if (width >= 700 && width < 1400) {
+      screenSize = width > height ? "tablet-landscape" : "tablet-portrait";
     } else {
-      setScreenSize("desktop");
+      screenSize = "desktop";
     }
+    setScreenSize(screenSize);
   };
 
   useEffect(() => {
@@ -79,13 +83,12 @@ export default function RootLayout({ children }) {
     <Fragment>
       {appLoader ? (
         <Fragment>
-          <div className="menu">
+          {/* <div className="menu">
             <Menu />
-          </div>
+          </div> */}
           <div className="main">
             <main>{children}</main>
           </div>
-          <Footer />
         </Fragment>
       ) : (
         <div className="appload">

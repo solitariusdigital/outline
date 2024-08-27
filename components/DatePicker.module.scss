@@ -11,15 +11,13 @@
 
   .input {
     width: 100%;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin: 20px 0px;
 
     .bar {
       display: flex;
       flex-direction: row-reverse;
       justify-content: space-between;
-      margin-top: 24px;
-      margin-bottom: 12px;
+      margin: 12px 0px;
     }
 
     .label {
@@ -64,19 +62,19 @@
 
     @include mixins.desktop {
       &:hover {
-        background: config.$gold3;
+        background: config.$purple;
         color: config.$white;
       }
     }
   }
 
   .activeTime {
-    background: config.$gold3;
+    background: config.$purple;
     color: config.$white;
   }
 
   .button {
-    @include mixins.button(config.$gold1, config.$gold3, config.$black);
+    @include mixins.button(config.$blue, config.$blue, config.$white);
     margin-top: 20px;
   }
 

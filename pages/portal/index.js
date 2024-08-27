@@ -39,8 +39,8 @@ export default function Index() {
   return (
     <Fragment>
       <NextSeo
-        title="خدمات آنلاین بل کلاس"
-        description="مشاوره آنلاین رایگان و رزرو مراجعه حضوری"
+        title="خدمات آنلاین اوت لاین"
+        description="مشاوره آنلاین رایگان ورزرو نوبت آنلاین"
         openGraph={{
           type: "website",
           locale: "fa_IR",

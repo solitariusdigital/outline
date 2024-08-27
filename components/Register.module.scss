@@ -4,17 +4,11 @@
 .form {
   display: flex;
   flex-direction: column;
+  text-align: center;
   font-weight: 300;
 
-  .title {
-    text-align: center;
-    font-size: config.$big-font;
-    margin-bottom: 12px;
-    font-weight: bold;
-  }
-
   button {
-    @include mixins.button(config.$gold1, config.$gold3, config.$black);
+    @include mixins.button(config.$blue, config.$blue, config.$white);
   }
 }
 
@@ -89,7 +83,7 @@ label.file input[type="file"] {
 }
 .file {
   cursor: pointer;
-  border: 1px solid config.$gold3;
+  border: 1px solid config.$purple;
   padding: 8px;
   color: config.$grey;
   margin-bottom: 20px;

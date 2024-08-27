@@ -1,19 +1,22 @@
-$font: "Daal", sans-serif;
-$font-gilan: "Gilan", sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500&display=swap");
 
-$gold1: #e7c69a;
-$gold2: #d4af37;
-$gold3: #b69119;
+$font: "Vazirmatn", sans-serif;
+
+$pink: #ffd2f6;
+$purple: #dcccff;
 $logo: #a8926d;
 $black: #1b1b1b;
 $white: #ffffff;
 $red: #d40d12;
 $green: #57a361;
-$grey: #969696;
+$grey: #999999;
+$lightgrey: #d6d6d6;
 $background: #fafbf6;
+$blue: #2d2b7f;
 
 $max-widthHeigh: 1500px;
-$content-width: 90%;
+$content-width: 75%;
+$content-widthTablet: 90%;
 
 $tiny-font: 0.875rem; // 12px
 $small-font: 1rem; // 16px
@@ -24,4 +27,4 @@ $large-font: 2rem; // 32px
 
 $image-shadow: rgba(181, 181, 181, 0.2) 0px 2px 8px 0px;
 $card-shadow: rgba(181, 181, 181, 0.2) 0px 8px 24px;
-$button-shadow: rgba(0, 0, 0, 0.2) 0px 3px 8px;
+$button-shadow: rgba(181, 181, 181, 0.2) 0px 3px 8px;

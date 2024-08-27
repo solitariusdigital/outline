@@ -18,7 +18,7 @@ import {
 } from "@/services/api";
 import Kavenegar from "kavenegar";
 
-export default function DatePicker({ doctorId, recordId }) {
+export default function DatePicker() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
 
@@ -74,15 +74,11 @@ export default function DatePicker({ doctorId, recordId }) {
     let visit = {
       title: title,
       userId: userId,
-      doctorId: doctorId,
-      recordId: recordId ? recordId : "",
       time: selectedDate,
       completed: false,
       canceled: false,
     };
-    let newVisit = await createVisitApi(visit);
-    await updateDoctorObject(newVisit["_id"]);
-    await updateUserObject(userId);
+    await createVisitApi(visit);
 
     let reserveDate = `${toFarsiNumber(day.year)}/${toFarsiNumber(
       day.month
@@ -130,26 +126,6 @@ export default function DatePicker({ doctorId, recordId }) {
     setTimeout(() => {
       setAlert("");
     }, 3000);
-  };
-
-  const updateDoctorObject = async (id) => {
-    // add new visit and user to doctor object
-    let doctor = await getDoctorApi(doctorId);
-    doctor.visits.push(id);
-    if (!doctor.users.includes(currentUser["_id"])) {
-      doctor.users.push(currentUser["_id"]);
-    }
-    await updateDoctorApi(doctor);
-  };
-
-  const updateUserObject = async (id) => {
-    // add new doctor to user object
-    let user = await getUserApi(id);
-    user.name = name;
-    if (!user.doctors.includes(doctorId)) {
-      user.doctors.push(doctorId);
-    }
-    await updateUserApi(user);
   };
 
   const resetTime = () => {

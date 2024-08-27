@@ -49,14 +49,14 @@
   cursor: pointer;
 
   &:hover {
-    color: config.$gold3;
+    color: config.$purple;
   }
 
   @include mixins.mobile {
-    border-bottom: 1px solid config.$gold1;
+    border-bottom: 1px solid config.$pink;
   }
   @include mixins.tablet {
-    border-bottom: 1px solid config.$gold1;
+    border-bottom: 1px solid config.$pink;
   }
 }
 
@@ -64,14 +64,14 @@
   content: "";
   display: block;
   width: 0;
-  border-bottom: 1px solid config.$gold3;
+  border-bottom: 1px solid config.$purple;
   transition: width 0.3s;
 
   @include mixins.mobile {
-    border-bottom: 1px solid config.$gold1;
+    border-bottom: 1px solid config.$pink;
   }
   @include mixins.tablet {
-    border-bottom: 1px solid config.$gold1;
+    border-bottom: 1px solid config.$pink;
   }
 }
 
@@ -80,15 +80,15 @@
 }
 
 .navActive {
-  border-bottom: 1px solid config.$gold3;
-  color: config.$gold3;
+  border-bottom: 1px solid config.$purple;
+  color: config.$purple;
   font-weight: bold !important;
 
   @include mixins.mobile {
-    border-bottom: 1px solid config.$gold1;
+    border-bottom: 1px solid config.$pink;
   }
   @include mixins.tablet {
-    border-bottom: 1px solid config.$gold1;
+    border-bottom: 1px solid config.$pink;
   }
 }
 
@@ -96,7 +96,7 @@
   width: 100%;
 
   .menuIcon {
-    background: config.$gold1;
+    background: config.$pink;
     cursor: pointer;
   }
 
@@ -116,7 +116,7 @@
     align-items: center;
     width: 100%;
     padding: 12px;
-    background: config.$gold1;
+    background: config.$pink;
     box-shadow: config.$card-shadow;
 
     p {
@@ -129,7 +129,7 @@
       flex-direction: column;
 
       button {
-        @include mixins.button(config.$black, config.$black, config.$gold3);
+        @include mixins.button(config.$black, config.$black, config.$purple);
         margin: 12px 0px;
         cursor: pointer;
 

@@ -131,7 +131,7 @@ export default function Menu() {
                       setMenuMobile(false);
                     }}
                   >
-                    رزرو مراجعه حضوری
+                    رزرو نوبت آنلاین
                   </button>
                   <button
                     onClick={() => {

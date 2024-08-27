@@ -9,16 +9,14 @@
   width: config.$content-width;
   margin: auto;
   font-weight: 300;
-  min-height: 500px;
-  margin-top: 80px;
+  height: 100vh;
 
   @include mixins.mobile {
-    width: 100%;
+    width: calc(100% - 24px);
   }
 
   @include mixins.tablet {
-    width: 100%;
-    padding: 0px 12px;
+    width: calc(100% - 24px);
   }
 
   .headerHero {
@@ -37,10 +35,6 @@
   .portal {
     width: 100%;
 
-    @include mixins.mobile {
-      padding: 0px 12px;
-    }
-
     .navigation {
       @include mixins.row-space-between-center();
       justify-content: space-around;
@@ -51,7 +45,7 @@
       border-radius: 50px;
       background: config.$white;
       box-shadow: config.$card-shadow;
-      border: 1px solid config.$gold3;
+      border: 1px solid config.$purple;
 
       @include mixins.mobile {
         width: 100%;
@@ -64,13 +58,13 @@
 
       @include mixins.desktop {
         &:hover {
-          color: config.$gold3;
+          color: config.$purple;
         }
       }
     }
 
     .navActive {
-      color: config.$gold3;
+      color: config.$purple;
       font-weight: bold !important;
     }
   }
@@ -79,7 +73,7 @@
     margin: 20px 0px;
 
     button {
-      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      @include mixins.button(config.$blue, config.$blue, config.$white);
       margin: auto;
     }
   }
@@ -100,7 +94,7 @@
     }
 
     button {
-      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      @include mixins.button(config.$blue, config.$blue, config.$white);
       margin: auto;
       margin-top: 20px;
     }
@@ -206,7 +200,7 @@
     }
 
     button {
-      @include mixins.button(config.$gold1, config.$gold3, config.$black);
+      @include mixins.button(config.$blue, config.$blue, config.$white);
       margin: 12px;
       margin-top: 40px;
     }
@@ -303,7 +297,7 @@
   margin-top: 20px;
 
   .image {
-    border-bottom: 1px solid config.$gold3;
+    border-bottom: 1px solid config.$purple;
     cursor: pointer;
 
     &:hover {

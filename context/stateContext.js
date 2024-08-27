@@ -8,7 +8,7 @@ export const StateProvider = (props) => {
   const [menuMobile, setMenuMobile] = useState(false);
   const [navigationTopBar, setNavigationTopBar] = useState([
     {
-      title: "بل کلاس",
+      title: "اوت لاین",
       link: "/",
       active: false,
     },
