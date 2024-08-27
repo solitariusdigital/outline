@@ -1,6 +1,5 @@
 import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
-import { useRouter } from "next/router";
 import secureLocalStorage from "react-secure-storage";
 import { getUserApi } from "@/services/api";
 import Image from "next/legacy/image";
@@ -10,9 +9,6 @@ export default function RootLayout({ children }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const [appLoader, setAppLoader] = useState(false);
-
-  const router = useRouter();
-  let pathname = router.pathname;
 
   const handleResize = () => {
     let element = document.getElementById("detailsInformation");

@@ -31,11 +31,7 @@ export default function Home() {
         <section className={classes.navigation}>
           <div
             className={classes.nav}
-            onClick={() =>
-              Router.push({
-                pathname: "/booking",
-              })
-            }
+            onClick={() => Router.push(currentUser ? "/booking" : "/portal")}
           >
             رزرو نوبت آنلاین
           </div>

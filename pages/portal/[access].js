@@ -25,7 +25,7 @@ export default function Access({ visits, users }) {
 
   useEffect(() => {
     if (!currentUser) {
-      Router.push("/portal");
+      Router.push("/");
     } else {
       const fetchData = async () => {
         // inject user info into visit object
