@@ -28,13 +28,11 @@ export default function Booking() {
         </div>
       ) : (
         <div className={classes.container}>
-          <div className={classes.header}>
-            <SwitchAccountIcon
-              className="icon"
-              onClick={() => Router.push("/portal")}
-              sx={{ color: "#2d2b7f" }}
-            />
-          </div>
+          <SwitchAccountIcon
+            className="icon"
+            onClick={() => Router.push("/portal")}
+            sx={{ color: "#2d2b7f" }}
+          />
           <DatePicker />
         </div>
       )}
