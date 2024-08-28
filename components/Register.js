@@ -6,9 +6,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import Router from "next/router";
 import { createUserApi, getUsersApi } from "@/services/api";
-import Kavenegar from "kavenegar";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
+import Kavenegar from "kavenegar";
 
 export default function Register() {
   const { currentUser, setCurrentUser } = useContext(StateContext);

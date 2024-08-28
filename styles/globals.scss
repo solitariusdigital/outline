@@ -63,11 +63,7 @@ p {
 }
 
 .icon {
-  @include mixins.desktop {
-    &:hover {
-      cursor: pointer;
-    }
-  }
+  cursor: pointer;
 }
 
 .alert,
