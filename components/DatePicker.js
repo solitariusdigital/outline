@@ -5,7 +5,12 @@ import { toFarsiNumber } from "@/services/utility";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import CloseIcon from "@mui/icons-material/Close";
-import { createVisitApi, getUsersApi, createUserApi } from "@/services/api";
+import {
+  createVisitApi,
+  getUsersApi,
+  createUserApi,
+  updateUserApi,
+} from "@/services/api";
 import moment from "moment-jalaali";
 import Router from "next/router";
 import Kavenegar from "kavenegar";
@@ -113,9 +118,21 @@ export default function DatePicker() {
           permission: "patient",
         };
         userData = await createUserApi(user);
+      } else {
+        const user = {
+          ...userData,
+          name: name,
+        };
+        await updateUserApi(user);
       }
       return userData["_id"];
     } else {
+      const user = {
+        ...currentUser,
+        name: name,
+      };
+      let userData = await updateUserApi(user);
+      setCurrentUser(userData);
       return currentUser["_id"];
     }
   };
