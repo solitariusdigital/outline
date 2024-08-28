@@ -167,14 +167,13 @@
   }
 
   .logout {
-    display: flex;
-    justify-content: center;
-    margin-top: 100px;
-    color: config.$grey;
+    margin-top: 14px;
     cursor: pointer;
 
     p {
-      border-bottom: 1px solid config.$grey;
+      &:hover {
+        color: config.$blue;
+      }
     }
   }
 

@@ -98,13 +98,13 @@ export default function Access({ visits, users }) {
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
                   <p>{users.length}</p>
-                  <p className={classes.grey}>کل بیمارها</p>
+                  <p className={classes.grey}>تعداد بیمارها</p>
                 </div>
               )}
               <Fragment>
                 <div className={classes.row}>
                   <p>{displayVisits.length}</p>
-                  <p className={classes.grey}>تعداد نوبت</p>
+                  <p className={classes.grey}>تعداد نوبت‌ها</p>
                 </div>
                 <div className={classes.row}>
                   <p>
@@ -117,6 +117,9 @@ export default function Access({ visits, users }) {
                     {displayVisits.filter((visit) => visit.canceled).length}
                   </p>
                   <p className={classes.grey}>نوبت لغو شده</p>
+                </div>
+                <div className={classes.logout} onClick={() => logOut()}>
+                  <p className={classes.grey}>خروج از پورتال</p>
                 </div>
               </Fragment>
             </div>
@@ -230,9 +233,6 @@ export default function Access({ visits, users }) {
               </Fragment>
             </div>
           </div>
-          <div className={classes.logout} onClick={() => logOut()}>
-            <p>خروج از پورتال</p>
-          </div>
         </div>
       )}
     </Fragment>
@@ -247,9 +247,7 @@ export async function getServerSideProps(context) {
     let permission = context.query.p;
 
     const users = await userModel.find();
-
     let visits = null;
-
     switch (permission) {
       case "patient":
         visits = await visitModel.find({ userId: id });
@@ -258,7 +256,6 @@ export async function getServerSideProps(context) {
         visits = await visitModel.find();
         break;
     }
-
     visits
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .sort((a, b) => a.completed - b.completed)
