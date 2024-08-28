@@ -47,7 +47,7 @@ export default function Access({ visits, users }) {
   }, [currentUser, visits]);
 
   const margin = {
-    margin: "8px 0px",
+    margin: "4px 0px",
   };
 
   const actionVisit = async (id, type) => {
