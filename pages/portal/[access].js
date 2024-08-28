@@ -20,6 +20,7 @@ import { getVisitApi, updateVisitApi, getUserApi } from "@/services/api";
 export default function Access({ visits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
+  const [filterVisits, setFilterVisits] = useState([]);
 
   const router = useRouter();
 
@@ -39,6 +40,7 @@ export default function Access({ visits, users }) {
           })
         );
         setDisplayVisits(visitsData);
+        setFilterVisits(visitsData);
       };
       fetchData().catch(console.error);
     }
@@ -87,7 +89,7 @@ export default function Access({ visits, users }) {
       />
       {currentUser && (
         <div className={classes.container}>
-          <div className={classes.headerHero}>
+          <div className={classes.header}>
             <HomeIcon onClick={() => Router.push("/")} className="icon" />
             <p>{currentUser.name ? currentUser.name : currentUser.phone}</p>
             {currentUser.permission === "patient" && <Person4Icon />}
@@ -97,26 +99,68 @@ export default function Access({ visits, users }) {
             <div className={classes.analytics}>
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
-                  <p>{users.length}</p>
-                  <p className={classes.grey}>تعداد بیمارها</p>
+                  <p>
+                    {users.length} / {displayVisits.length}
+                  </p>
+                  <p
+                    className={classes.grey}
+                    onClick={() => setFilterVisits(displayVisits)}
+                  >
+                    نوبت‌ها / بیمارها
+                  </p>
                 </div>
               )}
               <Fragment>
                 <div className={classes.row}>
-                  <p>{displayVisits.length}</p>
-                  <p className={classes.grey}>تعداد نوبت‌ها</p>
+                  <p>
+                    {
+                      displayVisits.filter(
+                        (visit) => !visit.completed && !visit.canceled
+                      ).length
+                    }
+                  </p>
+                  <p
+                    className={classes.grey}
+                    onClick={() =>
+                      setFilterVisits(
+                        displayVisits.filter(
+                          (visit) => !visit.completed && !visit.canceled
+                        )
+                      )
+                    }
+                  >
+                    نوبت‌ها فعال
+                  </p>
                 </div>
                 <div className={classes.row}>
                   <p>
                     {displayVisits.filter((visit) => visit.completed).length}
                   </p>
-                  <p className={classes.grey}>نوبت تکمیل شده</p>
+                  <p
+                    className={classes.grey}
+                    onClick={() =>
+                      setFilterVisits(
+                        displayVisits.filter((visit) => visit.completed)
+                      )
+                    }
+                  >
+                    نوبت تکمیل شده
+                  </p>
                 </div>
                 <div className={classes.row}>
                   <p>
                     {displayVisits.filter((visit) => visit.canceled).length}
                   </p>
-                  <p className={classes.grey}>نوبت لغو شده</p>
+                  <p
+                    className={classes.grey}
+                    onClick={() =>
+                      setFilterVisits(
+                        displayVisits.filter((visit) => visit.canceled)
+                      )
+                    }
+                  >
+                    نوبت لغو شده
+                  </p>
                 </div>
                 <div className={classes.logout} onClick={() => logOut()}>
                   <p className={classes.grey}>خروج از پورتال</p>
@@ -130,7 +174,7 @@ export default function Access({ visits, users }) {
             </div>
             <div className={classes.cards}>
               <Fragment>
-                {displayVisits.map((item, index) => (
+                {filterVisits.map((item, index) => (
                   <div className={classes.item} key={index}>
                     {currentUser.permission === "admin" && (
                       <Fragment>
@@ -166,7 +210,7 @@ export default function Access({ visits, users }) {
                     )}
                     <div className={classes.row} style={margin}>
                       <p className={classes.greyTitle}>موضوع</p>
-                      <p className={classes.title}>{item.title}</p>
+                      <p>{item.title}</p>
                     </div>
                     <div className={classes.row} style={margin}>
                       <p className={classes.greyTitle}>تاریخ ثبت</p>
@@ -217,13 +261,13 @@ export default function Access({ visits, users }) {
                       !item.completed && (
                         <div className={classes.action}>
                           <TaskAltIcon
+                            className="icon"
                             onClick={() => actionVisit(item["_id"], "done")}
-                            className={classes.icon}
                             sx={{ color: "#57a361" }}
                           />
                           <CloseIcon
+                            className="icon"
                             onClick={() => actionVisit(item["_id"], "cancel")}
-                            className={classes.icon}
                             sx={{ color: "#d40d12" }}
                           />
                         </div>

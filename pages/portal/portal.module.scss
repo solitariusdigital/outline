@@ -18,7 +18,7 @@
     width: calc(100% - 24px);
   }
 
-  .headerHero {
+  .header {
     @include mixins.row-space-between-center();
     width: 100%;
     max-width: 350px;
@@ -114,18 +114,15 @@
       box-shadow: config.$card-shadow;
       background: config.$white;
       text-align: right;
-      cursor: pointer;
       @include mixins.border-radius();
-
-      @include mixins.desktop {
-        &:hover {
-          position: relative;
-          bottom: 5px;
-        }
-      }
 
       .title {
         font-weight: bold;
+        &:hover {
+          color: config.$blue;
+          cursor: pointer;
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -152,6 +149,7 @@
 
     .icon {
       margin-left: 8px;
+      cursor: pointer;
     }
   }
 
@@ -174,137 +172,6 @@
       &:hover {
         color: config.$blue;
       }
-    }
-  }
-
-  .details {
-    width: 500px;
-    margin: auto;
-    text-align: center;
-
-    .input {
-      margin-top: 30px;
-      text-align: center;
-
-      .label {
-        color: config.$grey;
-        text-align: right;
-        margin-bottom: 8px;
-      }
-
-      textarea {
-        @include mixins.textarea();
-      }
-
-      select {
-        @include mixins.input();
-        width: 100%;
-      }
-    }
-
-    button {
-      @include mixins.button(config.$blue, config.$blue, config.$white);
-      margin: 12px;
-      margin-top: 40px;
-    }
-
-    .assessment {
-      padding: 12px;
-      margin-top: 20px;
-      background: config.$white;
-      box-shadow: config.$card-shadow;
-      @include mixins.border-radius();
-      text-align: right;
-
-      .row {
-        margin: 8px 0px;
-        direction: rtl;
-
-        .age {
-          direction: ltr;
-        }
-      }
-
-      .subRow {
-        flex-wrap: wrap;
-
-        p {
-          margin-right: 8px;
-        }
-      }
-    }
-
-    .rowDoctor {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      direction: rtl;
-      margin-top: 40px;
-      margin-bottom: 20px;
-
-      .title {
-        margin-right: 8px;
-      }
-
-      .image {
-        border-radius: 50%;
-      }
-    }
-
-    .header {
-      margin-bottom: 20px;
-      @include mixins.row-space-between-center();
-    }
-
-    .title {
-      font-weight: bold;
-    }
-
-    .text {
-      box-shadow: config.$card-shadow;
-      background: config.$white;
-      margin-top: 20px;
-      padding: 16px;
-      text-align: right;
-      @include mixins.border-radius();
-    }
-
-    .imageContainer {
-      position: relative;
-      height: 300px;
-
-      .imagePopup {
-        position: absolute;
-        width: 100%;
-        height: 600px;
-        z-index: 2;
-        box-shadow: config.$image-shadow;
-        @include mixins.border-radius();
-      }
-
-      .image {
-        @include mixins.border-radius();
-      }
-    }
-
-    @include mixins.mobile {
-      width: 100%;
-    }
-  }
-}
-
-.imageSelector {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  gap: 12px;
-  margin-top: 20px;
-
-  .image {
-    border-bottom: 1px solid config.$purple;
-    cursor: pointer;
-
-    &:hover {
-      border-bottom: 1px solid config.$black;
     }
   }
 }
@@ -333,5 +200,10 @@
   .grey {
     color: config.$grey;
     font-weight: 300;
+
+    &:hover {
+      cursor: pointer;
+      color: config.$blue;
+    }
   }
 }

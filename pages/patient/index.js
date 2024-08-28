@@ -17,6 +17,8 @@ import { getVisitApi, updateVisitApi } from "@/services/api";
 
 export default function Patient({ user, visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const [displayVisits, setDisplayVisits] = useState(visits);
+  const [filterVisits, setFilterVisits] = useState(visits);
 
   const router = useRouter();
 
@@ -57,7 +59,7 @@ export default function Patient({ user, visits }) {
         }}
       />
       <div className={classes.container}>
-        <div className={classes.headerHero}>
+        <div className={classes.header}>
           <SwitchAccountIcon
             className="icon"
             onClick={() =>
@@ -68,6 +70,7 @@ export default function Patient({ user, visits }) {
             }
           />
           <p
+            className="icon"
             onClick={() =>
               window.open(`tel:+98${user?.phone.substring(1)}`, "_self")
             }
@@ -75,6 +78,7 @@ export default function Patient({ user, visits }) {
             {user.name ? user.name : user.phone}
           </p>
           <Person4Icon
+            className="icon"
             onClick={() =>
               window.open(`tel:+98${user?.phone.substring(1)}`, "_self")
             }
@@ -84,22 +88,57 @@ export default function Patient({ user, visits }) {
           <div className={classes.analytics}>
             <Fragment>
               <div className={classes.row}>
-                <p>{visits.length}</p>
-                <p className={classes.grey}>تعداد نوبت</p>
+                <p>
+                  {
+                    displayVisits.filter(
+                      (visit) => !visit.completed && !visit.canceled
+                    ).length
+                  }
+                </p>
+                <p
+                  className={classes.grey}
+                  onClick={() =>
+                    setFilterVisits(
+                      displayVisits.filter(
+                        (visit) => !visit.completed && !visit.canceled
+                      )
+                    )
+                  }
+                >
+                  نوبت‌ها فعال
+                </p>
               </div>
               <div className={classes.row}>
-                <p>{visits.filter((visit) => visit.completed).length}</p>
-                <p className={classes.grey}>نوبت تکمیل شده</p>
+                <p>{displayVisits.filter((visit) => visit.completed).length}</p>
+                <p
+                  className={classes.grey}
+                  onClick={() =>
+                    setFilterVisits(
+                      displayVisits.filter((visit) => visit.completed)
+                    )
+                  }
+                >
+                  نوبت تکمیل شده
+                </p>
               </div>
               <div className={classes.row}>
-                <p>{visits.filter((visit) => visit.canceled).length}</p>
-                <p className={classes.grey}>نوبت لغو شده</p>
+                <p>{displayVisits.filter((visit) => visit.canceled).length}</p>
+                <p
+                  className={classes.grey}
+                  onClick={() =>
+                    setFilterVisits(
+                      displayVisits.filter((visit) => visit.canceled)
+                    )
+                  }
+                >
+                  نوبت لغو شده
+                </p>
               </div>
             </Fragment>
           </div>
           <div className={classes.cards}>
             <Fragment>
-              {visits.map((item, index) => (
+              {filterVisits.map((item, index) => (
                 <div className={classes.item} key={index}>
                   <div className={classes.row} style={margin}>
                     <p className={classes.greyTitle}>موضوع</p>
@@ -155,12 +194,12 @@ export default function Patient({ user, visits }) {
                       <div className={classes.action}>
                         <TaskAltIcon
                           onClick={() => actionVisit(item["_id"], "done")}
-                          className={classes.icon}
+                          className="icon"
                           sx={{ color: "#57a361" }}
                         />
                         <CloseIcon
                           onClick={() => actionVisit(item["_id"], "cancel")}
-                          className={classes.icon}
+                          className="icon"
                           sx={{ color: "#d40d12" }}
                         />
                       </div>
