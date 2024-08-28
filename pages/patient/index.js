@@ -94,6 +94,7 @@ export default function Patient({ user, visits }) {
             <Fragment>
               <div
                 className={classes.row}
+                style={{ cursor: "pointer" }}
                 onClick={() =>
                   window.open(`tel:+98${user?.phone.substring(1)}`, "_self")
                 }
