@@ -111,7 +111,7 @@ export default function Patient({ user, visits }) {
                   }
                 </p>
                 <p
-                  className={classes.grey}
+                  className={classes.item}
                   onClick={() =>
                     setFilterVisits(
                       displayVisits.filter(
@@ -126,7 +126,7 @@ export default function Patient({ user, visits }) {
               <div className={classes.row}>
                 <p>{filterTomorrowVisits(displayVisits).length}</p>
                 <p
-                  className={classes.grey}
+                  className={classes.item}
                   onClick={() =>
                     setFilterVisits(filterTomorrowVisits(displayVisits))
                   }
@@ -137,7 +137,7 @@ export default function Patient({ user, visits }) {
               <div className={classes.row}>
                 <p>{displayVisits.filter((visit) => visit.completed).length}</p>
                 <p
-                  className={classes.grey}
+                  className={classes.item}
                   onClick={() =>
                     setFilterVisits(
                       displayVisits.filter((visit) => visit.completed)
@@ -150,7 +150,7 @@ export default function Patient({ user, visits }) {
               <div className={classes.row}>
                 <p>{displayVisits.filter((visit) => visit.canceled).length}</p>
                 <p
-                  className={classes.grey}
+                  className={classes.item}
                   onClick={() =>
                     setFilterVisits(
                       displayVisits.filter((visit) => visit.canceled)

@@ -103,7 +103,7 @@ export default function Access({ visits, users }) {
                     {users.length} / {displayVisits.length}
                   </p>
                   <p
-                    className={classes.grey}
+                    className={classes.item}
                     onClick={() => setFilterVisits(displayVisits)}
                   >
                     نوبت‌ها / بیمارها
@@ -120,7 +120,7 @@ export default function Access({ visits, users }) {
                     }
                   </p>
                   <p
-                    className={classes.grey}
+                    className={classes.item}
                     onClick={() =>
                       setFilterVisits(
                         displayVisits.filter(
@@ -135,7 +135,7 @@ export default function Access({ visits, users }) {
                 <div className={classes.row}>
                   <p>{filterTomorrowVisits(displayVisits).length}</p>
                   <p
-                    className={classes.grey}
+                    className={classes.item}
                     onClick={() =>
                       setFilterVisits(filterTomorrowVisits(displayVisits))
                     }
@@ -148,7 +148,7 @@ export default function Access({ visits, users }) {
                     {displayVisits.filter((visit) => visit.completed).length}
                   </p>
                   <p
-                    className={classes.grey}
+                    className={classes.item}
                     onClick={() =>
                       setFilterVisits(
                         displayVisits.filter((visit) => visit.completed)
@@ -163,7 +163,7 @@ export default function Access({ visits, users }) {
                     {displayVisits.filter((visit) => visit.canceled).length}
                   </p>
                   <p
-                    className={classes.grey}
+                    className={classes.item}
                     onClick={() =>
                       setFilterVisits(
                         displayVisits.filter((visit) => visit.canceled)
@@ -174,7 +174,7 @@ export default function Access({ visits, users }) {
                   </p>
                 </div>
                 <div className={classes.logout} onClick={() => logOut()}>
-                  <p className={classes.grey}>خروج از پورتال</p>
+                  <p className={classes.item}>خروج از پورتال</p>
                 </div>
               </Fragment>
             </div>
