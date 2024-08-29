@@ -159,6 +159,7 @@ export default function DatePicker() {
 
   const displayDate = (time) => {
     let gregorian = convertPersianToGregorian(day);
+    console.log(gregorian);
     setDateObject(gregorian);
 
     let updatedTime = { ...times };
@@ -186,11 +187,14 @@ export default function DatePicker() {
 
   const convertPersianToGregorian = (persianDate) => {
     const { day, month, year } = persianDate;
-    const gregorianDate = moment(
-      `${year}/${month}/${day}`,
-      "jYYYY/jM/jD"
-    ).toDate();
-    return gregorianDate.toISOString();
+    // Convert Persian date to Gregorian date
+    const gregorianDate = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD");
+    // Set the timezone to Tehran
+    const tehranDate = gregorianDate.tz("Asia/Tehran");
+    console.log(tehranDate.format());
+
+    // Return the ISO date string considering Tehran local time
+    return tehranDate.format(); // Use format to get the local date string
   };
 
   return (

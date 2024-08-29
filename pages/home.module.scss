@@ -30,12 +30,10 @@
     color: config.$white;
     border: 1px solid config.$blue;
 
-    @include mixins.desktop {
-      &:hover {
-        cursor: pointer;
-        background: config.$white;
-        color: config.$blue;
-      }
+    &:hover {
+      cursor: pointer;
+      background: config.$white;
+      color: config.$blue;
     }
   }
 }

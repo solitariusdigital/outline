@@ -102,3 +102,8 @@ p {
 .Calendar__day.-selectedEnd {
   background: config.$blue !important;
 }
+
+.Calendar__monthSelectorItem.-active .Calendar__monthSelectorItemText,
+.Calendar__yearSelectorItem.-active .Calendar__yearSelectorText {
+  background: config.$blue !important;
+}

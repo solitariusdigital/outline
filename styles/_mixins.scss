@@ -37,12 +37,10 @@ $screen-fourK: 6000px;
   background: $color2;
   font-weight: bold;
 
-  @include desktop {
-    &:hover {
-      cursor: pointer;
-      background: $subColor;
-      color: $color2;
-    }
+  &:hover {
+    cursor: pointer;
+    background: $subColor;
+    color: $color2;
   }
 }
 

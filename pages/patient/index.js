@@ -10,7 +10,7 @@ import Router from "next/router";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import userModel from "@/models/User";
-import { convertDate } from "@/services/utility";
+import { convertDate, filterTomorrowVisits } from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import { NextSeo } from "next-seo";
 import { getVisitApi, updateVisitApi } from "@/services/api";
@@ -120,7 +120,18 @@ export default function Patient({ user, visits }) {
                     )
                   }
                 >
-                  نوبت‌ها فعال
+                  نوبت فعال
+                </p>
+              </div>
+              <div className={classes.row}>
+                <p>{filterTomorrowVisits(displayVisits).length}</p>
+                <p
+                  className={classes.grey}
+                  onClick={() =>
+                    setFilterVisits(filterTomorrowVisits(displayVisits))
+                  }
+                >
+                  نوبت فردا
                 </p>
               </div>
               <div className={classes.row}>

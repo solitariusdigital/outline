@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export function convertNumber(number) {
   return number.toLocaleString(undefined, {
     minimumFractionDigits: 0,
@@ -41,4 +43,17 @@ export function toFarsiNumber(number) {
     .split("")
     .map((x) => farsiDigits[x])
     .join("");
+}
+
+export function filterTomorrowVisits(visits) {
+  // Get tomorrow's date in YYYY-MM-DD format in Tehran local time
+  const tomorrow = moment.tz("Asia/Tehran").add(1, "days").startOf("day");
+  const tomorrowDateString = tomorrow.format("YYYY-MM-DD"); // Format: YYYY-MM-DD
+  // Filter visits array
+  const filteredVisits = visits.filter((element) => {
+    const visitDate = moment.tz(element.date, "Asia/Tehran"); // Convert date string to Tehran local time
+    const visitDateString = visitDate.format("YYYY-MM-DD"); // Format: YYYY-MM-DD
+    return visitDateString === tomorrowDateString; // Compare dates
+  });
+  return filteredVisits;
 }
