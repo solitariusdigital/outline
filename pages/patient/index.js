@@ -20,6 +20,10 @@ export default function Patient({ user, visits }) {
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
 
+  const [visitTypes, setVisitTypes] = useState(
+    "active" || "tomorrow" || "done" || "cancel"
+  );
+
   const router = useRouter();
 
   const margin = {
@@ -28,7 +32,9 @@ export default function Patient({ user, visits }) {
 
   useEffect(() => {
     setDisplayVisits(visits);
-    setFilterVisits(visits);
+    setFilterVisits(
+      visits.filter((visit) => !visit.completed && !visit.canceled)
+    );
   }, [visits]);
 
   const actionVisit = async (id, type) => {
@@ -111,14 +117,17 @@ export default function Patient({ user, visits }) {
                   }
                 </p>
                 <p
-                  className={classes.item}
-                  onClick={() =>
+                  className={
+                    visitTypes === "active" ? classes.itemActive : classes.item
+                  }
+                  onClick={() => {
                     setFilterVisits(
                       displayVisits.filter(
                         (visit) => !visit.completed && !visit.canceled
                       )
-                    )
-                  }
+                    );
+                    setVisitTypes("active");
+                  }}
                 >
                   نوبت فعال
                 </p>
@@ -126,10 +135,15 @@ export default function Patient({ user, visits }) {
               <div className={classes.row}>
                 <p>{filterTomorrowVisits(displayVisits).length}</p>
                 <p
-                  className={classes.item}
-                  onClick={() =>
-                    setFilterVisits(filterTomorrowVisits(displayVisits))
+                  className={
+                    visitTypes === "tomorrow"
+                      ? classes.itemActive
+                      : classes.item
                   }
+                  onClick={() => {
+                    setFilterVisits(filterTomorrowVisits(displayVisits));
+                    setVisitTypes("tomorrow");
+                  }}
                 >
                   نوبت فردا
                 </p>
@@ -137,12 +151,15 @@ export default function Patient({ user, visits }) {
               <div className={classes.row}>
                 <p>{displayVisits.filter((visit) => visit.completed).length}</p>
                 <p
-                  className={classes.item}
-                  onClick={() =>
+                  className={
+                    visitTypes === "done" ? classes.itemActive : classes.item
+                  }
+                  onClick={() => {
                     setFilterVisits(
                       displayVisits.filter((visit) => visit.completed)
-                    )
-                  }
+                    );
+                    setVisitTypes("done");
+                  }}
                 >
                   نوبت تکمیل شده
                 </p>
@@ -150,18 +167,25 @@ export default function Patient({ user, visits }) {
               <div className={classes.row}>
                 <p>{displayVisits.filter((visit) => visit.canceled).length}</p>
                 <p
-                  className={classes.item}
-                  onClick={() =>
+                  className={
+                    visitTypes === "cancel" ? classes.itemActive : classes.item
+                  }
+                  onClick={() => {
                     setFilterVisits(
                       displayVisits.filter((visit) => visit.canceled)
-                    )
-                  }
+                    );
+                    setVisitTypes("cancel");
+                  }}
                 >
                   نوبت لغو شده
                 </p>
               </div>
             </Fragment>
           </div>
+          {visitTypes === "active" && <h3>نوبت فعال</h3>}
+          {visitTypes === "tomorrow" && <h3>نوبت فردا</h3>}
+          {visitTypes === "done" && <h3>نوبت تکمیل شده</h3>}
+          {visitTypes === "cancel" && <h3>نوبت لغو شده</h3>}
           <div className={classes.cards}>
             <Fragment>
               {filterVisits.map((item, index) => (

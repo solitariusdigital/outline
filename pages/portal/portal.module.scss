@@ -39,37 +39,9 @@
   .portal {
     width: 100%;
 
-    .navigation {
-      @include mixins.row-space-between-center();
-      justify-content: space-around;
-      height: 40px;
-      width: 350px;
-      padding: 8px;
-      margin: auto;
-      border-radius: 50px;
-      background: config.$white;
-      box-shadow: config.$card-shadow;
-      border: 1px solid config.$purple;
-
-      @include mixins.mobile {
-        width: 100%;
-      }
-    }
-
-    .nav {
-      font-weight: bold !important;
-      cursor: pointer;
-
-      @include mixins.desktop {
-        &:hover {
-          color: config.$purple;
-        }
-      }
-    }
-
-    .navActive {
-      color: config.$purple;
-      font-weight: bold !important;
+    h3 {
+      margin-bottom: 20px;
+      color: config.$blue;
     }
   }
 
@@ -113,6 +85,7 @@
       margin: 0px auto;
       box-shadow: config.$card-shadow;
       background: config.$white;
+      border: 1px solid config.$white;
       text-align: right;
       @include mixins.border-radius();
 
@@ -123,6 +96,10 @@
           cursor: pointer;
           text-decoration: underline;
         }
+      }
+
+      &:hover {
+        border: 1px solid config.$blue;
       }
     }
   }
@@ -160,7 +137,7 @@
 
   .action {
     margin-top: 20px;
-    width: 70px;
+    width: 80px;
     @include mixins.row-space-between-center();
   }
 
@@ -205,5 +182,9 @@
       cursor: pointer;
       color: config.$blue;
     }
+  }
+
+  .itemActive {
+    color: config.$blue;
   }
 }

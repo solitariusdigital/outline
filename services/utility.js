@@ -59,7 +59,7 @@ export function filterTomorrowVisits(visits) {
     const visitDateString = visitDate.format("YYYY-MM-DD"); // Format: YYYY-MM-DD
     return visitDateString === tomorrowDateString; // Compare dates
   });
-  return filteredVisits;
+  return filteredVisits.filter((visit) => !visit.completed && !visit.canceled);
 }
 
 export function convertPersianToGregorian(persianDate) {

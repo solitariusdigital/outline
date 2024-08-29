@@ -16,11 +16,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
 import { getVisitApi, updateVisitApi, getUserApi } from "@/services/api";
+import Kavenegar from "kavenegar";
 
 export default function Access({ visits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
+
+  const [visitTypes, setVisitTypes] = useState(
+    "all" || "active" || "tomorrow" || "done" || "cancel"
+  );
 
   const router = useRouter();
 
@@ -44,6 +50,7 @@ export default function Access({ visits, users }) {
       };
       fetchData().catch(console.error);
     }
+    setVisitTypes("all");
   }, [currentUser, visits]);
 
   const margin = {
@@ -67,6 +74,27 @@ export default function Access({ visits, users }) {
       }
       await updateVisitApi(visitData);
       router.replace(router.asPath);
+    }
+  };
+
+  const sendTomorrowSms = () => {
+    const confirmationMessage = "ارسال پیام کوتاه مطمئنی؟";
+    const confirm = window.confirm(confirmationMessage);
+    const tomorrowVisits = filterTomorrowVisits(displayVisits);
+    const api = Kavenegar.KavenegarApi({
+      apikey: kavenegarKey,
+    });
+    if (confirm) {
+      tomorrowVisits.forEach((visit) => {
+        api.VerifyLookup(
+          {
+            receptor: visit.user.phone,
+            token: visit.time.split(" - ")[1].trim(),
+            template: "registerverify",
+          },
+          function (response, status) {}
+        );
+      });
     }
   };
 
@@ -103,8 +131,13 @@ export default function Access({ visits, users }) {
                     {users.length} / {displayVisits.length}
                   </p>
                   <p
-                    className={classes.item}
-                    onClick={() => setFilterVisits(displayVisits)}
+                    className={
+                      visitTypes === "all" ? classes.itemActive : classes.item
+                    }
+                    onClick={() => {
+                      setFilterVisits(displayVisits);
+                      setVisitTypes("all");
+                    }}
                   >
                     نوبت‌ها / بیمارها
                   </p>
@@ -120,14 +153,19 @@ export default function Access({ visits, users }) {
                     }
                   </p>
                   <p
-                    className={classes.item}
-                    onClick={() =>
+                    className={
+                      visitTypes === "active"
+                        ? classes.itemActive
+                        : classes.item
+                    }
+                    onClick={() => {
                       setFilterVisits(
                         displayVisits.filter(
                           (visit) => !visit.completed && !visit.canceled
                         )
-                      )
-                    }
+                      );
+                      setVisitTypes("active");
+                    }}
                   >
                     نوبت فعال
                   </p>
@@ -135,10 +173,15 @@ export default function Access({ visits, users }) {
                 <div className={classes.row}>
                   <p>{filterTomorrowVisits(displayVisits).length}</p>
                   <p
-                    className={classes.item}
-                    onClick={() =>
-                      setFilterVisits(filterTomorrowVisits(displayVisits))
+                    className={
+                      visitTypes === "tomorrow"
+                        ? classes.itemActive
+                        : classes.item
                     }
+                    onClick={() => {
+                      setFilterVisits(filterTomorrowVisits(displayVisits));
+                      setVisitTypes("tomorrow");
+                    }}
                   >
                     نوبت فردا
                   </p>
@@ -148,12 +191,15 @@ export default function Access({ visits, users }) {
                     {displayVisits.filter((visit) => visit.completed).length}
                   </p>
                   <p
-                    className={classes.item}
-                    onClick={() =>
+                    className={
+                      visitTypes === "done" ? classes.itemActive : classes.item
+                    }
+                    onClick={() => {
                       setFilterVisits(
                         displayVisits.filter((visit) => visit.completed)
-                      )
-                    }
+                      );
+                      setVisitTypes("done");
+                    }}
                   >
                     نوبت تکمیل شده
                   </p>
@@ -163,12 +209,17 @@ export default function Access({ visits, users }) {
                     {displayVisits.filter((visit) => visit.canceled).length}
                   </p>
                   <p
-                    className={classes.item}
-                    onClick={() =>
+                    className={
+                      visitTypes === "cancel"
+                        ? classes.itemActive
+                        : classes.item
+                    }
+                    onClick={() => {
                       setFilterVisits(
                         displayVisits.filter((visit) => visit.canceled)
-                      )
-                    }
+                      );
+                      setVisitTypes("cancel");
+                    }}
                   >
                     نوبت لغو شده
                   </p>
@@ -178,11 +229,26 @@ export default function Access({ visits, users }) {
                 </div>
               </Fragment>
             </div>
-            <div className={classes.button}>
-              <button onClick={() => Router.push("/booking")}>
-                رزرو نوبت آنلاین
-              </button>
-            </div>
+            {visitTypes !== "tomorrow" && (
+              <div className={classes.button}>
+                <button onClick={() => Router.push("/booking")}>
+                  رزرو نوبت آنلاین
+                </button>
+              </div>
+            )}
+            {currentUser.permission === "admin" &&
+              visitTypes === "tomorrow" && (
+                <div className={classes.button}>
+                  <button onClick={() => sendTomorrowSms()}>
+                    ارسال پیام کوتاه
+                  </button>
+                </div>
+              )}
+            {visitTypes === "all" && <h3>نوبت‌ها / بیمارها</h3>}
+            {visitTypes === "active" && <h3>نوبت فعال</h3>}
+            {visitTypes === "tomorrow" && <h3>نوبت فردا</h3>}
+            {visitTypes === "done" && <h3>نوبت تکمیل شده</h3>}
+            {visitTypes === "cancel" && <h3>نوبت لغو شده</h3>}
             <div className={classes.cards}>
               <Fragment>
                 {filterVisits.map((item, index) => (
