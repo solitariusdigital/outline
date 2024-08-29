@@ -1,7 +1,7 @@
 import { useState, useContext, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./DatePicker.module.scss";
-import { toFarsiNumber } from "@/services/utility";
+import { toFarsiNumber, convertPersianToGregorian } from "@/services/utility";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import CloseIcon from "@mui/icons-material/Close";
@@ -11,7 +11,6 @@ import {
   createUserApi,
   updateUserApi,
 } from "@/services/api";
-import moment from "moment-jalaali";
 import Router from "next/router";
 import Kavenegar from "kavenegar";
 
@@ -159,7 +158,6 @@ export default function DatePicker() {
 
   const displayDate = (time) => {
     let gregorian = convertPersianToGregorian(day);
-    console.log(gregorian);
     setDateObject(gregorian);
 
     let updatedTime = { ...times };
@@ -183,18 +181,6 @@ export default function DatePicker() {
         setAlert("");
       }, 3000);
     }
-  };
-
-  const convertPersianToGregorian = (persianDate) => {
-    const { day, month, year } = persianDate;
-    // Convert Persian date to Gregorian date
-    const gregorianDate = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD");
-    // Set the timezone to Tehran
-    const tehranDate = gregorianDate.tz("Asia/Tehran");
-    console.log(tehranDate.format());
-
-    // Return the ISO date string considering Tehran local time
-    return tehranDate.format(); // Use format to get the local date string
   };
 
   return (

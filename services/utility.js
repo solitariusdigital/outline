@@ -1,4 +1,5 @@
-import moment from "moment-timezone";
+import moment from "moment-jalaali";
+import momentTimezone from "moment-timezone";
 
 export function convertNumber(number) {
   return number.toLocaleString(undefined, {
@@ -47,13 +48,26 @@ export function toFarsiNumber(number) {
 
 export function filterTomorrowVisits(visits) {
   // Get tomorrow's date in YYYY-MM-DD format in Tehran local time
-  const tomorrow = moment.tz("Asia/Tehran").add(1, "days").startOf("day");
+  const tomorrow = momentTimezone
+    .tz("Asia/Tehran")
+    .add(1, "days")
+    .startOf("day");
   const tomorrowDateString = tomorrow.format("YYYY-MM-DD"); // Format: YYYY-MM-DD
   // Filter visits array
   const filteredVisits = visits.filter((element) => {
-    const visitDate = moment.tz(element.date, "Asia/Tehran"); // Convert date string to Tehran local time
+    const visitDate = momentTimezone.tz(element.date, "Asia/Tehran"); // Convert date string to Tehran local time
     const visitDateString = visitDate.format("YYYY-MM-DD"); // Format: YYYY-MM-DD
     return visitDateString === tomorrowDateString; // Compare dates
   });
   return filteredVisits;
+}
+
+export function convertPersianToGregorian(persianDate) {
+  const { day, month, year } = persianDate;
+  // Convert Persian date to Gregorian date
+  const gregorianDate = moment(
+    `${year}/${month}/${day}`,
+    "jYYYY/jM/jD"
+  ).toDate();
+  return gregorianDate.toISOString();
 }
