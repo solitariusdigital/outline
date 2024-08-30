@@ -35,11 +35,12 @@ export default function Patient({ user, visits }) {
     setFilterVisits(
       visits.filter((visit) => !visit.completed && !visit.canceled)
     );
+    setVisitTypes("active");
   }, [visits]);
 
   const actionVisit = async (id, type) => {
     const message = `${
-      type === "done" ? "تکمیل نوبت مطمئنی؟" : "لغو نوبت مطمئنی؟"
+      type === "done" ? "تکمیل نوبت، مطمئنی؟" : "لغو نوبت، مطمئنی؟"
     }`;
     const confirm = window.confirm(message);
     if (confirm) {
@@ -206,7 +207,7 @@ export default function Patient({ user, visits }) {
                             className={classes.icon}
                             sx={{ color: "#d40d12" }}
                           />
-                          <p>نوبت لغو شده</p>
+                          <p style={{ color: "#d40d12" }}>نوبت لغو شده</p>
                         </div>
                         <p>{convertDate(item.updatedAt)}</p>
                       </div>
@@ -219,7 +220,7 @@ export default function Patient({ user, visits }) {
                                 className={classes.icon}
                                 sx={{ color: "#57a361" }}
                               />
-                              <p>نوبت تکمیل شده</p>
+                              <p style={{ color: "#57a361" }}>نوبت تکمیل شده</p>
                             </div>
                             <p>{convertDate(item.updatedAt)}</p>
                           </div>
@@ -242,16 +243,20 @@ export default function Patient({ user, visits }) {
                     !item.canceled &&
                     !item.completed && (
                       <div className={classes.action}>
-                        <TaskAltIcon
-                          className="icon"
+                        <div
+                          className={classes.row}
                           onClick={() => actionVisit(item["_id"], "done")}
-                          sx={{ color: "#57a361" }}
-                        />
-                        <CloseIcon
-                          className="icon"
+                        >
+                          <TaskAltIcon sx={{ color: "#57a361" }} />
+                          <p style={{ color: "#57a361" }}>تکمیل</p>
+                        </div>
+                        <div
+                          className={classes.row}
                           onClick={() => actionVisit(item["_id"], "cancel")}
-                          sx={{ color: "#d40d12" }}
-                        />
+                        >
+                          <CloseIcon sx={{ color: "#d40d12" }} />
+                          <p style={{ color: "#d40d12" }}>لغو</p>
+                        </div>
                       </div>
                     )}
                 </div>

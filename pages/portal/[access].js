@@ -5,8 +5,8 @@ import classes from "./portal.module.scss";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import Person4Icon from "@mui/icons-material/Person4";
-import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import HomeIcon from "@mui/icons-material/Home";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import Router from "next/router";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
@@ -46,11 +46,13 @@ export default function Access({ visits, users }) {
           })
         );
         setDisplayVisits(visitsData);
-        setFilterVisits(visitsData);
+        setFilterVisits(
+          visitsData.filter((visit) => !visit.completed && !visit.canceled)
+        );
       };
       fetchData().catch(console.error);
     }
-    setVisitTypes("all");
+    setVisitTypes("active");
   }, [currentUser, visits]);
 
   const margin = {
@@ -59,7 +61,7 @@ export default function Access({ visits, users }) {
 
   const actionVisit = async (id, type) => {
     const message = `${
-      type === "done" ? "تکمیل نوبت مطمئنی؟" : "لغو نوبت مطمئنی؟"
+      type === "done" ? "تکمیل نوبت، مطمئنی؟" : "لغو نوبت، مطمئنی؟"
     }`;
     const confirm = window.confirm(message);
     if (confirm) {
@@ -78,7 +80,7 @@ export default function Access({ visits, users }) {
   };
 
   const sendTomorrowSms = () => {
-    const confirmationMessage = "ارسال پیام کوتاه مطمئنی؟";
+    const confirmationMessage = "ارسال پیام یادآوری، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
     const tomorrowVisits = filterTomorrowVisits(displayVisits);
     const api = Kavenegar.KavenegarApi({
@@ -121,7 +123,7 @@ export default function Access({ visits, users }) {
             <HomeIcon onClick={() => Router.push("/")} className="icon" />
             <p>{currentUser.name ? currentUser.name : currentUser.phone}</p>
             {currentUser.permission === "patient" && <Person4Icon />}
-            {currentUser.permission === "admin" && <MilitaryTechIcon />}
+            {currentUser.permission === "admin" && <LocalHospitalIcon />}
           </div>
           <div className={classes.portal}>
             <div className={classes.analytics}>
@@ -240,7 +242,7 @@ export default function Access({ visits, users }) {
               visitTypes === "tomorrow" && (
                 <div className={classes.button}>
                   <button onClick={() => sendTomorrowSms()}>
-                    ارسال پیام کوتاه
+                    ارسال پیام یادآوری
                   </button>
                 </div>
               )}
@@ -301,7 +303,7 @@ export default function Access({ visits, users }) {
                               className={classes.icon}
                               sx={{ color: "#d40d12" }}
                             />
-                            <p>نوبت لغو شده</p>
+                            <p style={{ color: "#d40d12" }}>نوبت لغو شده</p>
                           </div>
                           <p>{convertDate(item.updatedAt)}</p>
                         </div>
@@ -314,7 +316,9 @@ export default function Access({ visits, users }) {
                                   className={classes.icon}
                                   sx={{ color: "#57a361" }}
                                 />
-                                <p>نوبت تکمیل شده</p>
+                                <p style={{ color: "#57a361" }}>
+                                  نوبت تکمیل شده
+                                </p>
                               </div>
                               <p>{convertDate(item.updatedAt)}</p>
                             </div>
@@ -337,16 +341,20 @@ export default function Access({ visits, users }) {
                       !item.canceled &&
                       !item.completed && (
                         <div className={classes.action}>
-                          <TaskAltIcon
-                            className="icon"
+                          <div
+                            className={classes.row}
                             onClick={() => actionVisit(item["_id"], "done")}
-                            sx={{ color: "#57a361" }}
-                          />
-                          <CloseIcon
-                            className="icon"
+                          >
+                            <TaskAltIcon sx={{ color: "#57a361" }} />
+                            <p style={{ color: "#57a361" }}>تکمیل</p>
+                          </div>
+                          <div
+                            className={classes.row}
                             onClick={() => actionVisit(item["_id"], "cancel")}
-                            sx={{ color: "#d40d12" }}
-                          />
+                          >
+                            <CloseIcon sx={{ color: "#d40d12" }} />
+                            <p style={{ color: "#d40d12" }}>لغو</p>
+                          </div>
                         </div>
                       )}
                   </div>
