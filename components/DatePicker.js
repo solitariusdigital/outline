@@ -1,7 +1,11 @@
-import { useState, useContext, Fragment } from "react";
+import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./DatePicker.module.scss";
-import { toFarsiNumber, convertPersianToGregorian } from "@/services/utility";
+import {
+  toFarsiNumber,
+  convertPersianToGregorian,
+  toEnglishNumber,
+} from "@/services/utility";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,7 +18,7 @@ import {
 import Router from "next/router";
 import Kavenegar from "kavenegar";
 
-export default function DatePicker() {
+export default function DatePicker({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
@@ -29,6 +33,7 @@ export default function DatePicker() {
   const [day, setDay] = useState(null);
   const [time, setTime] = useState("");
   const [dateObject, setDateObject] = useState("");
+  const [disabledDates, setDisabledDates] = useState([]);
 
   const [alert, setAlert] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -48,6 +53,10 @@ export default function DatePicker() {
   const [disableButton, setDisableButton] = useState(false);
 
   const doctors = ["دکتر فراهانی", " دکتر گنجه"];
+
+  useEffect(() => {
+    findFullDates();
+  }, []);
 
   const createVisit = async () => {
     if (!day || !time) {
@@ -186,6 +195,29 @@ export default function DatePicker() {
     }
   };
 
+  const findFullDates = () => {
+    // Count occurrences of each date
+    const dateCount = visits.reduce((acc, visit) => {
+      let dateString = visit.time.split(" - ")[0].trim();
+      acc[dateString] = (acc[dateString] || 0) + 1;
+      return acc;
+    }, {});
+    let fullDates = visits
+      .map((visit) => {
+        let dateString = visit.time.split(" - ")[0].trim();
+        if (dateCount[dateString] > 30) {
+          const parts = dateString.split("/");
+          return {
+            year: parseInt(toEnglishNumber(parts[0]), 10), // Convert the year part to an integer
+            month: parseInt(toEnglishNumber(parts[1]), 10), // Convert the month part to an integer
+            day: parseInt(toEnglishNumber(parts[2]), 10), // Convert the day part to an integer
+          };
+        }
+      })
+      .filter((date) => date !== undefined); // Filter out undefined values
+    setDisabledDates(fullDates);
+  };
+
   return (
     <div className={classes.container}>
       <h2>{selectDoctor}</h2>
@@ -195,6 +227,7 @@ export default function DatePicker() {
         shouldHighlightWeekends
         minimumDate={utils("fa").getToday()}
         locale="fa"
+        disabledDays={disabledDates}
       />
       <div className={classes.timeContainer}>
         {Object.keys(times).map((time, index) => (

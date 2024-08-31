@@ -7,8 +7,10 @@ import { NextSeo } from "next-seo";
 import Register from "@/components/Register";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import HomeIcon from "@mui/icons-material/Home";
+import dbConnect from "@/services/dbConnect";
+import visitModel from "@/models/Visit";
 
-export default function Booking() {
+export default function Booking({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
 
   const margin = {
@@ -45,7 +47,7 @@ export default function Booking() {
             }
             sx={{ color: "#2d2b7f" }}
           />
-          <DatePicker />
+          <DatePicker visits={visits} />
         </div>
       ) : (
         <div className="register">
@@ -54,4 +56,26 @@ export default function Booking() {
       )}
     </Fragment>
   );
+}
+
+// initial connection to db
+export async function getServerSideProps(context) {
+  try {
+    await dbConnect();
+    let visits = await visitModel.find();
+    let activeVisits = visits.filter(
+      (visit) => !visit.completed && !visit.canceled
+    );
+
+    return {
+      props: {
+        visits: JSON.parse(JSON.stringify(activeVisits)),
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      notFound: true,
+    };
+  }
 }

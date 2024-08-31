@@ -1,40 +1,12 @@
 import moment from "moment-jalaali";
 import momentTimezone from "moment-timezone";
 
-export function convertNumber(number) {
-  return number.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
-}
-
 export function fourGenerator() {
   return Math.floor(1000 + Math.random() * 9000);
 }
 
-export function sixGenerator() {
-  return Math.floor(100000 + Math.random() * 900000);
-}
-
 export function convertDate(date) {
   return new Date(date).toLocaleDateString("fa-IR");
-}
-
-export function abbreviateNumber(num) {
-  return new Intl.NumberFormat("en-GB", {
-    notation: "compact",
-    compactDisplay: "short",
-  }).format(num);
-}
-
-export function calculatePercentage(percentage, value) {
-  return value * (percentage / 100);
-}
-
-export function getMonthName(number) {
-  const date = new Date();
-  date.setMonth(monthNumber + 2);
-  return date.toLocaleString("fa-IR", { month: "long" });
 }
 
 export function toFarsiNumber(number) {
@@ -43,6 +15,14 @@ export function toFarsiNumber(number) {
     .toString()
     .split("")
     .map((x) => farsiDigits[x])
+    .join("");
+}
+
+export function toEnglishNumber(number) {
+  const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+  return number
+    .split("")
+    .map((x) => farsiDigits.indexOf(x)) // Find the index of the Farsi digit
     .join("");
 }
 
