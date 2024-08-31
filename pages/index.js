@@ -5,6 +5,7 @@ import Image from "next/legacy/image";
 import { NextSeo } from "next-seo";
 import logo from "@/assets/logo.png";
 import Router from "next/router";
+import InstagramIcon from "@mui/icons-material/Instagram";
 
 export default function Home() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -75,6 +76,18 @@ export default function Home() {
             تماس با ما
           </div>
         </section>
+        <div>
+          <InstagramIcon
+            className="icon"
+            sx={{ color: "#2d2b7f" }}
+            onClick={() =>
+              window.open(
+                "https://www.instagram.com/dr.farahani.outline",
+                "_ self"
+              )
+            }
+          />
+        </div>
       </section>
     </Fragment>
   );
