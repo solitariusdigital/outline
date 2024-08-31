@@ -220,7 +220,7 @@ export default function DatePicker({ visits }) {
 
   return (
     <div className={classes.container}>
-      <h2>{selectDoctor}</h2>
+      {selectDoctor && <h2>{selectDoctor}</h2>}
       <Calendar
         value={day}
         onChange={(day) => assingDay(day)}
