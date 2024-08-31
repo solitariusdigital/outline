@@ -11,7 +11,7 @@ import Router from "next/router";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import userModel from "@/models/User";
-import { convertDate, filterTomorrowVisits } from "@/services/utility";
+import { convertDate, filterVisitsByDate } from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
@@ -26,7 +26,7 @@ export default function Access({ visits, users }) {
   const [filterVisits, setFilterVisits] = useState([]);
 
   const [visitTypes, setVisitTypes] = useState(
-    "all" || "active" || "tomorrow" || "done" || "cancel"
+    "all" || "active" || "today" || "tomorrow" || "done" || "cancel"
   );
 
   const router = useRouter();
@@ -80,10 +80,10 @@ export default function Access({ visits, users }) {
     }
   };
 
-  const sendTomorrowSms = () => {
+  const sendTomorrowReminder = () => {
     const confirmationMessage = "ارسال پیام یادآوری، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
-    const tomorrowVisits = filterTomorrowVisits(displayVisits);
+    const tomorrowVisits = filterVisitsByDate(displayVisits, 1);
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
@@ -131,7 +131,11 @@ export default function Access({ visits, users }) {
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
                   <p>
-                    {users.length} / {displayVisits.length}
+                    {
+                      users.filter((user) => user.permission === "patient")
+                        .length
+                    }{" "}
+                    / {displayVisits.length}
                   </p>
                   <p
                     className={
@@ -174,7 +178,21 @@ export default function Access({ visits, users }) {
                   </p>
                 </div>
                 <div className={classes.row}>
-                  <p>{filterTomorrowVisits(displayVisits).length}</p>
+                  <p>{filterVisitsByDate(displayVisits).length}</p>
+                  <p
+                    className={
+                      visitTypes === "today" ? classes.itemActive : classes.item
+                    }
+                    onClick={() => {
+                      setFilterVisits(filterVisitsByDate(displayVisits));
+                      setVisitTypes("today");
+                    }}
+                  >
+                    نوبت امروز
+                  </p>
+                </div>
+                <div className={classes.row}>
+                  <p>{filterVisitsByDate(displayVisits, 1).length}</p>
                   <p
                     className={
                       visitTypes === "tomorrow"
@@ -182,7 +200,7 @@ export default function Access({ visits, users }) {
                         : classes.item
                     }
                     onClick={() => {
-                      setFilterVisits(filterTomorrowVisits(displayVisits));
+                      setFilterVisits(filterVisitsByDate(displayVisits, 1));
                       setVisitTypes("tomorrow");
                     }}
                   >
@@ -247,13 +265,14 @@ export default function Access({ visits, users }) {
             {currentUser.permission === "admin" &&
               visitTypes === "tomorrow" && (
                 <div className={classes.button}>
-                  <button onClick={() => sendTomorrowSms()}>
+                  <button onClick={() => sendTomorrowReminder()}>
                     ارسال پیام یادآوری
                   </button>
                 </div>
               )}
             {visitTypes === "all" && <h3>نوبت‌ها / بیمارها</h3>}
             {visitTypes === "active" && <h3>نوبت فعال</h3>}
+            {visitTypes === "today" && <h3>نوبت امروز</h3>}
             {visitTypes === "tomorrow" && <h3>نوبت فردا</h3>}
             {visitTypes === "done" && <h3>نوبت تکمیل شده</h3>}
             {visitTypes === "cancel" && <h3>نوبت لغو شده</h3>}
@@ -395,10 +414,7 @@ export async function getServerSideProps(context) {
         visits = await visitModel.find();
         break;
     }
-    visits
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .sort((a, b) => a.completed - b.completed)
-      .sort((a, b) => a.canceled - b.canceled);
+    visits.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     return {
       props: {

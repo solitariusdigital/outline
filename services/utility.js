@@ -46,19 +46,21 @@ export function toFarsiNumber(number) {
     .join("");
 }
 
-export function filterTomorrowVisits(visits) {
-  // Get tomorrow's date in YYYY-MM-DD format in Tehran local time
-  const tomorrow = momentTimezone
+// 0 for today / 1 for tomorrow
+export function filterVisitsByDate(visits, offsetDays = 0) {
+  // Get the date based on the offset in YYYY-MM-DD format in Tehran local time
+  const targetDate = momentTimezone
     .tz("Asia/Tehran")
-    .add(1, "days")
+    .add(offsetDays, "days")
     .startOf("day");
-  const tomorrowDateString = tomorrow.format("YYYY-MM-DD"); // Format: YYYY-MM-DD
+  const targetDateString = targetDate.format("YYYY-MM-DD"); // Format: YYYY-MM-DD
   // Filter visits array
   const filteredVisits = visits.filter((element) => {
     const visitDate = momentTimezone.tz(element.date, "Asia/Tehran"); // Convert date string to Tehran local time
     const visitDateString = visitDate.format("YYYY-MM-DD"); // Format: YYYY-MM-DD
-    return visitDateString === tomorrowDateString; // Compare dates
+    return visitDateString === targetDateString; // Compare dates
   });
+
   return filteredVisits.filter((visit) => !visit.completed && !visit.canceled);
 }
 

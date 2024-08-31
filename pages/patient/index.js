@@ -10,7 +10,7 @@ import Router from "next/router";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import userModel from "@/models/User";
-import { convertDate, filterTomorrowVisits } from "@/services/utility";
+import { convertDate, filterVisitsByDate } from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import { NextSeo } from "next-seo";
 import { getVisitApi, updateVisitApi } from "@/services/api";
@@ -134,7 +134,21 @@ export default function Patient({ user, visits }) {
                 </p>
               </div>
               <div className={classes.row}>
-                <p>{filterTomorrowVisits(displayVisits).length}</p>
+                <p>{filterVisitsByDate(displayVisits).length}</p>
+                <p
+                  className={
+                    visitTypes === "today" ? classes.itemActive : classes.item
+                  }
+                  onClick={() => {
+                    setFilterVisits(filterVisitsByDate(displayVisits));
+                    setVisitTypes("today");
+                  }}
+                >
+                  نوبت امروز
+                </p>
+              </div>
+              <div className={classes.row}>
+                <p>{filterVisitsByDate(displayVisits, 1).length}</p>
                 <p
                   className={
                     visitTypes === "tomorrow"
@@ -142,7 +156,7 @@ export default function Patient({ user, visits }) {
                       : classes.item
                   }
                   onClick={() => {
-                    setFilterVisits(filterTomorrowVisits(displayVisits));
+                    setFilterVisits(filterVisitsByDate(displayVisits, 1));
                     setVisitTypes("tomorrow");
                   }}
                 >
@@ -184,6 +198,7 @@ export default function Patient({ user, visits }) {
             </Fragment>
           </div>
           {visitTypes === "active" && <h3>نوبت فعال</h3>}
+          {visitTypes === "today" && <h3>نوبت امروز</h3>}
           {visitTypes === "tomorrow" && <h3>نوبت فردا</h3>}
           {visitTypes === "done" && <h3>نوبت تکمیل شده</h3>}
           {visitTypes === "cancel" && <h3>نوبت لغو شده</h3>}
