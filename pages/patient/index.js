@@ -235,7 +235,7 @@ export default function Patient({ user, visits }) {
                                 className={classes.icon}
                                 sx={{ color: "#2d2b7f" }}
                               />
-                              <p>زمان نوبت</p>
+                              <p style={{ color: "#2d2b7f" }}>زمان نوبت</p>
                             </div>
                             <p className={classes.time}>{item.time}</p>
                           </div>
