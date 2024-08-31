@@ -192,6 +192,10 @@ export default function Patient({ user, visits }) {
               {filterVisits.map((item, index) => (
                 <div className={classes.item} key={index}>
                   <div className={classes.row} style={margin}>
+                    <p className={classes.greyTitle}>دکتر</p>
+                    <p>{item.doctor}</p>
+                  </div>
+                  <div className={classes.row} style={margin}>
                     <p className={classes.greyTitle}>موضوع</p>
                     <p>{item.title}</p>
                   </div>

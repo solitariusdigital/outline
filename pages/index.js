@@ -8,6 +8,7 @@ import Router from "next/router";
 
 export default function Home() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { selectDoctor, setSelectDoctor } = useContext(StateContext);
 
   const locationLink =
     "https://www.google.com/maps/place/Eshareh+Advertising+Agency/@35.7743132,51.3941519,17z/data=!4m6!3m5!1s0x3f8e0651f88334cf:0xbf2b6076f1e9fc52!8m2!3d35.7746884!4d51.3941131!16s%2Fg%2F1tg6j0hh?entry=ttu";
@@ -26,14 +27,26 @@ export default function Home() {
       />
       <section className={classes.container}>
         <div>
-          <Image width={200} height={150} src={logo} alt="logo" priority />
+          <Image width={200} height={140} src={logo} alt="logo" priority />
         </div>
         <section className={classes.navigation}>
           <div
-            className={classes.nav}
-            onClick={() => Router.push(currentUser ? "/booking" : "/portal")}
+            className={classes.doctor}
+            onClick={() => {
+              Router.push(currentUser ? "/booking" : "/portal");
+              setSelectDoctor("دکتر فراهانی");
+            }}
           >
-            رزرو نوبت آنلاین
+            دکتر فراهانی
+          </div>
+          <div
+            className={classes.doctor}
+            onClick={() => {
+              Router.push(currentUser ? "/booking" : "/portal");
+              setSelectDoctor("دکتر گنجه");
+            }}
+          >
+            دکتر گنجه
           </div>
           {currentUser && (
             <div

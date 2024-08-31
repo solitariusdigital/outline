@@ -16,6 +16,7 @@ import Kavenegar from "kavenegar";
 
 export default function DatePicker() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
 
   const [name, setName] = useState(
@@ -46,13 +47,15 @@ export default function DatePicker() {
   });
   const [disableButton, setDisableButton] = useState(false);
 
+  const doctors = ["دکتر فراهانی", " دکتر گنجه"];
+
   const createVisit = async () => {
     if (!day || !time) {
       showAlert("روز و زمان الزامیست");
       return;
     }
-    if (!name || !title) {
-      showAlert("نام و موضوع الزامیست");
+    if (!name || !title || !selectDoctor) {
+      showAlert("همه موارد الزامیست");
       return;
     }
     if (currentUser.permission === "admin" && !phone) {
@@ -72,7 +75,7 @@ export default function DatePicker() {
     let visit = {
       title: title,
       userId: userId,
-      doctor: "DR",
+      doctor: selectDoctor,
       time: selectedDate,
       date: dateObject,
       completed: false,
@@ -185,6 +188,7 @@ export default function DatePicker() {
 
   return (
     <div className={classes.container}>
+      <h2>{selectDoctor}</h2>
       <Calendar
         value={day}
         onChange={(day) => assingDay(day)}
@@ -251,6 +255,29 @@ export default function DatePicker() {
             />
           </Fragment>
         )}
+        <div className={classes.input}>
+          <div className={classes.bar}>
+            <p className={classes.label}>
+              دکتر
+              <span>*</span>
+            </p>
+          </div>
+          <select
+            defaultValue={"default"}
+            onChange={(e) => setSelectDoctor(e.target.value)}
+          >
+            <option value="default" disabled>
+              {selectDoctor ? selectDoctor : "انتخاب"}
+            </option>
+            {doctors.map((doctor, index) => {
+              return (
+                <option key={index} value={doctor}>
+                  {doctor}
+                </option>
+              );
+            })}
+          </select>
+        </div>
         <div className={classes.bar}>
           <p className={classes.label}>
             موضوع نوبت

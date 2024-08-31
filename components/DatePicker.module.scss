@@ -9,6 +9,11 @@
   font-weight: 300;
   margin-top: 20px;
 
+  h2 {
+    margin-bottom: 20px;
+    color: config.$blue;
+  }
+
   .input {
     width: 100%;
     margin: 20px 0px;
@@ -31,7 +36,8 @@
       }
     }
 
-    input {
+    input,
+    select {
       @include mixins.input();
       width: 100%;
     }

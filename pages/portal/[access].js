@@ -20,6 +20,7 @@ import Kavenegar from "kavenegar";
 
 export default function Access({ visits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
@@ -233,7 +234,12 @@ export default function Access({ visits, users }) {
             </div>
             {visitTypes !== "tomorrow" && (
               <div className={classes.button}>
-                <button onClick={() => Router.push("/booking")}>
+                <button
+                  onClick={() => {
+                    Router.push("/booking");
+                    setSelectDoctor("");
+                  }}
+                >
                   رزرو نوبت آنلاین
                 </button>
               </div>
@@ -287,6 +293,10 @@ export default function Access({ visits, users }) {
                         </div>
                       </Fragment>
                     )}
+                    <div className={classes.row} style={margin}>
+                      <p className={classes.greyTitle}>دکتر</p>
+                      <p>{item.doctor}</p>
+                    </div>
                     <div className={classes.row} style={margin}>
                       <p className={classes.greyTitle}>موضوع</p>
                       <p>{item.title}</p>

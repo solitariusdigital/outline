@@ -14,6 +14,7 @@ export const StateProvider = (props) => {
   const [screenSize, setScreenSize] = useState(
     "desktop" || "tablet" || "mobile"
   );
+  const [selectDoctor, setSelectDoctor] = useState("");
 
   const stateContext = {
     menuMobile,
@@ -28,6 +29,8 @@ export const StateProvider = (props) => {
     setKavenegarKey,
     screenSize,
     setScreenSize,
+    selectDoctor,
+    setSelectDoctor,
   };
   return (
     <StateContext.Provider value={stateContext}>

@@ -71,7 +71,7 @@ export default function RootLayout({ children }) {
           <Image
             className="animate__animated animate__heartBeat"
             width={200}
-            height={150}
+            height={140}
             src={logo}
             alt="logo"
             priority
