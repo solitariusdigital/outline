@@ -50,6 +50,17 @@
   }
 }
 
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+
+  h2 {
+    color: config.$blue;
+  }
+}
+
 .notFound {
   margin: auto;
   width: config.$content-width;

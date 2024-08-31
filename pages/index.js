@@ -26,8 +26,9 @@ export default function Home() {
         }}
       />
       <section className={classes.container}>
-        <div>
+        <div className={classes.logo}>
           <Image width={200} height={140} src={logo} alt="logo" priority />
+          <h2>طراح چهره</h2>
         </div>
         <section className={classes.navigation}>
           <div
