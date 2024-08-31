@@ -25,7 +25,7 @@ export default function Access({ visits, users }) {
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
-
+  const [phone, setPhone] = useState("");
   const [visitTypes, setVisitTypes] = useState(
     "all" || "active" || "today" || "tomorrow" || "done" || "cancel"
   );
@@ -123,7 +123,7 @@ export default function Access({ visits, users }) {
         <div className={classes.container}>
           <div className={classes.header}>
             <HomeIcon onClick={() => Router.push("/")} className="icon" />
-            <p>{currentUser.name ? currentUser.name : currentUser.phone}</p>
+            <h3>{currentUser.name ? currentUser.name : currentUser.phone}</h3>
             {currentUser.permission === "patient" && <Person4Icon />}
             {currentUser.permission === "admin" && <LocalHospitalIcon />}
           </div>
@@ -251,7 +251,9 @@ export default function Access({ visits, users }) {
                 </div>
               </Fragment>
             </div>
-            {visitTypes !== "tomorrow" && (
+            {(visitTypes === "all" ||
+              visitTypes === "active" ||
+              visitTypes === "today") && (
               <div className={classes.button}>
                 <button
                   onClick={() => {
@@ -271,6 +273,38 @@ export default function Access({ visits, users }) {
                   </button>
                 </div>
               )}
+            {visitTypes === "all" && (
+              <div className={classes.input}>
+                <div className={classes.bar}>
+                  <p className={classes.label}>جستجو بیمار</p>
+                  <CloseIcon
+                    className="icon"
+                    onClick={() => {
+                      setPhone("");
+                      setFilterVisits(displayVisits);
+                    }}
+                    sx={{ fontSize: 16 }}
+                  />
+                </div>
+                <input
+                  placeholder="09123456789"
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    setFilterVisits(
+                      displayVisits.filter(
+                        (visit) => visit.user.phone === e.target.value
+                      )
+                    );
+                  }}
+                  value={phone}
+                  autoComplete="off"
+                  dir="rtl"
+                />
+              </div>
+            )}
             {visitTypes === "all" && <h3>نوبت‌ها / بیمارها</h3>}
             {visitTypes === "active" && <h3>نوبت فعال</h3>}
             {visitTypes === "today" && <h3>نوبت امروز</h3>}

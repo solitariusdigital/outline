@@ -104,6 +104,37 @@
     }
   }
 
+  .input {
+    max-width: 330px;
+    margin: 20px auto;
+
+    @include mixins.mobile {
+      max-width: 100%;
+    }
+
+    .bar {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+    }
+
+    .label {
+      color: config.$grey;
+      font-size: config.$small-font;
+      margin-bottom: 4px;
+    }
+
+    input {
+      @include mixins.input();
+      width: 100%;
+    }
+
+    p {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+  }
+
   .row,
   .subRow {
     display: flex;

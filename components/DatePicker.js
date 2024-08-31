@@ -255,29 +255,27 @@ export default function DatePicker() {
             />
           </Fragment>
         )}
-        <div className={classes.input}>
-          <div className={classes.bar}>
-            <p className={classes.label}>
-              دکتر
-              <span>*</span>
-            </p>
-          </div>
-          <select
-            defaultValue={"default"}
-            onChange={(e) => setSelectDoctor(e.target.value)}
-          >
-            <option value="default" disabled>
-              {selectDoctor ? selectDoctor : "انتخاب"}
-            </option>
-            {doctors.map((doctor, index) => {
-              return (
-                <option key={index} value={doctor}>
-                  {doctor}
-                </option>
-              );
-            })}
-          </select>
+        <div className={classes.bar}>
+          <p className={classes.label}>
+            دکتر
+            <span>*</span>
+          </p>
         </div>
+        <select
+          defaultValue={"default"}
+          onChange={(e) => setSelectDoctor(e.target.value)}
+        >
+          <option value="default" disabled>
+            {selectDoctor ? selectDoctor : "انتخاب"}
+          </option>
+          {doctors.map((doctor, index) => {
+            return (
+              <option key={index} value={doctor}>
+                {doctor}
+              </option>
+            );
+          })}
+        </select>
         <div className={classes.bar}>
           <p className={classes.label}>
             موضوع نوبت

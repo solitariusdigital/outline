@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import classes from "../portal/portal.module.scss";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import Person4Icon from "@mui/icons-material/Person4";
+import ContentCutIcon from "@mui/icons-material/ContentCut";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import Router from "next/router";
 import dbConnect from "@/services/dbConnect";
@@ -81,19 +81,11 @@ export default function Patient({ user, visits }) {
               })
             }
           />
-          <p
+          <h3>{user.name ? user.name : user.phone}</h3>
+          <ContentCutIcon
             className="icon"
-            onClick={() =>
-              window.open(`tel:+98${user?.phone.substring(1)}`, "_self")
-            }
-          >
-            {user.name ? user.name : user.phone}
-          </p>
-          <Person4Icon
-            className="icon"
-            onClick={() =>
-              window.open(`tel:+98${user?.phone.substring(1)}`, "_self")
-            }
+            sx={{ fontSize: 20, color: "#2d2b7f" }}
+            onClick={() => navigator.clipboard.writeText(user.phone)}
           />
         </div>
         <div className={classes.portal}>
