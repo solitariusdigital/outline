@@ -50,19 +50,16 @@
   }
 }
 
-.activationContainer {
+.activation {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin: 12px 0px;
 
-  .activationCode {
-    display: flex;
-    flex-direction: row-reverse;
-
-    p {
-      margin: 0px 4px;
-      height: 35px;
-    }
+  p {
+    margin: 0px 4px;
+    height: 35px;
+    color: config.$blue;
   }
 }
 

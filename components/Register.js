@@ -9,6 +9,7 @@ import { createUserApi, getUsersApi } from "@/services/api";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import HomeIcon from "@mui/icons-material/Home";
+import Progress from "./Progress";
 import Kavenegar from "kavenegar";
 
 export default function Register() {
@@ -75,7 +76,7 @@ export default function Register() {
       //     } else {
       //       showAlert("خطا در سامانه ارسال کد تایید");
       //     }
-      //     startCounter();
+      startCounter();
       //   }
       // );
     } else {
@@ -138,6 +139,10 @@ export default function Register() {
     setCounter(59);
   };
 
+  const calculatePercentage = (index) => {
+    return ((index + 1) / 59) * 100;
+  };
+
   return (
     <Fragment>
       <div className={classes.form}>
@@ -167,14 +172,15 @@ export default function Register() {
           />
         </div>
         {displayCounter ? (
-          <div className={classes.activationContainer}>
-            <div className={classes.activationCode}>
-              <p className="alert">{counter}</p>
-              <p className="alert">ثانیه تا درخواست مجدد کد</p>
-            </div>
+          <div className={classes.activation}>
+            <p>{counter}</p>
+            <Progress
+              color={"#2d2b7f"}
+              completed={calculatePercentage(counter)}
+            />
           </div>
         ) : (
-          <div className={classes.activationContainer}>
+          <div className={classes.activation}>
             <button onClick={() => verifyPhone()}>کد تایید</button>
           </div>
         )}

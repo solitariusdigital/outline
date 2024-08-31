@@ -3,8 +3,7 @@ export default function Progress(props) {
 
   const progress = {
     height: 5,
-    width: "100%",
-    backgroundColor: "#ffffff",
+    width: "80%",
     borderRadius: 50,
   };
 
