@@ -8,6 +8,7 @@ import Person4Icon from "@mui/icons-material/Person4";
 import HomeIcon from "@mui/icons-material/Home";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import Router from "next/router";
+import ContentCutIcon from "@mui/icons-material/ContentCut";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import userModel from "@/models/User";
@@ -282,33 +283,42 @@ export default function Access({ visits, users }) {
                   <div className={classes.item} key={index}>
                     {currentUser.permission === "admin" && (
                       <Fragment>
-                        <div
-                          className={classes.row}
-                          style={margin}
-                          onClick={() =>
-                            Router.push({
-                              pathname: `/patient`,
-                              query: {
-                                id: item.user?._id,
-                              },
-                            })
-                          }
-                        >
+                        <div className={classes.row} style={margin}>
                           <p className={classes.greyTitle}>بیمار</p>
-                          <p className={classes.title}>{item.user?.name}</p>
+                          <p
+                            className={classes.title}
+                            onClick={() =>
+                              Router.push({
+                                pathname: `/patient`,
+                                query: {
+                                  id: item.user?._id,
+                                },
+                              })
+                            }
+                          >
+                            {item.user?.name}
+                          </p>
                         </div>
-                        <div
-                          className={classes.row}
-                          style={margin}
-                          onClick={() =>
-                            window.open(
-                              `tel:+98${item.user?.phone.substring(1)}`,
-                              "_self"
-                            )
-                          }
-                        >
+                        <div className={classes.row} style={margin}>
                           <p className={classes.greyTitle}>موبایل</p>
-                          <p className={classes.title}>{item.user?.phone}</p>
+                          <ContentCutIcon
+                            className="icon"
+                            sx={{ fontSize: 20, color: "#2d2b7f" }}
+                            onClick={() =>
+                              navigator.clipboard.writeText(item.user?.phone)
+                            }
+                          />
+                          <p
+                            className={classes.title}
+                            onClick={() =>
+                              window.open(
+                                `tel:+98${item.user?.phone.substring(1)}`,
+                                "_self"
+                              )
+                            }
+                          >
+                            {item.user?.phone}
+                          </p>
                         </div>
                       </Fragment>
                     )}
@@ -414,7 +424,10 @@ export async function getServerSideProps(context) {
         visits = await visitModel.find();
         break;
     }
-    visits.sort((a, b) => new Date(a.date) - new Date(b.date));
+    visits
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      .sort((a, b) => a.completed - b.completed)
+      .sort((a, b) => a.canceled - b.canceled);
 
     return {
       props: {

@@ -296,9 +296,8 @@ export async function getServerSideProps(context) {
 
     const user = await userModel.findOne({ _id: id });
     const visits = await visitModel.find({ userId: id });
-
     visits
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
       .sort((a, b) => a.completed - b.completed)
       .sort((a, b) => a.canceled - b.canceled);
 
