@@ -66,8 +66,8 @@ export default function Patient({ user, visits }) {
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://outline.com",
-          siteName: "Outline",
+          url: "https://outlinecommunity.com",
+          siteName: "Outline Community",
         }}
       />
       <div className={classes.container}>

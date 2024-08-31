@@ -20,13 +20,13 @@ export default function Home() {
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://outline.com",
-          siteName: "Outline",
+          url: "https://outlinecommunity.com",
+          siteName: "Outline Community",
         }}
       />
       <section className={classes.container}>
         <div>
-          <Image width={150} height={150} src={logo} alt="logo" priority />
+          <Image width={200} height={150} src={logo} alt="logo" priority />
         </div>
         <section className={classes.navigation}>
           <div

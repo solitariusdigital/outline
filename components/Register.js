@@ -208,7 +208,7 @@ export default function Register() {
         </div>
       </div>
       <div className={classes.logo} onClick={() => Router.push("/")}>
-        <Image width={150} height={150} src={logo} alt="logo" priority />
+        <Image width={200} height={150} src={logo} alt="logo" priority />
       </div>
     </Fragment>
   );

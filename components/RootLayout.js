@@ -70,7 +70,7 @@ export default function RootLayout({ children }) {
         <div className="appload">
           <Image
             className="animate__animated animate__heartBeat"
-            width={150}
+            width={200}
             height={150}
             src={logo}
             alt="logo"

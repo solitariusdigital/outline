@@ -1,11 +1,11 @@
 {
-  "theme_color": "#e7c69a",
-  "background_color": "#e7c69a",
+  "theme_color": "#2d2b7f",
+  "background_color": "#2d2b7f",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "Outline",
-  "short_name": "Outline",
+  "name": "Outline Community",
+  "short_name": "Outline Community",
   "description": "Beauty Clinic",
   "icons": [
     {
