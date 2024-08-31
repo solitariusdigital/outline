@@ -16,8 +16,8 @@ export default function Home() {
   return (
     <Fragment>
       <NextSeo
-        title="کلینیک تخصصی زیبایی اوت لاین"
-        description="نگهبان زندگی"
+        title="اوت لاین"
+        description="کلینیک زیبایی"
         openGraph={{
           type: "website",
           locale: "fa_IR",

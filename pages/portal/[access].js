@@ -109,8 +109,8 @@ export default function Access({ visits, users }) {
   return (
     <Fragment>
       <NextSeo
-        title="پورتال بیمار اوت لاین"
-        description="رزرو نوبت آنلاین"
+        title="پورتال بیمار"
+        description="پورتال بیمار"
         openGraph={{
           type: "website",
           locale: "fa_IR",
@@ -240,7 +240,7 @@ export default function Access({ visits, users }) {
                     setSelectDoctor("");
                   }}
                 >
-                  رزرو نوبت آنلاین
+                  ثبت نوبت آنلاین
                 </button>
               </div>
             )}

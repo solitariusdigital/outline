@@ -18,8 +18,8 @@ export default function Booking() {
   return (
     <Fragment>
       <NextSeo
-        title="رزرو نوبت آنلاین"
-        description="رزرو نوبت آنلاین پزشک زیبایی"
+        title="ثبت نوبت آنلاین"
+        description="ثبت نوبت آنلاین"
         openGraph={{
           type: "website",
           locale: "fa_IR",

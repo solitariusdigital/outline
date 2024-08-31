@@ -61,8 +61,8 @@ export default function Patient({ user, visits }) {
   return (
     <Fragment>
       <NextSeo
-        title="پورتال بیمار اوت لاین"
-        description="رزرو نوبت آنلاین"
+        title="پورتال بیمار"
+        description="پورتال بیمار"
         openGraph={{
           type: "website",
           locale: "fa_IR",

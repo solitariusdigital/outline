@@ -10,8 +10,8 @@ export default function Index() {
   return (
     <Fragment>
       <NextSeo
-        title="خدمات آنلاین اوت لاین"
-        description="رزرو نوبت آنلاین"
+        title="اوت لاین"
+        description="خدمات آنلاین"
         openGraph={{
           type: "website",
           locale: "fa_IR",
