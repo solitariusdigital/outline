@@ -11,7 +11,8 @@ export default function Home() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
 
-  const locationLink = "https://maps.app.goo.gl/YcgjcmkzrKNbEdCF8";
+  const locationLink =
+    "https://www.google.com/maps/place/35%C2%B047'47.0%22N+51%C2%B025'32.1%22E/@35.7963889,51.4249382,19z/data=!3m1!4b1!4m4!3m3!8m2!3d35.7963889!4d51.4255833?entry=ttu&g_ep=EgoyMDI0MDgyOC4wIKXMDSoASAFQAw%3D%3D";
 
   return (
     <Fragment>
