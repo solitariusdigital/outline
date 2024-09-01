@@ -88,19 +88,18 @@ export default function DatePicker({ visits }) {
       canceled: false,
     };
     await createVisitApi(visit);
-
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
-    // api.VerifyLookup(
-    //   {
-    //     receptor: phone,
-    //     token: selectedDate.split(" - ")[0].trim(),
-    //     token2: selectedDate.split(" - ")[1].trim(),
-    //     template: "confirmationOutline",
-    //   },
-    //   function (response, status) {}
-    // );
+    api.VerifyLookup(
+      {
+        receptor: phone,
+        token: selectedDate.split(" - ")[0].trim(),
+        token2: selectedDate.split(" - ")[1].trim(),
+        template: "confirmationOutline",
+      },
+      function (response, status) {}
+    );
     Router.push({
       pathname: `/portal/${currentUser.permission}`,
       query: { id: currentUser["_id"], p: currentUser.permission },
@@ -216,7 +215,7 @@ export default function DatePicker({ visits }) {
     let fullDates = visits
       .map((visit) => {
         let dateString = visit.time.split(" - ")[0].trim();
-        if (dateCount[dateString] > 30) {
+        if (dateCount[dateString] >= 30) {
           const parts = dateString.split("/");
           return {
             year: parseInt(toEnglishNumber(parts[0]), 10), // Convert the year part to an integer
@@ -235,7 +234,7 @@ export default function DatePicker({ visits }) {
     Object.keys(timeCountPerDate).forEach((date) => {
       if (date === selectedDate) {
         Object.keys(timeCountPerDate[date]).forEach((time) => {
-          if (timeCountPerDate[date][time] > 5) {
+          if (timeCountPerDate[date][time] >= 5) {
             // Remove the time from the updated times object
             delete updatedTimes[time]; // Remove the specific time
           }
