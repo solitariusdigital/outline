@@ -39,7 +39,6 @@ export default function DatePicker({ visits }) {
   const [disableButton, setDisableButton] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [times, setTimes] = useState({});
-  const [displayTime, setDisplayTime] = useState(false);
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
 
   const originalTimes = {
@@ -243,7 +242,6 @@ export default function DatePicker({ visits }) {
       }
     });
     setTimes(updatedTimes);
-    setDisplayTime(true);
   };
 
   // Function to convert Farsi time strings to English
@@ -275,9 +273,6 @@ export default function DatePicker({ visits }) {
           </p>
         ))}
       </div>
-      {displayTime && Object.keys(times).length === 0 && (
-        <p className="message">نوبت امروز تکمیل است</p>
-      )}
       <div className={classes.input}>
         <div className={classes.bar}>
           <p className={classes.label}>
