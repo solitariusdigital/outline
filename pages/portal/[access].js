@@ -82,7 +82,7 @@ export default function Access({ visits, users }) {
   };
 
   const sendTomorrowReminder = () => {
-    const confirmationMessage = "ارسال پیام یادآوری، مطمئنی؟";
+    const confirmationMessage = "پیام یادآوری گروهی، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
     const tomorrowVisits = filterVisitsByDate(displayVisits, 1);
     const api = Kavenegar.KavenegarApi({
@@ -269,7 +269,7 @@ export default function Access({ visits, users }) {
               visitTypes === "tomorrow" && (
                 <div className={classes.button}>
                   <button onClick={() => sendTomorrowReminder()}>
-                    ارسال پیام یادآوری
+                    پیام یادآوری گروهی
                   </button>
                 </div>
               )}
