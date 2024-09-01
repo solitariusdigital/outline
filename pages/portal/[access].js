@@ -93,8 +93,9 @@ export default function Access({ visits, users }) {
         api.VerifyLookup(
           {
             receptor: visit.user.phone,
-            token: visit.time.split(" - ")[1].trim(),
-            template: "registerverify",
+            token: visit.time.split(" - ")[0].trim(),
+            token2: visit.time.split(" - ")[1].trim(),
+            template: "reminderOutline",
           },
           function (response, status) {}
         );

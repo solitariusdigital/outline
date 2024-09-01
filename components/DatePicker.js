@@ -92,25 +92,18 @@ export default function DatePicker({ visits }) {
     };
     await createVisitApi(visit);
 
-    let reserveDate = `${toFarsiNumber(day.year)}/${toFarsiNumber(
-      day.month
-    )}/${toFarsiNumber(day.day)}`;
-    let reserveTime = `${
-      toFarsiNumber(time).slice(0, 2) + ":" + toFarsiNumber(time).slice(2)
-    }`;
-
-    // const api = Kavenegar.KavenegarApi({
-    //   apikey: kavenegarKey,
-    // });
-    // api.VerifyLookup(
-    //   {
-    //     receptor: phone,
-    //     token: reserveDate,
-    //     token2: reserveTime,
-    //     template: "confirmation",
-    //   },
-    //   function (response, status) {}
-    // );
+    const api = Kavenegar.KavenegarApi({
+      apikey: kavenegarKey,
+    });
+    api.VerifyLookup(
+      {
+        receptor: phone,
+        token: selectedDate.split(" - ")[0].trim(),
+        token2: selectedDate.split(" - ")[1].trim(),
+        template: "confirmationOutline",
+      },
+      function (response, status) {}
+    );
     Router.push({
       pathname: `/portal/${currentUser.permission}`,
       query: { id: currentUser["_id"], p: currentUser.permission },
