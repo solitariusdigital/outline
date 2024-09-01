@@ -31,10 +31,12 @@
     color: config.$blue;
     border: 1px solid config.$blue;
 
-    &:hover {
-      cursor: pointer;
-      background: config.$blue;
-      color: config.$white;
+    @include mixins.desktop {
+      &:hover {
+        cursor: pointer;
+        background: config.$blue;
+        color: config.$white;
+      }
     }
   }
 
@@ -43,9 +45,11 @@
     color: config.$white;
     border: 1px solid config.$blue;
 
-    &:hover {
-      background: config.$background;
-      color: config.$blue;
+    @include mixins.desktop {
+      &:hover {
+        background: config.$background;
+        color: config.$blue;
+      }
     }
   }
 }

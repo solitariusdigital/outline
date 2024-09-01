@@ -91,15 +91,20 @@
 
       .title {
         font-weight: bold;
-        &:hover {
-          color: config.$blue;
-          cursor: pointer;
-          text-decoration: underline;
+
+        @include mixins.desktop {
+          &:hover {
+            color: config.$blue;
+            cursor: pointer;
+            text-decoration: underline;
+          }
         }
       }
 
-      &:hover {
-        border: 1px solid config.$blue;
+      @include mixins.desktop {
+        &:hover {
+          border: 1px solid config.$blue;
+        }
       }
     }
   }
@@ -188,8 +193,10 @@
     cursor: pointer;
 
     p {
-      &:hover {
-        color: config.$blue;
+      @include mixins.desktop {
+        &:hover {
+          color: config.$blue;
+        }
       }
     }
   }
@@ -220,9 +227,11 @@
     color: config.$grey;
     font-weight: 300;
 
-    &:hover {
-      cursor: pointer;
-      color: config.$blue;
+    @include mixins.desktop {
+      &:hover {
+        cursor: pointer;
+        color: config.$blue;
+      }
     }
   }
 
