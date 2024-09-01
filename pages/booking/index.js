@@ -12,6 +12,7 @@ import visitModel from "@/models/Visit";
 
 export default function Booking({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { selectDoctor, setSelectDoctor } = useContext(StateContext);
 
   const margin = {
     marginRight: "12px",
@@ -31,22 +32,26 @@ export default function Booking({ visits }) {
       />
       {currentUser ? (
         <div className={classes.container}>
-          <HomeIcon
-            className="icon"
-            style={margin}
-            onClick={() => Router.push("/")}
-            sx={{ color: "#2d2b7f" }}
-          />
-          <SwitchAccountIcon
-            className="icon"
-            onClick={() =>
-              Router.push({
-                pathname: `/portal/${currentUser.permission}`,
-                query: { id: currentUser["_id"], p: currentUser.permission },
-              })
-            }
-            sx={{ color: "#2d2b7f" }}
-          />
+          <div className={classes.header}>
+            <HomeIcon
+              className="icon"
+              style={margin}
+              onClick={() => Router.push("/")}
+              sx={{ color: "#2d2b7f" }}
+            />
+            {selectDoctor && <h3>{selectDoctor}</h3>}
+            <SwitchAccountIcon
+              className="icon"
+              onClick={() =>
+                Router.push({
+                  pathname: `/portal/${currentUser.permission}`,
+                  query: { id: currentUser["_id"], p: currentUser.permission },
+                })
+              }
+              sx={{ color: "#2d2b7f" }}
+            />
+          </div>
+
           <DatePicker visits={visits} />
         </div>
       ) : (

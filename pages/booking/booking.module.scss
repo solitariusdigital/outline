@@ -11,3 +11,17 @@
     width: calc(100% - 24px);
   }
 }
+
+.header {
+  @include mixins.row-space-between-center();
+  width: 100%;
+  max-width: 350px;
+  margin: auto;
+  height: 30px;
+  color: config.$blue;
+
+  @include mixins.mobile {
+    width: 100%;
+    max-width: 100%;
+  }
+}

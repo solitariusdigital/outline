@@ -36,26 +36,23 @@ export default function DatePicker({ visits }) {
   const [disabledDates, setDisabledDates] = useState([]);
 
   const [alert, setAlert] = useState("");
+  const [disableButton, setDisableButton] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
-  const [times, setTimes] = useState({
-    "10:00": false,
-    "11:00": false,
-    "12:00": false,
+  const [times, setTimes] = useState({});
+  const [timeCountPerDate, setTimeCountPerDate] = useState(null);
+
+  const originalTimes = {
     "13:00": false,
     "14:00": false,
     "15:00": false,
     "16:00": false,
     "17:00": false,
     "18:00": false,
-    "19:00": false,
-    "20:00": false,
-  });
-  const [disableButton, setDisableButton] = useState(false);
-
+  };
   const doctors = ["دکتر فراهانی", " دکتر گنجه"];
 
   useEffect(() => {
-    findFullDates();
+    countFullDateTime();
   }, []);
 
   const createVisit = async () => {
@@ -95,15 +92,15 @@ export default function DatePicker({ visits }) {
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
-    api.VerifyLookup(
-      {
-        receptor: phone,
-        token: selectedDate.split(" - ")[0].trim(),
-        token2: selectedDate.split(" - ")[1].trim(),
-        template: "confirmationOutline",
-      },
-      function (response, status) {}
-    );
+    // api.VerifyLookup(
+    //   {
+    //     receptor: phone,
+    //     token: selectedDate.split(" - ")[0].trim(),
+    //     token2: selectedDate.split(" - ")[1].trim(),
+    //     template: "confirmationOutline",
+    //   },
+    //   function (response, status) {}
+    // );
     Router.push({
       pathname: `/portal/${currentUser.permission}`,
       query: { id: currentUser["_id"], p: currentUser.permission },
@@ -159,6 +156,12 @@ export default function DatePicker({ visits }) {
     resetTime();
     setSelectedDate("");
     setTime("");
+
+    updateDisplayTime(
+      `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
+        day.day
+      )}`
+    );
   };
 
   const displayDate = (time) => {
@@ -188,13 +191,28 @@ export default function DatePicker({ visits }) {
     }
   };
 
-  const findFullDates = () => {
-    // Count occurrences of each date
-    const dateCount = visits.reduce((acc, visit) => {
+  // Count occurrences of each date and time
+  const countFullDateTime = () => {
+    const dateCount = {};
+    const timeCountPerDate = {};
+
+    visits.forEach((visit) => {
       let dateString = visit.time.split(" - ")[0].trim();
-      acc[dateString] = (acc[dateString] || 0) + 1;
-      return acc;
-    }, {});
+      let timeString = visit.time.split(" - ")[1].trim();
+      // Count occurrences of dates
+      dateCount[dateString] = (dateCount[dateString] || 0) + 1;
+      // Initialize time count for the specific date
+      if (!timeCountPerDate[dateString]) {
+        timeCountPerDate[dateString] = {};
+      }
+      // Count occurrences of times for the specific date
+      timeCountPerDate[dateString][convertFullTimeToEnglish(timeString)] =
+        (timeCountPerDate[dateString][convertFullTimeToEnglish(timeString)] ||
+          0) + 1;
+    });
+
+    setTimeCountPerDate(timeCountPerDate);
+    // count dates based on fixed number
     let fullDates = visits
       .map((visit) => {
         let dateString = visit.time.split(" - ")[0].trim();
@@ -208,12 +226,33 @@ export default function DatePicker({ visits }) {
         }
       })
       .filter((date) => date !== undefined); // Filter out undefined values
+
     setDisabledDates(fullDates);
+  };
+
+  const updateDisplayTime = (selectedDate) => {
+    let updatedTimes = { ...originalTimes }; // Start with the original times
+    Object.keys(timeCountPerDate).forEach((date) => {
+      if (date === selectedDate) {
+        Object.keys(timeCountPerDate[date]).forEach((time) => {
+          if (timeCountPerDate[date][time] > 5) {
+            // Remove the time from the updated times object
+            delete updatedTimes[time]; // Remove the specific time
+          }
+        });
+      }
+    });
+    setTimes(updatedTimes);
+  };
+
+  // Function to convert Farsi time strings to English
+  const convertFullTimeToEnglish = (fullTime) => {
+    let splitTime = fullTime.split(":");
+    return `${toEnglishNumber(splitTime[0])}:${toEnglishNumber(splitTime[1])}`;
   };
 
   return (
     <div className={classes.container}>
-      {selectDoctor && <h2>{selectDoctor}</h2>}
       <Calendar
         value={day}
         onChange={(day) => assingDay(day)}
