@@ -1,4 +1,5 @@
 @use "config" as config;
+@use "mixins" as mixins;
 
 $screen-mobile: 700px;
 $screen-tablet: 1400px;
