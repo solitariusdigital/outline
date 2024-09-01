@@ -53,3 +53,7 @@ export function convertPersianToGregorian(persianDate) {
   ).toDate();
   return gregorianDate.toISOString();
 }
+
+export function isEnglishNumber(str) {
+  return Boolean(str.match(/^[A-Za-z0-9]*$/));
+}

@@ -5,6 +5,7 @@ import {
   toFarsiNumber,
   convertPersianToGregorian,
   toEnglishNumber,
+  isEnglishNumber,
 } from "@/services/utility";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
@@ -68,15 +69,16 @@ export default function DatePicker({ visits }) {
       showAlert("موبایل الزامیست");
       return;
     }
+    let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
     if (
-      (currentUser.permission === "admin" && phone.length !== 11) ||
-      !phone.startsWith("09")
+      (currentUser.permission === "admin" && phoneEnglish.length !== 11) ||
+      !phoneEnglish.startsWith("09")
     ) {
       showAlert("موبایل اشتباه");
       return;
     }
-    setDisableButton(true);
-    let userId = await setUserId();
+    // setDisableButton(true);
+    let userId = await setUserId(phoneEnglish);
     // create a new visit object
     let visit = {
       title: title,
@@ -93,7 +95,7 @@ export default function DatePicker({ visits }) {
     });
     api.VerifyLookup(
       {
-        receptor: phone,
+        receptor: phoneEnglish,
         token: selectedDate.split(" - ")[0].trim(),
         token2: selectedDate.split(" - ")[1].trim(),
         template: "confirmationOutline",
@@ -106,15 +108,15 @@ export default function DatePicker({ visits }) {
     });
   };
 
-  const setUserId = async () => {
+  const setUserId = async (phoneEnglish) => {
     if (currentUser.permission === "admin") {
       let userData = null;
       const users = await getUsersApi();
-      userData = users.find((user) => user.phone === phone);
+      userData = users.find((user) => user.phone === phoneEnglish);
       if (!userData) {
         const user = {
           name: name,
-          phone: phone.trim(),
+          phone: phoneEnglish,
           permission: "patient",
         };
         userData = await createUserApi(user);
@@ -313,6 +315,7 @@ export default function DatePicker({ visits }) {
               id="phone"
               name="phone"
               onChange={(e) => setPhone(e.target.value)}
+              maxLength={11}
               value={phone}
               autoComplete="off"
               dir="rtl"

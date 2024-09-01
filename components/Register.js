@@ -1,7 +1,11 @@
 import { useState, useContext, useRef, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./Register.module.scss";
-import { fourGenerator } from "@/services/utility";
+import {
+  fourGenerator,
+  isEnglishNumber,
+  toEnglishNumber,
+} from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import Router from "next/router";
@@ -52,12 +56,12 @@ export default function Register() {
   };
 
   const verifyPhone = () => {
-    if (phone.length === 0) {
-      showAlert("موبایل خالی");
+    if (!phone) {
+      showAlert("موبایل الزامیست");
       return;
     }
-
-    if (phone.length === 11 && phone.slice(0, 2) === "09") {
+    let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
+    if (phoneEnglish.length === 11 && phoneEnglish.startsWith("09")) {
       setDisplayCounter(true);
       let tokenId = fourGenerator();
       setToken(tokenId);
@@ -66,7 +70,7 @@ export default function Register() {
       });
       api.VerifyLookup(
         {
-          receptor: phone,
+          receptor: phoneEnglish,
           token: tokenId.toString(),
           template: "registerOutline",
         },
@@ -85,9 +89,10 @@ export default function Register() {
   };
 
   const handleRegister = async () => {
+    let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
     if (token === Number(checkToken)) {
       // Check if user already exists in the database
-      const userData = appUsers.find((user) => user.phone === phone);
+      const userData = appUsers.find((user) => user.phone === phoneEnglish);
       if (userData) {
         setCurrentUser(userData);
         secureLocalStorage.setItem("currentUser", JSON.stringify(userData));
@@ -96,7 +101,7 @@ export default function Register() {
           query: { id: userData["_id"], p: userData.permission },
         });
       } else {
-        await createUser();
+        await createUser(phoneEnglish);
       }
     } else {
       showAlert("کد تایید اشتباه");
@@ -113,10 +118,10 @@ export default function Register() {
   };
 
   // create new user into db/state/localstorage
-  const createUser = async () => {
+  const createUser = async (phoneEnglish) => {
     const user = {
       name: "",
-      phone: phone.trim(),
+      phone: phoneEnglish,
       permission: "patient",
     };
     try {
@@ -166,6 +171,7 @@ export default function Register() {
             id="phone"
             name="phone"
             onChange={(e) => setPhone(e.target.value)}
+            maxLength={11}
             value={phone}
             autoComplete="off"
             dir="rtl"
@@ -208,6 +214,7 @@ export default function Register() {
         </div>
         <div className={classes.formAction}>
           <p className="alert">{alert}</p>
+          <p>{token}</p>
           {checkToken.length === 4 && (
             <button onClick={() => handleRegister()}>ورود / ​ثبت نام</button>
           )}
