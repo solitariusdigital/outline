@@ -44,10 +44,15 @@ export default function DatePicker({ visits }) {
 
   const originalTimes = {
     "13:00": false,
+    "13:30": false,
     "14:00": false,
+    "14:30": false,
     "15:00": false,
+    "15:30": false,
     "16:00": false,
+    "16:30": false,
     "17:00": false,
+    "17:30": false,
     "18:00": false,
   };
   const doctors = ["دکتر فراهانی", "دکتر گنجه"];
@@ -174,22 +179,14 @@ export default function DatePicker({ visits }) {
       item === time ? (updatedTime[item] = true) : (updatedTime[item] = false)
     );
     setTimes(updatedTime);
-    if (day) {
-      setTime(time);
-      setSelectedDate(
-        `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
-          day.day
-        )} - ${
-          toFarsiNumber(time).slice(0, 2) + ":" + toFarsiNumber(time).slice(2)
-        }`
-      );
-    } else {
-      setAlert("روز انتخاب کنید");
-      resetTime();
-      setTimeout(() => {
-        setAlert("");
-      }, 3000);
-    }
+    setTime(time);
+    setSelectedDate(
+      `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
+        day.day
+      )} - ${
+        toFarsiNumber(time).slice(0, 2) + ":" + toFarsiNumber(time).slice(2)
+      }`
+    );
   };
 
   // Count occurrences of each date and time
@@ -217,7 +214,7 @@ export default function DatePicker({ visits }) {
     let fullDates = visits
       .map((visit) => {
         let dateString = visit.time.split(" - ")[0].trim();
-        if (dateCount[dateString] >= 30) {
+        if (dateCount[dateString] >= 28) {
           const parts = dateString.split("/");
           return {
             year: parseInt(toEnglishNumber(parts[0]), 10), // Convert the year part to an integer
@@ -227,7 +224,6 @@ export default function DatePicker({ visits }) {
         }
       })
       .filter((date) => date !== undefined); // Filter out undefined values
-
     setDisabledDates(fullDates);
   };
 
@@ -236,7 +232,13 @@ export default function DatePicker({ visits }) {
     Object.keys(timeCountPerDate).forEach((date) => {
       if (date === selectedDate) {
         Object.keys(timeCountPerDate[date]).forEach((time) => {
-          if (timeCountPerDate[date][time] >= 5) {
+          const lastTwoChars = time.slice(-2);
+          const timeCount = timeCountPerDate[date][time];
+          if (lastTwoChars === "00" && timeCount >= 3) {
+            // Remove the time from the updated times object
+            delete updatedTimes[time]; // Remove the specific time
+          }
+          if (lastTwoChars === "30" && timeCount >= 2) {
             // Remove the time from the updated times object
             delete updatedTimes[time]; // Remove the specific time
           }

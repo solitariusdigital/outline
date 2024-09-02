@@ -267,7 +267,7 @@ export default function Patient({ user, visits }) {
                         </div>
                         <div
                           className={classes.row}
-                          style={{ width: "70px" }}
+                          style={{ width: "50px" }}
                           onClick={() => actionVisit(item["_id"], "cancel")}
                         >
                           <CloseIcon

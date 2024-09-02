@@ -330,14 +330,12 @@ export default function Access({ visits, users }) {
                         {item.user?.phone}
                       </p>
                     )}
-
                     <p
                       className={classes.time}
                       onClick={() => setExpandedItem(item["_id"])}
                     >
                       {item.time}
                     </p>
-
                     <ExpandMoreIcon
                       className="icon"
                       onClick={() => setExpandedItem(item["_id"])}
@@ -428,7 +426,7 @@ export default function Access({ visits, users }) {
                               <p style={{ color: "#57a361" }}>تکمیل</p>
                             </div>
                             <div
-                              style={{ width: "70px" }}
+                              style={{ width: "50px" }}
                               onClick={() => actionVisit(item["_id"], "cancel")}
                               className={classes.row}
                             >

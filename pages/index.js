@@ -32,6 +32,19 @@ export default function Home() {
           <h2>طراح چهره</h2>
         </div>
         <section className={classes.navigation}>
+          {currentUser && (
+            <div
+              className={classes.nav}
+              onClick={() =>
+                Router.push({
+                  pathname: `/portal/${currentUser.permission}`,
+                  query: { id: currentUser["_id"], p: currentUser.permission },
+                })
+              }
+            >
+              پورتال نوبت‌ها
+            </div>
+          )}
           <div
             className={classes.doctor}
             onClick={() => {
@@ -50,19 +63,7 @@ export default function Home() {
           >
             دکتر گنجه
           </div>
-          {currentUser && (
-            <div
-              className={classes.nav}
-              onClick={() =>
-                Router.push({
-                  pathname: `/portal/${currentUser.permission}`,
-                  query: { id: currentUser["_id"], p: currentUser.permission },
-                })
-              }
-            >
-              پورتال
-            </div>
-          )}
+
           <div
             className={classes.nav}
             onClick={() => window.open(locationLink)}
