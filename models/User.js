@@ -9,7 +9,6 @@ const UserSchema = new Schema(
       unique: true,
     },
     permission: String,
-    doctors: [String],
   },
   { timestamps: true }
 );

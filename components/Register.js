@@ -214,7 +214,6 @@ export default function Register() {
         </div>
         <div className={classes.formAction}>
           <p className="alert">{alert}</p>
-          <p>{token}</p>
           {checkToken.length === 4 && (
             <button onClick={() => handleRegister()}>ورود / ​ثبت نام</button>
           )}

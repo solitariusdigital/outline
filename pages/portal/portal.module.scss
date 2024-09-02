@@ -108,6 +108,104 @@
         }
       }
     }
+
+    .row,
+    .subRow {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .image {
+        border-radius: 50%;
+        margin-left: 12px;
+      }
+
+      .greyTitle {
+        color: config.$grey;
+      }
+
+      .time {
+        font-weight: bold;
+        direction: ltr;
+      }
+
+      .icon {
+        margin-left: 4px;
+      }
+    }
+
+    .row {
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+
+  .table {
+    @include mixins.desktop {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+      gap: 12px;
+      margin: auto;
+      direction: rtl;
+    }
+    @include mixins.tablet {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+      gap: 12px;
+      margin: auto;
+      direction: rtl;
+    }
+    .row {
+      @include mixins.row-space-between-center();
+      @include mixins.mobile {
+        flex-direction: row-reverse;
+      }
+      text-align: right;
+      width: 100%;
+
+      .title {
+        font-weight: bold;
+
+        @include mixins.desktop {
+          &:hover {
+            color: config.$blue;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .time {
+        direction: ltr;
+      }
+    }
+    .subRow {
+      @include mixins.row-space-between-center();
+      @include mixins.mobile {
+        flex-direction: row-reverse;
+      }
+      p {
+        margin-right: 8px;
+      }
+    }
+    .item {
+      align-self: start;
+      padding: 8px;
+      margin-bottom: 8px;
+      box-shadow: config.$card-shadow;
+      background: config.$white;
+      border: 1px solid config.$white;
+      @include mixins.border-radius();
+
+      @include mixins.desktop {
+        &:hover {
+          border: 1px solid config.$blue;
+        }
+      }
+
+      .infoBox {
+        width: 100%;
+      }
+    }
   }
 
   .input {
@@ -138,54 +236,6 @@
     p {
       display: flex;
       flex-direction: row-reverse;
-    }
-  }
-
-  .row,
-  .subRow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    .image {
-      border-radius: 50%;
-      margin-left: 12px;
-    }
-
-    .greyTitle {
-      color: config.$grey;
-    }
-
-    .time {
-      font-weight: bold;
-      direction: ltr;
-    }
-
-    .icon {
-      margin-left: 4px;
-    }
-  }
-
-  .row {
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .action {
-    margin-top: 20px;
-    width: 150px;
-    @include mixins.row-space-between-center();
-
-    .row {
-      @include mixins.row-space-between-center();
-      justify-content: space-around;
-      width: 100%;
-      margin-left: 20px;
-      cursor: pointer;
-
-      p {
-        margin-right: 5px;
-      }
     }
   }
 

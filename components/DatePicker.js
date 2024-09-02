@@ -50,7 +50,7 @@ export default function DatePicker({ visits }) {
     "17:00": false,
     "18:00": false,
   };
-  const doctors = ["دکتر فراهانی", " دکتر گنجه"];
+  const doctors = ["دکتر فراهانی", "دکتر گنجه"];
 
   useEffect(() => {
     countFullDateTime();

@@ -236,7 +236,7 @@ export default function Patient({ user, visits }) {
                             <p>{convertDate(item.updatedAt)}</p>
                           </div>
                         ) : (
-                          <div className={classes.row}>
+                          <div className={classes.row} style={margin}>
                             <div className={classes.subRow}>
                               <TimelapseIcon
                                 className={classes.icon}
@@ -253,19 +253,27 @@ export default function Patient({ user, visits }) {
                   {currentUser.permission === "admin" &&
                     !item.canceled &&
                     !item.completed && (
-                      <div className={classes.action}>
+                      <div className={classes.row}>
                         <div
                           className={classes.row}
+                          style={{ width: "70px" }}
                           onClick={() => actionVisit(item["_id"], "done")}
                         >
-                          <TaskAltIcon sx={{ color: "#57a361" }} />
+                          <TaskAltIcon
+                            className="icon"
+                            sx={{ color: "#57a361" }}
+                          />
                           <p style={{ color: "#57a361" }}>تکمیل</p>
                         </div>
                         <div
                           className={classes.row}
+                          style={{ width: "70px" }}
                           onClick={() => actionVisit(item["_id"], "cancel")}
                         >
-                          <CloseIcon sx={{ color: "#d40d12" }} />
+                          <CloseIcon
+                            className="icon"
+                            sx={{ color: "#d40d12" }}
+                          />
                           <p style={{ color: "#d40d12" }}>لغو</p>
                         </div>
                       </div>
