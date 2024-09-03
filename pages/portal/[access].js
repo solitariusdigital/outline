@@ -1,4 +1,4 @@
-import { useState, useContext, Fragment, useEffect } from "react";
+import { useState, useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import { useRouter } from "next/router";
 import classes from "./portal.module.scss";
@@ -11,13 +11,19 @@ import ContentCutIcon from "@mui/icons-material/ContentCut";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import userModel from "@/models/User";
-import { convertDate, filterVisitsByDate } from "@/services/utility";
+import {
+  convertDate,
+  filterVisitsByDate,
+  toEnglishNumber,
+  isEnglishNumber,
+} from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
 import { getVisitApi, updateVisitApi, getUserApi } from "@/services/api";
 import Kavenegar from "kavenegar";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 export default function Access({ visits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -32,6 +38,7 @@ export default function Access({ visits, users }) {
   );
 
   const router = useRouter();
+  const targetDivRef = useRef(null);
 
   useEffect(() => {
     if (!currentUser) {
@@ -60,6 +67,12 @@ export default function Access({ visits, users }) {
 
   const margin = {
     marginBottom: "8px",
+  };
+
+  const scrollToDiv = () => {
+    if (targetDivRef.current) {
+      targetDivRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const actionVisit = async (id, type) => {
@@ -109,6 +122,13 @@ export default function Access({ visits, users }) {
     setCurrentUser(null);
   };
 
+  const expandInformation = (id) => {
+    setExpandedItem(id);
+    if (expandedItem === id) {
+      setExpandedItem(null);
+    }
+  };
+
   return (
     <Fragment>
       <NextSeo
@@ -147,6 +167,7 @@ export default function Access({ visits, users }) {
                     onClick={() => {
                       setFilterVisits(displayVisits);
                       setVisitTypes("all");
+                      scrollToDiv();
                     }}
                   >
                     نوبت‌ها / بیمارها
@@ -175,6 +196,7 @@ export default function Access({ visits, users }) {
                         )
                       );
                       setVisitTypes("active");
+                      scrollToDiv();
                     }}
                   >
                     نوبت فعال
@@ -189,6 +211,7 @@ export default function Access({ visits, users }) {
                     onClick={() => {
                       setFilterVisits(filterVisitsByDate(displayVisits));
                       setVisitTypes("today");
+                      scrollToDiv();
                     }}
                   >
                     نوبت امروز
@@ -205,6 +228,7 @@ export default function Access({ visits, users }) {
                     onClick={() => {
                       setFilterVisits(filterVisitsByDate(displayVisits, 1));
                       setVisitTypes("tomorrow");
+                      scrollToDiv();
                     }}
                   >
                     نوبت فردا
@@ -223,6 +247,7 @@ export default function Access({ visits, users }) {
                         displayVisits.filter((visit) => visit.completed)
                       );
                       setVisitTypes("done");
+                      scrollToDiv();
                     }}
                   >
                     نوبت تکمیل شده
@@ -243,6 +268,7 @@ export default function Access({ visits, users }) {
                         displayVisits.filter((visit) => visit.canceled)
                       );
                       setVisitTypes("cancel");
+                      scrollToDiv();
                     }}
                   >
                     نوبت لغو شده
@@ -253,9 +279,9 @@ export default function Access({ visits, users }) {
                 </div>
               </Fragment>
             </div>
-            {(visitTypes === "all" ||
-              visitTypes === "active" ||
-              visitTypes === "today") && (
+            {currentUser.permission === "admin" ||
+            displayVisits.filter((visit) => !visit.completed && !visit.canceled)
+              .length < 1 ? (
               <div className={classes.button}>
                 <button
                   onClick={() => {
@@ -266,6 +292,10 @@ export default function Access({ visits, users }) {
                   ثبت نوبت آنلاین
                 </button>
               </div>
+            ) : (
+              <p className="message">
+                شما یک نوبت فعال دارید و نمی‌توانید نوبت جدید ثبت کنید
+              </p>
             )}
             {currentUser.permission === "admin" &&
               visitTypes === "tomorrow" && (
@@ -293,11 +323,15 @@ export default function Access({ visits, users }) {
                   type="tel"
                   id="phone"
                   name="phone"
+                  maxLength={11}
                   onChange={(e) => {
                     setPhone(e.target.value);
+                    let phoneEnglish = isEnglishNumber(e.target.value)
+                      ? e.target.value
+                      : toEnglishNumber(e.target.value);
                     setFilterVisits(
                       displayVisits.filter(
-                        (visit) => visit.user.phone === e.target.value
+                        (visit) => visit.user.phone === phoneEnglish
                       )
                     );
                   }}
@@ -307,13 +341,7 @@ export default function Access({ visits, users }) {
                 />
               </div>
             )}
-            {visitTypes === "all" && <h3>نوبت‌ها / بیمارها</h3>}
-            {visitTypes === "active" && <h3>نوبت فعال</h3>}
-            {visitTypes === "today" && <h3>نوبت امروز</h3>}
-            {visitTypes === "tomorrow" && <h3>نوبت فردا</h3>}
-            {visitTypes === "done" && <h3>نوبت تکمیل شده</h3>}
-            {visitTypes === "cancel" && <h3>نوبت لغو شده</h3>}
-            <div className={classes.table}>
+            <div className={classes.table} ref={targetDivRef}>
               {filterVisits.map((item, index) => (
                 <div className={classes.item} key={index}>
                   <div className={classes.row} style={margin}>
@@ -332,14 +360,21 @@ export default function Access({ visits, users }) {
                     )}
                     <p
                       className={classes.time}
-                      onClick={() => setExpandedItem(item["_id"])}
+                      onClick={() => expandInformation(item["_id"])}
                     >
                       {item.time}
                     </p>
-                    <ExpandMoreIcon
-                      className="icon"
-                      onClick={() => setExpandedItem(item["_id"])}
-                    />
+                    {expandedItem === item["_id"] ? (
+                      <ExpandLessIcon
+                        className="icon"
+                        onClick={() => expandInformation(item["_id"])}
+                      />
+                    ) : (
+                      <ExpandMoreIcon
+                        className="icon"
+                        onClick={() => expandInformation(item["_id"])}
+                      />
+                    )}
                   </div>
                   {expandedItem === item["_id"] && (
                     <Fragment>

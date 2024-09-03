@@ -131,10 +131,7 @@ export default function Register() {
       } else {
         setCurrentUser(userData);
         secureLocalStorage.setItem("currentUser", JSON.stringify(userData));
-        Router.push({
-          pathname: `/portal/${userData.permission}`,
-          query: { id: userData["_id"], p: userData.permission },
-        });
+        Router.push("/booking");
       }
     } catch (error) {
       showAlert("خطا در برقراری ارتباط");

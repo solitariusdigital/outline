@@ -189,11 +189,6 @@ export default function Patient({ user, visits }) {
               </div>
             </Fragment>
           </div>
-          {visitTypes === "active" && <h3>نوبت فعال</h3>}
-          {visitTypes === "today" && <h3>نوبت امروز</h3>}
-          {visitTypes === "tomorrow" && <h3>نوبت فردا</h3>}
-          {visitTypes === "done" && <h3>نوبت تکمیل شده</h3>}
-          {visitTypes === "cancel" && <h3>نوبت لغو شده</h3>}
           <div className={classes.cards}>
             <Fragment>
               {filterVisits.map((item, index) => (

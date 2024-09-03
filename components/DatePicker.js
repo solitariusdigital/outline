@@ -1,4 +1,4 @@
-import { useState, useContext, Fragment, useEffect } from "react";
+import { useState, useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./DatePicker.module.scss";
 import {
@@ -57,9 +57,17 @@ export default function DatePicker({ visits }) {
   };
   const doctors = ["دکتر فراهانی", "دکتر گنجه"];
 
+  const targetDivRef = useRef(null);
+
   useEffect(() => {
     countFullDateTime();
   }, []);
+
+  const scrollToDiv = () => {
+    if (targetDivRef.current) {
+      targetDivRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const createVisit = async () => {
     if (!day || !time) {
@@ -171,9 +179,9 @@ export default function DatePicker({ visits }) {
   };
 
   const displayDate = (time) => {
+    scrollToDiv();
     let gregorian = convertPersianToGregorian(day);
     setDateObject(gregorian);
-
     let updatedTime = { ...times };
     Object.keys(times).forEach((item) =>
       item === time ? (updatedTime[item] = true) : (updatedTime[item] = false)
@@ -208,8 +216,8 @@ export default function DatePicker({ visits }) {
         (timeCountPerDate[dateString][convertFullTimeToEnglish(timeString)] ||
           0) + 1;
     });
-
     setTimeCountPerDate(timeCountPerDate);
+
     // count dates based on fixed number
     let fullDates = visits
       .map((visit) => {
@@ -277,7 +285,7 @@ export default function DatePicker({ visits }) {
           </p>
         ))}
       </div>
-      <div className={classes.input}>
+      <div className={classes.input} ref={targetDivRef}>
         <div className={classes.bar}>
           <p className={classes.label}>
             نام
