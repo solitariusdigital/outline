@@ -21,7 +21,7 @@ export default function Patient({ user, visits }) {
   const [filterVisits, setFilterVisits] = useState([]);
 
   const [visitTypes, setVisitTypes] = useState(
-    "active" || "tomorrow" || "done" || "cancel"
+    "active" || "tomorrow" || "afterTomorrow" || "done" || "cancel"
   );
 
   const router = useRouter();
@@ -31,11 +31,15 @@ export default function Patient({ user, visits }) {
   };
 
   useEffect(() => {
-    setDisplayVisits(visits);
-    setFilterVisits(
-      visits.filter((visit) => !visit.completed && !visit.canceled)
-    );
-    setVisitTypes("active");
+    if (currentUser && currentUser.permission === "admin") {
+      setDisplayVisits(visits);
+      setFilterVisits(
+        visits.filter((visit) => !visit.completed && !visit.canceled)
+      );
+      setVisitTypes("active");
+    } else {
+      Router.push("/");
+    }
   }, [visits]);
 
   const actionVisit = async (id, type) => {
@@ -70,215 +74,243 @@ export default function Patient({ user, visits }) {
           siteName: "Outline Community",
         }}
       />
-      <div className={classes.container}>
-        <div className={classes.header}>
-          <SwitchAccountIcon
-            className="icon"
-            onClick={() =>
-              Router.push({
-                pathname: `/portal/${currentUser.permission}`,
-                query: { id: currentUser["_id"], p: currentUser.permission },
-              })
-            }
-          />
-          <h3>{user.name ? user.name : user.phone}</h3>
-          <ContentCutIcon
-            className="icon"
-            sx={{ fontSize: 20, color: "#2d2b7f" }}
-            onClick={() => navigator.clipboard.writeText(user.phone)}
-          />
-        </div>
-        <div className={classes.portal}>
-          <div className={classes.analytics}>
-            <Fragment>
-              <div
-                className={classes.row}
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                  window.open(`tel:+98${user?.phone.substring(1)}`, "_self")
-                }
-              >
-                <p>{user.phone}</p>
-                <p>{user.name}</p>
-              </div>
-              <div className={classes.row}>
-                <p>
-                  {
-                    displayVisits.filter(
-                      (visit) => !visit.completed && !visit.canceled
-                    ).length
+      {currentUser && currentUser.permission === "admin" && (
+        <div className={classes.container}>
+          <div className={classes.header}>
+            <SwitchAccountIcon
+              className="icon"
+              onClick={() =>
+                Router.push({
+                  pathname: `/portal/${currentUser.permission}`,
+                  query: { id: currentUser["_id"], p: currentUser.permission },
+                })
+              }
+            />
+            <h3>{user.name ? user.name : user.phone}</h3>
+            <ContentCutIcon
+              className="icon"
+              sx={{ fontSize: 20, color: "#2d2b7f" }}
+              onClick={() => navigator.clipboard.writeText(user.phone)}
+            />
+          </div>
+          <div className={classes.portal}>
+            <div className={classes.analytics}>
+              <Fragment>
+                <div
+                  className={classes.row}
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    window.open(`tel:+98${user?.phone.substring(1)}`, "_self")
                   }
-                </p>
-                <p
-                  className={
-                    visitTypes === "active" ? classes.itemActive : classes.item
-                  }
-                  onClick={() => {
-                    setFilterVisits(
+                >
+                  <p>{user.phone}</p>
+                  <p>{user.name}</p>
+                </div>
+                <div className={classes.row}>
+                  <p>
+                    {
                       displayVisits.filter(
                         (visit) => !visit.completed && !visit.canceled
-                      )
-                    );
-                    setVisitTypes("active");
-                  }}
-                >
-                  نوبت فعال
-                </p>
-              </div>
-              <div className={classes.row}>
-                <p>{filterVisitsByDate(displayVisits).length}</p>
-                <p
-                  className={
-                    visitTypes === "today" ? classes.itemActive : classes.item
-                  }
-                  onClick={() => {
-                    setFilterVisits(filterVisitsByDate(displayVisits));
-                    setVisitTypes("today");
-                  }}
-                >
-                  نوبت امروز
-                </p>
-              </div>
-              <div className={classes.row}>
-                <p>{filterVisitsByDate(displayVisits, 1).length}</p>
-                <p
-                  className={
-                    visitTypes === "tomorrow"
-                      ? classes.itemActive
-                      : classes.item
-                  }
-                  onClick={() => {
-                    setFilterVisits(filterVisitsByDate(displayVisits, 1));
-                    setVisitTypes("tomorrow");
-                  }}
-                >
-                  نوبت فردا
-                </p>
-              </div>
-              <div className={classes.row}>
-                <p>{displayVisits.filter((visit) => visit.completed).length}</p>
-                <p
-                  className={
-                    visitTypes === "done" ? classes.itemActive : classes.item
-                  }
-                  onClick={() => {
-                    setFilterVisits(
-                      displayVisits.filter((visit) => visit.completed)
-                    );
-                    setVisitTypes("done");
-                  }}
-                >
-                  نوبت تکمیل شده
-                </p>
-              </div>
-              <div className={classes.row}>
-                <p>{displayVisits.filter((visit) => visit.canceled).length}</p>
-                <p
-                  className={
-                    visitTypes === "cancel" ? classes.itemActive : classes.item
-                  }
-                  onClick={() => {
-                    setFilterVisits(
-                      displayVisits.filter((visit) => visit.canceled)
-                    );
-                    setVisitTypes("cancel");
-                  }}
-                >
-                  نوبت لغو شده
-                </p>
-              </div>
-            </Fragment>
-          </div>
-          <div className={classes.cards}>
-            <Fragment>
-              {filterVisits.map((item, index) => (
-                <div className={classes.item} key={index}>
-                  <div className={classes.row} style={margin}>
-                    <p className={classes.greyTitle}>دکتر</p>
-                    <p>{item.doctor}</p>
-                  </div>
-                  <div className={classes.row} style={margin}>
-                    <p className={classes.greyTitle}>موضوع</p>
-                    <p>{item.title}</p>
-                  </div>
-                  <div className={classes.row} style={margin}>
-                    <p className={classes.greyTitle}>تاریخ ثبت</p>
-                    <p>{convertDate(item.createdAt)}</p>
-                  </div>
-                  <div className={classes.row} style={margin}>
-                    {item.canceled ? (
-                      <div className={classes.row}>
-                        <div className={classes.subRow}>
-                          <CloseIcon
-                            className={classes.icon}
-                            sx={{ color: "#d40d12" }}
-                          />
-                          <p style={{ color: "#d40d12" }}>نوبت لغو شده</p>
-                        </div>
-                        <p>{convertDate(item.updatedAt)}</p>
-                      </div>
-                    ) : (
-                      <Fragment>
-                        {item.completed ? (
-                          <div className={classes.row}>
-                            <div className={classes.subRow}>
-                              <TaskAltIcon
-                                className={classes.icon}
-                                sx={{ color: "#57a361" }}
-                              />
-                              <p style={{ color: "#57a361" }}>نوبت تکمیل شده</p>
-                            </div>
-                            <p>{convertDate(item.updatedAt)}</p>
-                          </div>
-                        ) : (
-                          <div className={classes.row} style={margin}>
-                            <div className={classes.subRow}>
-                              <TimelapseIcon
-                                className={classes.icon}
-                                sx={{ color: "#2d2b7f" }}
-                              />
-                              <p style={{ color: "#2d2b7f" }}>زمان نوبت</p>
-                            </div>
-                            <p className={classes.time}>{item.time}</p>
-                          </div>
-                        )}
-                      </Fragment>
-                    )}
-                  </div>
-                  {currentUser.permission === "admin" &&
-                    !item.canceled &&
-                    !item.completed && (
-                      <div className={classes.row}>
-                        <div
-                          className={classes.row}
-                          style={{ width: "70px" }}
-                          onClick={() => actionVisit(item["_id"], "done")}
-                        >
-                          <TaskAltIcon
-                            className="icon"
-                            sx={{ color: "#57a361" }}
-                          />
-                          <p style={{ color: "#57a361" }}>تکمیل</p>
-                        </div>
-                        <div
-                          className={classes.row}
-                          style={{ width: "50px" }}
-                          onClick={() => actionVisit(item["_id"], "cancel")}
-                        >
-                          <CloseIcon
-                            className="icon"
-                            sx={{ color: "#d40d12" }}
-                          />
-                          <p style={{ color: "#d40d12" }}>لغو</p>
-                        </div>
-                      </div>
-                    )}
+                      ).length
+                    }
+                  </p>
+                  <p
+                    className={
+                      visitTypes === "active"
+                        ? classes.itemActive
+                        : classes.item
+                    }
+                    onClick={() => {
+                      setFilterVisits(
+                        displayVisits.filter(
+                          (visit) => !visit.completed && !visit.canceled
+                        )
+                      );
+                      setVisitTypes("active");
+                    }}
+                  >
+                    نوبت فعال
+                  </p>
                 </div>
-              ))}
-            </Fragment>
+                <div className={classes.row}>
+                  <p>{filterVisitsByDate(displayVisits).length}</p>
+                  <p
+                    className={
+                      visitTypes === "today" ? classes.itemActive : classes.item
+                    }
+                    onClick={() => {
+                      setFilterVisits(filterVisitsByDate(displayVisits));
+                      setVisitTypes("today");
+                    }}
+                  >
+                    نوبت امروز
+                  </p>
+                </div>
+                <div className={classes.row}>
+                  <p>{filterVisitsByDate(displayVisits, 1).length}</p>
+                  <p
+                    className={
+                      visitTypes === "tomorrow"
+                        ? classes.itemActive
+                        : classes.item
+                    }
+                    onClick={() => {
+                      setFilterVisits(filterVisitsByDate(displayVisits, 1));
+                      setVisitTypes("tomorrow");
+                    }}
+                  >
+                    نوبت فردا
+                  </p>
+                </div>
+                <div className={classes.row}>
+                  <p>{filterVisitsByDate(displayVisits, 2).length}</p>
+                  <p
+                    className={
+                      visitTypes === "afterTomorrow"
+                        ? classes.itemActive
+                        : classes.item
+                    }
+                    onClick={() => {
+                      setFilterVisits(filterVisitsByDate(displayVisits, 2));
+                      setVisitTypes("afterTomorrow");
+                    }}
+                  >
+                    نوبت پس‌فردا
+                  </p>
+                </div>
+                <div className={classes.row}>
+                  <p>
+                    {displayVisits.filter((visit) => visit.completed).length}
+                  </p>
+                  <p
+                    className={
+                      visitTypes === "done" ? classes.itemActive : classes.item
+                    }
+                    onClick={() => {
+                      setFilterVisits(
+                        displayVisits.filter((visit) => visit.completed)
+                      );
+                      setVisitTypes("done");
+                    }}
+                  >
+                    نوبت تکمیل شده
+                  </p>
+                </div>
+                <div className={classes.row}>
+                  <p>
+                    {displayVisits.filter((visit) => visit.canceled).length}
+                  </p>
+                  <p
+                    className={
+                      visitTypes === "cancel"
+                        ? classes.itemActive
+                        : classes.item
+                    }
+                    onClick={() => {
+                      setFilterVisits(
+                        displayVisits.filter((visit) => visit.canceled)
+                      );
+                      setVisitTypes("cancel");
+                    }}
+                  >
+                    نوبت لغو شده
+                  </p>
+                </div>
+              </Fragment>
+            </div>
+            <div className={classes.cards}>
+              <Fragment>
+                {filterVisits.map((item, index) => (
+                  <div className={classes.item} key={index}>
+                    <div className={classes.row} style={margin}>
+                      <p className={classes.greyTitle}>دکتر</p>
+                      <p>{item.doctor}</p>
+                    </div>
+                    <div className={classes.row} style={margin}>
+                      <p className={classes.greyTitle}>موضوع</p>
+                      <p>{item.title}</p>
+                    </div>
+                    <div className={classes.row} style={margin}>
+                      <p className={classes.greyTitle}>تاریخ ثبت</p>
+                      <p>{convertDate(item.createdAt)}</p>
+                    </div>
+                    <div className={classes.row} style={margin}>
+                      {item.canceled ? (
+                        <div className={classes.row}>
+                          <div className={classes.subRow}>
+                            <CloseIcon
+                              className={classes.icon}
+                              sx={{ color: "#d40d12" }}
+                            />
+                            <p style={{ color: "#d40d12" }}>نوبت لغو شده</p>
+                          </div>
+                          <p>{convertDate(item.updatedAt)}</p>
+                        </div>
+                      ) : (
+                        <Fragment>
+                          {item.completed ? (
+                            <div className={classes.row}>
+                              <div className={classes.subRow}>
+                                <TaskAltIcon
+                                  className={classes.icon}
+                                  sx={{ color: "#57a361" }}
+                                />
+                                <p style={{ color: "#57a361" }}>
+                                  نوبت تکمیل شده
+                                </p>
+                              </div>
+                              <p>{convertDate(item.updatedAt)}</p>
+                            </div>
+                          ) : (
+                            <div className={classes.row} style={margin}>
+                              <div className={classes.subRow}>
+                                <TimelapseIcon
+                                  className={classes.icon}
+                                  sx={{ color: "#2d2b7f" }}
+                                />
+                                <p style={{ color: "#2d2b7f" }}>زمان نوبت</p>
+                              </div>
+                              <p className={classes.time}>{item.time}</p>
+                            </div>
+                          )}
+                        </Fragment>
+                      )}
+                    </div>
+                    {currentUser.permission === "admin" &&
+                      !item.canceled &&
+                      !item.completed && (
+                        <div className={classes.row}>
+                          <div
+                            className={classes.row}
+                            style={{ width: "70px" }}
+                            onClick={() => actionVisit(item["_id"], "done")}
+                          >
+                            <TaskAltIcon
+                              className="icon"
+                              sx={{ color: "#57a361" }}
+                            />
+                            <p style={{ color: "#57a361" }}>تکمیل</p>
+                          </div>
+                          <div
+                            className={classes.row}
+                            style={{ width: "50px" }}
+                            onClick={() => actionVisit(item["_id"], "cancel")}
+                          >
+                            <CloseIcon
+                              className="icon"
+                              sx={{ color: "#d40d12" }}
+                            />
+                            <p style={{ color: "#d40d12" }}>لغو</p>
+                          </div>
+                        </div>
+                      )}
+                  </div>
+                ))}
+              </Fragment>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </Fragment>
   );
 }

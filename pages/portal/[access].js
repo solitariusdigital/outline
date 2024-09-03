@@ -34,7 +34,13 @@ export default function Access({ visits, users }) {
   const [phone, setPhone] = useState("");
   const [expandedItem, setExpandedItem] = useState(null);
   const [visitTypes, setVisitTypes] = useState(
-    "all" || "active" || "today" || "tomorrow" || "done" || "cancel"
+    "all" ||
+      "active" ||
+      "today" ||
+      "tomorrow" ||
+      "afterTomorrow" ||
+      "done" ||
+      "cancel"
   );
 
   const router = useRouter();
@@ -98,7 +104,7 @@ export default function Access({ visits, users }) {
   const sendTomorrowReminder = () => {
     const confirmationMessage = "پیام یادآوری گروهی، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
-    const tomorrowVisits = filterVisitsByDate(displayVisits, 1);
+    const tomorrowVisits = filterVisitsByDate(displayVisits, 2);
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
@@ -202,38 +208,61 @@ export default function Access({ visits, users }) {
                     نوبت فعال
                   </p>
                 </div>
-                <div className={classes.row}>
-                  <p>{filterVisitsByDate(displayVisits).length}</p>
-                  <p
-                    className={
-                      visitTypes === "today" ? classes.itemActive : classes.item
-                    }
-                    onClick={() => {
-                      setFilterVisits(filterVisitsByDate(displayVisits));
-                      setVisitTypes("today");
-                      scrollToDiv();
-                    }}
-                  >
-                    نوبت امروز
-                  </p>
-                </div>
-                <div className={classes.row}>
-                  <p>{filterVisitsByDate(displayVisits, 1).length}</p>
-                  <p
-                    className={
-                      visitTypes === "tomorrow"
-                        ? classes.itemActive
-                        : classes.item
-                    }
-                    onClick={() => {
-                      setFilterVisits(filterVisitsByDate(displayVisits, 1));
-                      setVisitTypes("tomorrow");
-                      scrollToDiv();
-                    }}
-                  >
-                    نوبت فردا
-                  </p>
-                </div>
+                {currentUser.permission === "admin" && (
+                  <Fragment>
+                    <div className={classes.row}>
+                      <p>{filterVisitsByDate(displayVisits).length}</p>
+                      <p
+                        className={
+                          visitTypes === "today"
+                            ? classes.itemActive
+                            : classes.item
+                        }
+                        onClick={() => {
+                          setFilterVisits(filterVisitsByDate(displayVisits));
+                          setVisitTypes("today");
+                          scrollToDiv();
+                        }}
+                      >
+                        نوبت امروز
+                      </p>
+                    </div>
+                    <div className={classes.row}>
+                      <p>{filterVisitsByDate(displayVisits, 1).length}</p>
+                      <p
+                        className={
+                          visitTypes === "tomorrow"
+                            ? classes.itemActive
+                            : classes.item
+                        }
+                        onClick={() => {
+                          setFilterVisits(filterVisitsByDate(displayVisits, 1));
+                          setVisitTypes("tomorrow");
+                          scrollToDiv();
+                        }}
+                      >
+                        نوبت فردا
+                      </p>
+                    </div>
+                    <div className={classes.row}>
+                      <p>{filterVisitsByDate(displayVisits, 2).length}</p>
+                      <p
+                        className={
+                          visitTypes === "afterTomorrow"
+                            ? classes.itemActive
+                            : classes.item
+                        }
+                        onClick={() => {
+                          setFilterVisits(filterVisitsByDate(displayVisits, 2));
+                          setVisitTypes("afterTomorrow");
+                          scrollToDiv();
+                        }}
+                      >
+                        نوبت پس‌فردا
+                      </p>
+                    </div>
+                  </Fragment>
+                )}
                 <div className={classes.row}>
                   <p>
                     {displayVisits.filter((visit) => visit.completed).length}
@@ -298,7 +327,7 @@ export default function Access({ visits, users }) {
               </p>
             )}
             {currentUser.permission === "admin" &&
-              visitTypes === "tomorrow" && (
+              visitTypes === "afterTomorrow" && (
                 <div className={classes.button}>
                   <button onClick={() => sendTomorrowReminder()}>
                     پیام یادآوری گروهی
