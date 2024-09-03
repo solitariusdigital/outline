@@ -1,4 +1,4 @@
-import { useContext, Fragment } from "react";
+import { useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import DatePicker from "@/components/DatePicker";
 import classes from "./booking.module.scss";
@@ -17,6 +17,23 @@ export default function Booking({ visits }) {
   const margin = {
     marginRight: "12px",
   };
+
+  useEffect(() => {
+    const getCurrentUserVisits = async () => {
+      if (currentUser && currentUser.permission === "patient") {
+        let activeVisitExist = visits.some(
+          (visit) =>
+            visit.userId === currentUser["_id"] &&
+            !visit.completed &&
+            !visit.canceled
+        );
+        if (activeVisitExist) {
+          Router.push("/");
+        }
+      }
+    };
+    getCurrentUserVisits();
+  }, []);
 
   return (
     <Fragment>
