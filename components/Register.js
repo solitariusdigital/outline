@@ -88,9 +88,13 @@ export default function Register() {
     }
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (receivedToken) => {
+    setCheckToken(receivedToken);
+    if (receivedToken.length !== 4) {
+      return;
+    }
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
-    if (token === Number(checkToken)) {
+    if (token === Number(receivedToken)) {
       // Check if user already exists in the database
       const userData = appUsers.find((user) => user.phone === phoneEnglish);
       if (userData) {
@@ -103,10 +107,10 @@ export default function Register() {
       } else {
         await createUser(phoneEnglish);
       }
+      setToken("");
     } else {
       showAlert("کد تایید اشتباه");
     }
-    setToken("");
     setCheckToken("");
   };
 
@@ -203,18 +207,14 @@ export default function Register() {
             type="tel"
             id="number"
             name="number"
-            onChange={(e) => setCheckToken(e.target.value)}
+            maxLength={4}
+            onChange={(e) => handleRegister(e.target.value)}
             value={checkToken}
             autoComplete="off"
             dir="rtl"
           />
         </div>
-        <div className={classes.formAction}>
-          <p className="alert">{alert}</p>
-          {checkToken.length === 4 && (
-            <button onClick={() => handleRegister()}>ورود / ​ثبت نام</button>
-          )}
-        </div>
+        <p className="alert">{alert}</p>
       </div>
       <div className={classes.logo} onClick={() => Router.push("/")}>
         <Image width={200} height={140} src={logo} alt="logo" priority />

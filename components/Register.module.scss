@@ -12,13 +12,6 @@
   }
 }
 
-.formAction {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 12px 0px;
-}
-
 .input {
   margin: 12px 0;
 
@@ -26,6 +19,7 @@
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
+    align-items: center;
   }
 
   .label {
@@ -68,25 +62,4 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-}
-
-// input file
-label.file input[type="file"] {
-  position: absolute;
-  top: -1000px;
-}
-.file {
-  cursor: pointer;
-  border: 1px solid config.$purple;
-  padding: 8px;
-  color: config.$grey;
-  margin-bottom: 20px;
-  display: inline-block;
-  width: 100%;
-  height: 50px;
-  @include mixins.border-radius();
-}
-.file:hover {
-  color: config.$black;
-  border: 1px solid config.$black;
 }
