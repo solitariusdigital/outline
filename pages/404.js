@@ -1,5 +1,3 @@
-import { Fragment, useContext } from "react";
-import { StateContext } from "@/context/stateContext";
 import classes from "./home.module.scss";
 
 export default function NotFoundPage() {

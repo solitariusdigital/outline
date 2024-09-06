@@ -2,12 +2,8 @@ import { useState, createContext } from "react";
 export const StateContext = createContext();
 
 export const StateProvider = (props) => {
-  // application user context
   const [appUsers, setAppUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  const [menuMobile, setMenuMobile] = useState(false);
-
-  const [displayExpertise, setDisplayExpertise] = useState("فیلر");
   const [kavenegarKey, setKavenegarKey] = useState(
     "684E475442526B426237454A7836434D42394F3368324463527569754F4453616B386B2F573756303439413D"
   );
@@ -17,14 +13,10 @@ export const StateProvider = (props) => {
   const [selectDoctor, setSelectDoctor] = useState("");
 
   const stateContext = {
-    menuMobile,
-    setMenuMobile,
     currentUser,
     setCurrentUser,
     appUsers,
     setAppUsers,
-    displayExpertise,
-    setDisplayExpertise,
     kavenegarKey,
     setKavenegarKey,
     screenSize,

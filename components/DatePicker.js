@@ -90,7 +90,7 @@ export default function DatePicker({ visits }) {
       showAlert("موبایل اشتباه");
       return;
     }
-    // setDisableButton(true);
+    setDisableButton(true);
     let userId = await setUserId(phoneEnglish);
     // create a new visit object
     let visit = {

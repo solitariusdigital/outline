@@ -26,7 +26,11 @@ export function toEnglishNumber(number) {
     .join("");
 }
 
-// 0 for today / 1 for tomorrow
+export function isEnglishNumber(str) {
+  return Boolean(str.match(/^[A-Za-z0-9]*$/));
+}
+
+// 0 for today / 1 for tomorrow / 2 for afterTomorrow
 export function filterVisitsByDate(visits, offsetDays = 0) {
   // Get the date based on the offset in YYYY-MM-DD format in Tehran local time
   const targetDate = momentTimezone
@@ -52,8 +56,4 @@ export function convertPersianToGregorian(persianDate) {
     "jYYYY/jM/jD"
   ).toDate();
   return gregorianDate.toISOString();
-}
-
-export function isEnglishNumber(str) {
-  return Boolean(str.match(/^[A-Za-z0-9]*$/));
 }

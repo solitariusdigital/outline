@@ -14,10 +14,6 @@ export default function Booking({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
 
-  const margin = {
-    marginRight: "12px",
-  };
-
   useEffect(() => {
     const getCurrentUserVisits = async () => {
       if (currentUser && currentUser.permission === "patient") {
@@ -52,7 +48,6 @@ export default function Booking({ visits }) {
           <div className={classes.header}>
             <HomeIcon
               className="icon"
-              style={margin}
               onClick={() => Router.push("/")}
               sx={{ color: "#2d2b7f" }}
             />
