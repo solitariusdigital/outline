@@ -21,9 +21,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
 import { getVisitApi, updateVisitApi, getUserApi } from "@/services/api";
-import Kavenegar from "kavenegar";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import Kavenegar from "kavenegar";
 
 export default function Access({ visits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -39,7 +39,7 @@ export default function Access({ visits, users }) {
       "today" ||
       "tomorrow" ||
       "afterTomorrow" ||
-      "done" ||
+      "complete" ||
       "cancel"
   );
 
@@ -81,21 +81,35 @@ export default function Access({ visits, users }) {
     }
   };
 
-  const actionVisit = async (id, type) => {
+  const actionVisit = async (id, phone, time, type) => {
+    const api = Kavenegar.KavenegarApi({
+      apikey: kavenegarKey,
+    });
     const message = `${
-      type === "done" ? "تکمیل نوبت، مطمئنی؟" : "لغو نوبت، مطمئنی؟"
+      type === "complete" ? "تکمیل نوبت، مطمئنی؟" : "لغو نوبت، مطمئنی؟"
+    }`;
+    const template = `${
+      type === "complete" ? "completeOutline" : "cancelOutline"
     }`;
     const confirm = window.confirm(message);
     if (confirm) {
       let visitData = await getVisitApi(id);
       switch (type) {
-        case "done":
+        case "complete":
           visitData.completed = true;
           break;
         case "cancel":
           visitData.canceled = true;
           break;
       }
+      api.VerifyLookup(
+        {
+          receptor: phone,
+          token: time.split(" - ")[0].trim(),
+          template: template,
+        },
+        function (response, status) {}
+      );
       await updateVisitApi(visitData);
       router.replace(router.asPath);
     }
@@ -269,13 +283,15 @@ export default function Access({ visits, users }) {
                   </p>
                   <p
                     className={
-                      visitTypes === "done" ? classes.itemActive : classes.item
+                      visitTypes === "complete"
+                        ? classes.itemActive
+                        : classes.item
                     }
                     onClick={() => {
                       setFilterVisits(
                         displayVisits.filter((visit) => visit.completed)
                       );
-                      setVisitTypes("done");
+                      setVisitTypes("complete");
                       scrollToDiv();
                     }}
                   >
@@ -481,7 +497,14 @@ export default function Access({ visits, users }) {
                             <div
                               className={classes.row}
                               style={{ width: "70px" }}
-                              onClick={() => actionVisit(item["_id"], "done")}
+                              onClick={() =>
+                                actionVisit(
+                                  item["_id"],
+                                  item.user?.phone,
+                                  item.time,
+                                  "complete"
+                                )
+                              }
                             >
                               <TaskAltIcon
                                 className="icon"
@@ -491,7 +514,14 @@ export default function Access({ visits, users }) {
                             </div>
                             <div
                               style={{ width: "50px" }}
-                              onClick={() => actionVisit(item["_id"], "cancel")}
+                              onClick={() =>
+                                actionVisit(
+                                  item["_id"],
+                                  item.user?.phone,
+                                  item.time,
+                                  "cancel"
+                                )
+                              }
                               className={classes.row}
                             >
                               <CloseIcon

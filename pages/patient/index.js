@@ -14,14 +14,16 @@ import { convertDate, filterVisitsByDate } from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import { NextSeo } from "next-seo";
 import { getVisitApi, updateVisitApi } from "@/services/api";
+import Kavenegar from "kavenegar";
 
 export default function Patient({ user, visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
 
   const [visitTypes, setVisitTypes] = useState(
-    "active" || "tomorrow" || "afterTomorrow" || "done" || "cancel"
+    "active" || "tomorrow" || "afterTomorrow" || "complete" || "cancel"
   );
 
   const router = useRouter();
@@ -42,21 +44,35 @@ export default function Patient({ user, visits }) {
     }
   }, [visits]);
 
-  const actionVisit = async (id, type) => {
+  const actionVisit = async (id, phone, time, type) => {
+    const api = Kavenegar.KavenegarApi({
+      apikey: kavenegarKey,
+    });
     const message = `${
-      type === "done" ? "تکمیل نوبت، مطمئنی؟" : "لغو نوبت، مطمئنی؟"
+      type === "complete" ? "تکمیل نوبت، مطمئنی؟" : "لغو نوبت، مطمئنی؟"
+    }`;
+    const template = `${
+      type === "complete" ? "completeOutline" : "cancelOutline"
     }`;
     const confirm = window.confirm(message);
     if (confirm) {
       let visitData = await getVisitApi(id);
       switch (type) {
-        case "done":
+        case "complete":
           visitData.completed = true;
           break;
         case "cancel":
           visitData.canceled = true;
           break;
       }
+      api.VerifyLookup(
+        {
+          receptor: phone,
+          token: time.split(" - ")[0].trim(),
+          template: template,
+        },
+        function (response, status) {}
+      );
       await updateVisitApi(visitData);
       router.replace(router.asPath);
     }
@@ -184,13 +200,15 @@ export default function Patient({ user, visits }) {
                   </p>
                   <p
                     className={
-                      visitTypes === "done" ? classes.itemActive : classes.item
+                      visitTypes === "complete"
+                        ? classes.itemActive
+                        : classes.item
                     }
                     onClick={() => {
                       setFilterVisits(
                         displayVisits.filter((visit) => visit.completed)
                       );
-                      setVisitTypes("done");
+                      setVisitTypes("complete");
                     }}
                   >
                     نوبت تکمیل شده
@@ -283,7 +301,14 @@ export default function Patient({ user, visits }) {
                           <div
                             className={classes.row}
                             style={{ width: "70px" }}
-                            onClick={() => actionVisit(item["_id"], "done")}
+                            onClick={() =>
+                              actionVisit(
+                                item["_id"],
+                                user.phone,
+                                item.time,
+                                "complete"
+                              )
+                            }
                           >
                             <TaskAltIcon
                               className="icon"
@@ -294,7 +319,14 @@ export default function Patient({ user, visits }) {
                           <div
                             className={classes.row}
                             style={{ width: "50px" }}
-                            onClick={() => actionVisit(item["_id"], "cancel")}
+                            onClick={() =>
+                              actionVisit(
+                                item["_id"],
+                                user.phone,
+                                item.time,
+                                "cancel"
+                              )
+                            }
                           >
                             <CloseIcon
                               className="icon"
