@@ -9,6 +9,7 @@ import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import HomeIcon from "@mui/icons-material/Home";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
+import logo from "@/assets/logo.png";
 
 export default function Booking({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -36,11 +37,25 @@ export default function Booking({ visits }) {
       <NextSeo
         title="ثبت نوبت آنلاین"
         description="ثبت نوبت آنلاین"
+        canonical="https://outlinecommunity.com"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com",
+          title: "ثبت نوبت آنلاین",
+          description: "ثبت نوبت آنلاین",
           siteName: "Outline Community",
+          images: {
+            url: logo,
+            width: 1200,
+            height: 630,
+            alt: "اوت لاین",
+          },
+        }}
+        robotsProps={{
+          maxSnippet: -1,
+          maxImagePreview: "large",
+          maxVideoPreview: -1,
         }}
       />
       {currentUser ? (

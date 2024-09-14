@@ -41,11 +41,25 @@ export default function Home({ activeVisits }) {
       <NextSeo
         title="اوت لاین"
         description="کلینیک زیبایی"
+        canonical="https://outlinecommunity.com"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com",
+          title: "اوت لاین",
+          description: "کلینیک زیبایی",
           siteName: "Outline Community",
+          images: {
+            url: logo,
+            width: 1200,
+            height: 630,
+            alt: "اوت لاین",
+          },
+        }}
+        robotsProps={{
+          maxSnippet: -1,
+          maxImagePreview: "large",
+          maxVideoPreview: -1,
         }}
       />
       <section className={classes.container}>
