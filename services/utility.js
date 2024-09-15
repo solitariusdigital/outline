@@ -50,10 +50,13 @@ export function filterVisitsByDate(visits, offsetDays = 0) {
 
 export function convertPersianToGregorian(persianDate) {
   const { day, month, year } = persianDate;
-  // Convert Persian date to Gregorian date
-  const gregorianDate = moment(
-    `${year}/${month}/${day}`,
-    "jYYYY/jM/jD"
-  ).toDate();
-  return gregorianDate.toISOString();
+  return moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toISOString();
+}
+
+export function isSelectedDateFriday(persianDate) {
+  const { day, month, year } = persianDate;
+  return (
+    // 0 = Sunday, 1 = Monday, ..., 5 = Friday
+    moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() === 5
+  );
 }

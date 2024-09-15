@@ -4,6 +4,7 @@ import classes from "./DatePicker.module.scss";
 import {
   toFarsiNumber,
   convertPersianToGregorian,
+  isSelectedDateFriday,
   toEnglishNumber,
   isEnglishNumber,
 } from "@/services/utility";
@@ -43,18 +44,20 @@ export default function DatePicker({ visits }) {
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
 
   const originalTimes = {
-    "13:00": false,
-    "13:30": false,
-    "14:00": false,
-    "14:30": false,
-    "15:00": false,
-    "15:30": false,
-    "16:00": false,
-    "16:30": false,
-    "17:00": false,
-    "17:30": false,
-    "18:00": false,
+    "13:00": { active: false, count: 0 },
+    "13:30": { active: false, count: 0 },
+    "14:00": { active: false, count: 0 },
+    "14:30": { active: false, count: 0 },
+    "15:00": { active: false, count: 0 },
+    "15:30": { active: false, count: 0 },
+    "16:00": { active: false, count: 0 },
+    "16:30": { active: false, count: 0 },
+    "17:00": { active: false, count: 0 },
+    "17:30": { active: false, count: 0 },
+    "18:00": { active: false, count: 0 },
+    "18:30": { active: false, count: 0 },
   };
+
   const doctors = ["دکتر فراهانی", "دکتر گنجه"];
 
   const targetDivRef = useRef(null);
@@ -174,7 +177,8 @@ export default function DatePicker({ visits }) {
     updateDisplayTime(
       `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
         day.day
-      )}`
+      )}`,
+      isSelectedDateFriday(day)
     );
   };
 
@@ -183,9 +187,9 @@ export default function DatePicker({ visits }) {
     let gregorian = convertPersianToGregorian(day);
     setDateObject(gregorian);
     let updatedTime = { ...times };
-    Object.keys(times).forEach((item) =>
-      item === time ? (updatedTime[item] = true) : (updatedTime[item] = false)
-    );
+    Object.keys(times).forEach((item) => {
+      updatedTime[item].active = item === time;
+    });
     setTimes(updatedTime);
     setTime(time);
     setSelectedDate(
@@ -219,36 +223,44 @@ export default function DatePicker({ visits }) {
     setTimeCountPerDate(timeCountPerDate);
 
     // count dates based on fixed number
-    let fullDates = visits
-      .map((visit) => {
-        let dateString = visit.time.split(" - ")[0].trim();
-        if (dateCount[dateString] >= 28) {
-          const parts = dateString.split("/");
-          return {
-            year: parseInt(toEnglishNumber(parts[0]), 10), // Convert the year part to an integer
-            month: parseInt(toEnglishNumber(parts[1]), 10), // Convert the month part to an integer
-            day: parseInt(toEnglishNumber(parts[2]), 10), // Convert the day part to an integer
-          };
-        }
-      })
-      .filter((date) => date !== undefined); // Filter out undefined values
-    setDisabledDates(fullDates);
+    if (currentUser.permission === "patient") {
+      let fullDates = visits
+        .map((visit) => {
+          let dateString = visit.time.split(" - ")[0].trim();
+          if (dateCount[dateString] >= 36) {
+            const parts = dateString.split("/");
+            return {
+              year: parseInt(toEnglishNumber(parts[0]), 10), // Convert the year part to an integer
+              month: parseInt(toEnglishNumber(parts[1]), 10), // Convert the month part to an integer
+              day: parseInt(toEnglishNumber(parts[2]), 10), // Convert the day part to an integer
+            };
+          }
+        })
+        .filter((date) => date !== undefined); // Filter out undefined values
+      setDisabledDates(fullDates);
+    }
   };
 
-  const updateDisplayTime = (selectedDate) => {
-    let updatedTimes = { ...originalTimes }; // Start with the original times
+  const updateDisplayTime = (selectedDate, isSelectedDateFriday) => {
+    let timeToUse;
+    if (isSelectedDateFriday) {
+      timeToUse = Object.entries(originalTimes)
+        .slice(4)
+        .reduce((acc, [key, value]) => {
+          acc[key] = value; // Convert back to object
+          return acc;
+        }, {});
+    } else {
+      timeToUse = originalTimes;
+    }
+    let updatedTimes = { ...timeToUse };
     Object.keys(timeCountPerDate).forEach((date) => {
       if (date === selectedDate) {
         Object.keys(timeCountPerDate[date]).forEach((time) => {
-          const lastTwoChars = time.slice(-2);
           const timeCount = timeCountPerDate[date][time];
-          if (lastTwoChars === "00" && timeCount >= 3) {
-            // Remove the time from the updated times object
-            delete updatedTimes[time]; // Remove the specific time
-          }
-          if (lastTwoChars === "30" && timeCount >= 2) {
-            // Remove the time from the updated times object
-            delete updatedTimes[time]; // Remove the specific time
+          updatedTimes[time].count = timeCountPerDate[date][time];
+          if (currentUser.permission === "patient" && timeCount >= 3) {
+            delete updatedTimes[time];
           }
         });
       }
@@ -274,15 +286,19 @@ export default function DatePicker({ visits }) {
       />
       <div className={classes.timeContainer}>
         {Object.keys(times).map((time, index) => (
-          <p
-            key={index}
-            className={times[time] ? classes.activeTime : classes.time}
-            onClick={() => displayDate(time)}
-          >
-            {toFarsiNumber(time).slice(0, 2) +
-              ":" +
-              toFarsiNumber(time).slice(2)}
-          </p>
+          <div key={index} className={classes.timeBox}>
+            {currentUser.permission === "admin" && (
+              <p className={classes.count}>{times[time]["count"]}</p>
+            )}
+            <p
+              className={times[time].active ? classes.activeTime : classes.time}
+              onClick={() => displayDate(time)}
+            >
+              {toFarsiNumber(time).slice(0, 2) +
+                ":" +
+                toFarsiNumber(time).slice(2)}
+            </p>
+          </div>
         ))}
       </div>
       <div className={classes.input} ref={targetDivRef}>
