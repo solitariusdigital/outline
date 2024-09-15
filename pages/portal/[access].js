@@ -167,7 +167,7 @@ export default function Access({ visits, users }) {
             url: logo,
             width: 1200,
             height: 630,
-            alt: "اوت لاین",
+            alt: "اوت‌لاین",
           },
         }}
         robotsProps={{

@@ -39,21 +39,21 @@ export default function Home({ activeVisits }) {
   return (
     <Fragment>
       <NextSeo
-        title="اوت لاین"
+        title="اوت‌لاین"
         description="کلینیک زیبایی"
         canonical="https://outlinecommunity.com"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com",
-          title: "اوت لاین",
+          title: "اوت‌لاین",
           description: "کلینیک زیبایی",
           siteName: "Outline Community",
           images: {
             url: logo,
             width: 1200,
             height: 630,
-            alt: "اوت لاین",
+            alt: "اوت‌لاین",
           },
         }}
         robotsProps={{

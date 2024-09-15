@@ -49,7 +49,7 @@ export default function Booking({ visits }) {
             url: logo,
             width: 1200,
             height: 630,
-            alt: "اوت لاین",
+            alt: "اوت‌لاین",
           },
         }}
         robotsProps={{
