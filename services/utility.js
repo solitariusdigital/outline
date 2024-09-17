@@ -60,3 +60,11 @@ export function isSelectedDateFriday(persianDate) {
     moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() === 5
   );
 }
+
+export function isNotThursday(persianDate) {
+  const { day, month, year } = persianDate;
+  return (
+    // 0 = Sunday, 1 = Monday, ..., 5 = Friday
+    moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() !== 4
+  );
+}

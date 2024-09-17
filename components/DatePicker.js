@@ -7,6 +7,7 @@ import {
   isSelectedDateFriday,
   toEnglishNumber,
   isEnglishNumber,
+  isNotThursday,
 } from "@/services/utility";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
@@ -24,7 +25,6 @@ export default function DatePicker({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
-
   const [name, setName] = useState(
     currentUser.permission === "admin" ? "" : currentUser.name
   );
@@ -36,7 +36,6 @@ export default function DatePicker({ visits }) {
   const [time, setTime] = useState("");
   const [dateObject, setDateObject] = useState("");
   const [disabledDates, setDisabledDates] = useState([]);
-
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -60,15 +59,15 @@ export default function DatePicker({ visits }) {
 
   const doctors = ["دکتر فراهانی", "دکتر گنجه"];
 
-  const targetDivRef = useRef(null);
+  const targetInputBox = useRef(null);
 
   useEffect(() => {
     countFullDateTime();
   }, []);
 
-  const scrollToDiv = () => {
-    if (targetDivRef.current) {
-      targetDivRef.current.scrollIntoView({ behavior: "smooth" });
+  const scrollToDivInputBox = () => {
+    if (targetInputBox.current) {
+      targetInputBox.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -178,12 +177,13 @@ export default function DatePicker({ visits }) {
       `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
         day.day
       )}`,
-      isSelectedDateFriday(day)
+      isSelectedDateFriday(day),
+      isNotThursday(day)
     );
   };
 
   const displayDate = (time) => {
-    scrollToDiv();
+    scrollToDivInputBox();
     let gregorian = convertPersianToGregorian(day);
     setDateObject(gregorian);
     let updatedTime = { ...times };
@@ -241,7 +241,15 @@ export default function DatePicker({ visits }) {
     }
   };
 
-  const updateDisplayTime = (selectedDate, isSelectedDateFriday) => {
+  const updateDisplayTime = (
+    selectedDate,
+    isSelectedDateFriday,
+    isNotThursday
+  ) => {
+    if (selectDoctor === "دکتر گنجه" && isNotThursday) {
+      setTimes({});
+      return;
+    }
     let timeToUse;
     if (isSelectedDateFriday) {
       timeToUse = Object.entries(originalTimes)
@@ -276,6 +284,27 @@ export default function DatePicker({ visits }) {
 
   return (
     <div className={classes.container}>
+      <div className={classes.input}>
+        <select
+          defaultValue={"default"}
+          onChange={(e) => {
+            setSelectDoctor(e.target.value);
+            setSelectedDate("");
+            setTimes({});
+          }}
+        >
+          <option value="default" disabled>
+            {selectDoctor ? selectDoctor : "انتخاب دکتر"}
+          </option>
+          {doctors.map((doctor, index) => {
+            return (
+              <option key={index} value={doctor}>
+                {doctor}
+              </option>
+            );
+          })}
+        </select>
+      </div>
       <Calendar
         value={day}
         onChange={(day) => assingDay(day)}
@@ -301,7 +330,12 @@ export default function DatePicker({ visits }) {
           </div>
         ))}
       </div>
-      <div className={classes.input} ref={targetDivRef}>
+      {day && selectDoctor === "دکتر گنجه" && isNotThursday(day) && (
+        <p className={classes.message}>
+          نوبت با دکتر گنجه روزهای <span>پنجشنبه</span> فراهم است
+        </p>
+      )}
+      <div className={classes.input} ref={targetInputBox}>
         <div className={classes.bar}>
           <p className={classes.label}>
             نام
@@ -348,27 +382,6 @@ export default function DatePicker({ visits }) {
             />
           </Fragment>
         )}
-        <div className={classes.bar}>
-          <p className={classes.label}>
-            دکتر
-            <span>*</span>
-          </p>
-        </div>
-        <select
-          defaultValue={"default"}
-          onChange={(e) => setSelectDoctor(e.target.value)}
-        >
-          <option value="default" disabled>
-            {selectDoctor ? selectDoctor : "انتخاب"}
-          </option>
-          {doctors.map((doctor, index) => {
-            return (
-              <option key={index} value={doctor}>
-                {doctor}
-              </option>
-            );
-          })}
-        </select>
         <div className={classes.bar}>
           <p className={classes.label}>
             موضوع نوبت
