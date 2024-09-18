@@ -7,7 +7,7 @@ import Person4Icon from "@mui/icons-material/Person4";
 import HomeIcon from "@mui/icons-material/Home";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import Router from "next/router";
-import ContentCutIcon from "@mui/icons-material/ContentCut";
+import ModeIcon from "@mui/icons-material/Mode";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import userModel from "@/models/User";
@@ -502,7 +502,7 @@ export default function Access({ visits, users }) {
                               marginTop: "8px",
                             }}
                           >
-                            <ContentCutIcon
+                            <ModeIcon
                               className="icon"
                               sx={{ fontSize: 20, color: "#2d2b7f" }}
                               onClick={() =>

@@ -154,13 +154,6 @@ export default function DatePicker({ visits }) {
     }
   };
 
-  const showAlert = (message) => {
-    setAlert(message);
-    setTimeout(() => {
-      setAlert("");
-    }, 3000);
-  };
-
   const resetTime = () => {
     let updatedTime = { ...times };
     Object.keys(updatedTime).forEach((v) => (updatedTime[v] = false));
@@ -282,6 +275,13 @@ export default function DatePicker({ visits }) {
     return `${toEnglishNumber(splitTime[0])}:${toEnglishNumber(splitTime[1])}`;
   };
 
+  const showAlert = (message) => {
+    setAlert(message);
+    setTimeout(() => {
+      setAlert("");
+    }, 3000);
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.input}>
@@ -290,6 +290,7 @@ export default function DatePicker({ visits }) {
           onChange={(e) => {
             setSelectDoctor(e.target.value);
             setSelectedDate("");
+            setDay(null);
             setTimes({});
           }}
         >
@@ -313,6 +314,11 @@ export default function DatePicker({ visits }) {
         locale="fa"
         disabledDays={disabledDates}
       />
+      {day && currentUser.permission === "admin" && (
+        <h3 className={classes.totalCount}>
+          {Object.values(times).reduce((acc, time) => acc + time.count, 0)}
+        </h3>
+      )}
       <div className={classes.timeContainer}>
         {Object.keys(times).map((time, index) => (
           <div key={index} className={classes.timeBox}>

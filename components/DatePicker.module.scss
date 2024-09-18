@@ -69,6 +69,11 @@
     }
   }
 
+  .totalCount {
+    color: config.$blue;
+    margin-top: 20px;
+  }
+
   .time,
   .activeTime {
     padding: 8px;
