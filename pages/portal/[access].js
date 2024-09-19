@@ -496,10 +496,20 @@ export default function Access({ visits, activeVisits, users }) {
                 visitTypes === "tomorrow" ||
                 visitTypes === "afterTomorrow") && (
                 <div className={classes.buttonContainer}>
-                  <button onClick={() => filterDoctorsVisits("دکتر فراهانی")}>
+                  <button
+                    onClick={() => {
+                      filterDoctorsVisits("دکتر فراهانی");
+                      scrollToDiv();
+                    }}
+                  >
                     لیست فراهانی
                   </button>
-                  <button onClick={() => filterDoctorsVisits("دکتر گنجه")}>
+                  <button
+                    onClick={() => {
+                      filterDoctorsVisits("دکتر گنجه");
+                      scrollToDiv();
+                    }}
+                  >
                     لیست گنجه
                   </button>
                 </div>
