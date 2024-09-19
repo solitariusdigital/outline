@@ -35,7 +35,6 @@ export default function DatePicker({ visits }) {
   const [day, setDay] = useState(null);
   const [time, setTime] = useState("");
   const [dateObject, setDateObject] = useState("");
-  const [disabledDates, setDisabledDates] = useState([]);
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -62,7 +61,7 @@ export default function DatePicker({ visits }) {
   const targetInputBox = useRef(null);
 
   useEffect(() => {
-    countFullDateTime();
+    countFullDateTime(selectDoctor);
   }, []);
 
   const scrollToDivInputBox = () => {
@@ -76,8 +75,8 @@ export default function DatePicker({ visits }) {
       showAlert("روز و زمان الزامیست");
       return;
     }
-    if (!name || !title || !selectDoctor) {
-      showAlert("همه موارد الزامیست");
+    if (!name || !selectDoctor) {
+      showAlert("نام و موبایل الزامیست");
       return;
     }
     if (currentUser.permission === "admin" && !phone) {
@@ -96,7 +95,7 @@ export default function DatePicker({ visits }) {
     let userId = await setUserId(phoneEnglish);
     // create a new visit object
     let visit = {
-      title: title,
+      title: title ? title : "-",
       userId: userId,
       doctor: selectDoctor,
       time: selectedDate,
@@ -130,7 +129,7 @@ export default function DatePicker({ visits }) {
       userData = users.find((user) => user.phone === phoneEnglish);
       if (!userData) {
         const user = {
-          name: name,
+          name: name.trim(),
           phone: phoneEnglish,
           permission: "patient",
         };
@@ -195,43 +194,26 @@ export default function DatePicker({ visits }) {
   };
 
   // Count occurrences of each date and time
-  const countFullDateTime = () => {
+  const countFullDateTime = (selectDoctor) => {
     const dateCount = {};
     const timeCountPerDate = {};
-
-    visits.forEach((visit) => {
-      let dateString = visit.time.split(" - ")[0].trim();
-      let timeString = visit.time.split(" - ")[1].trim();
-      // Count occurrences of dates
-      dateCount[dateString] = (dateCount[dateString] || 0) + 1;
-      // Initialize time count for the specific date
-      if (!timeCountPerDate[dateString]) {
-        timeCountPerDate[dateString] = {};
-      }
-      // Count occurrences of times for the specific date
-      timeCountPerDate[dateString][convertFullTimeToEnglish(timeString)] =
-        (timeCountPerDate[dateString][convertFullTimeToEnglish(timeString)] ||
-          0) + 1;
-    });
+    visits
+      .filter((visit) => visit.doctor === selectDoctor)
+      .forEach((visit) => {
+        let dateString = visit.time.split(" - ")[0].trim();
+        let timeString = visit.time.split(" - ")[1].trim();
+        // Count occurrences of dates
+        dateCount[dateString] = (dateCount[dateString] || 0) + 1;
+        // Initialize time count for the specific date
+        if (!timeCountPerDate[dateString]) {
+          timeCountPerDate[dateString] = {};
+        }
+        // Count occurrences of times for the specific date
+        timeCountPerDate[dateString][convertFullTimeToEnglish(timeString)] =
+          (timeCountPerDate[dateString][convertFullTimeToEnglish(timeString)] ||
+            0) + 1;
+      });
     setTimeCountPerDate(timeCountPerDate);
-
-    // count dates based on fixed number
-    if (currentUser.permission === "patient") {
-      let fullDates = visits
-        .map((visit) => {
-          let dateString = visit.time.split(" - ")[0].trim();
-          if (dateCount[dateString] >= 36) {
-            const parts = dateString.split("/");
-            return {
-              year: parseInt(toEnglishNumber(parts[0]), 10), // Convert the year part to an integer
-              month: parseInt(toEnglishNumber(parts[1]), 10), // Convert the month part to an integer
-              day: parseInt(toEnglishNumber(parts[2]), 10), // Convert the day part to an integer
-            };
-          }
-        })
-        .filter((date) => date !== undefined); // Filter out undefined values
-      setDisabledDates(fullDates);
-    }
   };
 
   const updateDisplayTime = (
@@ -289,6 +271,7 @@ export default function DatePicker({ visits }) {
           defaultValue={"default"}
           onChange={(e) => {
             setSelectDoctor(e.target.value);
+            countFullDateTime(e.target.value);
             setSelectedDate("");
             setDay(null);
             setTimes({});
@@ -306,14 +289,15 @@ export default function DatePicker({ visits }) {
           })}
         </select>
       </div>
-      <Calendar
-        value={day}
-        onChange={(day) => assingDay(day)}
-        shouldHighlightWeekends
-        minimumDate={utils("fa").getToday()}
-        locale="fa"
-        disabledDays={disabledDates}
-      />
+      {selectDoctor && (
+        <Calendar
+          value={day}
+          onChange={(day) => assingDay(day)}
+          shouldHighlightWeekends
+          minimumDate={utils("fa").getToday()}
+          locale="fa"
+        />
+      )}
       {day && currentUser.permission === "admin" && (
         <h3 className={classes.totalCount}>
           {Object.values(times).reduce((acc, time) => acc + time.count, 0)}
@@ -336,88 +320,105 @@ export default function DatePicker({ visits }) {
           </div>
         ))}
       </div>
-      {day && selectDoctor === "دکتر گنجه" && isNotThursday(day) && (
-        <p className={classes.message}>
-          نوبت با دکتر گنجه روزهای <span>پنجشنبه</span> فراهم است
-        </p>
+      {day && Object.keys(times).length === 0 && (
+        <Fragment>
+          {selectDoctor === "دکتر فراهانی" && (
+            <p className={classes.message}>
+              نوبت در این روز پر است. روز دیگر انتخاب کنید
+            </p>
+          )}
+          {selectDoctor === "دکتر گنجه" && !isNotThursday(day) && (
+            <p className={classes.message}>
+              نوبت در این روز پر است. روز دیگر انتخاب کنید
+            </p>
+          )}
+          {selectDoctor === "دکتر گنجه" && isNotThursday(day) && (
+            <p className={classes.message}>
+              نوبت با دکتر گنجه روزهای پنجشنبه فراهم است
+            </p>
+          )}
+        </Fragment>
       )}
-      <div className={classes.input} ref={targetInputBox}>
-        <div className={classes.bar}>
-          <p className={classes.label}>
-            نام
-            <span>*</span>
-          </p>
-          <CloseIcon
-            className="icon"
-            onClick={() => setName("")}
-            sx={{ fontSize: 16 }}
-          />
-        </div>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          autoComplete="off"
-          dir="rtl"
-        />
-        {currentUser.permission === "admin" && (
-          <Fragment>
+      {selectDoctor && (
+        <Fragment>
+          <div className={classes.input} ref={targetInputBox}>
             <div className={classes.bar}>
               <p className={classes.label}>
-                موبایل
+                نام
                 <span>*</span>
               </p>
               <CloseIcon
                 className="icon"
-                onClick={() => setPhone("")}
+                onClick={() => setName("")}
                 sx={{ fontSize: 16 }}
               />
             </div>
             <input
-              placeholder="09123456789"
-              type="tel"
-              id="phone"
-              name="phone"
-              onChange={(e) => setPhone(e.target.value)}
-              maxLength={11}
-              value={phone}
+              type="text"
+              id="name"
+              name="name"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
               autoComplete="off"
               dir="rtl"
             />
-          </Fragment>
-        )}
-        <div className={classes.bar}>
-          <p className={classes.label}>
-            موضوع نوبت
-            <span>*</span>
-          </p>
-          <CloseIcon
-            className="icon"
-            onClick={() => setTitle("")}
-            sx={{ fontSize: 16 }}
-          />
-        </div>
-        <input
-          placeholder="بوتاکس"
-          type="text"
-          id="title"
-          name="title"
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-          autoComplete="off"
-          dir="rtl"
-        />
-      </div>
-      {selectedDate && <p className={classes.message}>{selectedDate} ساعت</p>}
-      <button
-        className={classes.button}
-        disabled={disableButton}
-        onClick={() => createVisit()}
-      >
-        ثبت نوبت
-      </button>
+            {currentUser.permission === "admin" && (
+              <Fragment>
+                <div className={classes.bar}>
+                  <p className={classes.label}>
+                    موبایل
+                    <span>*</span>
+                  </p>
+                  <CloseIcon
+                    className="icon"
+                    onClick={() => setPhone("")}
+                    sx={{ fontSize: 16 }}
+                  />
+                </div>
+                <input
+                  placeholder="09123456789"
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  onChange={(e) => setPhone(e.target.value)}
+                  maxLength={11}
+                  value={phone}
+                  autoComplete="off"
+                  dir="rtl"
+                />
+              </Fragment>
+            )}
+            <div className={classes.bar}>
+              <p className={classes.label}>موضوع اختیاری</p>
+              <CloseIcon
+                className="icon"
+                onClick={() => setTitle("")}
+                sx={{ fontSize: 16 }}
+              />
+            </div>
+            <input
+              placeholder="بوتاکس"
+              type="text"
+              id="title"
+              name="title"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+              autoComplete="off"
+              dir="rtl"
+            />
+          </div>
+          {selectedDate && (
+            <p className={classes.message}>{selectedDate} ساعت</p>
+          )}
+          <button
+            className={classes.button}
+            disabled={disableButton}
+            onClick={() => createVisit()}
+          >
+            ثبت نوبت
+          </button>
+        </Fragment>
+      )}
       {alert && <p className="alert">{alert}</p>}
     </div>
   );

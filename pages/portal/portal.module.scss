@@ -46,6 +46,27 @@
     }
   }
 
+  .doctors {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 20px;
+
+    @include mixins.mobile {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    button {
+      @include mixins.button(config.$white, config.$white, config.$blue);
+      border: 1px solid config.$blue;
+      width: 45%;
+    }
+  }
+
   .button {
     margin: 20px 0px;
 

@@ -150,6 +150,40 @@ export default function Access({ visits, users }) {
     }
   };
 
+  const filterDoctorsVisits = (doctor) => {
+    switch (visitTypes) {
+      case "active":
+        setFilterVisits(
+          displayVisits.filter(
+            (visit) =>
+              visit.doctor === doctor && !visit.completed && !visit.canceled
+          )
+        );
+        break;
+      case "today":
+        setFilterVisits(
+          filterVisitsByDate(displayVisits).filter(
+            (visit) => visit.doctor === doctor
+          )
+        );
+        break;
+      case "tomorrow":
+        setFilterVisits(
+          filterVisitsByDate(displayVisits, 1).filter(
+            (visit) => visit.doctor === doctor
+          )
+        );
+        break;
+      case "afterTomorrow":
+        setFilterVisits(
+          filterVisitsByDate(displayVisits, 2).filter(
+            (visit) => visit.doctor === doctor
+          )
+        );
+        break;
+    }
+  };
+
   return (
     <Fragment>
       <NextSeo
@@ -365,10 +399,24 @@ export default function Access({ visits, users }) {
                   </button>
                 </div>
               )}
+            {currentUser.permission === "admin" &&
+              (visitTypes === "active" ||
+                visitTypes === "today" ||
+                visitTypes === "tomorrow" ||
+                visitTypes === "afterTomorrow") && (
+                <div className={classes.doctors}>
+                  <button onClick={() => filterDoctorsVisits("دکتر گنجه")}>
+                    لیست گنجه
+                  </button>
+                  <button onClick={() => filterDoctorsVisits("دکتر فراهانی")}>
+                    لیست فراهانی
+                  </button>
+                </div>
+              )}
             {visitTypes === "all" && (
               <div className={classes.input}>
                 <div className={classes.bar}>
-                  <p className={classes.label}>جستجو بیمار</p>
+                  <p className={classes.label}>جستجو</p>
                   <CloseIcon
                     className="icon"
                     onClick={() => {
@@ -576,6 +624,7 @@ export async function getServerSideProps(context) {
         visits = await visitModel.find();
         break;
     }
+
     visits
       .sort((a, b) => new Date(a.date) - new Date(b.date))
       .sort((a, b) => a.completed - b.completed)
