@@ -152,8 +152,8 @@ export default function Register() {
   return (
     <Fragment>
       <div className={classes.form}>
-        <h2>پورتال اوت لاین</h2>
-        <h3 className="message">ثبت نوبت آنلاین</h3>
+        <h2>پورتال اوت‌لاین</h2>
+        <h4>ثبت نوبت آنلاین</h4>
         <div className={classes.input}>
           <div className={classes.bar}>
             <p className={classes.label}>

@@ -46,7 +46,7 @@
     }
   }
 
-  .doctors {
+  .buttonContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -65,14 +65,22 @@
       border: 1px solid config.$blue;
       width: 45%;
     }
+
+    .book {
+      @include mixins.button(config.$blue, config.$blue, config.$white);
+      width: 45%;
+    }
   }
 
-  .button {
-    margin: 20px 0px;
+  .message {
+    margin-bottom: 16px;
 
-    button {
-      @include mixins.button(config.$blue, config.$blue, config.$white);
-      margin: auto;
+    .text {
+      color: config.$grey;
+    }
+    .call {
+      color: config.$blue;
+      font-weight: bold;
     }
   }
 

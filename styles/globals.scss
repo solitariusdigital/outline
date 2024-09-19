@@ -57,15 +57,10 @@ p {
   color: config.$blue;
 }
 
-.alert,
-.message {
+.alert {
   text-align: center;
   color: config.$red;
   margin: 16px 0px;
-}
-
-.message {
-  color: config.$grey;
 }
 
 .register {

@@ -375,21 +375,42 @@ export default function Access({ visits, users }) {
             </div>
             {currentUser.permission === "admin" ||
             displayVisits.filter((visit) => !visit.completed && !visit.canceled)
-              .length < 1 ? (
-              <div className={classes.button}>
+              .length === 0 ? (
+              <div className={classes.buttonContainer}>
                 <button
+                  className={classes.book}
                   onClick={() => {
                     Router.push("/booking");
-                    setSelectDoctor("");
+                    setSelectDoctor("دکتر گنجه");
                   }}
                 >
-                  ثبت نوبت آنلاین
+                  دکتر گنجه
+                </button>
+                <button
+                  className={classes.book}
+                  onClick={() => {
+                    Router.push("/booking");
+                    setSelectDoctor("دکتر فراهانی");
+                  }}
+                >
+                  دکتر فراهانی
                 </button>
               </div>
             ) : (
-              <p className="message">
-                شما یک نوبت فعال دارید و نمی‌توانید نوبت جدید ثبت کنید
-              </p>
+              <div className={classes.message}>
+                <p className={classes.text}>شما یک نوبت فعال دارید</p>
+                <p className={classes.text}>و نمی‌توانید نوبت جدید ثبت کنید</p>
+                <p className={classes.text}>
+                  برای تغییر نوبت{" "}
+                  <span
+                    className={classes.call}
+                    onClick={() => window.open("tel:+989106100914", "_self")}
+                  >
+                    تماس
+                  </span>{" "}
+                  بگیرید
+                </p>
+              </div>
             )}
             {currentUser.permission === "admin" &&
               visitTypes === "afterTomorrow" && (
@@ -404,7 +425,7 @@ export default function Access({ visits, users }) {
                 visitTypes === "today" ||
                 visitTypes === "tomorrow" ||
                 visitTypes === "afterTomorrow") && (
-                <div className={classes.doctors}>
+                <div className={classes.buttonContainer}>
                   <button onClick={() => filterDoctorsVisits("دکتر گنجه")}>
                     لیست گنجه
                   </button>
