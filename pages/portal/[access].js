@@ -26,13 +26,15 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Kavenegar from "kavenegar";
 import logo from "@/assets/logo.png";
 
-export default function Access({ visits, users }) {
+export default function Access({ visits, activeVisits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
+  const { notification, setNotification } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
   const [phone, setPhone] = useState("");
+  const [disableButton, setDisableButton] = useState(false);
   const [expandedItem, setExpandedItem] = useState(null);
   const [visitTypes, setVisitTypes] = useState(
     "all" ||
@@ -72,8 +74,16 @@ export default function Access({ visits, users }) {
     setVisitTypes("active");
   }, [currentUser, visits]);
 
+  useEffect(() => {
+    setNotification(checkAllVisitsForPast(activeVisits));
+  }, []);
+
   const margin = {
     marginBottom: "8px",
+  };
+  const canceleStyle = {
+    border: "1px solid #d40d12",
+    borderRadius: "12px",
   };
 
   const scrollToDiv = () => {
@@ -184,6 +194,63 @@ export default function Access({ visits, users }) {
     }
   };
 
+  const getCurrentDate = () => {
+    // Get current time in Tehran
+    const tehranTime = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Tehran",
+    });
+    const currentDate = new Date(tehranTime);
+    // Set the current date to midnight to only compare dates
+    currentDate.setHours(0, 0, 0, 0);
+    return currentDate;
+  };
+
+  const checkAllVisitsForPast = (activeVisits) => {
+    let currentDate = getCurrentDate();
+    return activeVisits.some((visit) => {
+      const visitDate = new Date(visit.date);
+      // Set the visit date to midnight for comparison
+      visitDate.setHours(0, 0, 0, 0);
+      // Check if the visit date is older than today and not completed or canceled
+      return visitDate < currentDate;
+    });
+  };
+
+  const checkEachVisitForPast = (index) => {
+    let currentDate = getCurrentDate();
+    const visit = filterVisits[index];
+    const visitDate = new Date(visit.date);
+    visitDate.setHours(0, 0, 0, 0);
+    return visitDate < currentDate;
+  };
+
+  const cancelAllPastVisits = () => {
+    setDisableButton(true);
+    let currentDate = getCurrentDate();
+    const api = Kavenegar.KavenegarApi({
+      apikey: kavenegarKey,
+    });
+    const confirmationMessage = " لغو نوبت‌های گذشته، مطمئنی؟";
+    const confirm = window.confirm(confirmationMessage);
+    if (confirm) {
+      displayVisits
+        .filter((visit) => !visit.completed && !visit.canceled)
+        .forEach(async (visit) => {
+          const visitDate = new Date(visit.date);
+          if (visitDate < currentDate) {
+            visit.canceled = true;
+            await updateVisitApi(visit);
+            api.VerifyLookup({
+              receptor: visit.user.phone,
+              token: visit.time.split(" - ")[0].trim(),
+              template: "cancelOutline",
+            });
+          }
+        });
+      router.reload();
+    }
+  };
+
   return (
     <Fragment>
       <NextSeo
@@ -212,6 +279,16 @@ export default function Access({ visits, users }) {
       />
       {currentUser && (
         <div className={classes.container}>
+          {currentUser.permission === "admin" && notification && (
+            <div className={classes.notification}>
+              <button
+                disabled={disableButton}
+                onClick={() => cancelAllPastVisits()}
+              >
+                نوبت از روز قبل فعال
+              </button>
+            </div>
+          )}
           <div className={classes.header}>
             <HomeIcon onClick={() => Router.push("/")} className="icon" />
             <h3>{currentUser.name ? currentUser.name : currentUser.phone}</h3>
@@ -381,19 +458,19 @@ export default function Access({ visits, users }) {
                   className={classes.book}
                   onClick={() => {
                     Router.push("/booking");
-                    setSelectDoctor("دکتر گنجه");
+                    setSelectDoctor("دکتر فراهانی");
                   }}
                 >
-                  دکتر گنجه
+                  دکتر فراهانی
                 </button>
                 <button
                   className={classes.book}
                   onClick={() => {
                     Router.push("/booking");
-                    setSelectDoctor("دکتر فراهانی");
+                    setSelectDoctor("دکتر گنجه");
                   }}
                 >
-                  دکتر فراهانی
+                  دکتر گنجه
                 </button>
               </div>
             ) : (
@@ -413,24 +490,24 @@ export default function Access({ visits, users }) {
               </div>
             )}
             {currentUser.permission === "admin" &&
-              visitTypes === "afterTomorrow" && (
-                <div className={classes.button}>
-                  <button onClick={() => sendTomorrowReminder()}>
-                    پیام یادآوری گروهی
-                  </button>
-                </div>
-              )}
-            {currentUser.permission === "admin" &&
               (visitTypes === "active" ||
                 visitTypes === "today" ||
                 visitTypes === "tomorrow" ||
                 visitTypes === "afterTomorrow") && (
                 <div className={classes.buttonContainer}>
+                  <button onClick={() => filterDoctorsVisits("دکتر فراهانی")}>
+                    لیست فراهانی
+                  </button>
                   <button onClick={() => filterDoctorsVisits("دکتر گنجه")}>
                     لیست گنجه
                   </button>
-                  <button onClick={() => filterDoctorsVisits("دکتر فراهانی")}>
-                    لیست فراهانی
+                </div>
+              )}
+            {currentUser.permission === "admin" &&
+              visitTypes === "afterTomorrow" && (
+                <div className={classes.buttonContainer}>
+                  <button onClick={() => sendTomorrowReminder()}>
+                    پیام یادآوری گروهی
                   </button>
                 </div>
               )}
@@ -472,7 +549,15 @@ export default function Access({ visits, users }) {
             )}
             <div className={classes.table} ref={targetDivRef}>
               {filterVisits.map((item, index) => (
-                <div className={classes.item} key={index}>
+                <div
+                  className={classes.item}
+                  key={index}
+                  style={
+                    checkEachVisitForPast(index) && visitTypes === "active"
+                      ? canceleStyle
+                      : {}
+                  }
+                >
                   <div className={classes.row} style={margin}>
                     {currentUser.permission === "admin" && (
                       <p
@@ -637,12 +722,17 @@ export async function getServerSideProps(context) {
 
     const users = await userModel.find();
     let visits = null;
+    let activeVisits = null;
+
     switch (permission) {
       case "patient":
         visits = await visitModel.find({ userId: id });
         break;
       case "admin":
         visits = await visitModel.find();
+        activeVisits = visits.filter(
+          (visit) => !visit.completed && !visit.canceled
+        );
         break;
     }
 
@@ -654,6 +744,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         visits: JSON.parse(JSON.stringify(visits)),
+        activeVisits: JSON.parse(JSON.stringify(activeVisits)),
         users: JSON.parse(JSON.stringify(users)),
       },
     };

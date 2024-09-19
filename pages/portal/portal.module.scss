@@ -46,9 +46,16 @@
     }
   }
 
+  .notification {
+    margin-bottom: 20px;
+    button {
+      @include mixins.button(config.$red, config.$red, config.$white);
+    }
+  }
+
   .buttonContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: space-between;
     margin: auto;
     width: 100%;

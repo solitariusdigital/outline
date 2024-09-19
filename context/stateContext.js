@@ -11,6 +11,7 @@ export const StateProvider = (props) => {
     "desktop" || "tablet" || "mobile"
   );
   const [selectDoctor, setSelectDoctor] = useState("");
+  const [notification, setNotification] = useState(false);
 
   const stateContext = {
     currentUser,
@@ -23,6 +24,8 @@ export const StateProvider = (props) => {
     setScreenSize,
     selectDoctor,
     setSelectDoctor,
+    notification,
+    setNotification,
   };
   return (
     <StateContext.Provider value={stateContext}>
