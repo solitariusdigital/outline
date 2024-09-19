@@ -248,6 +248,8 @@ export default function Access({ visits, activeVisits, users }) {
           }
         });
       router.reload();
+    } else {
+      setDisableButton(false);
     }
   };
 
