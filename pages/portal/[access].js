@@ -239,12 +239,12 @@ export default function Access({ visits, activeVisits, users }) {
           const visitDate = new Date(visit.date);
           if (visitDate < currentDate) {
             visit.canceled = true;
-            await updateVisitApi(visit);
             api.VerifyLookup({
               receptor: visit.user.phone,
               token: visit.time.split(" - ")[0].trim(),
               template: "cancelOutline",
             });
+            await updateVisitApi(visit);
           }
         });
       router.reload();
@@ -285,7 +285,7 @@ export default function Access({ visits, activeVisits, users }) {
                 disabled={disableButton}
                 onClick={() => cancelAllPastVisits()}
               >
-                نوبت از روز قبل فعال
+                نوبت روز قبل فعال
               </button>
             </div>
           )}
@@ -303,8 +303,7 @@ export default function Access({ visits, activeVisits, users }) {
                     {
                       users.filter((user) => user.permission === "patient")
                         .length
-                    }{" "}
-                    / {displayVisits.length}
+                    }
                   </p>
                   <p
                     className={
@@ -316,7 +315,7 @@ export default function Access({ visits, activeVisits, users }) {
                       scrollToDiv();
                     }}
                   >
-                    نوبت‌ها / بیمارها
+                    بیمارها
                   </p>
                 </div>
               )}
