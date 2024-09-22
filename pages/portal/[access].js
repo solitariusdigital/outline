@@ -194,6 +194,36 @@ export default function Access({ visits, activeVisits, users }) {
     }
   };
 
+  const filterDisplayVisits = (type) => {
+    setVisitTypes(type);
+    scrollToDiv();
+    switch (type) {
+      case "all":
+        setFilterVisits(displayVisits);
+        break;
+      case "active":
+        setFilterVisits(
+          displayVisits.filter((visit) => !visit.completed && !visit.canceled)
+        );
+        break;
+      case "today":
+        setFilterVisits(filterVisitsByDate(displayVisits));
+        break;
+      case "tomorrow":
+        setFilterVisits(filterVisitsByDate(displayVisits, 1));
+        break;
+      case "afterTomorrow":
+        setFilterVisits(filterVisitsByDate(displayVisits, 2));
+        break;
+      case "complete":
+        setFilterVisits(displayVisits.filter((visit) => visit.completed));
+        break;
+      case "cancel":
+        setFilterVisits(displayVisits.filter((visit) => visit.canceled));
+        break;
+    }
+  };
+
   const getCurrentDate = () => {
     // Get current time in Tehran
     const tehranTime = new Date().toLocaleString("en-US", {
@@ -299,6 +329,7 @@ export default function Access({ visits, activeVisits, users }) {
           </div>
           <div className={classes.portal}>
             <div className={classes.analytics}>
+              <h4>نوبت‌ها</h4>
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
                   <p>
@@ -312,9 +343,7 @@ export default function Access({ visits, activeVisits, users }) {
                       visitTypes === "all" ? classes.itemActive : classes.item
                     }
                     onClick={() => {
-                      setFilterVisits(displayVisits);
-                      setVisitTypes("all");
-                      scrollToDiv();
+                      filterDisplayVisits("all");
                     }}
                   >
                     بیمارها
@@ -337,16 +366,10 @@ export default function Access({ visits, activeVisits, users }) {
                         : classes.item
                     }
                     onClick={() => {
-                      setFilterVisits(
-                        displayVisits.filter(
-                          (visit) => !visit.completed && !visit.canceled
-                        )
-                      );
-                      setVisitTypes("active");
-                      scrollToDiv();
+                      filterDisplayVisits("active");
                     }}
                   >
-                    نوبت فعال
+                    فعال
                   </p>
                 </div>
                 {currentUser.permission === "admin" && (
@@ -360,12 +383,10 @@ export default function Access({ visits, activeVisits, users }) {
                             : classes.item
                         }
                         onClick={() => {
-                          setFilterVisits(filterVisitsByDate(displayVisits));
-                          setVisitTypes("today");
-                          scrollToDiv();
+                          filterDisplayVisits("today");
                         }}
                       >
-                        نوبت امروز
+                        امروز
                       </p>
                     </div>
                     <div className={classes.row}>
@@ -377,12 +398,10 @@ export default function Access({ visits, activeVisits, users }) {
                             : classes.item
                         }
                         onClick={() => {
-                          setFilterVisits(filterVisitsByDate(displayVisits, 1));
-                          setVisitTypes("tomorrow");
-                          scrollToDiv();
+                          filterDisplayVisits("tomorrow");
                         }}
                       >
-                        نوبت فردا
+                        فردا
                       </p>
                     </div>
                     <div className={classes.row}>
@@ -394,12 +413,10 @@ export default function Access({ visits, activeVisits, users }) {
                             : classes.item
                         }
                         onClick={() => {
-                          setFilterVisits(filterVisitsByDate(displayVisits, 2));
-                          setVisitTypes("afterTomorrow");
-                          scrollToDiv();
+                          filterDisplayVisits("afterTomorrow");
                         }}
                       >
-                        نوبت پس‌فردا
+                        پس‌فردا
                       </p>
                     </div>
                   </Fragment>
@@ -415,14 +432,10 @@ export default function Access({ visits, activeVisits, users }) {
                         : classes.item
                     }
                     onClick={() => {
-                      setFilterVisits(
-                        displayVisits.filter((visit) => visit.completed)
-                      );
-                      setVisitTypes("complete");
-                      scrollToDiv();
+                      filterDisplayVisits("complete");
                     }}
                   >
-                    نوبت تکمیل شده
+                    تکمیل شده
                   </p>
                 </div>
                 <div className={classes.row}>
@@ -436,14 +449,10 @@ export default function Access({ visits, activeVisits, users }) {
                         : classes.item
                     }
                     onClick={() => {
-                      setFilterVisits(
-                        displayVisits.filter((visit) => visit.canceled)
-                      );
-                      setVisitTypes("cancel");
-                      scrollToDiv();
+                      filterDisplayVisits("cancel");
                     }}
                   >
-                    نوبت لغو شده
+                    لغو شده
                   </p>
                 </div>
                 <div className={classes.logout} onClick={() => logOut()}>
