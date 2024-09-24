@@ -65,7 +65,7 @@ export default function Home({ activeVisits }) {
       <section className={classes.container}>
         <div className={classes.logo}>
           <Image width={200} height={140} src={logo} alt="logo" priority />
-          <h2>طراح چهره</h2>
+          <h2>طراحی چهره</h2>
         </div>
         <section className={classes.navigation}>
           {currentUser && (
