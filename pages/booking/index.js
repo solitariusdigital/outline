@@ -78,7 +78,6 @@ export default function Booking({ visits }) {
               sx={{ color: "#2d2b7f" }}
             />
           </div>
-
           <DatePicker visits={visits} />
         </div>
       ) : (

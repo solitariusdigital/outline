@@ -6,6 +6,7 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import Person4Icon from "@mui/icons-material/Person4";
 import HomeIcon from "@mui/icons-material/Home";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import Router from "next/router";
 import ModeIcon from "@mui/icons-material/Mode";
 import dbConnect from "@/services/dbConnect";
@@ -325,7 +326,8 @@ export default function Access({ visits, activeVisits, users }) {
             <HomeIcon onClick={() => Router.push("/")} className="icon" />
             <h3>{currentUser.name ? currentUser.name : currentUser.phone}</h3>
             {currentUser.permission === "patient" && <Person4Icon />}
-            {currentUser.permission === "admin" && <LocalHospitalIcon />}
+            {currentUser.permission === "doctor" && <LocalHospitalIcon />}
+            {currentUser.permission === "admin" && <MilitaryTechIcon />}
           </div>
           <div className={classes.portal}>
             <div className={classes.analytics}>
@@ -460,33 +462,35 @@ export default function Access({ visits, activeVisits, users }) {
                 </div>
               </Fragment>
             </div>
-            {currentUser.permission === "admin" ||
-            displayVisits.filter((visit) => !visit.completed && !visit.canceled)
-              .length === 0 ? (
-              <div className={classes.buttonContainer}>
-                <button
-                  className={classes.book}
-                  onClick={() => {
-                    Router.push("/booking");
-                    setSelectDoctor("دکتر فراهانی");
-                  }}
-                >
-                  دکتر فراهانی
-                </button>
-                <button
-                  className={classes.book}
-                  onClick={() => {
-                    Router.push("/booking");
-                    setSelectDoctor("دکتر گنجه");
-                  }}
-                >
-                  دکتر گنجه
-                </button>
-              </div>
-            ) : (
+            {(currentUser.permission === "admin" ||
+              displayVisits.filter(
+                (visit) => !visit.completed && !visit.canceled
+              ).length === 0) &&
+              currentUser.permission !== "doctor" && (
+                <div className={classes.buttonContainer}>
+                  <button
+                    className={classes.book}
+                    onClick={() => {
+                      Router.push("/booking");
+                      setSelectDoctor("دکتر فراهانی");
+                    }}
+                  >
+                    دکتر فراهانی
+                  </button>
+                  <button
+                    className={classes.book}
+                    onClick={() => {
+                      Router.push("/booking");
+                      setSelectDoctor("دکتر گنجه");
+                    }}
+                  >
+                    دکتر گنجه
+                  </button>
+                </div>
+              )}
+            {currentUser.permission === "patient" && (
               <div className={classes.message}>
                 <p className={classes.text}>شما یک نوبت فعال دارید</p>
-                <p className={classes.text}>و نمی‌توانید نوبت جدید ثبت کنید</p>
                 <p className={classes.text}>
                   برای تغییر نوبت{" "}
                   <span
@@ -741,8 +745,13 @@ export async function getServerSideProps(context) {
     let permission = context.query.p;
 
     const users = await userModel.find();
-    let visits = null;
-    let activeVisits = null;
+    let visits = [];
+    let activeVisits = [];
+
+    const doctorIdTagName = {
+      "66eb1dc863ab34979e6dd0a3": "دکتر فراهانی",
+      "66f3129d0207273bf017248d": "دکتر گنجه",
+    };
 
     switch (permission) {
       case "patient":
@@ -752,6 +761,12 @@ export async function getServerSideProps(context) {
         visits = await visitModel.find();
         activeVisits = visits.filter(
           (visit) => !visit.completed && !visit.canceled
+        );
+        break;
+      case "doctor":
+        let visitsData = await visitModel.find();
+        visits = visitsData.filter(
+          (visit) => visit.doctor === doctorIdTagName[id]
         );
         break;
     }
