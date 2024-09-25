@@ -19,7 +19,10 @@ export default function Home({ activeVisits }) {
 
   useEffect(() => {
     const handleUserVisits = async () => {
-      if (!currentUser) return;
+      if (!currentUser) {
+        setHideBooking(false);
+        return;
+      }
       const { permission, _id } = currentUser;
       if (permission === "doctor") {
         setHideBooking(true);

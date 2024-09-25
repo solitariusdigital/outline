@@ -16,7 +16,7 @@ export default function Booking({ visits }) {
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
 
   useEffect(() => {
-    const handleUserVisits = async () => {
+    const handleUserAccess = async () => {
       if (!currentUser) return;
       const { permission, _id } = currentUser;
       if (permission === "doctor") {
@@ -32,7 +32,7 @@ export default function Booking({ visits }) {
         }
       }
     };
-    handleUserVisits();
+    handleUserAccess();
   }, [currentUser, visits]);
 
   return (
