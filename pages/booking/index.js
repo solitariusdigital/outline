@@ -16,21 +16,24 @@ export default function Booking({ visits }) {
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
 
   useEffect(() => {
-    const getCurrentUserVisits = async () => {
-      if (currentUser && currentUser.permission === "patient") {
-        let activeVisitExist = visits.some(
-          (visit) =>
-            visit.userId === currentUser["_id"] &&
-            !visit.completed &&
-            !visit.canceled
+    const handleUserVisits = async () => {
+      if (!currentUser) return;
+      const { permission, _id } = currentUser;
+      if (permission === "doctor") {
+        Router.push("/");
+        return;
+      }
+      if (permission === "patient") {
+        const hasActiveVisit = visits.some(
+          (visit) => visit.userId === _id && !visit.completed && !visit.canceled
         );
-        if (activeVisitExist) {
+        if (hasActiveVisit) {
           Router.push("/");
         }
       }
     };
-    getCurrentUserVisits();
-  }, []);
+    handleUserVisits();
+  }, [currentUser, visits]);
 
   return (
     <Fragment>

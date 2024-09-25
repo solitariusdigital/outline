@@ -25,6 +25,7 @@ export default function DatePicker({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
+  const { adminColorCode, setAdminColorCode } = useContext(StateContext);
   const [name, setName] = useState(
     currentUser.permission === "admin" ? "" : currentUser.name
   );
@@ -100,6 +101,8 @@ export default function DatePicker({ visits }) {
       doctor: selectDoctor,
       time: selectedDate,
       date: dateObject,
+      adminId: currentUser["_id"],
+      adminColor: adminColorCode[currentUser["_id"]],
       completed: false,
       canceled: false,
     };

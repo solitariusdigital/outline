@@ -32,6 +32,7 @@ export default function Access({ visits, activeVisits, users }) {
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { notification, setNotification } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
+  const { adminColorCode, setAdminColorCode } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
   const [phone, setPhone] = useState("");
@@ -327,7 +328,11 @@ export default function Access({ visits, activeVisits, users }) {
             <h3>{currentUser.name ? currentUser.name : currentUser.phone}</h3>
             {currentUser.permission === "patient" && <Person4Icon />}
             {currentUser.permission === "doctor" && <LocalHospitalIcon />}
-            {currentUser.permission === "admin" && <MilitaryTechIcon />}
+            {currentUser.permission === "admin" && (
+              <MilitaryTechIcon
+                sx={{ color: adminColorCode[currentUser["_id"]] }}
+              />
+            )}
           </div>
           <div className={classes.portal}>
             <div className={classes.analytics}>

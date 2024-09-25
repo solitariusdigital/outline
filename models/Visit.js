@@ -7,6 +7,8 @@ const VisitSchema = new Schema(
     doctor: String,
     time: String,
     date: Date,
+    adminId: String,
+    adminColor: String,
     completed: Boolean,
     canceled: Boolean,
   },
