@@ -10,15 +10,15 @@ export default function About() {
   return (
     <Fragment>
       <NextSeo
-        title="ثبت نوبت آنلاین"
-        description="ثبت نوبت آنلاین"
+        title="اوت‌لاین"
+        description="فلسفه متد اوت‌لاین"
         canonical="https://outlinecommunity.com/about"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/about",
-          title: "ثبت نوبت آنلاین",
-          description: "ثبت نوبت آنلاین",
+          title: "اوت‌لاین",
+          description: "فلسفه متد اوت‌لاین",
           siteName: "Outline Community",
           images: {
             url: logo,
