@@ -493,21 +493,24 @@ export default function Access({ visits, activeVisits, users }) {
                   </button>
                 </div>
               )}
-            {currentUser.permission === "patient" && (
-              <div className={classes.message}>
-                <p className={classes.text}>شما یک نوبت فعال دارید</p>
-                <p className={classes.text}>
-                  برای تغییر نوبت{" "}
-                  <span
-                    className={classes.call}
-                    onClick={() => window.open("tel:+989106100914", "_self")}
-                  >
-                    تماس
-                  </span>{" "}
-                  بگیرید
-                </p>
-              </div>
-            )}
+            {currentUser.permission === "patient" &&
+              displayVisits.filter(
+                (visit) => !visit.completed && !visit.canceled
+              ).length > 0 && (
+                <div className={classes.message}>
+                  <p className={classes.text}>شما یک نوبت فعال دارید</p>
+                  <p className={classes.text}>
+                    برای تغییر نوبت{" "}
+                    <span
+                      className={classes.call}
+                      onClick={() => window.open("tel:+989106100914", "_self")}
+                    >
+                      تماس
+                    </span>{" "}
+                    بگیرید
+                  </p>
+                </div>
+              )}
             {currentUser.permission === "admin" &&
               (visitTypes === "active" ||
                 visitTypes === "today" ||
