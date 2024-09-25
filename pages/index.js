@@ -104,6 +104,9 @@ export default function Home({ activeVisits }) {
               </div>
             </Fragment>
           )}
+          <div className={classes.nav} onClick={() => Router.push("/about")}>
+            فلسفه متد اوت‌لاین
+          </div>
           <div
             className={classes.nav}
             onClick={() => window.open(locationLink)}
