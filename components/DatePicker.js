@@ -93,6 +93,7 @@ export default function DatePicker({ visits }) {
       return;
     }
     setDisableButton(true);
+    let colorCode = adminColorCode[currentUser["_id"]] ?? "#EAD8B1";
     let userId = await setUserId(phoneEnglish);
     // create a new visit object
     let visit = {
@@ -102,7 +103,7 @@ export default function DatePicker({ visits }) {
       time: selectedDate,
       date: dateObject,
       adminId: currentUser["_id"],
-      adminColor: adminColorCode[currentUser["_id"]],
+      adminColor: colorCode,
       completed: false,
       canceled: false,
     };
@@ -110,15 +111,15 @@ export default function DatePicker({ visits }) {
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
-    api.VerifyLookup(
-      {
-        receptor: phoneEnglish,
-        token: selectedDate.split(" - ")[0].trim(),
-        token2: selectedDate.split(" - ")[1].trim(),
-        template: "confirmationOutline",
-      },
-      function (response, status) {}
-    );
+    // api.VerifyLookup(
+    //   {
+    //     receptor: phoneEnglish,
+    //     token: selectedDate.split(" - ")[0].trim(),
+    //     token2: selectedDate.split(" - ")[1].trim(),
+    //     template: "confirmationOutline",
+    //   },
+    //   function (response, status) {}
+    // );
     Router.push({
       pathname: `/portal/${currentUser.permission}`,
       query: { id: currentUser["_id"], p: currentUser.permission },

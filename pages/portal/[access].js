@@ -12,12 +12,6 @@ import ModeIcon from "@mui/icons-material/Mode";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import userModel from "@/models/User";
-import {
-  convertDate,
-  filterVisitsByDate,
-  toEnglishNumber,
-  isEnglishNumber,
-} from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
@@ -26,6 +20,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Kavenegar from "kavenegar";
 import logo from "@/assets/logo.png";
+import {
+  convertDate,
+  filterVisitsByDate,
+  toEnglishNumber,
+  isEnglishNumber,
+} from "@/services/utility";
 
 export default function Access({ visits, activeVisits, users }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -607,6 +607,13 @@ export default function Access({ visits, activeVisits, users }) {
                     >
                       {item.time}
                     </p>
+                    {currentUser.permission === "admin" && (
+                      <div
+                        className={classes.colorCode}
+                        style={{ background: item.adminColor }}
+                        onClick={() => expandInformation(item["_id"])}
+                      ></div>
+                    )}
                     {expandedItem === item["_id"] ? (
                       <ExpandLessIcon
                         className="icon"
