@@ -20,7 +20,6 @@ export default function Register() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { appUsers, setAppUsers } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
-
   const [phone, setPhone] = useState("");
   const [token, setToken] = useState("");
   const [checkToken, setCheckToken] = useState("");

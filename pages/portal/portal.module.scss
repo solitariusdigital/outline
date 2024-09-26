@@ -72,10 +72,13 @@
       border: 1px solid config.$blue;
       width: 45%;
     }
-
-    .book {
+    .booking {
       @include mixins.button(config.$blue, config.$blue, config.$white);
       width: 45%;
+    }
+    .reminder {
+      @include mixins.button(config.$green, config.$green, config.$white);
+      width: 100%;
     }
   }
 

@@ -129,7 +129,7 @@ export default function Access({ visits, activeVisits, users }) {
   };
 
   const sendTomorrowReminder = () => {
-    const confirmationMessage = "پیام یادآوری گروهی، مطمئنی؟";
+    const confirmationMessage = "ارسال پیامک، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
     const tomorrowVisits = filterVisitsByDate(displayVisits, 2);
     const api = Kavenegar.KavenegarApi({
@@ -471,10 +471,11 @@ export default function Access({ visits, activeVisits, users }) {
               displayVisits.filter(
                 (visit) => !visit.completed && !visit.canceled
               ).length === 0) &&
-              currentUser.permission !== "doctor" && (
+              currentUser.permission !== "doctor" &&
+              visitTypes !== "afterTomorrow" && (
                 <div className={classes.buttonContainer}>
                   <button
-                    className={classes.book}
+                    className={classes.booking}
                     onClick={() => {
                       Router.push("/booking");
                       setSelectDoctor("دکتر فراهانی");
@@ -483,7 +484,7 @@ export default function Access({ visits, activeVisits, users }) {
                     دکتر فراهانی
                   </button>
                   <button
-                    className={classes.book}
+                    className={classes.booking}
                     onClick={() => {
                       Router.push("/booking");
                       setSelectDoctor("دکتر گنجه");
@@ -514,8 +515,7 @@ export default function Access({ visits, activeVisits, users }) {
             {currentUser.permission === "admin" &&
               (visitTypes === "active" ||
                 visitTypes === "today" ||
-                visitTypes === "tomorrow" ||
-                visitTypes === "afterTomorrow") && (
+                visitTypes === "tomorrow") && (
                 <div className={classes.buttonContainer}>
                   <button
                     onClick={() => {
@@ -538,8 +538,11 @@ export default function Access({ visits, activeVisits, users }) {
             {currentUser.permission === "admin" &&
               visitTypes === "afterTomorrow" && (
                 <div className={classes.buttonContainer}>
-                  <button onClick={() => sendTomorrowReminder()}>
-                    پیام یادآوری گروهی
+                  <button
+                    className={classes.reminder}
+                    onClick={() => sendTomorrowReminder()}
+                  >
+                    ارسال پیامک یادآوری گروهی
                   </button>
                 </div>
               )}
