@@ -36,12 +36,12 @@ export default function DatePicker({ visits }) {
   const [day, setDay] = useState(null);
   const [time, setTime] = useState("");
   const [dateObject, setDateObject] = useState("");
+  const [disableDates, setDisableDates] = useState([]);
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [times, setTimes] = useState({});
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
-
   const originalTimes = {
     "13:00": { active: false, count: 0 },
     "13:30": { active: false, count: 0 },
@@ -56,13 +56,14 @@ export default function DatePicker({ visits }) {
     "18:00": { active: false, count: 0 },
     "18:30": { active: false, count: 0 },
   };
-
   const doctors = ["دکتر فراهانی", "دکتر گنجه"];
-
   const targetInputBox = useRef(null);
 
   useEffect(() => {
     countFullDateTime(selectDoctor);
+    if (currentUser.permission !== "admin") {
+      setDisableDates([{ day: 13, month: 7, year: 1403 }]);
+    }
   }, []);
 
   const scrollToDivInputBox = () => {
@@ -164,6 +165,7 @@ export default function DatePicker({ visits }) {
   };
 
   const assingDay = (day) => {
+    console.log(day);
     setDay(day);
     resetTime();
     setSelectedDate("");
@@ -300,6 +302,7 @@ export default function DatePicker({ visits }) {
           shouldHighlightWeekends
           minimumDate={utils("fa").getToday()}
           locale="fa"
+          disabledDays={disableDates}
         />
       )}
       {day && currentUser.permission === "admin" && (
