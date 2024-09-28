@@ -97,7 +97,7 @@ export default function DatePicker({ visits }) {
     let userId = await setUserId(phoneEnglish);
     // create a new visit object
     let visit = {
-      title: title ? title : "-",
+      title: title ? title.trim() : "-",
       userId: userId,
       doctor: selectDoctor,
       time: selectedDate,
