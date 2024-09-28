@@ -21,6 +21,8 @@ export const StateProvider = (props) => {
     "66ea71f7afe30bf2eefc387b": "#478CCF",
     // outline
     "66ea721bafe30bf2eefc387c": "#2d2b7f",
+    // outline
+    "66f80a002772d93db43ee424": "#2d2b7f",
     // yasaman
     "66ead98163ab34979e6dcf5b": "#FFA823",
   });
