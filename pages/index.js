@@ -94,7 +94,7 @@ export default function Home({ activeVisits }) {
                   setSelectDoctor("دکتر فراهانی");
                 }}
               >
-                دکتر فراهانی
+                نوبت دکتر فراهانی
               </div>
               <div
                 className={classes.doctor}
@@ -103,7 +103,7 @@ export default function Home({ activeVisits }) {
                   setSelectDoctor("دکتر گنجه");
                 }}
               >
-                دکتر گنجه
+                نوبت دکتر گنجه
               </div>
             </Fragment>
           )}
@@ -118,7 +118,9 @@ export default function Home({ activeVisits }) {
           </div>
           <div
             className={classes.nav}
-            onClick={() => window.open("tel:+989106100914", "_self")}
+            onClick={() =>
+              window.open("https://wa.me/message/XPZYUKX6KF7LD1", "_ self")
+            }
           >
             تماس با ما
           </div>
