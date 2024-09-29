@@ -598,6 +598,7 @@ export default function Access({ visits, activeVisits, users }) {
                       <div
                         className={classes.colorCode}
                         style={{ background: item.adminColor }}
+                        onClick={() => expandInformation(item["_id"])}
                       ></div>
                     )}
                     {currentUser.permission === "admin" && (
