@@ -25,6 +25,7 @@ import {
   filterVisitsByDate,
   toEnglishNumber,
   isEnglishNumber,
+  getCurrentDate,
 } from "@/services/utility";
 
 export default function Access({ visits, activeVisits, users }) {
@@ -224,17 +225,6 @@ export default function Access({ visits, activeVisits, users }) {
         setFilterVisits(displayVisits.filter((visit) => visit.canceled));
         break;
     }
-  };
-
-  const getCurrentDate = () => {
-    // Get current time in Tehran
-    const tehranTime = new Date().toLocaleString("en-US", {
-      timeZone: "Asia/Tehran",
-    });
-    const currentDate = new Date(tehranTime);
-    // Set the current date to midnight to only compare dates
-    currentDate.setHours(0, 0, 0, 0);
-    return currentDate;
   };
 
   const checkAllVisitsForPast = (activeVisits) => {

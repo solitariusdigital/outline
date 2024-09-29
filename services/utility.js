@@ -71,3 +71,14 @@ export function isNotThursday(persianDate) {
     moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() !== 4
   );
 }
+
+export function getCurrentDate() {
+  // Get current time in Tehran
+  const tehranTime = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Tehran",
+  });
+  const currentDate = new Date(tehranTime);
+  // Set the current date to midnight to only compare dates
+  currentDate.setHours(0, 0, 0, 0);
+  return currentDate;
+}

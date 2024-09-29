@@ -8,6 +8,7 @@ import {
   toEnglishNumber,
   isEnglishNumber,
   isNotThursday,
+  getCurrentDate,
 } from "@/services/utility";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
@@ -175,7 +176,8 @@ export default function DatePicker({ visits }) {
         day.day
       )}`,
       isSelectedDateFriday(day),
-      isNotThursday(day)
+      isNotThursday(day),
+      day
     );
   };
 
@@ -224,7 +226,8 @@ export default function DatePicker({ visits }) {
   const updateDisplayTime = (
     selectedDate,
     isSelectedDateFriday,
-    isNotThursday
+    isNotThursday,
+    day
   ) => {
     if (selectDoctor === "دکتر گنجه" && isNotThursday) {
       setTimes({});
@@ -253,9 +256,40 @@ export default function DatePicker({ visits }) {
         });
       }
     });
+    if (currentUser.permission === "patient" && compareDates(day)) {
+      // Loop through the times and delete any time that has past
+      for (const time in updatedTimes) {
+        if (time < getCurrentFormattedTime()) {
+          delete updatedTimes[time];
+        }
+      }
+    }
     setTimes(updatedTimes);
   };
 
+  // to compare today's date with the selected date
+  const compareDates = (day) => {
+    let currentDate = getCurrentDate();
+    let gregorianDate = convertPersianToGregorian(day);
+    const currentSelectedDate = new Date(gregorianDate);
+    // Format to 'YYYY-MM-DD' for comparison
+    const currentDateFormatted = currentDate.toISOString().split("T")[0];
+    const selectedDateFormatted = currentSelectedDate
+      .toISOString()
+      .split("T")[0];
+    return currentDateFormatted === selectedDateFormatted;
+  };
+
+  const getCurrentFormattedTime = () => {
+    const options = {
+      timeZone: "Asia/Tehran",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    };
+    const formatter = new Intl.DateTimeFormat([], options);
+    return formatter.format(new Date());
+  };
   // Function to convert Farsi time strings to English
   const convertFullTimeToEnglish = (fullTime) => {
     let splitTime = fullTime.split(":");
