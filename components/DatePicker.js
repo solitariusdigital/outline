@@ -165,7 +165,6 @@ export default function DatePicker({ visits }) {
   };
 
   const assingDay = (day) => {
-    console.log(day);
     setDay(day);
     resetTime();
     setSelectedDate("");
@@ -182,7 +181,7 @@ export default function DatePicker({ visits }) {
 
   const displayDate = (time) => {
     scrollToDivInputBox();
-    let gregorian = convertPersianToGregorian(day);
+    let gregorian = convertPersianToGregorian(day, time);
     setDateObject(gregorian);
     let updatedTime = { ...times };
     Object.keys(times).forEach((item) => {

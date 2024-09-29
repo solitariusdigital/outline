@@ -285,12 +285,17 @@
   }
 
   .logout {
-    margin-top: 20px;
+    margin-top: 12px;
     cursor: pointer;
 
     p {
+      font-size: small;
+      color: config.$grey;
+      font-weight: 300;
+
       @include mixins.desktop {
         &:hover {
+          cursor: pointer;
           color: config.$blue;
         }
       }
@@ -316,6 +321,7 @@
   }
 
   p {
+    color: config.$blue;
     font-weight: bold;
   }
 

@@ -463,7 +463,7 @@ export default function Access({ visits, activeVisits, users }) {
                   </p>
                 </div>
                 <div className={classes.logout} onClick={() => logOut()}>
-                  <p className={classes.item}>خروج از پورتال</p>
+                  <p>خروج از پورتال</p>
                 </div>
               </Fragment>
             </div>
@@ -595,6 +595,12 @@ export default function Access({ visits, activeVisits, users }) {
                 >
                   <div className={classes.row} style={margin}>
                     {currentUser.permission === "admin" && (
+                      <div
+                        className={classes.colorCode}
+                        style={{ background: item.adminColor }}
+                      ></div>
+                    )}
+                    {currentUser.permission === "admin" && (
                       <p
                         className={classes.title}
                         onClick={() =>
@@ -613,13 +619,6 @@ export default function Access({ visits, activeVisits, users }) {
                     >
                       {item.time}
                     </p>
-                    {currentUser.permission === "admin" && (
-                      <div
-                        className={classes.colorCode}
-                        style={{ background: item.adminColor }}
-                        onClick={() => expandInformation(item["_id"])}
-                      ></div>
-                    )}
                     {expandedItem === item["_id"] ? (
                       <ExpandLessIcon
                         className="icon"

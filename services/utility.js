@@ -48,9 +48,12 @@ export function filterVisitsByDate(visits, offsetDays = 0) {
   return filteredVisits.filter((visit) => !visit.completed && !visit.canceled);
 }
 
-export function convertPersianToGregorian(persianDate) {
+export function convertPersianToGregorian(persianDate, time) {
   const { day, month, year } = persianDate;
-  return moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toISOString();
+  return moment(
+    `${year}/${month}/${day} ${time}`,
+    "jYYYY/jM/jD HH:mm"
+  ).toISOString();
 }
 
 export function isSelectedDateFriday(persianDate) {
