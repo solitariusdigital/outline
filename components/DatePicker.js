@@ -96,16 +96,14 @@ export default function DatePicker({ visits }) {
       return;
     }
 
-    let colorCode = adminColorCode[currentUser["_id"]] ?? "#EAD8B1";
-    let userId = await setUserId(phoneEnglish);
-    // Check for existing visit on the selected date time
-    let visits = await getVisitsApi();
-    let visitData = visits.filter((visit) => visit.userId === userId);
-    const hasConflict = visitData.some((visit) => visit.time === selectedDate);
+    let hasConflict = await checkExistingBooking(phoneEnglish);
     if (hasConflict) {
       window.alert("نوبت در زمان مشابه ثبت شده");
       return;
     }
+
+    let colorCode = adminColorCode[currentUser["_id"]] ?? "#EAD8B1";
+    let userId = await setUserId(phoneEnglish);
 
     setDisableButton(true);
 
@@ -138,6 +136,16 @@ export default function DatePicker({ visits }) {
       pathname: `/portal/${currentUser.permission}`,
       query: { id: currentUser["_id"], p: currentUser.permission },
     });
+  };
+
+  // Check for existing visit on the selected date time
+  const checkExistingBooking = async (phoneEnglish) => {
+    const users = await getUsersApi();
+    let userData = users.find((user) => user.phone === phoneEnglish);
+    let visits = await getVisitsApi();
+    let visitData = visits.filter((visit) => visit.userId === userData["_id"]);
+    const hasConflict = visitData.some((visit) => visit.time === selectedDate);
+    return hasConflict;
   };
 
   const setUserId = async (phoneEnglish) => {
