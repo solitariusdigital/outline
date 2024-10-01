@@ -129,15 +129,15 @@ export default function Access({ visits, activeVisits, users }) {
     }
   };
 
-  const sendTomorrowReminder = () => {
-    const confirmationMessage = "ارسال پیامک، مطمئنی؟";
+  const sendAfterTomorrowReminder = () => {
+    const confirmationMessage = "ارسال پیامک گروهی، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
-    const tomorrowVisits = filterVisitsByDate(displayVisits, 2);
+    const afterTomorrowVisits = filterVisitsByDate(displayVisits, 2);
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
     if (confirm) {
-      tomorrowVisits.forEach((visit) => {
+      afterTomorrowVisits.forEach((visit, index) => {
         api.VerifyLookup(
           {
             receptor: visit.user.phone,
@@ -145,7 +145,15 @@ export default function Access({ visits, activeVisits, users }) {
             token2: visit.time.split(" - ")[1].trim(),
             template: "reminderOutline",
           },
-          function (response, status) {}
+          (response, status) => {
+            if (index === afterTomorrowVisits.length - 1) {
+              if (status === 200) {
+                window.alert("پیامک گروهی ارسال شد");
+              } else {
+                window.alert("خطا در ارسال پیامک");
+              }
+            }
+          }
         );
       });
     }
@@ -530,7 +538,7 @@ export default function Access({ visits, activeVisits, users }) {
                 <div className={classes.buttonContainer}>
                   <button
                     className={classes.reminder}
-                    onClick={() => sendTomorrowReminder()}
+                    onClick={() => sendAfterTomorrowReminder()}
                   >
                     ارسال پیامک یادآوری گروهی
                   </button>
