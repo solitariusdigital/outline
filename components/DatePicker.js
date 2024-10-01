@@ -141,12 +141,23 @@ export default function DatePicker({ visits }) {
 
   // Check for existing visit on the selected date time
   const checkExistingBooking = async (phoneEnglish) => {
-    const users = await getUsersApi();
-    let userData = users.find((user) => user.phone === phoneEnglish);
-    let visits = await getVisitsApi();
-    let visitData = visits.filter((visit) => visit.userId === userData["_id"]);
-    const hasConflict = visitData.some((visit) => visit.time === selectedDate);
-    return hasConflict;
+    try {
+      const users = await getUsersApi();
+      let userData = users.find((user) => user.phone === phoneEnglish);
+      if (userData) {
+        const visits = await getVisitsApi();
+        let visitData = visits.filter(
+          (visit) => visit.userId === userData["_id"]
+        );
+        const hasConflict = visitData.some(
+          (visit) => visit.time === selectedDate
+        );
+        return hasConflict;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
   };
 
   const setUserId = async (phoneEnglish) => {
