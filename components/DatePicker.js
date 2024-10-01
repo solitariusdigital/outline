@@ -95,11 +95,12 @@ export default function DatePicker({ visits }) {
       showAlert("موبایل اشتباه");
       return;
     }
-
-    let hasConflict = await checkExistingBooking(phoneEnglish);
-    if (hasConflict) {
-      window.alert("نوبت در زمان مشابه ثبت شده");
-      return;
+    if (currentUser.permission === "admin") {
+      let hasConflict = await checkExistingBooking(phoneEnglish);
+      if (hasConflict) {
+        window.alert("نوبت در زمان مشابه ثبت شده");
+        return;
+      }
     }
 
     let colorCode = adminColorCode[currentUser["_id"]] ?? "#EAD8B1";
