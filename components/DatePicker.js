@@ -103,10 +103,10 @@ export default function DatePicker({ visits }) {
       }
     }
 
+    setDisableButton(true);
+
     let colorCode = adminColorCode[currentUser["_id"]] ?? "#EAD8B1";
     let userId = await setUserId(phoneEnglish);
-
-    setDisableButton(true);
 
     let visit = {
       title: title ? title.trim() : "-",

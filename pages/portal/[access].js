@@ -502,7 +502,7 @@ export default function Access({ visits, activeVisits, users }) {
                     برای تغییر نوبت{" "}
                     <span
                       className={classes.call}
-                      onClick={() => window.open("tel:+989106100914", "_self")}
+                      onClick={() => window.open("tel:+989333363411", "_self")}
                     >
                       تماس
                     </span>{" "}
