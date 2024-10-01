@@ -16,6 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
   createVisitApi,
   getUsersApi,
+  getVisitsApi,
   createUserApi,
   updateUserApi,
 } from "@/services/api";
@@ -94,10 +95,20 @@ export default function DatePicker({ visits }) {
       showAlert("موبایل اشتباه");
       return;
     }
-    setDisableButton(true);
+
     let colorCode = adminColorCode[currentUser["_id"]] ?? "#EAD8B1";
     let userId = await setUserId(phoneEnglish);
-    // create a new visit object
+    // Check for existing visit on the selected date time
+    let visits = await getVisitsApi();
+    let visitData = visits.filter((visit) => visit.userId === userId);
+    const hasConflict = visitData.some((visit) => visit.time === selectedDate);
+    if (hasConflict) {
+      window.alert("نوبت در زمان مشابه ثبت شده");
+      return;
+    }
+
+    setDisableButton(true);
+
     let visit = {
       title: title ? title.trim() : "-",
       userId: userId,
@@ -110,6 +121,7 @@ export default function DatePicker({ visits }) {
       canceled: false,
     };
     await createVisitApi(visit);
+
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
