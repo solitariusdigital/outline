@@ -175,7 +175,7 @@ export default function DatePicker({ visits }) {
       } else {
         const user = {
           ...userData,
-          name: name,
+          name: name.trim(),
         };
         await updateUserApi(user);
       }
@@ -183,7 +183,7 @@ export default function DatePicker({ visits }) {
     } else {
       const user = {
         ...currentUser,
-        name: name,
+        name: name.trim(),
       };
       let userData = await updateUserApi(user);
       setCurrentUser(userData);
