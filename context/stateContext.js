@@ -12,6 +12,12 @@ export const StateProvider = (props) => {
   );
   const [selectDoctor, setSelectDoctor] = useState("");
   const [notification, setNotification] = useState(false);
+  const [activeVisitsCount, setActiveVisitsCount] = useState(0);
+  const [todayVisitsCount, setTodayVisitsCount] = useState(0);
+  const [tomorrowVisitsCount, setTomorrowVisitsCount] = useState(0);
+  const [afterTomorrowVisitsCount, setAfterTomorrowVisitsCount] = useState(0);
+  const [completeVisitsCount, setCompleteVisitsCount] = useState(0);
+  const [cancelVisitsCount, setCancelVisitsCount] = useState(0);
   const [adminColorCode, setAdminColorCode] = useState({
     // khosro
     "66d56cc9a4b0b0760f625b03": "#B5C18E",
@@ -26,7 +32,6 @@ export const StateProvider = (props) => {
     // yasaman
     "66ead98163ab34979e6dcf5b": "#FFA823",
   });
-
   const stateContext = {
     currentUser,
     setCurrentUser,
@@ -42,6 +47,18 @@ export const StateProvider = (props) => {
     setNotification,
     adminColorCode,
     setAdminColorCode,
+    activeVisitsCount,
+    setActiveVisitsCount,
+    todayVisitsCount,
+    setTodayVisitsCount,
+    tomorrowVisitsCount,
+    setTomorrowVisitsCount,
+    afterTomorrowVisitsCount,
+    setAfterTomorrowVisitsCount,
+    completeVisitsCount,
+    setCompleteVisitsCount,
+    cancelVisitsCount,
+    setCancelVisitsCount,
   };
   return (
     <StateContext.Provider value={stateContext}>

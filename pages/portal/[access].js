@@ -34,11 +34,24 @@ export default function Access({ visits, activeVisits, users }) {
   const { notification, setNotification } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const { adminColorCode, setAdminColorCode } = useContext(StateContext);
+
+  const { activeVisitsCount, setActiveVisitsCount } = useContext(StateContext);
+  const { todayVisitsCount, setTodayVisitsCount } = useContext(StateContext);
+  const { tomorrowVisitsCount, setTomorrowVisitsCount } =
+    useContext(StateContext);
+  const { afterTomorrowVisitsCount, setAfterTomorrowVisitsCount } =
+    useContext(StateContext);
+  const { completeVisitsCount, setCompleteVisitsCount } =
+    useContext(StateContext);
+  const { cancelVisitsCount, setCancelVisitsCount } = useContext(StateContext);
+
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
   const [phone, setPhone] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [expandedItem, setExpandedItem] = useState(null);
+  const [reqNumber, setReqNumber] = useState(50);
+
   const [visitTypes, setVisitTypes] = useState(
     "all" ||
       "active" ||
@@ -58,19 +71,21 @@ export default function Access({ visits, activeVisits, users }) {
     } else {
       const fetchData = async () => {
         // inject user info into visit object
-        const visitsData = await Promise.all(
-          visits.map(async (visit) => {
-            const [userData] = await Promise.all([getUserApi(visit.userId)]);
-            return {
-              ...visit,
-              user: userData,
-            };
-          })
-        );
-        setDisplayVisits(visitsData);
-        setFilterVisits(
-          visitsData.filter((visit) => !visit.completed && !visit.canceled)
-        );
+        if (displayVisits.length === 0) {
+          const visitsData = await Promise.all(
+            visits.map(async (visit) => {
+              const [userData] = await Promise.all([getUserApi(visit.userId)]);
+              return {
+                ...visit,
+                user: userData,
+              };
+            })
+          );
+          setDisplayVisits(visitsData);
+          setFilterVisits(
+            visitsData.filter((visit) => !visit.completed && !visit.canceled)
+          );
+        }
       };
       fetchData().catch(console.error);
     }
@@ -78,8 +93,40 @@ export default function Access({ visits, activeVisits, users }) {
   }, [currentUser, visits]);
 
   useEffect(() => {
+    const updateVisitCounts = (count, setCount, filterFunc) => {
+      if (count === 0) {
+        setCount(filterFunc(displayVisits).length);
+      }
+    };
+    updateVisitCounts(activeVisitsCount, setActiveVisitsCount, (visits) =>
+      visits.filter((visit) => !visit.completed && !visit.canceled)
+    );
+    updateVisitCounts(todayVisitsCount, setTodayVisitsCount, (visits) =>
+      filterVisitsByDate(visits)
+    );
+    updateVisitCounts(tomorrowVisitsCount, setTomorrowVisitsCount, (visits) =>
+      filterVisitsByDate(visits, 1)
+    );
+    updateVisitCounts(
+      afterTomorrowVisitsCount,
+      setAfterTomorrowVisitsCount,
+      (visits) => filterVisitsByDate(visits, 2)
+    );
+    updateVisitCounts(completeVisitsCount, setCompleteVisitsCount, (visits) =>
+      visits.filter((visit) => visit.completed)
+    );
+    updateVisitCounts(cancelVisitsCount, setCancelVisitsCount, (visits) =>
+      visits.filter((visit) => visit.canceled)
+    );
+  }, [displayVisits]);
+
+  useEffect(() => {
     setNotification(checkAllVisitsForPast(activeVisits));
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", loadMore);
+  });
 
   const margin = {
     marginBottom: "8px",
@@ -87,6 +134,15 @@ export default function Access({ visits, activeVisits, users }) {
   const canceleStyle = {
     border: "1px solid #d40d12",
     borderRadius: "12px",
+  };
+
+  const loadMore = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.scrollingElement.scrollHeight
+    ) {
+      setReqNumber(reqNumber + 50);
+    }
   };
 
   const scrollToDiv = () => {
@@ -357,13 +413,7 @@ export default function Access({ visits, activeVisits, users }) {
               )}
               <Fragment>
                 <div className={classes.row}>
-                  <p>
-                    {
-                      displayVisits.filter(
-                        (visit) => !visit.completed && !visit.canceled
-                      ).length
-                    }
-                  </p>
+                  <p>{activeVisitsCount}</p>
                   <p
                     className={
                       visitTypes === "active"
@@ -380,7 +430,7 @@ export default function Access({ visits, activeVisits, users }) {
                 {currentUser.permission === "admin" && (
                   <Fragment>
                     <div className={classes.row}>
-                      <p>{filterVisitsByDate(displayVisits).length}</p>
+                      <p>{todayVisitsCount}</p>
                       <p
                         className={
                           visitTypes === "today"
@@ -395,7 +445,7 @@ export default function Access({ visits, activeVisits, users }) {
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p>{filterVisitsByDate(displayVisits, 1).length}</p>
+                      <p>{tomorrowVisitsCount}</p>
                       <p
                         className={
                           visitTypes === "tomorrow"
@@ -410,7 +460,7 @@ export default function Access({ visits, activeVisits, users }) {
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p>{filterVisitsByDate(displayVisits, 2).length}</p>
+                      <p>{afterTomorrowVisitsCount}</p>
                       <p
                         className={
                           visitTypes === "afterTomorrow"
@@ -427,9 +477,7 @@ export default function Access({ visits, activeVisits, users }) {
                   </Fragment>
                 )}
                 <div className={classes.row}>
-                  <p>
-                    {displayVisits.filter((visit) => visit.completed).length}
-                  </p>
+                  <p>{completeVisitsCount}</p>
                   <p
                     className={
                       visitTypes === "complete"
@@ -444,9 +492,7 @@ export default function Access({ visits, activeVisits, users }) {
                   </p>
                 </div>
                 <div className={classes.row}>
-                  <p>
-                    {displayVisits.filter((visit) => visit.canceled).length}
-                  </p>
+                  <p>{cancelVisitsCount}</p>
                   <p
                     className={
                       visitTypes === "cancel"
@@ -581,170 +627,174 @@ export default function Access({ visits, activeVisits, users }) {
               </div>
             )}
             <div className={classes.table} ref={targetDivRef}>
-              {filterVisits.map((item, index) => (
-                <div
-                  className={classes.item}
-                  key={index}
-                  style={
-                    checkEachVisitForPast(index) && visitTypes === "active"
-                      ? canceleStyle
-                      : {}
-                  }
-                >
-                  <div className={classes.row} style={margin}>
-                    {currentUser.permission === "admin" && (
-                      <div
-                        className={classes.colorCode}
-                        style={{ background: item.adminColor }}
-                        onClick={() => expandInformation(item["_id"])}
-                      ></div>
-                    )}
-                    {currentUser.permission === "admin" && (
+              {filterVisits
+                .map((item, index) => (
+                  <div
+                    className={classes.item}
+                    key={index}
+                    style={
+                      checkEachVisitForPast(index) && visitTypes === "active"
+                        ? canceleStyle
+                        : {}
+                    }
+                  >
+                    <div className={classes.row} style={margin}>
+                      {currentUser.permission === "admin" && (
+                        <div
+                          className={classes.colorCode}
+                          style={{ background: item.adminColor }}
+                          onClick={() => expandInformation(item["_id"])}
+                        ></div>
+                      )}
+                      {currentUser.permission === "admin" && (
+                        <p
+                          className={classes.title}
+                          onClick={() =>
+                            window.open(
+                              `tel:+98${item.user?.phone.substring(1)}`,
+                              "_self"
+                            )
+                          }
+                        >
+                          {item.user?.phone}
+                        </p>
+                      )}
                       <p
-                        className={classes.title}
-                        onClick={() =>
-                          window.open(
-                            `tel:+98${item.user?.phone.substring(1)}`,
-                            "_self"
-                          )
-                        }
+                        className={classes.time}
+                        onClick={() => expandInformation(item["_id"])}
                       >
-                        {item.user?.phone}
+                        {item.time}
                       </p>
-                    )}
-                    <p
-                      className={classes.time}
-                      onClick={() => expandInformation(item["_id"])}
-                    >
-                      {item.time}
-                    </p>
-                    {expandedItem === item["_id"] ? (
-                      <ExpandLessIcon
-                        className="icon"
-                        onClick={() => expandInformation(item["_id"])}
-                      />
-                    ) : (
-                      <ExpandMoreIcon
-                        className="icon"
-                        onClick={() => expandInformation(item["_id"])}
-                      />
-                    )}
-                  </div>
-                  {expandedItem === item["_id"] && (
-                    <Fragment>
-                      <div className={classes.row}>
-                        {item.canceled ? (
-                          <div className={classes.row}>
-                            <div className={classes.subRow}>
-                              <CloseIcon
-                                className={classes.icon}
-                                sx={{ color: "#d40d12" }}
-                              />
-                              <p style={{ color: "#d40d12" }}>نوبت لغو شده</p>
-                            </div>
-                            <p>{convertDate(item.updatedAt)}</p>
-                          </div>
-                        ) : (
-                          <Fragment>
-                            {item.completed ? (
-                              <div className={classes.row}>
-                                <div className={classes.subRow}>
-                                  <TaskAltIcon
-                                    className={classes.icon}
-                                    sx={{ color: "#57a361" }}
-                                  />
-                                  <p style={{ color: "#57a361" }}>
-                                    نوبت تکمیل شده
-                                  </p>
-                                </div>
-                                <p>{convertDate(item.updatedAt)}</p>
+                      {expandedItem === item["_id"] ? (
+                        <ExpandLessIcon
+                          className="icon"
+                          onClick={() => expandInformation(item["_id"])}
+                        />
+                      ) : (
+                        <ExpandMoreIcon
+                          className="icon"
+                          onClick={() => expandInformation(item["_id"])}
+                        />
+                      )}
+                    </div>
+                    {expandedItem === item["_id"] && (
+                      <Fragment>
+                        <div className={classes.row}>
+                          {item.canceled ? (
+                            <div className={classes.row}>
+                              <div className={classes.subRow}>
+                                <CloseIcon
+                                  className={classes.icon}
+                                  sx={{ color: "#d40d12" }}
+                                />
+                                <p style={{ color: "#d40d12" }}>نوبت لغو شده</p>
                               </div>
-                            ) : (
-                              <div className={classes.infoBox}>
-                                {currentUser.permission === "admin" && (
-                                  <div className={classes.row} style={margin}>
-                                    <p
-                                      className={classes.title}
-                                      onClick={() =>
-                                        Router.push({
-                                          pathname: `/patient`,
-                                          query: {
-                                            id: item.user?._id,
-                                          },
-                                        })
-                                      }
-                                    >
-                                      {item.user?.name}
+                              <p>{convertDate(item.updatedAt)}</p>
+                            </div>
+                          ) : (
+                            <Fragment>
+                              {item.completed ? (
+                                <div className={classes.row}>
+                                  <div className={classes.subRow}>
+                                    <TaskAltIcon
+                                      className={classes.icon}
+                                      sx={{ color: "#57a361" }}
+                                    />
+                                    <p style={{ color: "#57a361" }}>
+                                      نوبت تکمیل شده
                                     </p>
                                   </div>
-                                )}
-                                <div className={classes.row}>
-                                  <p>{item.doctor}</p>
-                                  <p>{item.title}</p>
+                                  <p>{convertDate(item.updatedAt)}</p>
                                 </div>
+                              ) : (
+                                <div className={classes.infoBox}>
+                                  {currentUser.permission === "admin" && (
+                                    <div className={classes.row} style={margin}>
+                                      <p
+                                        className={classes.title}
+                                        onClick={() =>
+                                          Router.push({
+                                            pathname: `/patient`,
+                                            query: {
+                                              id: item.user?._id,
+                                            },
+                                          })
+                                        }
+                                      >
+                                        {item.user?.name}
+                                      </p>
+                                    </div>
+                                  )}
+                                  <div className={classes.row}>
+                                    <p>{item.doctor}</p>
+                                    <p>{item.title}</p>
+                                  </div>
+                                </div>
+                              )}
+                            </Fragment>
+                          )}
+                        </div>
+                        {currentUser.permission === "admin" &&
+                          !item.canceled &&
+                          !item.completed && (
+                            <div
+                              className={classes.row}
+                              style={{
+                                marginTop: "8px",
+                              }}
+                            >
+                              <ModeIcon
+                                className="icon"
+                                sx={{ fontSize: 20, color: "#2d2b7f" }}
+                                onClick={() =>
+                                  navigator.clipboard.writeText(
+                                    item.user?.phone
+                                  )
+                                }
+                              />
+                              <div
+                                className={classes.row}
+                                style={{ width: "70px" }}
+                                onClick={() =>
+                                  actionVisit(
+                                    item["_id"],
+                                    item.user?.phone,
+                                    item.time,
+                                    "complete"
+                                  )
+                                }
+                              >
+                                <TaskAltIcon
+                                  className="icon"
+                                  sx={{ color: "#57a361" }}
+                                />
+                                <p style={{ color: "#57a361" }}>تکمیل</p>
                               </div>
-                            )}
-                          </Fragment>
-                        )}
-                      </div>
-                      {currentUser.permission === "admin" &&
-                        !item.canceled &&
-                        !item.completed && (
-                          <div
-                            className={classes.row}
-                            style={{
-                              marginTop: "8px",
-                            }}
-                          >
-                            <ModeIcon
-                              className="icon"
-                              sx={{ fontSize: 20, color: "#2d2b7f" }}
-                              onClick={() =>
-                                navigator.clipboard.writeText(item.user?.phone)
-                              }
-                            />
-                            <div
-                              className={classes.row}
-                              style={{ width: "70px" }}
-                              onClick={() =>
-                                actionVisit(
-                                  item["_id"],
-                                  item.user?.phone,
-                                  item.time,
-                                  "complete"
-                                )
-                              }
-                            >
-                              <TaskAltIcon
-                                className="icon"
-                                sx={{ color: "#57a361" }}
-                              />
-                              <p style={{ color: "#57a361" }}>تکمیل</p>
+                              <div
+                                style={{ width: "50px" }}
+                                onClick={() =>
+                                  actionVisit(
+                                    item["_id"],
+                                    item.user?.phone,
+                                    item.time,
+                                    "cancel"
+                                  )
+                                }
+                                className={classes.row}
+                              >
+                                <CloseIcon
+                                  className="icon"
+                                  sx={{ color: "#d40d12" }}
+                                />
+                                <p style={{ color: "#d40d12" }}>لغو</p>
+                              </div>
                             </div>
-                            <div
-                              style={{ width: "50px" }}
-                              onClick={() =>
-                                actionVisit(
-                                  item["_id"],
-                                  item.user?.phone,
-                                  item.time,
-                                  "cancel"
-                                )
-                              }
-                              className={classes.row}
-                            >
-                              <CloseIcon
-                                className="icon"
-                                sx={{ color: "#d40d12" }}
-                              />
-                              <p style={{ color: "#d40d12" }}>لغو</p>
-                            </div>
-                          </div>
-                        )}
-                    </Fragment>
-                  )}
-                </div>
-              ))}
+                          )}
+                      </Fragment>
+                    )}
+                  </div>
+                ))
+                .slice(0, reqNumber)}
             </div>
           </div>
         </div>
