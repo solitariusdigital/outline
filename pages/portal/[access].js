@@ -616,7 +616,7 @@ export default function Access({ visits, activeVisits, users }) {
                       : toEnglishNumber(e.target.value);
                     setFilterVisits(
                       displayVisits.filter(
-                        (visit) => visit.user.phone === phoneEnglish
+                        (visit) => visit.user?.phone === phoneEnglish
                       )
                     );
                   }}
