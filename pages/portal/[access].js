@@ -32,6 +32,7 @@ export default function Access({
   visits,
   activeVisits,
   users,
+  visitsData,
   activeCount,
   completeCount,
   cancelCount,
@@ -67,25 +68,10 @@ export default function Access({
     if (!currentUser) {
       Router.push("/");
     } else {
-      const fetchData = async () => {
-        // inject user info into visit object
-        if (displayVisits.length === 0) {
-          const visitsData = await Promise.all(
-            visits.map(async (visit) => {
-              const [userData] = await Promise.all([getUserApi(visit.userId)]);
-              return {
-                ...visit,
-                user: userData,
-              };
-            })
-          );
-          setDisplayVisits(visitsData);
-          setFilterVisits(
-            visitsData.filter((visit) => !visit.completed && !visit.canceled)
-          );
-        }
-      };
-      fetchData().catch(console.error);
+      setDisplayVisits(visitsData);
+      setFilterVisits(
+        visitsData.filter((visit) => !visit.completed && !visit.canceled)
+      );
     }
   }, [currentUser, visits]);
 
@@ -834,11 +820,22 @@ export async function getServerSideProps(context) {
       .sort((a, b) => a.completed - b.completed)
       .sort((a, b) => a.canceled - b.canceled);
 
+    const visitsData = await Promise.all(
+      visits.map(async (visit) => {
+        const userData = await userModel.findOne({ _id: visit.userId });
+        return {
+          ...visit.toObject(),
+          user: userData,
+        };
+      })
+    );
+
     return {
       props: {
         visits: JSON.parse(JSON.stringify(visits)),
         activeVisits: JSON.parse(JSON.stringify(activeVisits)),
         users: JSON.parse(JSON.stringify(users)),
+        visitsData: JSON.parse(JSON.stringify(visitsData)),
         activeCount,
         todayCount,
         tomorrowCount,
