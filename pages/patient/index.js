@@ -362,7 +362,6 @@ export default function Patient({ user, visits }) {
   );
 }
 
-// initial connection to db
 export async function getServerSideProps(context) {
   try {
     await dbConnect();

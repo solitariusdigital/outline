@@ -142,7 +142,6 @@ export default function Home({ activeVisits }) {
   );
 }
 
-// initial connection to db
 export async function getServerSideProps(context) {
   try {
     await dbConnect();

@@ -28,33 +28,31 @@ import {
   getCurrentDate,
 } from "@/services/utility";
 
-export default function Access({ visits, activeVisits, users }) {
+export default function Access({
+  visits,
+  activeVisits,
+  users,
+  activeCount,
+  completeCount,
+  cancelCount,
+  todayCount,
+  tomorrowCount,
+  afterTomorrowCount,
+}) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { notification, setNotification } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const { adminColorCode, setAdminColorCode } = useContext(StateContext);
-
-  const { activeVisitsCount, setActiveVisitsCount } = useContext(StateContext);
-  const { todayVisitsCount, setTodayVisitsCount } = useContext(StateContext);
-  const { tomorrowVisitsCount, setTomorrowVisitsCount } =
-    useContext(StateContext);
-  const { afterTomorrowVisitsCount, setAfterTomorrowVisitsCount } =
-    useContext(StateContext);
-  const { completeVisitsCount, setCompleteVisitsCount } =
-    useContext(StateContext);
-  const { cancelVisitsCount, setCancelVisitsCount } = useContext(StateContext);
-
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
   const [phone, setPhone] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [expandedItem, setExpandedItem] = useState(null);
   const [reqNumber, setReqNumber] = useState(50);
-
   const [visitTypes, setVisitTypes] = useState(
-    "all" ||
-      "active" ||
+    "active" ||
+      "all" ||
       "today" ||
       "tomorrow" ||
       "afterTomorrow" ||
@@ -89,36 +87,7 @@ export default function Access({ visits, activeVisits, users }) {
       };
       fetchData().catch(console.error);
     }
-    setVisitTypes("active");
   }, [currentUser, visits]);
-
-  useEffect(() => {
-    const updateVisitCounts = (count, setCount, filterFunc) => {
-      if (count === 0) {
-        setCount(filterFunc(displayVisits).length);
-      }
-    };
-    updateVisitCounts(activeVisitsCount, setActiveVisitsCount, (visits) =>
-      visits.filter((visit) => !visit.completed && !visit.canceled)
-    );
-    updateVisitCounts(todayVisitsCount, setTodayVisitsCount, (visits) =>
-      filterVisitsByDate(visits)
-    );
-    updateVisitCounts(tomorrowVisitsCount, setTomorrowVisitsCount, (visits) =>
-      filterVisitsByDate(visits, 1)
-    );
-    updateVisitCounts(
-      afterTomorrowVisitsCount,
-      setAfterTomorrowVisitsCount,
-      (visits) => filterVisitsByDate(visits, 2)
-    );
-    updateVisitCounts(completeVisitsCount, setCompleteVisitsCount, (visits) =>
-      visits.filter((visit) => visit.completed)
-    );
-    updateVisitCounts(cancelVisitsCount, setCancelVisitsCount, (visits) =>
-      visits.filter((visit) => visit.canceled)
-    );
-  }, [displayVisits]);
 
   useEffect(() => {
     setNotification(checkAllVisitsForPast(activeVisits));
@@ -413,7 +382,7 @@ export default function Access({ visits, activeVisits, users }) {
               )}
               <Fragment>
                 <div className={classes.row}>
-                  <p>{activeVisitsCount}</p>
+                  <p>{activeCount}</p>
                   <p
                     className={
                       visitTypes === "active"
@@ -430,7 +399,7 @@ export default function Access({ visits, activeVisits, users }) {
                 {currentUser.permission === "admin" && (
                   <Fragment>
                     <div className={classes.row}>
-                      <p>{todayVisitsCount}</p>
+                      <p>{todayCount}</p>
                       <p
                         className={
                           visitTypes === "today"
@@ -445,7 +414,7 @@ export default function Access({ visits, activeVisits, users }) {
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p>{tomorrowVisitsCount}</p>
+                      <p>{tomorrowCount}</p>
                       <p
                         className={
                           visitTypes === "tomorrow"
@@ -460,7 +429,7 @@ export default function Access({ visits, activeVisits, users }) {
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p>{afterTomorrowVisitsCount}</p>
+                      <p>{afterTomorrowCount}</p>
                       <p
                         className={
                           visitTypes === "afterTomorrow"
@@ -477,7 +446,7 @@ export default function Access({ visits, activeVisits, users }) {
                   </Fragment>
                 )}
                 <div className={classes.row}>
-                  <p>{completeVisitsCount}</p>
+                  <p>{completeCount}</p>
                   <p
                     className={
                       visitTypes === "complete"
@@ -492,7 +461,7 @@ export default function Access({ visits, activeVisits, users }) {
                   </p>
                 </div>
                 <div className={classes.row}>
-                  <p>{cancelVisitsCount}</p>
+                  <p>{cancelCount}</p>
                   <p
                     className={
                       visitTypes === "cancel"
@@ -803,7 +772,6 @@ export default function Access({ visits, activeVisits, users }) {
   );
 }
 
-// initial connection to db
 export async function getServerSideProps(context) {
   try {
     await dbConnect();
@@ -819,22 +787,46 @@ export async function getServerSideProps(context) {
       "66f3129d0207273bf017248d": "دکتر گنجه",
     };
 
+    let activeCount = 0;
+    let completeCount = 0;
+    let cancelCount = 0;
+    let todayCount = 0;
+    let tomorrowCount = 0;
+    let afterTomorrowCount = 0;
+    let activeFilter = { completed: false, canceled: false };
+    let completeFilter = { completed: true };
+    let canceledFilter = { canceled: true };
+
     switch (permission) {
       case "patient":
+        activeFilter.userId = id;
+        completeFilter.userId = id;
+        canceledFilter.userId = id;
         visits = await visitModel.find({ userId: id });
+        break;
+      case "doctor":
+        const doctorName = doctorIdTagName[id];
+        activeFilter.doctor = doctorName;
+        completeFilter.doctor = doctorName;
+        canceledFilter.doctor = doctorName;
+        visits = await visitModel.find({ doctor: doctorName });
         break;
       case "admin":
         visits = await visitModel.find();
-        activeVisits = visits.filter(
-          (visit) => !visit.completed && !visit.canceled
-        );
+        activeVisits = await visitModel.find({
+          completed: false,
+          canceled: false,
+        });
         break;
-      case "doctor":
-        let visitsData = await visitModel.find();
-        visits = visitsData.filter(
-          (visit) => visit.doctor === doctorIdTagName[id]
-        );
-        break;
+    }
+
+    activeCount = await visitModel.countDocuments(activeFilter);
+    completeCount = await visitModel.countDocuments(completeFilter);
+    cancelCount = await visitModel.countDocuments(canceledFilter);
+    if (permission === "admin") {
+      todayCount = filterVisitsByDate(visits).length;
+      tomorrowCount = filterVisitsByDate(visits, 1).length;
+      afterTomorrowCount = filterVisitsByDate(visits, 2).length;
     }
 
     visits
@@ -847,6 +839,12 @@ export async function getServerSideProps(context) {
         visits: JSON.parse(JSON.stringify(visits)),
         activeVisits: JSON.parse(JSON.stringify(activeVisits)),
         users: JSON.parse(JSON.stringify(users)),
+        activeCount,
+        todayCount,
+        tomorrowCount,
+        afterTomorrowCount,
+        completeCount,
+        cancelCount,
       },
     };
   } catch (error) {
