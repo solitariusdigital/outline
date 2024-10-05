@@ -681,7 +681,9 @@ export default function Access({
                                     </div>
                                   )}
                                   <div className={classes.row}>
-                                    <p>{item.doctor}</p>
+                                    <p className={classes.doctor}>
+                                      {item.doctor}
+                                    </p>
                                     <p>{item.title}</p>
                                   </div>
                                 </div>

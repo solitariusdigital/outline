@@ -212,7 +212,9 @@
           }
         }
       }
-
+      .doctor {
+        width: 40%;
+      }
       .time {
         direction: ltr;
       }
@@ -246,8 +248,8 @@
       }
     }
     .colorCode {
-      width: 15px;
-      height: 15px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
     }
   }
