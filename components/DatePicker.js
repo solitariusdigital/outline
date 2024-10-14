@@ -64,7 +64,12 @@ export default function DatePicker({ visits }) {
   useEffect(() => {
     countFullDateTime(selectDoctor);
     if (currentUser.permission !== "admin") {
-      setDisableDates([{ day: 13, month: 7, year: 1403 }]);
+      setDisableDates([
+        { day: 11, month: 8, year: 1403 },
+        { day: 18, month: 8, year: 1403 },
+        { day: 25, month: 8, year: 1403 },
+        { day: 2, month: 9, year: 1403 },
+      ]);
     }
   }, []);
 
