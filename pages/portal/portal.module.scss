@@ -306,6 +306,7 @@
 }
 
 .analytics {
+  position: relative;
   width: 350px;
   margin: 20px auto;
   box-shadow: config.$card-shadow;
@@ -316,6 +317,12 @@
   .row {
     margin: 4px 0px;
     @include mixins.row-space-between-center();
+  }
+
+  .refresh {
+    position: absolute;
+    top: 12px;
+    right: 12px;
   }
 
   @include mixins.mobile {

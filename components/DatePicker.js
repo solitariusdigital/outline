@@ -425,7 +425,7 @@ export default function DatePicker({ visits }) {
           disabledDays={disableDates}
         />
       )}
-      {day &&
+      {/* {day &&
         currentUser.permission === "admin" &&
         (isDateDisabled ? (
           <button
@@ -441,7 +441,7 @@ export default function DatePicker({ visits }) {
           >
             بستن روز
           </button>
-        ))}
+        ))} */}
       {day && currentUser.permission === "admin" && (
         <h3 className={classes.totalCount}>
           {Object.values(times).reduce((acc, time) => acc + time.count, 0)}
