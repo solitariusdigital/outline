@@ -1,7 +1,7 @@
-import User from "@/models/User";
+import Control from "@/models/Control";
 import dbConnect from "@/services/dbConnect";
 
-export default async function usersHandler(req, res) {
+export default async function controlsHandler(req, res) {
   res.setHeader("Cache-Control", "s-maxage=10");
   const { method, body } = req;
   await dbConnect();
@@ -9,26 +9,21 @@ export default async function usersHandler(req, res) {
   switch (method) {
     case "POST":
       try {
-        const newUser = await User.create(body);
-        return res.status(200).json(newUser);
+        const newControl = await Control.create(body);
+        return res.status(200).json(newControl);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
     case "GET":
       try {
-        let users = null;
-        if (req.query.id) {
-          users = await User.findById(req.query.id);
-        } else {
-          users = await User.find();
-        }
-        return res.status(200).json(users);
+        const controls = await Control.find();
+        return res.status(200).json(controls);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
     case "PUT":
       try {
-        const updateUser = await User.findByIdAndUpdate(
+        const updateControl = await Control.findByIdAndUpdate(
           body.id || body["_id"],
           body,
           {
@@ -36,12 +31,14 @@ export default async function usersHandler(req, res) {
             runValidators: true,
           }
         );
-        if (!updateUser) {
+        if (!updateControl) {
           return res.status(400).json({ msg: err.message });
         }
-        return res.status(200).json(updateUser);
+        return res.status(200).json(updateControl);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
+    default:
+      return res.status(405).json({ msg: "Method Not Allowed" });
   }
 }

@@ -1,7 +1,7 @@
 import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import secureLocalStorage from "react-secure-storage";
-import { getUserApi } from "@/services/api";
+import { getSingleUserApi } from "@/services/api";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 
@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
           secureLocalStorage.getItem("currentUser")
         );
         if (currentUser) {
-          const userData = await getUserApi(currentUser["_id"]);
+          const userData = await getSingleUserApi(currentUser["_id"]);
           setCurrentUser(userData);
           secureLocalStorage.setItem("currentUser", JSON.stringify(userData));
         }

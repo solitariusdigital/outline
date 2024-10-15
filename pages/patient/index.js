@@ -13,7 +13,7 @@ import userModel from "@/models/User";
 import { convertDate, filterVisitsByDate } from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
 import { NextSeo } from "next-seo";
-import { getVisitApi, updateVisitApi } from "@/services/api";
+import { getSingleVisitApi, updateVisitApi } from "@/services/api";
 import Kavenegar from "kavenegar";
 import logo from "@/assets/logo.png";
 
@@ -57,7 +57,7 @@ export default function Patient({ user, visits }) {
     }`;
     const confirm = window.confirm(message);
     if (confirm) {
-      let visitData = await getVisitApi(id);
+      let visitData = await getSingleVisitApi(id);
       switch (type) {
         case "complete":
           visitData.completed = true;
@@ -137,6 +137,7 @@ export default function Patient({ user, visits }) {
                   <p>{user.phone}</p>
                   <p>{user.name}</p>
                 </div>
+                <h4>نوبت‌ها</h4>
                 <div className={classes.row}>
                   <p>
                     {
@@ -160,7 +161,7 @@ export default function Patient({ user, visits }) {
                       setVisitTypes("active");
                     }}
                   >
-                    نوبت فعال
+                    فعال
                   </p>
                 </div>
                 <div className={classes.row}>
@@ -174,7 +175,7 @@ export default function Patient({ user, visits }) {
                       setVisitTypes("today");
                     }}
                   >
-                    نوبت امروز
+                    امروز
                   </p>
                 </div>
                 <div className={classes.row}>
@@ -190,7 +191,7 @@ export default function Patient({ user, visits }) {
                       setVisitTypes("tomorrow");
                     }}
                   >
-                    نوبت فردا
+                    فردا
                   </p>
                 </div>
                 <div className={classes.row}>
@@ -206,7 +207,7 @@ export default function Patient({ user, visits }) {
                       setVisitTypes("afterTomorrow");
                     }}
                   >
-                    نوبت پس‌فردا
+                    پس‌فردا
                   </p>
                 </div>
                 <div className={classes.row}>
@@ -226,7 +227,7 @@ export default function Patient({ user, visits }) {
                       setVisitTypes("complete");
                     }}
                   >
-                    نوبت تکمیل شده
+                    تکمیل شده
                   </p>
                 </div>
                 <div className={classes.row}>
@@ -246,7 +247,7 @@ export default function Patient({ user, visits }) {
                       setVisitTypes("cancel");
                     }}
                   >
-                    نوبت لغو شده
+                    لغو شده
                   </p>
                 </div>
               </Fragment>

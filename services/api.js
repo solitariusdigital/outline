@@ -19,8 +19,8 @@ export const createUserApi = async (data) => {
   });
   return await response.json();
 };
-export const getUserApi = async (id) => {
-  const response = await fetch(`/api/user?id=${id}`, {
+export const getSingleUserApi = async (id) => {
+  const response = await fetch(`/api/users?id=${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -59,8 +59,8 @@ export const createVisitApi = async (data) => {
   });
   return await response.json();
 };
-export const getVisitApi = async (id) => {
-  const response = await fetch(`/api/visit?id=${id}`, {
+export const getSingleVisitApi = async (id) => {
+  const response = await fetch(`/api/visits?id=${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -70,6 +70,37 @@ export const getVisitApi = async (id) => {
 };
 export const getVisitsApi = async () => {
   const response = await fetch("/api/visits", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+
+// controls api
+export const updateControlApi = async (data) => {
+  const response = await fetch("/api/controls", {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const createControlApi = async (data) => {
+  const response = await fetch("/api/controls", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getControlsApi = async () => {
+  const response = await fetch("/api/controls", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

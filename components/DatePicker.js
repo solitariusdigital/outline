@@ -1,6 +1,11 @@
 import { useState, useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./DatePicker.module.scss";
+import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
+import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
+import CloseIcon from "@mui/icons-material/Close";
+import Router from "next/router";
+import Kavenegar from "kavenegar";
 import {
   toFarsiNumber,
   convertPersianToGregorian,
@@ -10,18 +15,15 @@ import {
   isNotThursday,
   getCurrentDate,
 } from "@/services/utility";
-import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
-import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
-import CloseIcon from "@mui/icons-material/Close";
 import {
   createVisitApi,
   getUsersApi,
   getVisitsApi,
   createUserApi,
   updateUserApi,
+  updateControlApi,
+  getControlsApi,
 } from "@/services/api";
-import Router from "next/router";
-import Kavenegar from "kavenegar";
 
 export default function DatePicker({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -39,6 +41,7 @@ export default function DatePicker({ visits }) {
   const [time, setTime] = useState("");
   const [dateObject, setDateObject] = useState("");
   const [disableDates, setDisableDates] = useState([]);
+  const [isDateDisabled, setIsDateDisabled] = useState(false);
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -63,15 +66,37 @@ export default function DatePicker({ visits }) {
 
   useEffect(() => {
     countFullDateTime(selectDoctor);
+    const fetchData = async () => {
+      try {
+        let controls = await getControlsApi();
+        const disableDatesArray = Object.keys(controls[0].disableDates).map(
+          (dateString) => {
+            const [year, month, day] = dateString.split("-").map(Number);
+            return { day, month, year };
+          }
+        );
+        setDisableDates(disableDatesArray);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     if (currentUser.permission !== "admin") {
-      setDisableDates([
-        { day: 11, month: 8, year: 1403 },
-        { day: 18, month: 8, year: 1403 },
-        { day: 25, month: 8, year: 1403 },
-        { day: 2, month: 9, year: 1403 },
-      ]);
+      fetchData();
     }
   }, []);
+
+  useEffect(() => {
+    const checkDate = async () => {
+      if (day) {
+        const result = await checkDisableDate(day);
+        setIsDateDisabled(result);
+      } else {
+        setIsDateDisabled(false);
+      }
+    };
+
+    checkDate();
+  }, [day]);
 
   const scrollToDivInputBox = () => {
     if (targetInputBox.current) {
@@ -333,6 +358,31 @@ export default function DatePicker({ visits }) {
     return `${toEnglishNumber(splitTime[0])}:${toEnglishNumber(splitTime[1])}`;
   };
 
+  const updateDisableDays = async (dayObject) => {
+    const confirm = window.confirm("بستن روز، مطمئنی؟");
+    if (confirm) {
+      const formatDateKey = `${dayObject.year}-${dayObject.month}-${dayObject.day}`;
+      try {
+        let controls = await getControlsApi();
+        controls[0].disableDates = {
+          ...controls[0].disableDates,
+          [formatDateKey]: true,
+        };
+        await updateControlApi(controls[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const checkDisableDate = async (dayObject) => {
+    let controls = await getControlsApi();
+    let disableDatesObject = controls[0].disableDates;
+    const dateString = `${dayObject.year}-${dayObject.month}-${dayObject.day}`;
+    const isDateDisabled = dateString in disableDatesObject;
+    return isDateDisabled;
+  };
+
   const showAlert = (message) => {
     setAlert(message);
     setTimeout(() => {
@@ -375,6 +425,23 @@ export default function DatePicker({ visits }) {
           disabledDays={disableDates}
         />
       )}
+      {day &&
+        currentUser.permission === "admin" &&
+        (isDateDisabled ? (
+          <button
+            className={classes.activeButton}
+            onClick={() => updateDisableDays(day)}
+          >
+            باز کردن روز
+          </button>
+        ) : (
+          <button
+            className={classes.disableButton}
+            onClick={() => updateDisableDays(day)}
+          >
+            بستن روز
+          </button>
+        ))}
       {day && currentUser.permission === "admin" && (
         <h3 className={classes.totalCount}>
           {Object.values(times).reduce((acc, time) => acc + time.count, 0)}

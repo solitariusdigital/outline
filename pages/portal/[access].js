@@ -15,7 +15,7 @@ import userModel from "@/models/User";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
-import { getVisitApi, updateVisitApi, getUserApi } from "@/services/api";
+import { getSingleVisitApi, updateVisitApi } from "@/services/api";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Kavenegar from "kavenegar";
@@ -118,7 +118,7 @@ export default function Access({
     }`;
     const confirm = window.confirm(message);
     if (confirm) {
-      let visitData = await getVisitApi(id);
+      let visitData = await getSingleVisitApi(id);
       switch (type) {
         case "complete":
           visitData.completed = true;

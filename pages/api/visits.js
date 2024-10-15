@@ -17,7 +17,12 @@ export default async function visitsHandler(req, res) {
       }
     case "GET":
       try {
-        const visits = await Visit.find();
+        let visits = null;
+        if (req.query.id) {
+          visits = await Visit.findById(req.query.id);
+        } else {
+          visits = await Visit.find();
+        }
         return res.status(200).json(visits);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
