@@ -137,7 +137,7 @@ export default function Access({
         function (response, status) {}
       );
       await updateVisitApi(visitData);
-      router.replace(router.asPath);
+      window.location.reload();
     }
   };
 
@@ -289,7 +289,7 @@ export default function Access({
             await updateVisitApi(visit);
           }
         });
-      router.reload();
+      window.location.reload();
     } else {
       setDisableButton(false);
     }
@@ -352,7 +352,7 @@ export default function Access({
                   <RefreshIcon
                     className="icon"
                     onClick={() => {
-                      router.reload();
+                      window.location.reload();
                     }}
                   />
                 </div>
