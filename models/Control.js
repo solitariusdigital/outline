@@ -3,6 +3,7 @@ import { Schema, model, models } from "mongoose";
 const ControlSchema = new Schema(
   {
     disableDates: {},
+    reminderDates: {},
     admins: {},
   },
   { timestamps: true }

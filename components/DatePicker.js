@@ -80,10 +80,10 @@ export default function DatePicker({ visits }) {
         console.error(error);
       }
     };
-    if (currentUser.permission !== "admin") {
+    if (!currentUser.super) {
       fetchData();
     }
-  }, []);
+  }, [day]);
 
   useEffect(() => {
     const checkDate = async () => {
@@ -358,20 +358,30 @@ export default function DatePicker({ visits }) {
     return `${toEnglishNumber(splitTime[0])}:${toEnglishNumber(splitTime[1])}`;
   };
 
-  const updateDisableDays = async (dayObject) => {
-    const confirm = window.confirm("بستن روز، مطمئنی؟");
+  const updateDisableDays = async (dayObject, type) => {
+    const message = `${
+      type === "disable" ? "بستن روز، مطمئنی؟" : "باز کردن روز، مطمئنی؟"
+    }`;
+    const confirm = window.confirm(message);
     if (confirm) {
       const formatDateKey = `${dayObject.year}-${dayObject.month}-${dayObject.day}`;
-      try {
-        let controls = await getControlsApi();
-        controls[0].disableDates = {
-          ...controls[0].disableDates,
-          [formatDateKey]: true,
-        };
-        await updateControlApi(controls[0]);
-      } catch (error) {
-        console.error(error);
+      let controls = await getControlsApi();
+      switch (type) {
+        case "disable":
+          controls[0].disableDates = {
+            ...controls[0].disableDates,
+            [formatDateKey]: true,
+          };
+          break;
+        case "active":
+          if (controls[0].disableDates.hasOwnProperty(formatDateKey)) {
+            delete controls[0].disableDates[formatDateKey];
+          }
+          break;
       }
+      await updateControlApi(controls[0]);
+      setDay(dateObject);
+      setTimes({});
     }
   };
 
@@ -425,23 +435,23 @@ export default function DatePicker({ visits }) {
           disabledDays={disableDates}
         />
       )}
-      {/* {day &&
-        currentUser.permission === "admin" &&
+      {day &&
+        currentUser.super &&
         (isDateDisabled ? (
           <button
             className={classes.activeButton}
-            onClick={() => updateDisableDays(day)}
+            onClick={() => updateDisableDays(day, "active")}
           >
             باز کردن روز
           </button>
         ) : (
           <button
             className={classes.disableButton}
-            onClick={() => updateDisableDays(day)}
+            onClick={() => updateDisableDays(day, "disable")}
           >
             بستن روز
           </button>
-        ))} */}
+        ))}
       {day && currentUser.permission === "admin" && (
         <h3 className={classes.totalCount}>
           {Object.values(times).reduce((acc, time) => acc + time.count, 0)}

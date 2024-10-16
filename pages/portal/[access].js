@@ -352,7 +352,7 @@ export default function Access({
                   <RefreshIcon
                     className="icon"
                     onClick={() => {
-                      router.replace(router.asPath);
+                      router.reload(router.asPath);
                     }}
                   />
                 </div>

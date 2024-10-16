@@ -113,10 +113,10 @@
 
 .activeButton {
   margin-top: 20px;
-  @include mixins.button(config.$green, config.$green, config.$white);
+  @include mixins.button(config.$red, config.$red, config.$white);
 }
 
 .disableButton {
   margin-top: 20px;
-  @include mixins.button(config.$red, config.$red, config.$white);
+  @include mixins.button(config.$green, config.$green, config.$white);
 }
