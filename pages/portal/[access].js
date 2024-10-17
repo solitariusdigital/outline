@@ -892,7 +892,7 @@ export async function getServerSideProps(context) {
     let permission = context.query.p;
 
     // Check if data is already cached
-    if (permission === "admin" && cachedVisitsData) {
+    if (cachedVisitsData) {
       return {
         props: cachedVisitsData,
       };
