@@ -401,7 +401,14 @@ export default function Access({
                 )}
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
-                  <p>
+                  <p
+                    style={{
+                      color:
+                        currentUser.permission === "admin" && !currentUser.super
+                          ? "#ffffff"
+                          : "",
+                    }}
+                  >
                     {
                       users.filter((user) => user.permission === "patient")
                         .length
@@ -421,7 +428,16 @@ export default function Access({
               )}
               <Fragment>
                 <div className={classes.row}>
-                  <p>{activeCount}</p>
+                  <p
+                    style={{
+                      color:
+                        currentUser.permission === "admin" && !currentUser.super
+                          ? "#ffffff"
+                          : "",
+                    }}
+                  >
+                    {activeCount}
+                  </p>
                   <p
                     className={
                       visitTypes === "active"
@@ -439,7 +455,17 @@ export default function Access({
                   currentUser.permission === "doctor") && (
                   <Fragment>
                     <div className={classes.row}>
-                      <p>{todayCount}</p>
+                      <p
+                        style={{
+                          color:
+                            currentUser.permission === "admin" &&
+                            !currentUser.super
+                              ? "#ffffff"
+                              : "",
+                        }}
+                      >
+                        {todayCount}
+                      </p>
                       <p
                         className={
                           visitTypes === "today"
@@ -454,7 +480,17 @@ export default function Access({
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p>{tomorrowCount}</p>
+                      <p
+                        style={{
+                          color:
+                            currentUser.permission === "admin" &&
+                            !currentUser.super
+                              ? "#ffffff"
+                              : "",
+                        }}
+                      >
+                        {tomorrowCount}
+                      </p>
                       <p
                         className={
                           visitTypes === "tomorrow"
@@ -469,7 +505,17 @@ export default function Access({
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p>{afterTomorrowCount}</p>
+                      <p
+                        style={{
+                          color:
+                            currentUser.permission === "admin" &&
+                            !currentUser.super
+                              ? "#ffffff"
+                              : "",
+                        }}
+                      >
+                        {afterTomorrowCount}
+                      </p>
                       <p
                         className={
                           visitTypes === "afterTomorrow"
@@ -486,7 +532,16 @@ export default function Access({
                   </Fragment>
                 )}
                 <div className={classes.row}>
-                  <p>{completeCount}</p>
+                  <p
+                    style={{
+                      color:
+                        currentUser.permission === "admin" && !currentUser.super
+                          ? "#ffffff"
+                          : "",
+                    }}
+                  >
+                    {completeCount}
+                  </p>
                   <p
                     className={
                       visitTypes === "complete"
@@ -501,7 +556,16 @@ export default function Access({
                   </p>
                 </div>
                 <div className={classes.row}>
-                  <p>{cancelCount}</p>
+                  <p
+                    style={{
+                      color:
+                        currentUser.permission === "admin" && !currentUser.super
+                          ? "#ffffff"
+                          : "",
+                    }}
+                  >
+                    {cancelCount}
+                  </p>
                   <p
                     className={
                       visitTypes === "cancel"
@@ -828,7 +892,7 @@ export async function getServerSideProps(context) {
     let permission = context.query.p;
 
     // Check if data is already cached
-    if (cachedVisitsData) {
+    if (permission === "admin" && cachedVisitsData) {
       return {
         props: cachedVisitsData,
       };
