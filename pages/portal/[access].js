@@ -92,6 +92,7 @@ export default function Access({
     if (!currentUser) {
       Router.push("/");
     } else {
+      fetchRefreshData();
       setDisplayVisits(cachedVisitsData.visitsData);
       setFilterVisits(
         cachedVisitsData.visitsData.filter(
@@ -99,7 +100,7 @@ export default function Access({
         )
       );
     }
-  }, [currentUser, cachedVisitsData]);
+  }, [currentUser]);
 
   useEffect(() => {
     setNotification(checkAllVisitsForPast(cachedVisitsData.activeVisits));
