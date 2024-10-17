@@ -118,8 +118,8 @@ export default function Access({
       type === "complete" ? "completeOutline" : "cancelOutline"
     }`;
     const confirm = window.confirm(message);
+    let visitData = await getSingleVisitApi(id);
     if (confirm) {
-      let visitData = await getSingleVisitApi(id);
       switch (type) {
         case "complete":
           visitData.completed = true;
@@ -136,8 +136,13 @@ export default function Access({
         },
         function (response, status) {}
       );
+      setDisplayVisits(
+        displayVisits.filter((visit) => visit.userId !== visitData.userId)
+      );
+      setFilterVisits(
+        displayVisits.filter((visit) => visit.userId !== visitData.userId)
+      );
       await updateVisitApi(visitData);
-      window.location.reload();
     }
   };
 
@@ -352,7 +357,7 @@ export default function Access({
                   <RefreshIcon
                     className="icon"
                     onClick={() => {
-                      window.location.reload();
+                      window.location.href = window.location.href;
                     }}
                   />
                 </div>
