@@ -137,10 +137,18 @@ export default function Access({
         function (response, status) {}
       );
       setDisplayVisits(
-        displayVisits.filter((visit) => visit.userId !== visitData.userId)
+        displayVisits.filter(
+          (visit) =>
+            visit.userId !== visitData.userId &&
+            (visitData.completed || visitData.canceled)
+        )
       );
       setFilterVisits(
-        displayVisits.filter((visit) => visit.userId !== visitData.userId)
+        displayVisits.filter(
+          (visit) =>
+            visit.userId !== visitData.userId &&
+            (visitData.completed || visitData.canceled)
+        )
       );
       await updateVisitApi(visitData);
     }
