@@ -1,6 +1,5 @@
 import { useState, useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
-import { useRouter } from "next/router";
 import classes from "./portal.module.scss";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import Person4Icon from "@mui/icons-material/Person4";
@@ -67,28 +66,7 @@ export default function Access({
       "cancel"
   );
 
-  const router = useRouter();
   const targetDivRef = useRef(null);
-
-  useEffect(() => {
-    if (!currentUser) {
-      Router.push("/");
-    } else {
-      setDisplayVisits(visitsData);
-      setFilterVisits(
-        visitsData.filter((visit) => !visit.completed && !visit.canceled)
-      );
-    }
-  }, [currentUser, visits]);
-
-  useEffect(() => {
-    setNotification(checkAllVisitsForPast(activeVisits));
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("scroll", loadMore);
-  });
-
   const margin = {
     marginBottom: "8px",
   };
@@ -97,7 +75,41 @@ export default function Access({
     borderRadius: "12px",
   };
 
-  const refreshData = async () => {
+  const [cachedVisitsData, setCachedVisitsData] = useState({
+    visits,
+    activeVisits,
+    users,
+    visitsData,
+    activeCount,
+    completeCount,
+    cancelCount,
+    todayCount,
+    tomorrowCount,
+    afterTomorrowCount,
+  });
+
+  useEffect(() => {
+    if (!currentUser) {
+      Router.push("/");
+    } else {
+      setDisplayVisits(cachedVisitsData.visitsData);
+      setFilterVisits(
+        cachedVisitsData.visitsData.filter(
+          (visit) => !visit.completed && !visit.canceled
+        )
+      );
+    }
+  }, [currentUser, cachedVisitsData]);
+
+  useEffect(() => {
+    setNotification(checkAllVisitsForPast(cachedVisitsData.activeVisits));
+  }, [cachedVisitsData]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", loadMore);
+  });
+
+  const fetchRefreshData = async () => {
     let visits = await getVisitsApi();
     let users = await getUsersApi();
     visits
@@ -113,11 +125,23 @@ export default function Access({
         };
       })
     );
-    setDisplayVisits(visitsData);
-    setFilterVisits(
-      visitsData.filter((visit) => !visit.completed && !visit.canceled)
+    let activeVisits = visitsData.filter(
+      (visit) => !visit.completed && !visit.canceled
     );
-    router.replace(router.asPath);
+    let completeCount = visitsData.filter((visit) => visit.completed).length;
+    let cancelCount = visitsData.filter((visit) => visit.canceled).length;
+    setCachedVisitsData({
+      visits,
+      activeVisits,
+      users,
+      visitsData,
+      activeCount: activeVisits.length,
+      todayCount: filterVisitsByDate(visits).length,
+      tomorrowCount: filterVisitsByDate(visits, 1).length,
+      afterTomorrowCount: filterVisitsByDate(visits, 2).length,
+      completeCount,
+      cancelCount,
+    });
   };
 
   const loadMore = () => {
@@ -164,21 +188,20 @@ export default function Access({
         },
         function (response, status) {}
       );
-      setDisplayVisits(
-        displayVisits.filter(
-          (visit) =>
-            visit.userId !== visitData.userId &&
-            (visitData.completed || visitData.canceled)
-        )
-      );
-      setFilterVisits(
-        displayVisits.filter(
-          (visit) =>
-            visit.userId !== visitData.userId &&
-            (visitData.completed || visitData.canceled)
-        )
-      );
       await updateVisitApi(visitData);
+      fetchRefreshData();
+    }
+  };
+
+  const searchUserVisits = (phone) => {
+    setPhone(phone);
+    if (phone.length === 11) {
+      let phoneEnglish = isEnglishNumber(phone)
+        ? phone
+        : toEnglishNumber(phone);
+      setFilterVisits(
+        displayVisits.filter((visit) => visit.user?.phone === phoneEnglish)
+      );
     }
   };
 
@@ -394,24 +417,18 @@ export default function Access({
                     <RefreshIcon
                       className="icon"
                       onClick={() => {
-                        refreshData();
+                        fetchRefreshData();
                       }}
                     />
                   </div>
                 )}
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
-                  <p
-                    style={{
-                      color:
-                        currentUser.permission === "admin" && !currentUser.super
-                          ? "#ffffff"
-                          : "",
-                    }}
-                  >
+                  <p>
                     {
-                      users.filter((user) => user.permission === "patient")
-                        .length
+                      cachedVisitsData.users.filter(
+                        (user) => user.permission === "patient"
+                      ).length
                     }
                   </p>
                   <p
@@ -419,6 +436,7 @@ export default function Access({
                       visitTypes === "all" ? classes.itemActive : classes.item
                     }
                     onClick={() => {
+                      fetchRefreshData();
                       filterDisplayVisits("all");
                     }}
                   >
@@ -428,16 +446,7 @@ export default function Access({
               )}
               <Fragment>
                 <div className={classes.row}>
-                  <p
-                    style={{
-                      color:
-                        currentUser.permission === "admin" && !currentUser.super
-                          ? "#ffffff"
-                          : "",
-                    }}
-                  >
-                    {activeCount}
-                  </p>
+                  <p>{cachedVisitsData.activeCount}</p>
                   <p
                     className={
                       visitTypes === "active"
@@ -455,17 +464,7 @@ export default function Access({
                   currentUser.permission === "doctor") && (
                   <Fragment>
                     <div className={classes.row}>
-                      <p
-                        style={{
-                          color:
-                            currentUser.permission === "admin" &&
-                            !currentUser.super
-                              ? "#ffffff"
-                              : "",
-                        }}
-                      >
-                        {todayCount}
-                      </p>
+                      <p>{cachedVisitsData.todayCount}</p>
                       <p
                         className={
                           visitTypes === "today"
@@ -480,17 +479,7 @@ export default function Access({
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p
-                        style={{
-                          color:
-                            currentUser.permission === "admin" &&
-                            !currentUser.super
-                              ? "#ffffff"
-                              : "",
-                        }}
-                      >
-                        {tomorrowCount}
-                      </p>
+                      <p>{cachedVisitsData.tomorrowCount}</p>
                       <p
                         className={
                           visitTypes === "tomorrow"
@@ -505,17 +494,7 @@ export default function Access({
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p
-                        style={{
-                          color:
-                            currentUser.permission === "admin" &&
-                            !currentUser.super
-                              ? "#ffffff"
-                              : "",
-                        }}
-                      >
-                        {afterTomorrowCount}
-                      </p>
+                      <p>{cachedVisitsData.afterTomorrowCount}</p>
                       <p
                         className={
                           visitTypes === "afterTomorrow"
@@ -532,16 +511,7 @@ export default function Access({
                   </Fragment>
                 )}
                 <div className={classes.row}>
-                  <p
-                    style={{
-                      color:
-                        currentUser.permission === "admin" && !currentUser.super
-                          ? "#ffffff"
-                          : "",
-                    }}
-                  >
-                    {completeCount}
-                  </p>
+                  <p>{cachedVisitsData.completeCount}</p>
                   <p
                     className={
                       visitTypes === "complete"
@@ -556,16 +526,7 @@ export default function Access({
                   </p>
                 </div>
                 <div className={classes.row}>
-                  <p
-                    style={{
-                      color:
-                        currentUser.permission === "admin" && !currentUser.super
-                          ? "#ffffff"
-                          : "",
-                    }}
-                  >
-                    {cancelCount}
-                  </p>
+                  <p>{cachedVisitsData.cancelCount}</p>
                   <p
                     className={
                       visitTypes === "cancel"
@@ -682,15 +643,7 @@ export default function Access({
                   name="phone"
                   maxLength={11}
                   onChange={(e) => {
-                    setPhone(e.target.value);
-                    let phoneEnglish = isEnglishNumber(e.target.value)
-                      ? e.target.value
-                      : toEnglishNumber(e.target.value);
-                    setFilterVisits(
-                      displayVisits.filter(
-                        (visit) => visit.user?.phone === phoneEnglish
-                      )
-                    );
+                    searchUserVisits(e.target.value);
                   }}
                   value={phone}
                   autoComplete="off"
