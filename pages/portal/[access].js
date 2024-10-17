@@ -16,7 +16,12 @@ import userModel from "@/models/User";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
-import { getSingleVisitApi, updateVisitApi } from "@/services/api";
+import {
+  getSingleVisitApi,
+  getUsersApi,
+  getVisitsApi,
+  updateVisitApi,
+} from "@/services/api";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Kavenegar from "kavenegar";
@@ -90,6 +95,29 @@ export default function Access({
   const canceleStyle = {
     border: "1px solid #d40d12",
     borderRadius: "12px",
+  };
+
+  const refreshData = async () => {
+    let visits = await getVisitsApi();
+    let users = await getUsersApi();
+    visits
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      .sort((a, b) => a.completed - b.completed)
+      .sort((a, b) => a.canceled - b.canceled);
+    let visitsData = await Promise.all(
+      visits.map(async (visit) => {
+        let userData = users.find((user) => user["_id"] === visit.userId);
+        return {
+          ...visit,
+          user: userData,
+        };
+      })
+    );
+    setDisplayVisits(visitsData);
+    setFilterVisits(
+      visitsData.filter((visit) => !visit.completed && !visit.canceled)
+    );
+    router.replace(router.asPath);
   };
 
   const loadMore = () => {
@@ -360,16 +388,17 @@ export default function Access({
           <div className={classes.portal}>
             <div className={classes.analytics}>
               <h4>نوبت‌ها</h4>
-              {currentUser.permission === "admin" && (
-                <div className={classes.refresh}>
-                  <RefreshIcon
-                    className="icon"
-                    onClick={() => {
-                      window.location.href = window.location.href;
-                    }}
-                  />
-                </div>
-              )}
+              {currentUser.permission === "admin" &&
+                visitTypes === "active" && (
+                  <div className={classes.refresh}>
+                    <RefreshIcon
+                      className="icon"
+                      onClick={() => {
+                        refreshData();
+                      }}
+                    />
+                  </div>
+                )}
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
                   <p>
