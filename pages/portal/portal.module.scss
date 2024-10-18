@@ -319,12 +319,6 @@
     @include mixins.row-space-between-center();
   }
 
-  .refresh {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-  }
-
   @include mixins.mobile {
     width: 100%;
   }

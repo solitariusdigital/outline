@@ -1,30 +1,27 @@
 import { useState, useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
+import { useRouter } from "next/router";
 import classes from "./portal.module.scss";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import Person4Icon from "@mui/icons-material/Person4";
 import HomeIcon from "@mui/icons-material/Home";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import Router from "next/router";
 import ModeIcon from "@mui/icons-material/Mode";
-import dbConnect from "@/services/dbConnect";
-import visitModel from "@/models/Visit";
-import userModel from "@/models/User";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import Kavenegar from "kavenegar";
+import logo from "@/assets/logo.png";
 import {
   getSingleVisitApi,
   getUsersApi,
   getVisitsApi,
   updateVisitApi,
 } from "@/services/api";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import Kavenegar from "kavenegar";
-import logo from "@/assets/logo.png";
 import {
   convertDate,
   filterVisitsByDate,
@@ -33,18 +30,7 @@ import {
   getCurrentDate,
 } from "@/services/utility";
 
-export default function Access({
-  visits,
-  activeVisits,
-  users,
-  visitsData,
-  activeCount,
-  completeCount,
-  cancelCount,
-  todayCount,
-  tomorrowCount,
-  afterTomorrowCount,
-}) {
+export default function Access() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { notification, setNotification } = useContext(StateContext);
@@ -67,6 +53,10 @@ export default function Access({
   );
 
   const targetDivRef = useRef(null);
+  const router = useRouter();
+  const [cachedVisitsData, setCachedVisitsData] = useState({});
+  const [loadPage, setLoadPage] = useState(false);
+
   const margin = {
     marginBottom: "8px",
   };
@@ -75,24 +65,16 @@ export default function Access({
     borderRadius: "12px",
   };
 
-  const [cachedVisitsData, setCachedVisitsData] = useState({
-    visits,
-    activeVisits,
-    users,
-    visitsData,
-    activeCount,
-    completeCount,
-    cancelCount,
-    todayCount,
-    tomorrowCount,
-    afterTomorrowCount,
-  });
-
   useEffect(() => {
     if (!currentUser) {
       Router.push("/");
     } else {
       fetchRefreshData();
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (loadPage) {
       setDisplayVisits(cachedVisitsData.visitsData);
       setFilterVisits(
         cachedVisitsData.visitsData.filter(
@@ -100,49 +82,83 @@ export default function Access({
         )
       );
     }
-  }, [currentUser]);
+  }, [loadPage, cachedVisitsData]);
 
   useEffect(() => {
-    setNotification(checkAllVisitsForPast(cachedVisitsData.activeVisits));
-  }, [cachedVisitsData]);
+    if (loadPage) {
+      setNotification(checkAllVisitsForPast(cachedVisitsData.activeVisits));
+    }
+  }, [loadPage, cachedVisitsData]);
 
   useEffect(() => {
     window.addEventListener("scroll", loadMore);
   });
 
   const fetchRefreshData = async () => {
-    let visits = await getVisitsApi();
-    let users = await getUsersApi();
-    visits
-      .sort((a, b) => new Date(a.date) - new Date(b.date))
-      .sort((a, b) => a.completed - b.completed)
-      .sort((a, b) => a.canceled - b.canceled);
-    let visitsData = await Promise.all(
+    try {
+      let visitsFetchData = await getVisitsApi();
+      let visits = [];
+      let users = [];
+      const doctorIdTagName = {
+        "66eb1dc863ab34979e6dd0a3": "دکتر فراهانی",
+        "66f3129d0207273bf017248d": "دکتر گنجه",
+      };
+
+      switch (currentUser.permission) {
+        case "admin":
+          visits = visitsFetchData;
+          users = await getUsersApi();
+          break;
+        case "patient":
+          visits = visitsFetchData.filter(
+            (visit) => visit.userId === currentUser["_id"]
+          );
+          break;
+        case "doctor":
+          const doctorName = doctorIdTagName[currentUser["_id"]];
+          visits = visitsFetchData.filter(
+            (visit) => visit.doctor === doctorName
+          );
+          break;
+      }
+
+      visits = sortVisits(visits);
+      const visitsData = await enrichVisitsWithUserData(visits, users);
+      const activeVisits = visitsData.filter(
+        (visit) => !visit.completed && !visit.canceled
+      );
+
+      setCachedVisitsData({
+        visits,
+        activeVisits,
+        visitsData,
+        users,
+      });
+      setLoadPage(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Helper function to enrich visits with user data
+  const enrichVisitsWithUserData = async (visits, users) => {
+    return await Promise.all(
       visits.map(async (visit) => {
-        let userData = users.find((user) => user["_id"] === visit.userId);
+        const userData = users.find((user) => user["_id"] === visit.userId);
         return {
           ...visit,
           user: userData,
         };
       })
     );
-    let activeVisits = visitsData.filter(
-      (visit) => !visit.completed && !visit.canceled
-    );
-    let completeCount = visitsData.filter((visit) => visit.completed).length;
-    let cancelCount = visitsData.filter((visit) => visit.canceled).length;
-    setCachedVisitsData({
-      visits,
-      activeVisits,
-      users,
-      visitsData,
-      activeCount: activeVisits.length,
-      todayCount: filterVisitsByDate(visits).length,
-      tomorrowCount: filterVisitsByDate(visits, 1).length,
-      afterTomorrowCount: filterVisitsByDate(visits, 2).length,
-      completeCount,
-      cancelCount,
-    });
+  };
+
+  // Helper function to sort visits
+  const sortVisits = (visits) => {
+    return visits
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      .sort((a, b) => a.completed - b.completed)
+      .sort((a, b) => a.canceled - b.canceled);
   };
 
   const loadMore = () => {
@@ -190,7 +206,21 @@ export default function Access({
         function (response, status) {}
       );
       await updateVisitApi(visitData);
-      fetchRefreshData();
+
+      let visits = await getVisitsApi();
+      let users = await getUsersApi();
+      visits = sortVisits(visits);
+      const activeVisits = visits.filter(
+        (visit) => !visit.completed && !visit.canceled
+      );
+      const visitsData = await enrichVisitsWithUserData(visits, users);
+
+      setCachedVisitsData((prevData) => ({
+        ...prevData,
+        visits,
+        activeVisits,
+        visitsData,
+      }));
     }
   };
 
@@ -354,7 +384,7 @@ export default function Access({
             await updateVisitApi(visit);
           }
         });
-      window.location.reload();
+      router.reload(router.asPath);
     } else {
       setDisableButton(false);
     }
@@ -386,7 +416,7 @@ export default function Access({
           maxVideoPreview: -1,
         }}
       />
-      {currentUser && (
+      {loadPage && currentUser && (
         <div className={classes.container}>
           {currentUser.permission === "admin" && notification && (
             <div className={classes.notification}>
@@ -412,17 +442,6 @@ export default function Access({
           <div className={classes.portal}>
             <div className={classes.analytics}>
               <h4>نوبت‌ها</h4>
-              {currentUser.permission === "admin" &&
-                visitTypes === "active" && (
-                  <div className={classes.refresh}>
-                    <RefreshIcon
-                      className="icon"
-                      onClick={() => {
-                        fetchRefreshData();
-                      }}
-                    />
-                  </div>
-                )}
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
                   <p>
@@ -437,7 +456,6 @@ export default function Access({
                       visitTypes === "all" ? classes.itemActive : classes.item
                     }
                     onClick={() => {
-                      fetchRefreshData();
                       filterDisplayVisits("all");
                     }}
                   >
@@ -447,7 +465,7 @@ export default function Access({
               )}
               <Fragment>
                 <div className={classes.row}>
-                  <p>{cachedVisitsData.activeCount}</p>
+                  <p>{cachedVisitsData.activeVisits.length}</p>
                   <p
                     className={
                       visitTypes === "active"
@@ -465,7 +483,9 @@ export default function Access({
                   currentUser.permission === "doctor") && (
                   <Fragment>
                     <div className={classes.row}>
-                      <p>{cachedVisitsData.todayCount}</p>
+                      <p>
+                        {filterVisitsByDate(cachedVisitsData.visits).length}
+                      </p>
                       <p
                         className={
                           visitTypes === "today"
@@ -480,7 +500,9 @@ export default function Access({
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p>{cachedVisitsData.tomorrowCount}</p>
+                      <p>
+                        {filterVisitsByDate(cachedVisitsData.visits, 1).length}
+                      </p>
                       <p
                         className={
                           visitTypes === "tomorrow"
@@ -495,7 +517,9 @@ export default function Access({
                       </p>
                     </div>
                     <div className={classes.row}>
-                      <p>{cachedVisitsData.afterTomorrowCount}</p>
+                      <p>
+                        {filterVisitsByDate(cachedVisitsData.visits, 2).length}
+                      </p>
                       <p
                         className={
                           visitTypes === "afterTomorrow"
@@ -512,7 +536,13 @@ export default function Access({
                   </Fragment>
                 )}
                 <div className={classes.row}>
-                  <p>{cachedVisitsData.completeCount}</p>
+                  <p>
+                    {
+                      cachedVisitsData.visitsData.filter(
+                        (visit) => visit.completed
+                      ).length
+                    }
+                  </p>
                   <p
                     className={
                       visitTypes === "complete"
@@ -527,7 +557,13 @@ export default function Access({
                   </p>
                 </div>
                 <div className={classes.row}>
-                  <p>{cachedVisitsData.cancelCount}</p>
+                  <p>
+                    {
+                      cachedVisitsData.visitsData.filter(
+                        (visit) => visit.canceled
+                      ).length
+                    }
+                  </p>
                   <p
                     className={
                       visitTypes === "cancel"
@@ -836,108 +872,4 @@ export default function Access({
       )}
     </Fragment>
   );
-}
-
-let cachedVisitsData = null;
-export async function getServerSideProps(context) {
-  try {
-    await dbConnect();
-    let id = context.query.id;
-    let permission = context.query.p;
-
-    // Check if data is already cached
-    if (cachedVisitsData) {
-      return {
-        props: cachedVisitsData,
-      };
-    }
-
-    const users = await userModel.find();
-    let visits = [];
-    let activeVisits = [];
-    const doctorIdTagName = {
-      "66eb1dc863ab34979e6dd0a3": "دکتر فراهانی",
-      "66f3129d0207273bf017248d": "دکتر گنجه",
-    };
-    let activeCount = 0;
-    let completeCount = 0;
-    let cancelCount = 0;
-    let todayCount = 0;
-    let tomorrowCount = 0;
-    let afterTomorrowCount = 0;
-    let activeFilter = { completed: false, canceled: false };
-    let completeFilter = { completed: true };
-    let canceledFilter = { canceled: true };
-
-    switch (permission) {
-      case "patient":
-        activeFilter.userId = id;
-        completeFilter.userId = id;
-        canceledFilter.userId = id;
-        visits = await visitModel.find({ userId: id });
-        break;
-      case "doctor":
-        const doctorName = doctorIdTagName[id];
-        activeFilter.doctor = doctorName;
-        completeFilter.doctor = doctorName;
-        canceledFilter.doctor = doctorName;
-        visits = await visitModel.find({ doctor: doctorName });
-        break;
-      case "admin":
-        visits = await visitModel.find();
-        activeVisits = await visitModel.find({
-          completed: false,
-          canceled: false,
-        });
-        break;
-    }
-
-    activeCount = await visitModel.countDocuments(activeFilter);
-    completeCount = await visitModel.countDocuments(completeFilter);
-    cancelCount = await visitModel.countDocuments(canceledFilter);
-
-    if (permission === "admin" || permission === "doctor") {
-      todayCount = filterVisitsByDate(visits).length;
-      tomorrowCount = filterVisitsByDate(visits, 1).length;
-      afterTomorrowCount = filterVisitsByDate(visits, 2).length;
-    }
-
-    visits
-      .sort((a, b) => new Date(a.date) - new Date(b.date))
-      .sort((a, b) => a.completed - b.completed)
-      .sort((a, b) => a.canceled - b.canceled);
-
-    const visitsData = await Promise.all(
-      visits.map(async (visit) => {
-        const userData = await userModel.findOne({ _id: visit.userId });
-        return {
-          ...visit.toObject(),
-          user: userData,
-        };
-      })
-    );
-
-    // Cache the fetched data
-    cachedVisitsData = {
-      visits: JSON.parse(JSON.stringify(visits)),
-      activeVisits: JSON.parse(JSON.stringify(activeVisits)),
-      users: JSON.parse(JSON.stringify(users)),
-      visitsData: JSON.parse(JSON.stringify(visitsData)),
-      activeCount,
-      todayCount,
-      tomorrowCount,
-      afterTomorrowCount,
-      completeCount,
-      cancelCount,
-    };
-
-    return {
-      props: cachedVisitsData,
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      notFound: true,
-    };
-  }
 }
