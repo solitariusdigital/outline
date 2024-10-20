@@ -12,7 +12,7 @@ import {
   isSelectedDateFriday,
   toEnglishNumber,
   isEnglishNumber,
-  isNotThursday,
+  isNotThursdayOrSaturday,
   getCurrentDate,
 } from "@/services/utility";
 import {
@@ -238,7 +238,7 @@ export default function DatePicker({ visits }) {
         day.day
       )}`,
       isSelectedDateFriday(day),
-      isNotThursday(day),
+      isNotThursdayOrSaturday(day),
       day
     );
   };
@@ -288,10 +288,10 @@ export default function DatePicker({ visits }) {
   const updateDisplayTime = (
     selectedDate,
     isSelectedDateFriday,
-    isNotThursday,
+    isNotThursdayOrSaturday,
     day
   ) => {
-    if (selectDoctor === "دکتر گنجه" && isNotThursday) {
+    if (selectDoctor === "دکتر گنجه" && isNotThursdayOrSaturday) {
       setTimes({});
       return;
     }
@@ -352,6 +352,7 @@ export default function DatePicker({ visits }) {
     const formatter = new Intl.DateTimeFormat([], options);
     return formatter.format(new Date());
   };
+
   // Function to convert Farsi time strings to English
   const convertFullTimeToEnglish = (fullTime) => {
     let splitTime = fullTime.split(":");
@@ -481,14 +482,14 @@ export default function DatePicker({ visits }) {
               نوبت در این روز پر است. روز دیگر انتخاب کنید
             </p>
           )}
-          {selectDoctor === "دکتر گنجه" && !isNotThursday(day) && (
+          {selectDoctor === "دکتر گنجه" && !isNotThursdayOrSaturday(day) && (
             <p className={classes.message}>
               نوبت در این روز پر است. روز دیگر انتخاب کنید
             </p>
           )}
-          {selectDoctor === "دکتر گنجه" && isNotThursday(day) && (
+          {selectDoctor === "دکتر گنجه" && isNotThursdayOrSaturday(day) && (
             <p className={classes.message}>
-              نوبت با دکتر گنجه روزهای پنجشنبه فراهم است
+              نوبت با دکتر گنجه شنبه و پنجشنبه فراهم است
             </p>
           )}
         </Fragment>

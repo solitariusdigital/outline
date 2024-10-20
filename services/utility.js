@@ -64,12 +64,12 @@ export function isSelectedDateFriday(persianDate) {
   );
 }
 
-export function isNotThursday(persianDate) {
+export function isNotThursdayOrSaturday(persianDate) {
   const { day, month, year } = persianDate;
-  return (
-    // 0 = Sunday, 1 = Monday, ..., 5 = Friday
-    moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() !== 4
-  );
+  const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
+    .toDate()
+    .getDay();
+  return dayOfWeek !== 4 && dayOfWeek !== 6;
 }
 
 export function getCurrentDate() {
