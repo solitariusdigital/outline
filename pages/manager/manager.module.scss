@@ -1,0 +1,53 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
+  direction: rtl;
+  width: 400px;
+  font-weight: 300;
+  margin: 20px auto;
+  margin-bottom: 80px;
+
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
+
+  .text {
+    margin-top: 12px;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+    color: config.$blue;
+  }
+
+  .input {
+    width: 100%;
+    margin: 20px 0px;
+
+    select {
+      @include mixins.input();
+      width: 100%;
+    }
+  }
+
+  .timesheetCard {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    box-shadow: config.$card-shadow;
+    background: config.$white;
+    border: 1px solid config.$white;
+    @include mixins.border-radius();
+
+    .row {
+      margin: 4px 0px;
+      @include mixins.row-space-between-center();
+    }
+  }
+}

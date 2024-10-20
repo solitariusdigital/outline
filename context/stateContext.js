@@ -14,7 +14,7 @@ export const StateProvider = (props) => {
   const [notification, setNotification] = useState(false);
   const [adminColorCode, setAdminColorCode] = useState({
     // khosro
-    "66d56cc9a4b0b0760f625b03": "#B5C18E",
+    "66d56cc9a4b0b0760f625b03": "#257180",
     // tanaz
     "66ea71d0afe30bf2eefc387a": "#F05A7E",
     // diako

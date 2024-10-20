@@ -82,3 +82,42 @@ export function getCurrentDate() {
   currentDate.setHours(0, 0, 0, 0);
   return currentDate;
 }
+
+function parsePersianTime(timeString) {
+  // Convert Persian numerals to English numerals
+  const persianToEnglish = {
+    "۰": "0",
+    "۱": "1",
+    "۲": "2",
+    "۳": "3",
+    "۴": "4",
+    "۵": "5",
+    "۶": "6",
+    "۷": "7",
+    "۸": "8",
+    "۹": "9",
+  };
+  // Replace Persian numerals with English numerals
+  const englishTimeString = timeString.replace(
+    /[۰-۹]/g,
+    (match) => persianToEnglish[match]
+  );
+  // Split the time string into hours, minutes, and seconds
+  const [hours, minutes, seconds] = englishTimeString.split(":").map(Number);
+  return { hours, minutes, seconds };
+}
+
+export function calculateTimeDifference(time1, time2) {
+  const t1 = parsePersianTime(time1);
+  const t2 = parsePersianTime(time2);
+  // Convert both times to total seconds
+  const totalSeconds1 = t1.hours * 3600 + t1.minutes * 60 + t1.seconds;
+  const totalSeconds2 = t2.hours * 3600 + t2.minutes * 60 + t2.seconds;
+  // Calculate the difference in seconds
+  const differenceInSeconds = Math.abs(totalSeconds1 - totalSeconds2);
+  // Convert back to hours, minutes, and seconds
+  const hours = Math.floor(differenceInSeconds / 3600);
+  const minutes = Math.floor((differenceInSeconds % 3600) / 60);
+  const seconds = differenceInSeconds % 60;
+  return { hours, minutes, seconds };
+}
