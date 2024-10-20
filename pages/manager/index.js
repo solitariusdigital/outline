@@ -1,5 +1,4 @@
-import { useState, useContext, Fragment, useEffect, useRef } from "react";
-import { StateContext } from "@/context/stateContext";
+import { useState, useEffect } from "react";
 import classes from "./manager.module.scss";
 import dbConnect from "@/services/dbConnect";
 import controlModel from "@/models/Control";
@@ -11,7 +10,23 @@ import { calculateTimeDifference } from "@/services/utility";
 export default function Manager({ control }) {
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [displaySelectedUser, setDisplaySelectedUser] = useState(null);
+  const [filterSelectedUser, setFilterSelectedUser] = useState(null);
+
+  const months = [
+    "۰۱",
+    "۰۲",
+    "۰۳",
+    "۰۴",
+    "۰۵",
+    "۰۶",
+    "۰۷",
+    "۰۸",
+    "۰۹",
+    "۱۰",
+    "۱۱",
+    "۱۲",
+  ];
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -35,8 +50,21 @@ export default function Manager({ control }) {
     fetchUserData();
   }, [controlData]);
 
+  const filterDisplayMonths = (monthNumber, typeNumber) => {
+    setDisplaySelectedUser(displaySelectedUser);
+    let filtered = displaySelectedUser.timesheets.filter((data) => {
+      const parts = data.date.split("/");
+      return parts[typeNumber] === monthNumber;
+    });
+    setFilterSelectedUser((prevData) => ({
+      ...prevData,
+      timesheets: filtered,
+    }));
+  };
+
   const assignUserData = (index) => {
-    setSelectedUser(userData[index]);
+    setFilterSelectedUser(userData[index]);
+    setDisplaySelectedUser(userData[index]);
   };
 
   return (
@@ -61,8 +89,29 @@ export default function Manager({ control }) {
           })}
         </select>
       </div>
-      <h2>{selectedUser?.userData.name}</h2>
-      {selectedUser?.timesheets
+      <h2>{filterSelectedUser?.userData?.name}</h2>
+      {filterSelectedUser && (
+        <div className={classes.input}>
+          <select
+            defaultValue={"default"}
+            onChange={(e) => {
+              filterDisplayMonths(e.target.value, 1);
+            }}
+          >
+            <option value="default" disabled>
+              ماه
+            </option>
+            {months.map((month, index) => {
+              return (
+                <option key={index} value={month}>
+                  {month}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      )}
+      {filterSelectedUser?.timesheets
         .map((sheet, index) => (
           <div key={index} value={index} className={classes.timesheetCard}>
             <div className={classes.row}>
