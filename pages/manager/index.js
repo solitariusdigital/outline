@@ -26,7 +26,8 @@ export default function Manager({ control }) {
             };
           })
         );
-        setUsersData(data);
+        const filteredData = data.filter((user) => !user.userData.super);
+        setUsersData(filteredData);
       } catch (error) {
         console.error(error);
       }

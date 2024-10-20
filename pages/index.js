@@ -309,7 +309,7 @@ export default function Home({ activeVisits }) {
           >
             تماس با ما
           </div>
-          {/* {currentUser && currentUser.super && (
+          {currentUser && currentUser.super && (
             <div
               className={classes.fillNav}
               onClick={() => Router.push("/manager")}
@@ -330,7 +330,7 @@ export default function Home({ activeVisits }) {
               >
                 {checkType === "checkin" ? "ثبت ساعت ورود" : "ثبت ساعت خروج"}
               </div>
-            )} */}
+            )}
         </section>
         <div>
           <InstagramIcon
