@@ -312,13 +312,21 @@ export default function DatePicker({ visits }) {
         Object.keys(timeCountPerDate[date]).forEach((time) => {
           const timeCount = timeCountPerDate[date][time];
           updatedTimes[time].count = timeCountPerDate[date][time];
-          if (currentUser.permission === "patient" && timeCount >= 3) {
+          if (
+            (currentUser.permission === "patient" ||
+              currentUser.permission === "staff") &&
+            timeCount >= 3
+          ) {
             delete updatedTimes[time];
           }
         });
       }
     });
-    if (currentUser.permission === "patient" && compareDates(day)) {
+    if (
+      (currentUser.permission === "patient" ||
+        currentUser.permission === "staff") &&
+      compareDates(day)
+    ) {
       // Loop through the times and delete any time that has past
       for (const time in updatedTimes) {
         if (time < getCurrentFormattedTime()) {

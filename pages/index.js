@@ -39,7 +39,7 @@ export default function Home({ activeVisits }) {
         setHideBooking(true);
         return;
       }
-      if (permission === "patient") {
+      if (permission === "patient" || permission === "staff") {
         const hasActiveVisit = activeVisits.some(
           (visit) => visit.userId === _id && !visit.completed && !visit.canceled
         );

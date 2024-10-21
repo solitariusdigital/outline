@@ -114,6 +114,11 @@ export default function Access() {
             (visit) => visit.userId === currentUser["_id"]
           );
           break;
+        case "staff":
+          visits = visitsFetchData.filter(
+            (visit) => visit.userId === currentUser["_id"]
+          );
+          break;
         case "doctor":
           const doctorName = doctorIdTagName[currentUser["_id"]];
           visits = visitsFetchData.filter(
@@ -432,6 +437,7 @@ export default function Access() {
             <HomeIcon onClick={() => Router.push("/")} className="icon" />
             <h3>{currentUser.name ? currentUser.name : currentUser.phone}</h3>
             {currentUser.permission === "patient" && <Person4Icon />}
+            {currentUser.permission === "staff" && <Person4Icon />}
             {currentUser.permission === "doctor" && <LocalHospitalIcon />}
             {currentUser.permission === "admin" && (
               <MilitaryTechIcon
@@ -608,7 +614,8 @@ export default function Access() {
                   </button>
                 </div>
               )}
-            {currentUser.permission === "patient" &&
+            {(currentUser.permission === "patient" ||
+              currentUser.permission === "staff") &&
               displayVisits.filter(
                 (visit) => !visit.completed && !visit.canceled
               ).length > 0 && (
