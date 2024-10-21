@@ -127,6 +127,9 @@ export default function Home({ activeVisits }) {
         setCheckType("checkout");
         setCheckDatesComplete(false);
         window.alert("ساعت ورود ثبت شد");
+      } else {
+        setCheckDatesComplete(false);
+        return;
       }
     } else {
       // Update existing entry for check-out
@@ -138,6 +141,9 @@ export default function Home({ activeVisits }) {
           address;
         setCheckDatesComplete(true);
         window.alert("ساعت خروج ثبت شد");
+      } else {
+        setCheckDatesComplete(false);
+        return;
       }
     }
     let controlObject = {
