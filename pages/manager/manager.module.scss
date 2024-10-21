@@ -7,7 +7,8 @@
   align-items: center;
   justify-content: center;
   direction: rtl;
-  width: 400px;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
   font-weight: 300;
   margin: 20px auto;
 
@@ -15,21 +16,44 @@
     width: calc(100% - 24px);
   }
 
-  .text {
-    margin-top: 12px;
-  }
-
-  h2 {
-    color: config.$blue;
-  }
-
-  .input {
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    margin: 20px 0px;
+    max-width: 350px;
+    color: config.$blue;
 
-    select {
-      @include mixins.input();
+    .input {
       width: 100%;
+      margin: 20px 0px;
+
+      select {
+        @include mixins.input();
+        width: 100%;
+      }
+    }
+
+    @include mixins.mobile {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    gap: 12px;
+    margin: auto;
+    width: 100%;
+    direction: rtl;
+
+    @include mixins.tablet {
+      grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    }
+    @include mixins.mobile {
+      display: flex;
+      flex-direction: column;
     }
   }
 
@@ -45,6 +69,10 @@
     .row {
       margin: 4px 0px;
       @include mixins.row-space-between-center();
+
+      p {
+        color: config.$grey;
+      }
     }
   }
 }

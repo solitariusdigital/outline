@@ -319,6 +319,7 @@ export default function Home({ activeVisits }) {
           )}
           {!checkDatesComplete &&
             currentUser &&
+            currentUser.super &&
             (currentUser.permission === "admin" ||
               currentUser.permission === "staff") && (
               <div

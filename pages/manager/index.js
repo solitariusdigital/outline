@@ -70,103 +70,108 @@ export default function Manager({ control }) {
   return (
     <div className={classes.container}>
       <HomeIcon onClick={() => Router.push("/")} className="icon" />
-      <div className={classes.input}>
-        <select
-          defaultValue={"default"}
-          onChange={(e) => {
-            assignUserData(e.target.value);
-          }}
-        >
-          <option value="default" disabled>
-            انتخاب
-          </option>
-          {userData?.map((user, index) => {
-            return (
-              <option key={index} value={index}>
-                {user.userData.name}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-      <h2>{filterSelectedUser?.userData?.name}</h2>
-      {filterSelectedUser && (
+      <div className={classes.header}>
         <div className={classes.input}>
           <select
             defaultValue={"default"}
             onChange={(e) => {
-              filterDisplayMonths(e.target.value, 1);
+              assignUserData(e.target.value);
             }}
           >
             <option value="default" disabled>
-              ماه
+              انتخاب
             </option>
-            {months.map((month, index) => {
+            {userData?.map((user, index) => {
               return (
-                <option key={index} value={month}>
-                  {month}
+                <option key={index} value={index}>
+                  {user.userData.name}
                 </option>
               );
             })}
           </select>
         </div>
-      )}
-      {filterSelectedUser?.timesheets
-        .map((sheet, index) => (
-          <div key={index} value={index} className={classes.timesheetCard}>
-            <div className={classes.row}>
-              <h4>{sheet.date}</h4>
-              <div
-                className={classes.row}
-                style={{
-                  width: "110px",
-                }}
-              >
-                <p>
-                  {
-                    calculateTimeDifference(
-                      sheet.timesheet.checkIn,
-                      sheet.timesheet.checkOut
-                    ).hours
-                  }
-                  <span
+        {filterSelectedUser && (
+          <div className={classes.input}>
+            <select
+              defaultValue={"default"}
+              onChange={(e) => {
+                filterDisplayMonths(e.target.value, 1);
+              }}
+            >
+              <option value="default" disabled>
+                ماه
+              </option>
+              {months.map((month, index) => {
+                return (
+                  <option key={index} value={month}>
+                    {month}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        )}
+      </div>
+      <div className={classes.cards}>
+        {filterSelectedUser?.timesheets
+          .map((sheet, index) => (
+            <div key={index} value={index} className={classes.timesheetCard}>
+              <div className={classes.row}>
+                <h4>{sheet.date}</h4>
+                {sheet.timesheet.checkOut && (
+                  <div
+                    className={classes.row}
                     style={{
-                      margin: "4px",
+                      width: "100px",
                     }}
                   >
-                    ساعت
-                  </span>
-                </p>
-                <p>
-                  {
-                    calculateTimeDifference(
-                      sheet.timesheet.checkIn,
-                      sheet.timesheet.checkOut
-                    ).minutes
-                  }
-                  <span
-                    style={{
-                      margin: "4px",
-                    }}
-                  >
-                    دقیقه
-                  </span>
-                </p>
+                    <h5>
+                      {
+                        calculateTimeDifference(
+                          sheet.timesheet.checkIn,
+                          sheet.timesheet.checkOut
+                        ).hours
+                      }
+                      <span
+                        style={{
+                          margin: "4px",
+                        }}
+                      >
+                        ساعت
+                      </span>
+                    </h5>
+                    <h5>
+                      {
+                        calculateTimeDifference(
+                          sheet.timesheet.checkIn,
+                          sheet.timesheet.checkOut
+                        ).minutes
+                      }
+                      <span
+                        style={{
+                          margin: "4px",
+                        }}
+                      >
+                        دقیقه
+                      </span>
+                    </h5>
+                  </div>
+                )}
+              </div>
+              <div className={classes.row}>
+                <p>ورود</p>
+                <h4>{sheet.timesheet.checkIn}</h4>
+                <p>{sheet.address.checkIn}</p>
+              </div>
+              <div className={classes.row}>
+                <p>خروج</p>
+                <h4>{sheet.timesheet.checkOut}</h4>
+                <p>{sheet.address.checkOut}</p>
               </div>
             </div>
-            <div className={classes.row}>
-              <p>ورود</p>
-              <p>{sheet.timesheet.checkIn}</p>
-              <p>{sheet.address.checkIn}</p>
-            </div>
-            <div className={classes.row}>
-              <p>خروج</p>
-              <p>{sheet.timesheet.checkOut}</p>
-              <p>{sheet.address.checkOut}</p>
-            </div>
-          </div>
-        ))
-        .reverse()}
+          ))
+          .reverse()}
+      </div>
     </div>
   );
 }
