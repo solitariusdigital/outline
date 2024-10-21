@@ -124,7 +124,7 @@ export default function Manager({ control }) {
                   <div
                     className={classes.row}
                     style={{
-                      width: "100px",
+                      width: "110px",
                     }}
                   >
                     <h5>
