@@ -55,12 +55,12 @@ export default function Home({ activeVisits }) {
     if (!currentUser) return;
     const handleUserVisits = async () => {
       let controlData = await getControlsApi();
-      let dateTime = getDateTime();
+      let currentDate = getCurrentDate();
       let currentUserId = currentUser["_id"];
       let timesheets = getTimesheets(controlData, currentUserId);
       // checkin and checkout for today is complete
       timesheets[currentUserId].forEach((element) => {
-        if (element.date === dateTime.date) {
+        if (element.date === currentDate) {
           let checkDatesComplete = Object.values(element.timesheet);
           setCheckDatesComplete(
             checkDatesComplete.every(function (v) {
@@ -90,49 +90,50 @@ export default function Home({ activeVisits }) {
 
   const findExistingEntry = (timesheets, userId) => {
     return timesheets[userId].findIndex(
-      (entry) => entry.date === getDateTime().date
+      (entry) => entry.date === getCurrentDate()
     );
   };
 
   const getCurrentDateTime = async () => {
-    let dateTime = getDateTime();
+    setCheckDatesComplete(true);
+    let currentDate = getCurrentDate();
+    let currentTime = getCurrentTime();
     let controlData = await getControlsApi();
     let currentUserId = currentUser["_id"];
     let timesheets = getTimesheets(controlData, currentUserId);
     const existingEntryIndex = findExistingEntry(timesheets, currentUserId);
 
+    let apiAddress = await getLocation();
+    let address = apiAddress
+      ? `${apiAddress.neighbourhood} ${apiAddress.road}`
+      : "مکان ثبت نشده";
+
     if (existingEntryIndex === -1) {
       // Create new entry for check-in
       const confirm = window.confirm("ثبت ساعت ورود؟");
       if (confirm) {
-        let apiAddress = await getLocation();
-        let address = apiAddress
-          ? `${apiAddress.neighbourhood} ${apiAddress.road}`
-          : "مکان ثبت نشده";
-        timesheets[currentUserId].push({
-          date: dateTime.date,
+        let newTimesheet = {
+          date: currentDate,
           timesheet: {
-            checkIn: dateTime.time,
+            checkIn: currentTime,
             checkOut: null,
           },
           address: {
             checkIn: address,
             checkOut: null,
           },
-        });
+        };
+        timesheets[currentUserId].push(newTimesheet);
         setCheckType("checkout");
+        setCheckDatesComplete(false);
         window.alert("ساعت ورود ثبت شد");
       }
     } else {
       // Update existing entry for check-out
       const confirm = window.confirm("ثبت ساعت خروج؟");
       if (confirm) {
-        let apiAddress = await getLocation();
-        let address = apiAddress
-          ? `${apiAddress.neighbourhood} ${apiAddress.road}`
-          : "مکان ثبت نشده";
         timesheets[currentUserId][existingEntryIndex].timesheet.checkOut =
-          dateTime.time;
+          currentTime;
         timesheets[currentUserId][existingEntryIndex].address.checkOut =
           address;
         setCheckDatesComplete(true);
@@ -149,40 +150,52 @@ export default function Home({ activeVisits }) {
     router.replace(router.asPath);
   };
 
-  const getDateTime = () => {
+  const getCurrentDate = () => {
     const now = new Date();
-    let dateTime = now.toLocaleString("fa-IR", {
+    const date = now.toLocaleDateString("fa-IR", {
       timeZone: "Asia/Tehran",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
+    });
+    return date;
+  };
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    const time = now.toLocaleTimeString("fa-IR", {
+      timeZone: "Asia/Tehran",
       hour12: false,
     });
-    const [date, time] = dateTime.split(", ");
-    return {
-      date,
-      time,
-    };
+    return time;
   };
 
   const getLocation = () => {
-    if (!navigator.geolocation) {
-      window.alert("موقعیت جغرافیایی توسط مرورگر شما پشتیبانی نمی شود");
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      success,
-      errorHandler,
-      navigatorOptions
-    );
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) {
+        window.alert("موقعیت جغرافیایی توسط مرورگر شما پشتیبانی نمی شود");
+        resolve(null);
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          try {
+            const address = await success(pos);
+            resolve(address);
+          } catch (error) {
+            resolve(null);
+          }
+        },
+        (err) => {
+          errorHandler(err);
+          resolve(null);
+        },
+        navigatorOptions
+      );
+    });
   };
 
-  const success = (pos) => {
+  const success = async (pos) => {
     const crd = pos.coords;
-    return getAddressApi(crd.latitude, crd.longitude);
+    const getAddress = await getAddressApi(crd.latitude, crd.longitude);
+    return getAddress;
   };
 
   const errorHandler = (err) => {
@@ -214,8 +227,10 @@ export default function Home({ activeVisits }) {
       const data = await response.json();
       if (data && data.address) {
         return {
-          neighbourhood: data.address.neighbourhood,
-          road: data.address.road,
+          neighbourhood: data.address.neighbourhood
+            ? data.address.neighbourhood
+            : "-",
+          road: data.address.road ? data.address.road : "-",
         };
       } else {
         window.alert("خطا در بازیابی داده");
@@ -319,7 +334,6 @@ export default function Home({ activeVisits }) {
           )}
           {!checkDatesComplete &&
             currentUser &&
-            currentUser.super &&
             (currentUser.permission === "admin" ||
               currentUser.permission === "staff") && (
               <div

@@ -47,7 +47,9 @@ export default function Manager({ control }) {
         console.error(error);
       }
     };
-    fetchUserData();
+    if (controlData.timesheets) {
+      fetchUserData();
+    }
   }, [controlData]);
 
   const filterDisplayMonths = (monthNumber, typeNumber) => {
