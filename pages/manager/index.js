@@ -10,19 +10,19 @@ import { calculateTimeDifference } from "@/services/utility";
 export default function Manager({ control }) {
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
+  const [allUserData, setAllUserData] = useState(null);
   const [displaySelectedUser, setDisplaySelectedUser] = useState(null);
-  const [filterSelectedUser, setFilterSelectedUser] = useState(null);
 
   const months = [
-    "۰۱",
-    "۰۲",
-    "۰۳",
-    "۰۴",
-    "۰۵",
-    "۰۶",
-    "۰۷",
-    "۰۸",
-    "۰۹",
+    "۱",
+    "۲",
+    "۳",
+    "۴",
+    "۵",
+    "۶",
+    "۷",
+    "۸",
+    "۹",
     "۱۰",
     "۱۱",
     "۱۲",
@@ -53,19 +53,19 @@ export default function Manager({ control }) {
   }, [controlData]);
 
   const filterDisplayMonths = (monthNumber, typeNumber) => {
-    setDisplaySelectedUser(displaySelectedUser);
-    let filtered = displaySelectedUser.timesheets.filter((data) => {
+    setAllUserData(allUserData);
+    let filtered = allUserData.timesheets.filter((data) => {
       const parts = data.date.split("/");
       return parts[typeNumber] === monthNumber;
     });
-    setFilterSelectedUser((prevData) => ({
+    setDisplaySelectedUser((prevData) => ({
       ...prevData,
       timesheets: filtered,
     }));
   };
 
   const assignUserData = (index) => {
-    setFilterSelectedUser(userData[index]);
+    setAllUserData(userData[index]);
     setDisplaySelectedUser(userData[index]);
   };
 
@@ -92,7 +92,7 @@ export default function Manager({ control }) {
             })}
           </select>
         </div>
-        {filterSelectedUser && (
+        {displaySelectedUser && (
           <div className={classes.input}>
             <select
               defaultValue={"default"}
@@ -115,7 +115,7 @@ export default function Manager({ control }) {
         )}
       </div>
       <div className={classes.cards}>
-        {filterSelectedUser?.timesheets
+        {displaySelectedUser?.timesheets
           .map((sheet, index) => (
             <div key={index} value={index} className={classes.timesheetCard}>
               <div className={classes.row}>
