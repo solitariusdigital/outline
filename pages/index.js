@@ -103,15 +103,14 @@ export default function Home({ activeVisits }) {
     let timesheets = getTimesheets(controlData, currentUserId);
     const existingEntryIndex = findExistingEntry(timesheets, currentUserId);
 
-    let apiAddress = await getLocation();
-    let address = apiAddress
-      ? `${apiAddress.neighbourhood} ${apiAddress.road}`
-      : "مکان ثبت نشده";
-
     if (existingEntryIndex === -1) {
       // Create new entry for check-in
       const confirm = window.confirm("ثبت ساعت ورود؟");
       if (confirm) {
+        let apiAddress = await getLocation();
+        let address = apiAddress
+          ? `${apiAddress.neighbourhood} ${apiAddress.road}`
+          : "مکان ثبت نشده";
         let newTimesheet = {
           date: currentDate,
           timesheet: {
@@ -135,6 +134,10 @@ export default function Home({ activeVisits }) {
       // Update existing entry for check-out
       const confirm = window.confirm("ثبت ساعت خروج؟");
       if (confirm) {
+        let apiAddress = await getLocation();
+        let address = apiAddress
+          ? `${apiAddress.neighbourhood} ${apiAddress.road}`
+          : "مکان ثبت نشده";
         timesheets[currentUserId][existingEntryIndex].timesheet.checkOut =
           currentTime;
         timesheets[currentUserId][existingEntryIndex].address.checkOut =
