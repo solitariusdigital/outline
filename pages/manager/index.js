@@ -161,14 +161,50 @@ export default function Manager({ control }) {
                 )}
               </div>
               <div className={classes.row}>
-                <p>ورود</p>
-                <h4>{sheet.timesheet.checkIn}</h4>
-                <p>{sheet.address.checkIn}</p>
+                <p
+                  style={{
+                    width: "30px",
+                  }}
+                >
+                  ورود
+                </p>
+                <h4
+                  style={{
+                    width: "70px",
+                  }}
+                >
+                  {sheet.timesheet.checkIn}
+                </h4>
+                <p
+                  style={{
+                    width: "170px",
+                  }}
+                >
+                  {sheet.address.checkIn}
+                </p>
               </div>
               <div className={classes.row}>
-                <p>خروج</p>
-                <h4>{sheet.timesheet.checkOut}</h4>
-                <p>{sheet.address.checkOut}</p>
+                <p
+                  style={{
+                    width: "30px",
+                  }}
+                >
+                  خروج
+                </p>
+                <h4
+                  style={{
+                    width: "70px",
+                  }}
+                >
+                  {sheet.timesheet.checkOut}
+                </h4>
+                <p
+                  style={{
+                    width: "170px",
+                  }}
+                >
+                  {sheet.address.checkOut}
+                </p>
               </div>
             </div>
           ))
