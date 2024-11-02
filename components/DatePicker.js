@@ -105,16 +105,21 @@ export default function DatePicker({ visits }) {
   };
 
   const createVisit = async () => {
+    setDisableButton(true);
+
     if (!day || !time) {
       showAlert("روز و زمان الزامیست");
+      setDisableButton(false);
       return;
     }
     if (!name || !selectDoctor) {
       showAlert("نام و موبایل الزامیست");
+      setDisableButton(false);
       return;
     }
     if (currentUser.permission === "admin" && !phone) {
       showAlert("موبایل الزامیست");
+      setDisableButton(false);
       return;
     }
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
@@ -123,21 +128,20 @@ export default function DatePicker({ visits }) {
       !phoneEnglish.startsWith("09")
     ) {
       showAlert("موبایل اشتباه");
+      setDisableButton(false);
       return;
     }
     if (currentUser.permission === "admin") {
       let hasConflict = await checkExistingBooking(phoneEnglish);
       if (hasConflict) {
         window.alert("نوبت در زمان مشابه ثبت شده");
+        setDisableButton(false);
         return;
       }
     }
 
-    setDisableButton(true);
-
     let colorCode = adminColorCode[currentUser["_id"]] ?? "#EAD8B1";
     let userId = await setUserId(phoneEnglish);
-
     let visit = {
       title: title ? title.trim() : "-",
       userId: userId,
@@ -149,8 +153,8 @@ export default function DatePicker({ visits }) {
       completed: false,
       canceled: false,
     };
-    await createVisitApi(visit);
 
+    await createVisitApi(visit);
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
