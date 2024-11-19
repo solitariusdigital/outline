@@ -69,12 +69,12 @@ export default function DatePicker({ visits }) {
     const fetchData = async () => {
       try {
         let controls = await getControlsApi();
-        const disableDatesArray = Object.keys(controls[0].disableDates).map(
-          (dateString) => {
-            const [year, month, day] = dateString.split("-").map(Number);
-            return { day, month, year };
-          }
-        );
+        const disableDatesArray = Object.keys(
+          controls[0].disableDates[selectDoctor]
+        ).map((dateString) => {
+          const [year, month, day] = dateString.split("-").map(Number);
+          return { day, month, year };
+        });
         setDisableDates(disableDatesArray);
       } catch (error) {
         console.error(error);
@@ -83,7 +83,7 @@ export default function DatePicker({ visits }) {
     if (!currentUser.super) {
       fetchData();
     }
-  }, [day]);
+  }, [day, selectDoctor]);
 
   useEffect(() => {
     const checkDate = async () => {
@@ -383,12 +383,17 @@ export default function DatePicker({ visits }) {
         case "disable":
           controls[0].disableDates = {
             ...controls[0].disableDates,
-            [formatDateKey]: true,
+            [selectDoctor]: {
+              ...controls[0].disableDates[selectDoctor],
+              [formatDateKey]: true,
+            },
           };
           break;
         case "active":
-          if (controls[0].disableDates.hasOwnProperty(formatDateKey)) {
-            delete controls[0].disableDates[formatDateKey];
+          if (
+            controls[0].disableDates[selectDoctor].hasOwnProperty(formatDateKey)
+          ) {
+            delete controls[0].disableDates[selectDoctor][formatDateKey];
           }
           break;
       }
@@ -400,7 +405,7 @@ export default function DatePicker({ visits }) {
 
   const checkDisableDate = async (dayObject) => {
     let controls = await getControlsApi();
-    let disableDatesObject = controls[0].disableDates;
+    let disableDatesObject = controls[0].disableDates[selectDoctor];
     const dateString = `${dayObject.year}-${dayObject.month}-${dayObject.day}`;
     const isDateDisabled = dateString in disableDatesObject;
     return isDateDisabled;
