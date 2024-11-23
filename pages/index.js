@@ -54,23 +54,29 @@ export default function Home({ activeVisits }) {
   useEffect(() => {
     if (!currentUser) return;
     const handleUserVisits = async () => {
-      let controlData = await getControlsApi();
-      let currentDate = getCurrentDate();
-      let currentUserId = currentUser["_id"];
-      let timesheets = getTimesheets(controlData, currentUserId);
-      // checkin and checkout for today is complete
-      timesheets[currentUserId].forEach((element) => {
-        if (element.date === currentDate) {
-          let checkDatesComplete = Object.values(element.timesheet);
-          setCheckDatesComplete(
-            checkDatesComplete.every(function (v) {
-              return v !== null;
-            })
-          );
-        }
-      });
-      const existingEntryIndex = findExistingEntry(timesheets, currentUserId);
-      setCheckType(existingEntryIndex === -1 ? "checkin" : "checkout");
+      // Fetch control data from the API
+      const controlData = await getControlsApi();
+      const currentDate = getCurrentDate();
+      const currentUserId = currentUser["_id"];
+      // Retrieve timesheets for the current user
+      const userTimesheets = getTimesheets(controlData, currentUserId);
+      // Check if check-in and check-out for today are complete
+      const todayTimesheet = userTimesheets[currentUserId]?.find(
+        (entry) => entry.date === currentDate
+      );
+      if (todayTimesheet) {
+        const isCheckDatesComplete = Object.values(
+          todayTimesheet.timesheet
+        ).every((value) => value !== null);
+        setCheckDatesComplete(isCheckDatesComplete);
+      }
+      // Determine if there's an existing entry for the current user
+      const existingEntryIndex = findExistingEntry(
+        userTimesheets,
+        currentUserId
+      );
+      const checkType = existingEntryIndex === -1 ? "checkin" : "checkout";
+      setCheckType(checkType);
     };
     if (
       currentUser.permission === "admin" ||
