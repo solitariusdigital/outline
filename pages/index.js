@@ -102,67 +102,110 @@ export default function Home({ activeVisits }) {
 
   const getCurrentDateTime = async () => {
     setCheckDatesComplete(true);
-    let currentDate = getCurrentDate();
-    let currentTime = getCurrentTime();
-    let controlData = await getControlsApi();
-    let currentUserId = currentUser["_id"];
-    let timesheets = getTimesheets(controlData, currentUserId);
+    const currentDate = getCurrentDate();
+    const currentTime = getCurrentTime();
+    const controlData = await getControlsApi();
+    const currentUserId = currentUser["_id"];
+    const timesheets = getTimesheets(controlData, currentUserId);
     const existingEntryIndex = findExistingEntry(timesheets, currentUserId);
 
     if (existingEntryIndex === -1) {
-      // Create new entry for check-in
-      const confirm = window.confirm("ثبت ساعت ورود؟");
-      if (confirm) {
-        let apiAddress = await getLocation();
-        let address = apiAddress
-          ? `${apiAddress.neighbourhood} ${apiAddress.road}`
-          : "مکان ثبت نشده";
-        let newTimesheet = {
-          date: currentDate,
-          timesheet: {
-            checkIn: currentTime,
-            checkOut: null,
-          },
-          address: {
-            checkIn: address,
-            checkOut: null,
-          },
-        };
-        timesheets[currentUserId].push(newTimesheet);
-        setCheckType("checkout");
-        setCheckDatesComplete(false);
-        window.alert("ساعت ورود ثبت شد");
-      } else {
-        setCheckDatesComplete(false);
-        return;
-      }
+      await handleCheckIn(currentDate, currentTime, timesheets, currentUserId);
     } else {
-      // Update existing entry for check-out
-      const confirm = window.confirm("ثبت ساعت خروج؟");
-      if (confirm) {
-        let apiAddress = await getLocation();
-        let address = apiAddress
-          ? `${apiAddress.neighbourhood} ${apiAddress.road}`
-          : "مکان ثبت نشده";
-        timesheets[currentUserId][existingEntryIndex].timesheet.checkOut =
-          currentTime;
-        timesheets[currentUserId][existingEntryIndex].address.checkOut =
-          address;
-        setCheckDatesComplete(true);
-        window.alert("ساعت خروج ثبت شد");
-      } else {
-        setCheckDatesComplete(false);
-        return;
-      }
+      await handleCheckOut(
+        currentTime,
+        timesheets,
+        currentUserId,
+        existingEntryIndex
+      );
     }
-    let controlObject = {
+
+    await updateControlData(controlData, timesheets);
+    router.replace(router.asPath);
+  };
+
+  const handleCheckIn = async (
+    currentDate,
+    currentTime,
+    timesheets,
+    userId
+  ) => {
+    const confirm = window.confirm("ثبت ساعت ورود؟");
+    if (!confirm) {
+      setCheckDatesComplete(false);
+      return;
+    }
+
+    const address = await getUserLocation();
+    const newTimesheet = createNewTimesheet(currentDate, currentTime, address);
+    timesheets[userId].push(newTimesheet);
+    setCheckType("checkout");
+    setCheckDatesComplete(false);
+    window.alert("ساعت ورود ثبت شد");
+  };
+
+  const handleCheckOut = async (
+    currentTime,
+    timesheets,
+    userId,
+    entryIndex
+  ) => {
+    const confirm = window.confirm("ثبت ساعت خروج؟");
+    if (!confirm) {
+      setCheckDatesComplete(false);
+      return;
+    }
+
+    const address = await getUserLocation();
+    updateExistingTimesheet(
+      timesheets,
+      userId,
+      entryIndex,
+      currentTime,
+      address
+    );
+    setCheckDatesComplete(true);
+    window.alert("ساعت خروج ثبت شد");
+  };
+
+  const getUserLocation = async () => {
+    const apiAddress = await getLocation();
+    return apiAddress
+      ? `${apiAddress.neighbourhood} ${apiAddress.road}`
+      : "مکان ثبت نشده";
+  };
+
+  const createNewTimesheet = (date, time, address) => ({
+    date,
+    timesheet: {
+      checkIn: time,
+      checkOut: null,
+    },
+    address: {
+      checkIn: address,
+      checkOut: null,
+    },
+  });
+
+  const updateExistingTimesheet = (
+    timesheets,
+    userId,
+    entryIndex,
+    currentTime,
+    address
+  ) => {
+    timesheets[userId][entryIndex].timesheet.checkOut = currentTime;
+    timesheets[userId][entryIndex].address.checkOut = address;
+  };
+
+  const updateControlData = async (controlData, timesheets) => {
+    const controlObject = {
       ...controlData[0],
       timesheets: {
         ...timesheets,
       },
     };
     await updateControlApi(controlObject);
-    router.replace(router.asPath);
   };
 
   const getCurrentDate = () => {
