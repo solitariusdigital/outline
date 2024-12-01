@@ -22,12 +22,6 @@ export default function Home({ activeVisits }) {
     "https://www.google.com/maps/place/35%C2%B047'47.0%22N+51%C2%B025'32.1%22E/@35.7963889,51.4249382,19z/data=!3m1!4b1!4m4!3m3!8m2!3d35.7963889!4d51.4255833?entry=ttu&g_ep=EgoyMDI0MDgyOC4wIKXMDSoASAFQAw%3D%3D";
   const router = useRouter();
 
-  const navigatorOptions = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  };
-
   useEffect(() => {
     const handleUserVisits = async () => {
       if (!currentUser) {
@@ -49,7 +43,7 @@ export default function Home({ activeVisits }) {
       }
     };
     handleUserVisits();
-  }, [currentUser, activeVisits]);
+  }, []);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -84,7 +78,7 @@ export default function Home({ activeVisits }) {
     ) {
       handleUserVisits();
     }
-  }, [currentUser]);
+  }, []);
 
   const getTimesheets = (controlData, userId) => {
     let timesheets = controlData[0].timesheets || {};
@@ -225,6 +219,11 @@ export default function Home({ activeVisits }) {
     return time;
   };
 
+  const navigatorOptions = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 60000,
+  };
   const getLocation = () => {
     return new Promise((resolve) => {
       if (!navigator.geolocation) {
@@ -382,7 +381,7 @@ export default function Home({ activeVisits }) {
           >
             تماس با ما
           </div>
-          {currentUser && currentUser.super && (
+          {currentUser?.super && (
             <div
               className={classes.fillNav}
               onClick={() => Router.push("/manager")}
@@ -391,9 +390,8 @@ export default function Home({ activeVisits }) {
             </div>
           )}
           {!checkDatesComplete &&
-            currentUser &&
-            (currentUser.permission === "admin" ||
-              currentUser.permission === "staff") && (
+            (currentUser?.permission === "admin" ||
+              currentUser?.permission === "staff") && (
               <div
                 className={classes.checkType}
                 onClick={() => getCurrentDateTime()}
