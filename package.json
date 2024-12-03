@@ -22,7 +22,7 @@
     "moment-jalaali": "^0.10.2",
     "moment-timezone": "^0.5.45",
     "mongodb-shell": "^1.0.1",
-    "mongoose": "^8.0.0",
+    "mongoose": "^8.8.1",
     "next": "^14.2.6",
     "next-pwa": "^5.6.0",
     "next-seo": "^6.1.0",
