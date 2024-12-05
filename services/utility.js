@@ -66,7 +66,6 @@ export function isSelectedDateFriday(persianDate) {
 
 export function isNotThursdayOrSaturday(persianDate) {
   const { day, month, year } = persianDate;
-  if (year === 1403 && month === 9 && day === 14) return;
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
