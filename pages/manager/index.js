@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
+import { StateContext } from "@/context/stateContext";
 import classes from "./manager.module.scss";
 import dbConnect from "@/services/dbConnect";
 import controlModel from "@/models/Control";
@@ -8,6 +9,7 @@ import { getSingleUserApi } from "@/services/api";
 import { calculateTimeDifference } from "@/services/utility";
 
 export default function Manager({ control }) {
+  const { currentUser, setCurrentUser } = useContext(StateContext);
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
   const [allUserData, setAllUserData] = useState(null);
@@ -47,8 +49,10 @@ export default function Manager({ control }) {
         console.error(error);
       }
     };
-    if (controlData.timesheets) {
+    if (controlData.timesheets && (currentUser?.super || currentUser?.access)) {
       fetchUserData();
+    } else {
+      Router.push("/");
     }
   }, [controlData]);
 
