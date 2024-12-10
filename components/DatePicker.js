@@ -13,6 +13,7 @@ import {
   toEnglishNumber,
   isEnglishNumber,
   isNotThursdayOrSaturday,
+  isSatToWedn,
   getCurrentDate,
 } from "@/services/utility";
 import {
@@ -61,7 +62,7 @@ export default function DatePicker({ visits }) {
     "18:00": { active: false, count: 0 },
     "18:30": { active: false, count: 0 },
   };
-  const doctors = ["دکتر فراهانی", "دکتر گنجه"];
+  const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر حاجیلو"];
   const targetInputBox = useRef(null);
 
   useEffect(() => {
@@ -243,6 +244,7 @@ export default function DatePicker({ visits }) {
       )}`,
       isSelectedDateFriday(day),
       isNotThursdayOrSaturday(day),
+      isSatToWedn(day),
       day
     );
   };
@@ -293,9 +295,14 @@ export default function DatePicker({ visits }) {
     selectedDate,
     isSelectedDateFriday,
     isNotThursdayOrSaturday,
+    isSatToWedn,
     day
   ) => {
     if (selectDoctor === "دکتر گنجه" && isNotThursdayOrSaturday) {
+      setTimes({});
+      return;
+    }
+    if (selectDoctor === "دکتر حاجیلو" && !isSatToWedn) {
       setTimes({});
       return;
     }
@@ -338,7 +345,15 @@ export default function DatePicker({ visits }) {
         }
       }
     }
-    setTimes(updatedTimes);
+    if (selectDoctor === "دکتر حاجیلو") {
+      // Remove last available hour from the time object
+      const keys = Object.keys(updatedTimes);
+      const lastKey = keys[keys.length - 1];
+      delete updatedTimes[lastKey];
+      setTimes(updatedTimes);
+    } else {
+      setTimes(updatedTimes);
+    }
   };
 
   // to compare today's date with the selected date
@@ -406,9 +421,11 @@ export default function DatePicker({ visits }) {
   const checkDisableDate = async (dayObject) => {
     let controls = await getControlsApi();
     let disableDatesObject = controls[0].disableDates[selectDoctor];
-    const dateString = `${dayObject.year}-${dayObject.month}-${dayObject.day}`;
-    const isDateDisabled = dateString in disableDatesObject;
-    return isDateDisabled;
+    if (disableDatesObject) {
+      const dateString = `${dayObject.year}-${dayObject.month}-${dayObject.day}`;
+      const isDateDisabled = dateString in disableDatesObject;
+      return isDateDisabled;
+    }
   };
 
   const showAlert = (message) => {
@@ -416,6 +433,46 @@ export default function DatePicker({ visits }) {
     setTimeout(() => {
       setAlert("");
     }, 3000);
+  };
+
+  const renderMessage = () => {
+    if (selectDoctor === "دکتر فراهانی") {
+      return (
+        <p className={classes.message}>
+          نوبت در این روز پر است. روز دیگر انتخاب کنید
+        </p>
+      );
+    }
+    if (selectDoctor === "دکتر گنجه") {
+      if (!isNotThursdayOrSaturday(day)) {
+        return (
+          <p className={classes.message}>
+            نوبت در این روز پر است. روز دیگر انتخاب کنید
+          </p>
+        );
+      } else {
+        return (
+          <p className={classes.message}>
+            نوبت با دکتر گنجه شنبه و پنجشنبه فراهم است
+          </p>
+        );
+      }
+    }
+    if (selectDoctor === "دکتر حاجیلو") {
+      if (isSatToWedn(day)) {
+        return (
+          <p className={classes.message}>
+            نوبت در این روز پر است. روز دیگر انتخاب کنید
+          </p>
+        );
+      } else {
+        return (
+          <p className={classes.message}>
+            نوبت با دکتر حاجیلو شنبه تا چهارشنبه فراهم است
+          </p>
+        );
+      }
+    }
   };
 
   return (
@@ -493,23 +550,7 @@ export default function DatePicker({ visits }) {
         ))}
       </div>
       {day && Object.keys(times).length === 0 && (
-        <Fragment>
-          {selectDoctor === "دکتر فراهانی" && (
-            <p className={classes.message}>
-              نوبت در این روز پر است. روز دیگر انتخاب کنید
-            </p>
-          )}
-          {selectDoctor === "دکتر گنجه" && !isNotThursdayOrSaturday(day) && (
-            <p className={classes.message}>
-              نوبت در این روز پر است. روز دیگر انتخاب کنید
-            </p>
-          )}
-          {selectDoctor === "دکتر گنجه" && isNotThursdayOrSaturday(day) && (
-            <p className={classes.message}>
-              نوبت با دکتر گنجه شنبه و پنجشنبه فراهم است
-            </p>
-          )}
-        </Fragment>
+        <Fragment>{renderMessage()}</Fragment>
       )}
       {selectDoctor && (
         <Fragment>

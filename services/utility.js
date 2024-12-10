@@ -72,6 +72,20 @@ export function isNotThursdayOrSaturday(persianDate) {
   return dayOfWeek !== 4 && dayOfWeek !== 6;
 }
 
+export function isSatToWedn(persianDate) {
+  const { day, month, year } = persianDate;
+  const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
+    .toDate()
+    .getDay();
+  return (
+    dayOfWeek === 0 ||
+    dayOfWeek === 1 ||
+    dayOfWeek === 2 ||
+    dayOfWeek === 3 ||
+    dayOfWeek === 6
+  );
+}
+
 export function getCurrentDate() {
   // Get current time in Tehran
   const tehranTime = new Date().toLocaleString("en-US", {
