@@ -381,7 +381,7 @@ export default function Home({ activeVisits }) {
           >
             تماس با ما
           </div>
-          {currentUser?.super && (
+          {(currentUser?.super || currentUser?.access) && (
             <div
               className={classes.fillNav}
               onClick={() => Router.push("/manager")}
