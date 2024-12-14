@@ -45,6 +45,7 @@ export default function DatePicker({ visits }) {
   const [isDateDisabled, setIsDateDisabled] = useState(false);
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
+  const [displayForm, setDisplayForm] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [times, setTimes] = useState({});
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
@@ -300,12 +301,15 @@ export default function DatePicker({ visits }) {
   ) => {
     if (selectDoctor === "دکتر گنجه" && isNotThursdayOrSaturday) {
       setTimes({});
+      setDisplayForm(false);
       return;
     }
     if (selectDoctor === "دکتر حاجیلو" && !isSatToWedn) {
       setTimes({});
+      setDisplayForm(false);
       return;
     }
+    setDisplayForm(true);
     let timeToUse;
     if (isSelectedDateFriday) {
       timeToUse = Object.entries(originalTimes)
@@ -483,6 +487,7 @@ export default function DatePicker({ visits }) {
           onChange={(e) => {
             setSelectDoctor(e.target.value);
             countFullDateTime(e.target.value);
+            setDisplayForm(false);
             setSelectedDate("");
             setDay(null);
             setTimes({});
@@ -552,7 +557,7 @@ export default function DatePicker({ visits }) {
       {day && Object.keys(times).length === 0 && (
         <Fragment>{renderMessage()}</Fragment>
       )}
-      {selectDoctor && (
+      {selectDoctor && displayForm && (
         <Fragment>
           <div className={classes.input} ref={targetInputBox}>
             <div className={classes.bar}>
