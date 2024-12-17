@@ -10,6 +10,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import { updateControlApi, getControlsApi } from "@/services/api";
+import { getCurrentDateFarsi, getCurrentTimeFarsi } from "@/services/utility";
 
 export default function Home({ activeVisits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -50,7 +51,7 @@ export default function Home({ activeVisits }) {
     const handleUserVisits = async () => {
       // Fetch control data from the API
       const controlData = await getControlsApi();
-      const currentDate = getCurrentDate();
+      const currentDate = getCurrentDateFarsi();
       const currentUserId = currentUser["_id"];
       // Retrieve timesheets for the current user
       const userTimesheets = getTimesheets(controlData, currentUserId);
@@ -90,14 +91,14 @@ export default function Home({ activeVisits }) {
 
   const findExistingEntry = (timesheets, userId) => {
     return timesheets[userId].findIndex(
-      (entry) => entry.date === getCurrentDate()
+      (entry) => entry.date === getCurrentDateFarsi()
     );
   };
 
   const getCurrentDateTime = async () => {
     setCheckDatesComplete(true);
-    const currentDate = getCurrentDate();
-    const currentTime = getCurrentTime();
+    const currentDate = getCurrentDateFarsi();
+    const currentTime = getCurrentTimeFarsi();
     const controlData = await getControlsApi();
     const currentUserId = currentUser["_id"];
     const timesheets = getTimesheets(controlData, currentUserId);
@@ -200,23 +201,6 @@ export default function Home({ activeVisits }) {
       },
     };
     await updateControlApi(controlObject);
-  };
-
-  const getCurrentDate = () => {
-    const now = new Date();
-    const date = now.toLocaleDateString("fa-IR", {
-      timeZone: "Asia/Tehran",
-    });
-    return date;
-  };
-
-  const getCurrentTime = () => {
-    const now = new Date();
-    const time = now.toLocaleTimeString("fa-IR", {
-      timeZone: "Asia/Tehran",
-      hour12: false,
-    });
-    return time;
   };
 
   const navigatorOptions = {

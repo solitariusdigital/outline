@@ -21,6 +21,8 @@ import {
   getUsersApi,
   getVisitsApi,
   updateVisitApi,
+  getControlsApi,
+  updateControlApi,
 } from "@/services/api";
 import {
   convertDate,
@@ -28,6 +30,7 @@ import {
   toEnglishNumber,
   isEnglishNumber,
   getCurrentDate,
+  getCurrentDateFarsi,
 } from "@/services/utility";
 
 export default function Access() {
@@ -41,6 +44,7 @@ export default function Access() {
   const [phone, setPhone] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [expandedItem, setExpandedItem] = useState(null);
+  const [reminderSent, setReminderSent] = useState(false);
   const [reqNumber, setReqNumber] = useState(50);
   const [visitTypes, setVisitTypes] = useState(
     "active" ||
@@ -72,6 +76,10 @@ export default function Access() {
       fetchRefreshData();
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    setReminderSent(checkReminderSent());
+  }, []);
 
   useEffect(() => {
     if (loadPage) {
@@ -242,7 +250,23 @@ export default function Access() {
     }
   };
 
-  const sendAfterTomorrowReminder = () => {
+  const checkReminderSent = async () => {
+    const controlData = await getControlsApi();
+    const reminders = controlData[0].reminder;
+    const currentDate = getCurrentDateFarsi();
+    setReminderSent(reminders.hasOwnProperty(currentDate));
+  };
+
+  const sendAfterTomorrowReminder = async () => {
+    const controlData = await getControlsApi();
+    const currentDate = getCurrentDateFarsi();
+    const controlObject = {
+      ...controlData[0],
+      reminder: {
+        ...controlData[0].reminder,
+        [currentDate]: true,
+      },
+    };
     const confirmationMessage = "ارسال پیامک گروهی، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
     const afterTomorrowVisits = filterVisitsByDate(displayVisits, 2);
@@ -258,10 +282,12 @@ export default function Access() {
             token2: visit.time.split(" - ")[1].trim(),
             template: "reminderOutline",
           },
-          (response, status) => {
+          async (response, status) => {
             if (index === afterTomorrowVisits.length - 1) {
               if (status === 200) {
+                await updateControlApi(controlObject);
                 window.alert("پیامک گروهی ارسال شد");
+                checkReminderSent();
               } else {
                 window.alert("خطا در ارسال پیامک");
               }
@@ -270,11 +296,6 @@ export default function Access() {
         );
       });
     }
-  };
-
-  const logOut = () => {
-    secureLocalStorage.removeItem("currentUser");
-    setCurrentUser(null);
   };
 
   const expandInformation = (id) => {
@@ -394,6 +415,11 @@ export default function Access() {
     } else {
       setDisableButton(false);
     }
+  };
+
+  const logOut = () => {
+    secureLocalStorage.removeItem("currentUser");
+    setCurrentUser(null);
   };
 
   return (
@@ -678,10 +704,11 @@ export default function Access() {
               visitTypes === "afterTomorrow" && (
                 <div className={classes.buttonContainer}>
                   <button
+                    disabled={reminderSent}
                     className={classes.reminder}
                     onClick={() => sendAfterTomorrowReminder()}
                   >
-                    ارسال پیامک یادآوری گروهی
+                    {reminderSent ? "ارسال شده" : "ارسال پیامک یادآوری گروهی"}
                   </button>
                 </div>
               )}

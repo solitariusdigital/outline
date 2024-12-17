@@ -97,6 +97,23 @@ export function getCurrentDate() {
   return currentDate;
 }
 
+export function getCurrentDateFarsi() {
+  const now = new Date();
+  const date = now.toLocaleDateString("fa-IR", {
+    timeZone: "Asia/Tehran",
+  });
+  return date;
+}
+
+export function getCurrentTimeFarsi() {
+  const now = new Date();
+  const time = now.toLocaleTimeString("fa-IR", {
+    timeZone: "Asia/Tehran",
+    hour12: false,
+  });
+  return time;
+}
+
 function parsePersianTime(timeString) {
   // Convert Persian numerals to English numerals
   const persianToEnglish = {
