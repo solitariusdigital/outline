@@ -356,6 +356,16 @@ export default function DatePicker({ visits }) {
       delete updatedTimes[lastKey];
       setTimes(updatedTimes);
     } else {
+      if (day.day === 13 && day.month === 10) {
+        const newUpdatedTimes = { ...updatedTimes };
+        const keys = Object.keys(newUpdatedTimes);
+        keys.slice(0, 5).forEach((key) => {
+          delete newUpdatedTimes[key];
+        });
+        const finalUpdatedTimes = newUpdatedTimes;
+        setTimes(finalUpdatedTimes);
+        return;
+      }
       setTimes(updatedTimes);
     }
   };
