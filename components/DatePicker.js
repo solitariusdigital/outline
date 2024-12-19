@@ -356,7 +356,11 @@ export default function DatePicker({ visits }) {
       delete updatedTimes[lastKey];
       setTimes(updatedTimes);
     } else {
-      if (day.day === 13 && day.month === 10) {
+      if (
+        selectDoctor === "دکتر فراهانی" &&
+        day.day === 13 &&
+        day.month === 10
+      ) {
         const newUpdatedTimes = { ...updatedTimes };
         const keys = Object.keys(newUpdatedTimes);
         keys.slice(0, 5).forEach((key) => {
