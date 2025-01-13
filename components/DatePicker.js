@@ -302,6 +302,10 @@ export default function DatePicker({ visits }) {
     if (selectDoctor === "دکتر گنجه" && isNotThursdayOrSaturday) {
       setTimes({});
       setDisplayForm(false);
+      if (selectDoctor === "دکتر گنجه" && day.day === 8 && day.month === 11) {
+        setTimes(originalTimes);
+        return;
+      }
       return;
     }
     if (selectDoctor === "دکتر حاجیلو" && !isSatToWedn) {
@@ -356,16 +360,6 @@ export default function DatePicker({ visits }) {
       delete updatedTimes[lastKey];
       setTimes(updatedTimes);
     } else {
-      if (selectDoctor === "دکتر گنجه" && day.day === 22 && day.month === 10) {
-        const newUpdatedTimes = { ...updatedTimes };
-        const keys = Object.keys(newUpdatedTimes);
-        keys.slice(0, 5).forEach((key) => {
-          delete newUpdatedTimes[key];
-        });
-        const finalUpdatedTimes = newUpdatedTimes;
-        setTimes(finalUpdatedTimes);
-        return;
-      }
       setTimes(updatedTimes);
     }
   };
@@ -458,6 +452,9 @@ export default function DatePicker({ visits }) {
       );
     }
     if (selectDoctor === "دکتر گنجه") {
+      if (day.day === 8 && day.month === 11) {
+        return;
+      }
       if (!isNotThursdayOrSaturday(day)) {
         return (
           <p className={classes.message}>
