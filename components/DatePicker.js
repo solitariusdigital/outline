@@ -304,6 +304,7 @@ export default function DatePicker({ visits }) {
       setDisplayForm(false);
       if (selectDoctor === "دکتر گنجه" && day.day === 8 && day.month === 11) {
         setTimes(originalTimes);
+        setDisplayForm(true);
         return;
       }
       return;
