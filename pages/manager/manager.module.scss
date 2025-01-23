@@ -26,7 +26,7 @@
 
     .input {
       width: 100%;
-      margin: 20px 0px;
+      margin-bottom: 20px;
 
       select {
         @include mixins.input();
@@ -37,6 +37,42 @@
     @include mixins.mobile {
       width: 100%;
       max-width: 100%;
+    }
+  }
+
+  .navigation {
+    margin: 16px 0px;
+    width: 100%;
+    max-width: 350px;
+    @include mixins.row-space-between-center();
+    justify-content: space-around;
+
+    .nav {
+      @include mixins.desktop {
+        &:hover {
+          color: config.$blue;
+          font-weight: bold;
+          cursor: pointer;
+        }
+      }
+    }
+    .activeNav {
+      color: config.$blue;
+      font-weight: bold;
+    }
+  }
+
+  .reminder {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
+    gap: 12px;
+    margin: auto;
+    width: 100%;
+    direction: rtl;
+    text-align: center;
+
+    @include mixins.mobile {
+      grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
     }
   }
 
@@ -59,7 +95,7 @@
 
   .timesheetCard {
     width: 100%;
-    padding: 12px;
+    padding: 8px;
     box-shadow: config.$card-shadow;
     background: config.$white;
     border: 1px solid config.$white;

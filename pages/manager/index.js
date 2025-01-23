@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./manager.module.scss";
 import dbConnect from "@/services/dbConnect";
@@ -14,6 +14,7 @@ export default function Manager({ control }) {
   const [userData, setUsersData] = useState([]);
   const [allUserData, setAllUserData] = useState(null);
   const [displaySelectedUser, setDisplaySelectedUser] = useState(null);
+  const [navigation, setNavigation] = useState("time" || "reminder");
 
   const months = [
     "۱",
@@ -76,144 +77,186 @@ export default function Manager({ control }) {
   return (
     <div className={classes.container}>
       <HomeIcon onClick={() => Router.push("/")} className="icon" />
-      <div className={classes.header}>
-        <div className={classes.input}>
-          <select
-            defaultValue={"default"}
-            onChange={(e) => {
-              assignUserData(e.target.value);
-            }}
+      {currentUser?.super && (
+        <div className={classes.navigation}>
+          <p
+            className={navigation === "time" ? classes.activeNav : classes.nav}
+            onClick={() => setNavigation("time")}
           >
-            <option value="default" disabled>
-              انتخاب
-            </option>
-            {userData?.map((user, index) => {
-              return (
-                <option key={index} value={index}>
-                  {user.userData.name}
-                </option>
-              );
-            })}
-          </select>
+            زمان
+          </p>
+          <p
+            className={
+              navigation === "reminder" ? classes.activeNav : classes.nav
+            }
+            onClick={() => setNavigation("reminder")}
+          >
+            یادآوری
+          </p>
         </div>
-        {displaySelectedUser && (
-          <div className={classes.input}>
-            <select
-              defaultValue={"default"}
-              onChange={(e) => {
-                filterDisplayMonths(e.target.value, 1);
-              }}
-            >
-              <option value="default" disabled>
-                ماه
-              </option>
-              {months.map((month, index) => {
-                return (
-                  <option key={index} value={month}>
-                    {month}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        )}
-      </div>
-      <div className={classes.cards}>
-        {displaySelectedUser?.timesheets
-          .map((sheet, index) => (
-            <div key={index} value={index} className={classes.timesheetCard}>
-              <div className={classes.row}>
-                <h4>{sheet.date}</h4>
-                {sheet.timesheet.checkOut && (
-                  <div
-                    className={classes.row}
-                    style={{
-                      width: "110px",
+      )}
+      {currentUser?.super && (
+        <>
+          {navigation === "time" && (
+            <Fragment>
+              <div className={classes.header}>
+                <div className={classes.input}>
+                  <select
+                    defaultValue={"default"}
+                    onChange={(e) => {
+                      assignUserData(e.target.value);
                     }}
                   >
-                    <h5>
-                      {
-                        calculateTimeDifference(
-                          sheet.timesheet.checkIn,
-                          sheet.timesheet.checkOut
-                        ).hours
-                      }
-                      <span
-                        style={{
-                          margin: "4px",
-                        }}
-                      >
-                        ساعت
-                      </span>
-                    </h5>
-                    <h5>
-                      {
-                        calculateTimeDifference(
-                          sheet.timesheet.checkIn,
-                          sheet.timesheet.checkOut
-                        ).minutes
-                      }
-                      <span
-                        style={{
-                          margin: "4px",
-                        }}
-                      >
-                        دقیقه
-                      </span>
-                    </h5>
+                    <option value="default" disabled>
+                      انتخاب
+                    </option>
+                    {userData?.map((user, index) => {
+                      return (
+                        <option key={index} value={index}>
+                          {user.userData.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                {displaySelectedUser && (
+                  <div className={classes.input}>
+                    <select
+                      defaultValue={"default"}
+                      onChange={(e) => {
+                        filterDisplayMonths(e.target.value, 1);
+                      }}
+                    >
+                      <option value="default" disabled>
+                        ماه
+                      </option>
+                      {months.map((month, index) => {
+                        return (
+                          <option key={index} value={month}>
+                            {month}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                 )}
               </div>
-              <div className={classes.row}>
-                <p
-                  style={{
-                    width: "30px",
-                  }}
-                >
-                  ورود
-                </p>
-                <h4
-                  style={{
-                    width: "70px",
-                  }}
-                >
-                  {sheet.timesheet.checkIn}
-                </h4>
-                <p
-                  style={{
-                    width: "170px",
-                  }}
-                >
-                  {sheet.address.checkIn}
-                </p>
+              <div className={classes.cards}>
+                {displaySelectedUser?.timesheets
+                  .map((sheet, index) => (
+                    <div
+                      key={index}
+                      value={index}
+                      className={classes.timesheetCard}
+                    >
+                      <div className={classes.row}>
+                        <h4>{sheet.date}</h4>
+                        {sheet.timesheet.checkOut && (
+                          <div
+                            className={classes.row}
+                            style={{
+                              width: "110px",
+                            }}
+                          >
+                            <h5>
+                              {
+                                calculateTimeDifference(
+                                  sheet.timesheet.checkIn,
+                                  sheet.timesheet.checkOut
+                                ).hours
+                              }
+                              <span
+                                style={{
+                                  margin: "4px",
+                                }}
+                              >
+                                ساعت
+                              </span>
+                            </h5>
+                            <h5>
+                              {
+                                calculateTimeDifference(
+                                  sheet.timesheet.checkIn,
+                                  sheet.timesheet.checkOut
+                                ).minutes
+                              }
+                              <span
+                                style={{
+                                  margin: "4px",
+                                }}
+                              >
+                                دقیقه
+                              </span>
+                            </h5>
+                          </div>
+                        )}
+                      </div>
+                      <div className={classes.row}>
+                        <p
+                          style={{
+                            width: "30px",
+                          }}
+                        >
+                          ورود
+                        </p>
+                        <h4
+                          style={{
+                            width: "70px",
+                          }}
+                        >
+                          {sheet.timesheet.checkIn}
+                        </h4>
+                        <p
+                          style={{
+                            width: "170px",
+                          }}
+                        >
+                          {sheet.address.checkIn}
+                        </p>
+                      </div>
+                      <div className={classes.row}>
+                        <p
+                          style={{
+                            width: "30px",
+                          }}
+                        >
+                          خروج
+                        </p>
+                        <h4
+                          style={{
+                            width: "70px",
+                          }}
+                        >
+                          {sheet.timesheet.checkOut}
+                        </h4>
+                        <p
+                          style={{
+                            width: "170px",
+                          }}
+                        >
+                          {sheet.address.checkOut}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                  .reverse()}
               </div>
-              <div className={classes.row}>
-                <p
-                  style={{
-                    width: "30px",
-                  }}
-                >
-                  خروج
-                </p>
-                <h4
-                  style={{
-                    width: "70px",
-                  }}
-                >
-                  {sheet.timesheet.checkOut}
-                </h4>
-                <p
-                  style={{
-                    width: "170px",
-                  }}
-                >
-                  {sheet.address.checkOut}
-                </p>
-              </div>
-            </div>
-          ))
-          .reverse()}
-      </div>
+            </Fragment>
+          )}
+        </>
+      )}
+
+      {navigation === "reminder" && (
+        <div className={classes.reminder}>
+          {Object.keys(controlData.reminder)
+            .map((time, index) => (
+              <p key={index} className={classes.timesheetCard}>
+                {time}
+              </p>
+            ))
+            .reverse()}
+        </div>
+      )}
     </div>
   );
 }
