@@ -64,15 +64,16 @@ export function isSelectedDateFriday(persianDate) {
   );
 }
 
-export function isNotThursdayOrSaturday(persianDate) {
+//  is not sat tue thu
+export function ganjeDays(persianDate) {
   const { day, month, year } = persianDate;
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
-  return dayOfWeek !== 4 && dayOfWeek !== 6;
+  return dayOfWeek !== 2 && dayOfWeek !== 4 && dayOfWeek !== 6;
 }
 
-export function isSatToWedn(persianDate) {
+export function hajiluDays(persianDate) {
   const { day, month, year } = persianDate;
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()

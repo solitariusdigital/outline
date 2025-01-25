@@ -252,7 +252,7 @@ export default function Access() {
 
   const checkReminderSent = async () => {
     const controlData = await getControlsApi();
-    const reminders = controlData[0].reminder;
+    const reminders = controlData[0]?.reminder;
     const currentDate = getCurrentDateFarsi();
     setReminderSent(reminders.hasOwnProperty(currentDate));
   };

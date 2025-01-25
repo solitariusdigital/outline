@@ -12,8 +12,8 @@ import {
   isSelectedDateFriday,
   toEnglishNumber,
   isEnglishNumber,
-  isNotThursdayOrSaturday,
-  isSatToWedn,
+  ganjeDays,
+  hajiluDays,
   getCurrentDate,
 } from "@/services/utility";
 import {
@@ -49,7 +49,7 @@ export default function DatePicker({ visits }) {
   const [selectedDate, setSelectedDate] = useState("");
   const [times, setTimes] = useState({});
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
-  const originalTimes = {
+  let originalTimes = {
     "13:00": { active: false, count: 0 },
     "13:30": { active: false, count: 0 },
     "14:00": { active: false, count: 0 },
@@ -244,8 +244,8 @@ export default function DatePicker({ visits }) {
         day.day
       )}`,
       isSelectedDateFriday(day),
-      isNotThursdayOrSaturday(day),
-      isSatToWedn(day),
+      ganjeDays(day),
+      hajiluDays(day),
       day
     );
   };
@@ -295,32 +295,48 @@ export default function DatePicker({ visits }) {
   const updateDisplayTime = (
     selectedDate,
     isSelectedDateFriday,
-    isNotThursdayOrSaturday,
-    isSatToWedn,
+    ganjeDays,
+    hajiluDays,
     day
   ) => {
-    if (selectDoctor === "دکتر گنجه" && isNotThursdayOrSaturday) {
+    if (selectDoctor === "دکتر حاجیلو" && !hajiluDays) {
       setTimes({});
       setDisplayForm(false);
-      if (selectDoctor === "دکتر گنجه" && day.day === 8 && day.month === 11) {
-        setTimes(originalTimes);
-        setDisplayForm(true);
-        return;
-      }
       return;
     }
-    if (selectDoctor === "دکتر حاجیلو" && !isSatToWedn) {
-      setTimes({});
-      setDisplayForm(false);
-      return;
+    if (
+      selectDoctor === "دکتر فراهانی" &&
+      (day.month > 11 || (day.day > 15 && day.month === 11) || day.year > 1403)
+    ) {
+      originalTimes = {
+        "10:30": { active: false, count: 0 },
+        "11:00": { active: false, count: 0 },
+        "11:30": { active: false, count: 0 },
+        "12:00": { active: false, count: 0 },
+        "12:30": { active: false, count: 0 },
+        "13:00": { active: false, count: 0 },
+        "13:30": { active: false, count: 0 },
+        "14:00": { active: false, count: 0 },
+        "14:30": { active: false, count: 0 },
+        "15:00": { active: false, count: 0 },
+        "15:30": { active: false, count: 0 },
+        "16:00": { active: false, count: 0 },
+        "16:30": { active: false, count: 0 },
+        "17:00": { active: false, count: 0 },
+        "17:30": { active: false, count: 0 },
+        "18:00": { active: false, count: 0 },
+        "18:30": { active: false, count: 0 },
+      };
+      setTimes(originalTimes);
+      setDisplayForm(true);
     }
     setDisplayForm(true);
     let timeToUse;
     if (isSelectedDateFriday) {
       timeToUse = Object.entries(originalTimes)
-        .slice(4)
+        .slice(9)
         .reduce((acc, [key, value]) => {
-          acc[key] = value; // Convert back to object
+          acc[key] = value;
           return acc;
         }, {});
     } else {
@@ -353,6 +369,16 @@ export default function DatePicker({ visits }) {
           delete updatedTimes[time];
         }
       }
+    }
+    if (selectDoctor === "دکتر گنجه" && ganjeDays) {
+      setTimes({});
+      setDisplayForm(false);
+      if (selectDoctor === "دکتر گنجه" && day.day === 8 && day.month === 11) {
+        setTimes(originalTimes);
+        setDisplayForm(true);
+        return;
+      }
+      return;
     }
     if (selectDoctor === "دکتر حاجیلو") {
       // Remove last available hour from the time object
@@ -446,42 +472,28 @@ export default function DatePicker({ visits }) {
 
   const renderMessage = () => {
     if (selectDoctor === "دکتر فراهانی") {
-      return (
-        <p className={classes.message}>
-          نوبت در این روز پر است. روز دیگر انتخاب کنید
-        </p>
-      );
+      return <p className={classes.message}>نوبت در این روز پر است</p>;
     }
     if (selectDoctor === "دکتر گنجه") {
       if (day.day === 8 && day.month === 11) {
         return;
       }
-      if (!isNotThursdayOrSaturday(day)) {
-        return (
-          <p className={classes.message}>
-            نوبت در این روز پر است. روز دیگر انتخاب کنید
-          </p>
-        );
+      if (!ganjeDays(day)) {
+        return <p className={classes.message}>نوبت در این روز پر است</p>;
       } else {
         return (
           <p className={classes.message}>
-            نوبت با دکتر گنجه شنبه و پنجشنبه فراهم است
+            نوبت دکتر گنجه شنبه و سه‌شنبه و پنجشنبه
           </p>
         );
       }
     }
     if (selectDoctor === "دکتر حاجیلو") {
-      if (isSatToWedn(day)) {
-        return (
-          <p className={classes.message}>
-            نوبت در این روز پر است. روز دیگر انتخاب کنید
-          </p>
-        );
+      if (hajiluDays(day)) {
+        return <p className={classes.message}>نوبت در این روز پر است</p>;
       } else {
         return (
-          <p className={classes.message}>
-            نوبت با دکتر حاجیلو شنبه تا چهارشنبه فراهم است
-          </p>
+          <p className={classes.message}>نوبت دکتر حاجیلو شنبه تا چهارشنبه</p>
         );
       }
     }
