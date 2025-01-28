@@ -23,6 +23,8 @@ export const StateProvider = (props) => {
     "66ea721bafe30bf2eefc387c": "#2d2b7f",
     // outline
     "66f80a002772d93db43ee424": "#2d2b7f",
+    // azar
+    "679215b3e64177ca1ccdb8d0": "#FF9D23",
   });
   const stateContext = {
     currentUser,
