@@ -299,6 +299,11 @@ export default function DatePicker({ visits }) {
     hajiluDays,
     day
   ) => {
+    if (selectDoctor === "دکتر گنجه" && ganjeDays) {
+      setTimes({});
+      setDisplayForm(false);
+      return;
+    }
     if (selectDoctor === "دکتر حاجیلو" && !hajiluDays) {
       setTimes({});
       setDisplayForm(false);
@@ -369,16 +374,6 @@ export default function DatePicker({ visits }) {
           delete updatedTimes[time];
         }
       }
-    }
-    if (selectDoctor === "دکتر گنجه" && ganjeDays) {
-      setTimes({});
-      setDisplayForm(false);
-      if (selectDoctor === "دکتر گنجه" && day.day === 8 && day.month === 11) {
-        setTimes(originalTimes);
-        setDisplayForm(true);
-        return;
-      }
-      return;
     }
     if (selectDoctor === "دکتر حاجیلو") {
       // Remove last available hour from the time object
