@@ -3,19 +3,29 @@ import { StateContext } from "@/context/stateContext";
 import classes from "./manager.module.scss";
 import dbConnect from "@/services/dbConnect";
 import controlModel from "@/models/Control";
+import visitModel from "@/models/Visit";
 import HomeIcon from "@mui/icons-material/Home";
 import Router from "next/router";
 import { getSingleUserApi } from "@/services/api";
 import { calculateTimeDifference } from "@/services/utility";
 
-export default function Manager({ control }) {
+export default function Manager({ control, visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
   const [allUserData, setAllUserData] = useState(null);
   const [displaySelectedUser, setDisplaySelectedUser] = useState(null);
-  const [navigation, setNavigation] = useState("time" || "reminder");
+  const [count, setCount] = useState({});
+  const [navigation, setNavigation] = useState("time" || "reminder" || "count");
 
+  const adminsName = {
+    "#257180": "Khosro",
+    "#F05A7E": "Tanaz",
+    "#478CCF": "Diako",
+    "#FF9D23": "Azar",
+    "#2d2b7f": "Outline",
+    "#2d2b7f": "Outline",
+  };
   const months = [
     "۱",
     "۲",
@@ -57,6 +67,22 @@ export default function Manager({ control }) {
     }
   }, [controlData]);
 
+  useEffect(() => {
+    if (navigation === "count") {
+      const colorCounts = {};
+      visits.forEach(async (visit) => {
+        const colorKey = visit.adminColor;
+        if (colorKey) {
+          if (!colorCounts[colorKey]) {
+            colorCounts[colorKey] = 0;
+          }
+          colorCounts[colorKey]++;
+        }
+      });
+      setCount(colorCounts);
+    }
+  }, [navigation]);
+
   const filterDisplayMonths = (monthNumber, typeNumber) => {
     setAllUserData(allUserData);
     let filtered = allUserData.timesheets.filter((data) => {
@@ -86,6 +112,12 @@ export default function Manager({ control }) {
             زمان
           </p>
           <p
+            className={navigation === "count" ? classes.activeNav : classes.nav}
+            onClick={() => setNavigation("count")}
+          >
+            شمارش
+          </p>
+          <p
             className={
               navigation === "reminder" ? classes.activeNav : classes.nav
             }
@@ -95,7 +127,6 @@ export default function Manager({ control }) {
           </p>
         </div>
       )}
-
       {navigation === "time" && (
         <Fragment>
           <div className={classes.header}>
@@ -242,7 +273,20 @@ export default function Manager({ control }) {
           </div>
         </Fragment>
       )}
-
+      {navigation === "count" && (
+        <div className={classes.reminder}>
+          {Object.entries(count).map(([color, value], index) => (
+            <div
+              key={index}
+              className={classes.timesheetCard}
+              style={{ border: `1px solid ${color}`, color: color }}
+            >
+              <p>{adminsName[color]}</p>
+              <p>{value}</p>
+            </div>
+          ))}
+        </div>
+      )}
       {navigation === "reminder" && (
         <div className={classes.reminder}>
           {Object.keys(controlData.reminder)
@@ -262,10 +306,12 @@ export async function getServerSideProps(context) {
   try {
     await dbConnect();
     let control = await controlModel.find();
+    let visits = await visitModel.find();
 
     return {
       props: {
         control: JSON.parse(JSON.stringify(control)),
+        visits: JSON.parse(JSON.stringify(visits)),
       },
     };
   } catch (error) {
