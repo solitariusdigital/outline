@@ -63,6 +63,7 @@ export default function DatePicker({ visits }) {
     "18:00": { active: false, count: 0 },
     "18:30": { active: false, count: 0 },
   };
+  let topics = ["بوتاکس", "فیلر", "مشاوره", "ترمیم", "سایر"];
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر حاجیلو"];
   const targetInputBox = useRef(null);
 
@@ -619,26 +620,49 @@ export default function DatePicker({ visits }) {
                   autoComplete="off"
                   dir="rtl"
                 />
+                <div className={classes.input}>
+                  <select
+                    defaultValue={"default"}
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                    }}
+                  >
+                    <option value="default" disabled>
+                      موضوع
+                    </option>
+                    {topics.map((topic, index) => {
+                      return (
+                        <option key={index} value={topic}>
+                          {topic}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
               </Fragment>
             )}
-            <div className={classes.bar}>
-              <p className={classes.label}>موضوع اختیاری</p>
-              <CloseIcon
-                className="icon"
-                onClick={() => setTitle("")}
-                sx={{ fontSize: 16 }}
-              />
-            </div>
-            <input
-              placeholder="بوتاکس"
-              type="text"
-              id="title"
-              name="title"
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
-              autoComplete="off"
-              dir="rtl"
-            />
+            {currentUser.permission === "patient" && (
+              <Fragment>
+                <div className={classes.bar}>
+                  <p className={classes.label}>موضوع اختیاری</p>
+                  <CloseIcon
+                    className="icon"
+                    onClick={() => setTitle("")}
+                    sx={{ fontSize: 16 }}
+                  />
+                </div>
+                <input
+                  placeholder="بوتاکس"
+                  type="text"
+                  id="title"
+                  name="title"
+                  onChange={(e) => setTitle(e.target.value)}
+                  value={title}
+                  autoComplete="off"
+                  dir="rtl"
+                />
+              </Fragment>
+            )}
           </div>
           {selectedDate && (
             <p className={classes.message}>{selectedDate} ساعت</p>
