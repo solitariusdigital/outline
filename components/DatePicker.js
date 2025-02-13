@@ -1,5 +1,6 @@
 import { useState, useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
+import { useRouter } from "next/router";
 import classes from "./DatePicker.module.scss";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
@@ -66,6 +67,8 @@ export default function DatePicker({ visits }) {
   let topics = ["بوتاکس", "فیلر", "مشاوره", "ترمیم", "سایر"];
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر حاجیلو"];
   const targetInputBox = useRef(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     countFullDateTime(selectDoctor);
@@ -170,10 +173,14 @@ export default function DatePicker({ visits }) {
       },
       function (response, status) {}
     );
-    Router.push({
-      pathname: `/portal/${currentUser.permission}`,
-      query: { id: currentUser["_id"], p: currentUser.permission },
-    });
+    if (currentUser.permission === "admin") {
+      router.reload(router.asPath);
+    } else {
+      Router.push({
+        pathname: `/portal/${currentUser.permission}`,
+        query: { id: currentUser["_id"], p: currentUser.permission },
+      });
+    }
   };
 
   // Check for existing visit on the selected date time
