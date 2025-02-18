@@ -19,8 +19,8 @@ export const StateProvider = (props) => {
     "66ea71d0afe30bf2eefc387a": "#F05A7E",
     // Diako
     "66ea71f7afe30bf2eefc387b": "#478CCF",
-    // Azar
-    "679215b3e64177ca1ccdb8d0": "#FF9D23",
+    // Ana
+    "67966a985c39c3b40bb907bf": "#FF9D23",
     // Outline
     "66ea721bafe30bf2eefc387c": "#2d2b7f",
     // Outline
