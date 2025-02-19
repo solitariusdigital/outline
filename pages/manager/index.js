@@ -22,7 +22,7 @@ export default function Manager({ control, visits }) {
     "#257180": "Khosro",
     "#F05A7E": "Tanaz",
     "#478CCF": "Diako",
-    "#FF9D23": "Azar",
+    "#FF9D23": "Ana",
     "#2d2b7f": "Outline",
     "#2d2b7f": "Outline",
   };
