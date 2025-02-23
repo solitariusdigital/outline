@@ -63,6 +63,15 @@
     }
   }
 
+  .inputCount {
+    width: 100%;
+    @include mixins.row-space-between-center();
+
+    .input {
+      width: 45%;
+    }
+  }
+
   .reminder {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));

@@ -146,7 +146,7 @@ export default function DatePicker({ visits }) {
       }
     }
 
-    let colorCode = adminColorCode[currentUser["_id"]] ?? "#EAD8B1";
+    let colorCode = adminColorCode[currentUser["_id"]]?.color ?? "#EAD8B1";
     let userId = await setUserId(phoneEnglish);
     let visit = {
       title: title ? title.trim() : "-",

@@ -468,7 +468,7 @@ export default function Access() {
             {currentUser.permission === "doctor" && <LocalHospitalIcon />}
             {currentUser.permission === "admin" && (
               <MilitaryTechIcon
-                sx={{ color: adminColorCode[currentUser["_id"]] }}
+                sx={{ color: adminColorCode[currentUser["_id"]]?.color }}
               />
             )}
           </div>

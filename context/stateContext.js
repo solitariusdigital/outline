@@ -13,18 +13,12 @@ export const StateProvider = (props) => {
   const [selectDoctor, setSelectDoctor] = useState("");
   const [notification, setNotification] = useState(false);
   const [adminColorCode, setAdminColorCode] = useState({
-    // Khosro
-    "66d56cc9a4b0b0760f625b03": "#257180",
-    // Tanaz
-    "66ea71d0afe30bf2eefc387a": "#F05A7E",
-    // Diako
-    "66ea71f7afe30bf2eefc387b": "#478CCF",
-    // Ana
-    "67966a985c39c3b40bb907bf": "#FF9D23",
-    // Outline
-    "66ea721bafe30bf2eefc387c": "#2d2b7f",
-    // Outline
-    "66f80a002772d93db43ee424": "#2d2b7f",
+    "66d56cc9a4b0b0760f625b03": { name: "Khosro", color: "#257180" },
+    "66ea71d0afe30bf2eefc387a": { name: "Tanaz", color: "#F05A7E" },
+    "66ea71f7afe30bf2eefc387b": { name: "Diako", color: "#478CCF" },
+    "67966a985c39c3b40bb907bf": { name: "Ana", color: "#FF9D23" },
+    "66ea721bafe30bf2eefc387c": { name: "Outline", color: "#2d2b7f" },
+    "66f80a002772d93db43ee424": { name: "Outline", color: "#2d2b7f" },
   });
   const stateContext = {
     currentUser,
