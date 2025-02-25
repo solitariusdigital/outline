@@ -30,6 +30,7 @@ export default function Manager({ control, visits }) {
     "#F05A7E": "Tanaz",
     "#478CCF": "Diako",
     "#FF9D23": "Ana",
+    "#B771E5": "Niloufar",
     "#2d2b7f": "Outline",
   };
   const months = [
