@@ -927,7 +927,13 @@ export default function Access() {
         </div>
       ) : (
         <div className={classes.loader}>
-          <Image width={50} height={50} src={loaderImage} alt="isLoading" />
+          <Image
+            width={50}
+            height={50}
+            src={loaderImage}
+            alt="isLoading"
+            unoptimized
+          />
         </div>
       )}
     </Fragment>
