@@ -25,8 +25,14 @@ export default function Manager({ control, visits }) {
     adminMonth: "default",
   });
 
+  const filterAdminColorCode = Object.fromEntries(
+    Object.entries(adminColorCode).filter(
+      ([key, value]) => value.name !== "Khosro"
+    )
+  );
+
   const adminsName = {
-    "#257180": "Khosro",
+    "#EAD8B1": "Site",
     "#F05A7E": "Tanaz",
     "#478CCF": "Diako",
     "#FF9D23": "Ana",
@@ -96,7 +102,13 @@ export default function Manager({ control, visits }) {
           colorCounts[colorKey]++;
         }
       });
-      setCount(colorCounts);
+      delete colorCounts["#257180"];
+      const sortColorValues = Object.fromEntries(
+        Object.entries(colorCounts).sort(
+          ([, valueA], [, valueB]) => valueB - valueA
+        )
+      );
+      setCount(sortColorValues);
     }
   }, [navigation]);
 
@@ -353,13 +365,15 @@ export default function Manager({ control, visits }) {
                 <option value="default" disabled>
                   انتخاب
                 </option>
-                {Object.entries(adminColorCode)?.map(([id, value], index) => {
-                  return (
-                    <option key={index} value={id}>
-                      {value.name}
-                    </option>
-                  );
-                })}
+                {Object.entries(filterAdminColorCode)?.map(
+                  ([id, value], index) => {
+                    return (
+                      <option key={index} value={id}>
+                        {value.name}
+                      </option>
+                    );
+                  }
+                )}
               </select>
             </div>
             <div className={classes.inputCount}>
@@ -410,7 +424,8 @@ export default function Manager({ control, visits }) {
                 {time}
               </p>
             ))
-            .reverse()}
+            .reverse()
+            .slice(0, 30)}
         </div>
       )}
     </div>

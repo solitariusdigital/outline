@@ -118,8 +118,13 @@ export default function DatePicker({ visits }) {
       setDisableButton(false);
       return;
     }
-    if (!name || !selectDoctor) {
-      showAlert("نام و موبایل الزامیست");
+    if (!name) {
+      showAlert("نام الزامیست");
+      setDisableButton(false);
+      return;
+    }
+    if (currentUser.permission === "patient" && !title) {
+      showAlert("موضوع الزامیست");
       setDisableButton(false);
       return;
     }
@@ -651,7 +656,10 @@ export default function DatePicker({ visits }) {
             {currentUser.permission === "patient" && (
               <Fragment>
                 <div className={classes.bar}>
-                  <p className={classes.label}>موضوع اختیاری</p>
+                  <p className={classes.label}>
+                    موضوع الزامی
+                    <span>*</span>
+                  </p>
                   <CloseIcon
                     className="icon"
                     onClick={() => setTitle("")}
@@ -681,9 +689,9 @@ export default function DatePicker({ visits }) {
           >
             ثبت نوبت
           </button>
+          {alert && <p className="alert">{alert}</p>}
         </Fragment>
       )}
-      {alert && <p className="alert">{alert}</p>}
     </div>
   );
 }

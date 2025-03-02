@@ -18,7 +18,6 @@ export const StateProvider = (props) => {
     "66ea71f7afe30bf2eefc387b": { name: "Diako", color: "#478CCF" },
     "67966a985c39c3b40bb907bf": { name: "Ana", color: "#FF9D23" },
     "67bc30fe0753de6301fd6a41": { name: "Niloufar", color: "#B771E5" },
-    "66ea721bafe30bf2eefc387c": { name: "Outline", color: "#2d2b7f" },
     "66f80a002772d93db43ee424": { name: "Outline", color: "#2d2b7f" },
   });
   const stateContext = {

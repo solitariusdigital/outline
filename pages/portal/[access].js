@@ -78,7 +78,9 @@ export default function Access() {
   }, [currentUser]);
 
   useEffect(() => {
-    setReminderSent(checkReminderSent());
+    if (currentUser?.permission === "admin") {
+      setReminderSent(checkReminderSent());
+    }
   }, []);
 
   useEffect(() => {
