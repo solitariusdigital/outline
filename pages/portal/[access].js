@@ -2,6 +2,7 @@ import { useState, useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import { useRouter } from "next/router";
 import classes from "./portal.module.scss";
+import Image from "next/legacy/image";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import Person4Icon from "@mui/icons-material/Person4";
 import HomeIcon from "@mui/icons-material/Home";
@@ -16,6 +17,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Kavenegar from "kavenegar";
 import logo from "@/assets/logo.png";
+import loaderImage from "@/assets/loader.png";
 import {
   getSingleVisitApi,
   getUsersApi,
@@ -450,7 +452,7 @@ export default function Access() {
           maxVideoPreview: -1,
         }}
       />
-      {loadPage && currentUser && (
+      {loadPage && currentUser ? (
         <div className={classes.container}>
           {currentUser.permission === "admin" && notification && (
             <div className={classes.notification}>
@@ -922,6 +924,10 @@ export default function Access() {
               </div>
             )}
           </div>
+        </div>
+      ) : (
+        <div className={classes.loader}>
+          <Image width={50} height={50} src={loaderImage} alt="isLoading" />
         </div>
       )}
     </Fragment>

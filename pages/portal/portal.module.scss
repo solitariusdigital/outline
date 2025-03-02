@@ -306,6 +306,13 @@
   }
 }
 
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .analytics {
   position: relative;
   width: 350px;
