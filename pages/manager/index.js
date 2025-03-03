@@ -7,29 +7,21 @@ import visitModel from "@/models/Visit";
 import HomeIcon from "@mui/icons-material/Home";
 import Router from "next/router";
 import { getSingleUserApi } from "@/services/api";
-import { calculateTimeDifference } from "@/services/utility";
+import {
+  calculateTimeDifference,
+  getCurrentDateFarsi,
+} from "@/services/utility";
 
 export default function Manager({ control, visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
-  const { adminColorCode, setAdminColorCode } = useContext(StateContext);
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
   const [allUserData, setAllUserData] = useState(null);
   const [displaySelectedUser, setDisplaySelectedUser] = useState(null);
   const [count, setCount] = useState({});
+  const [currentYear, setCurrentYear] = useState("");
+  const [currentMonth, setCurrentMonth] = useState("");
   const [navigation, setNavigation] = useState("time" || "reminder" || "count");
-  const [filterCount, setFilterCount] = useState("");
-  const [selectedValues, setSelectedValues] = useState({
-    adminId: "default",
-    adminYear: "default",
-    adminMonth: "default",
-  });
-
-  const filterAdminColorCode = Object.fromEntries(
-    Object.entries(adminColorCode).filter(
-      ([key, value]) => value.name !== "Khosro"
-    )
-  );
 
   const adminsName = {
     "#EAD8B1": "Site",
@@ -65,6 +57,12 @@ export default function Manager({ control, visits }) {
   ];
 
   useEffect(() => {
+    const [year, month] = getCurrentDateFarsi().split("/");
+    setCurrentYear(year);
+    setCurrentMonth(month);
+  }, []);
+
+  useEffect(() => {
     const fetchUserData = async () => {
       let usersId = Object.keys(controlData.timesheets);
       try {
@@ -92,8 +90,23 @@ export default function Manager({ control, visits }) {
 
   useEffect(() => {
     if (navigation === "count") {
-      const colorCounts = {};
-      visits.forEach(async (visit) => {
+      const sortedColorValues = countColorOccurrences(
+        visits,
+        currentYear,
+        currentMonth
+      );
+      setCount(sortedColorValues);
+    }
+  }, [navigation, visits, currentYear, currentMonth]);
+
+  const countColorOccurrences = (visits, currentYear, currentMonth) => {
+    const colorCounts = {};
+    visits
+      .filter((visit) => {
+        const [year, month] = visit.time.split("/");
+        return year === currentYear && month === currentMonth;
+      })
+      .forEach((visit) => {
         const colorKey = visit.adminColor;
         if (colorKey) {
           if (!colorCounts[colorKey]) {
@@ -102,15 +115,13 @@ export default function Manager({ control, visits }) {
           colorCounts[colorKey]++;
         }
       });
-      delete colorCounts["#257180"];
-      const sortColorValues = Object.fromEntries(
-        Object.entries(colorCounts).sort(
-          ([, valueA], [, valueB]) => valueB - valueA
-        )
-      );
-      setCount(sortColorValues);
-    }
-  }, [navigation]);
+    delete colorCounts["#257180"];
+    return Object.fromEntries(
+      Object.entries(colorCounts).sort(
+        ([, valueA], [, valueB]) => valueB - valueA
+      )
+    );
+  };
 
   const filterDisplayMonths = (monthNumber, typeNumber) => {
     setAllUserData(allUserData);
@@ -127,46 +138,6 @@ export default function Manager({ control, visits }) {
   const assignUserData = (index) => {
     setAllUserData(userData[index]);
     setDisplaySelectedUser(userData[index]);
-  };
-
-  const handleAdminIdChange = (e) => {
-    setFilterCount("");
-    const newAdminId = e.target.value;
-    setSelectedValues({
-      adminId: newAdminId,
-      adminYear: "default",
-      adminMonth: "default",
-    });
-  };
-  const handleAdminYearChange = (e) => {
-    setFilterCount("");
-    const newAdminYear = e.target.value;
-    setSelectedValues((prev) => ({
-      ...prev,
-      adminYear: newAdminYear,
-      adminMonth: "default",
-    }));
-  };
-  const handleAdminMonthChange = (e) => {
-    setFilterCount("");
-    const newAdminMonth = e.target.value;
-    filterAdminBookCount(newAdminMonth);
-    setSelectedValues((prev) => ({
-      ...prev,
-      adminMonth: newAdminMonth,
-    }));
-  };
-  const filterAdminBookCount = (adminMonth) => {
-    if (selectedValues.adminId && selectedValues.adminYear) {
-      const adminBookings = visits.filter(
-        (visit) => visit.adminId === selectedValues.adminId
-      );
-      const filteredArray = adminBookings.filter((item) => {
-        const [year, month] = item.time.split("/"); // Split the string by '/'
-        return year === selectedValues.adminYear && month === adminMonth; // Check if both year and month match
-      });
-      setFilterCount(filteredArray.length);
-    }
   };
 
   return (
@@ -198,7 +169,7 @@ export default function Manager({ control, visits }) {
       )}
       {navigation === "time" && (
         <Fragment>
-          <div className={classes.header}>
+          <div className={classes.selector}>
             <div className={classes.input}>
               <select
                 defaultValue={"default"}
@@ -344,43 +315,12 @@ export default function Manager({ control, visits }) {
       )}
       {navigation === "count" && (
         <Fragment>
-          <div className={classes.reminder}>
-            {Object.entries(count).map(([color, value], index) => (
-              <div
-                key={index}
-                className={classes.timesheetCard}
-                style={{ border: `1px solid ${color}`, color: color }}
-              >
-                <p>{adminsName[color]}</p>
-                <p>{value}</p>
-              </div>
-            ))}
-          </div>
-          <div className={classes.header}>
-            <div className={classes.input}>
-              <select
-                value={selectedValues.adminId}
-                onChange={handleAdminIdChange}
-              >
-                <option value="default" disabled>
-                  انتخاب
-                </option>
-                {Object.entries(filterAdminColorCode)?.map(
-                  ([id, value], index) => {
-                    return (
-                      <option key={index} value={id}>
-                        {value.name}
-                      </option>
-                    );
-                  }
-                )}
-              </select>
-            </div>
+          <div className={classes.selector}>
             <div className={classes.inputCount}>
               <div className={classes.input}>
                 <select
-                  value={selectedValues.adminYear}
-                  onChange={handleAdminYearChange}
+                  value={currentYear}
+                  onChange={(e) => setCurrentYear(e.target.value)}
                 >
                   <option value="default" disabled>
                     سال
@@ -396,8 +336,8 @@ export default function Manager({ control, visits }) {
               </div>
               <div className={classes.input}>
                 <select
-                  value={selectedValues.adminMonth}
-                  onChange={handleAdminMonthChange}
+                  value={currentMonth}
+                  onChange={(e) => setCurrentMonth(e.target.value)}
                 >
                   <option value="default" disabled>
                     ماه
@@ -412,7 +352,18 @@ export default function Manager({ control, visits }) {
                 </select>
               </div>
             </div>
-            <h3>{filterCount}</h3>
+          </div>
+          <div className={classes.reminder}>
+            {Object.entries(count).map(([color, value], index) => (
+              <div
+                key={index}
+                className={classes.timesheetCard}
+                style={{ border: `1px solid ${color}`, color: color }}
+              >
+                <p>{adminsName[color]}</p>
+                <p>{value}</p>
+              </div>
+            ))}
           </div>
         </Fragment>
       )}
