@@ -23,7 +23,7 @@
     "moment-timezone": "^0.5.47",
     "mongodb-shell": "^1.0.1",
     "mongoose": "^8.9.6",
-    "next": "^14.2.23",
+    "next": "^14.2.24",
     "next-pwa": "^5.4.1",
     "next-seo": "^6.1.0",
     "react": "18.3.1",
