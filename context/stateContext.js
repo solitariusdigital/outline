@@ -12,6 +12,7 @@ export const StateProvider = (props) => {
   );
   const [selectDoctor, setSelectDoctor] = useState("");
   const [notification, setNotification] = useState(false);
+  const [cachedVisitsData, setCachedVisitsData] = useState(null);
   const [adminColorCode, setAdminColorCode] = useState({
     "66d56cc9a4b0b0760f625b03": { name: "Khosro", color: "#257180" },
     "66ea71d0afe30bf2eefc387a": { name: "Tanaz", color: "#F05A7E" },
@@ -35,6 +36,8 @@ export const StateProvider = (props) => {
     setNotification,
     adminColorCode,
     setAdminColorCode,
+    cachedVisitsData,
+    setCachedVisitsData,
   };
   return (
     <StateContext.Provider value={stateContext}>

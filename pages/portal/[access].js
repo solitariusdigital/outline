@@ -15,6 +15,7 @@ import secureLocalStorage from "react-secure-storage";
 import { NextSeo } from "next-seo";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import Kavenegar from "kavenegar";
 import logo from "@/assets/logo.png";
 import loaderImage from "@/assets/loader.png";
@@ -41,6 +42,7 @@ export default function Access() {
   const { notification, setNotification } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const { adminColorCode, setAdminColorCode } = useContext(StateContext);
+  const { cachedVisitsData, setCachedVisitsData } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
   const [phone, setPhone] = useState("");
@@ -60,7 +62,6 @@ export default function Access() {
 
   const targetDivRef = useRef(null);
   const router = useRouter();
-  const [cachedVisitsData, setCachedVisitsData] = useState({});
   const [loadPage, setLoadPage] = useState(false);
 
   const margin = {
@@ -75,7 +76,11 @@ export default function Access() {
     if (!currentUser) {
       Router.push("/");
     } else {
-      fetchRefreshData();
+      if (!cachedVisitsData) {
+        fetchRefreshData();
+      } else {
+        setLoadPage(true);
+      }
     }
   }, [currentUser]);
 
@@ -478,7 +483,15 @@ export default function Access() {
           </div>
           <div className={classes.portal}>
             <div className={classes.analytics}>
-              <h4>نوبت‌ها</h4>
+              <div
+                className={classes.row}
+                onClick={() => {
+                  router.reload(router.asPath);
+                }}
+              >
+                <RefreshIcon />
+                <h4>بروزرسانی نوبت‌ها</h4>
+              </div>
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
                   <p>
