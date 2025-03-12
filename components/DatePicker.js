@@ -51,18 +51,18 @@ export default function DatePicker({ visits }) {
   const [times, setTimes] = useState({});
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
   let originalTimes = {
-    "13:00": { active: false, count: 0 },
-    "13:30": { active: false, count: 0 },
-    "14:00": { active: false, count: 0 },
-    "14:30": { active: false, count: 0 },
-    "15:00": { active: false, count: 0 },
-    "15:30": { active: false, count: 0 },
-    "16:00": { active: false, count: 0 },
-    "16:30": { active: false, count: 0 },
-    "17:00": { active: false, count: 0 },
-    "17:30": { active: false, count: 0 },
-    "18:00": { active: false, count: 0 },
-    "18:30": { active: false, count: 0 },
+    "13:00": { display: true, active: false, count: 0 },
+    "13:30": { display: true, active: false, count: 0 },
+    "14:00": { display: true, active: false, count: 0 },
+    "14:30": { display: true, active: false, count: 0 },
+    "15:00": { display: true, active: false, count: 0 },
+    "15:30": { display: true, active: false, count: 0 },
+    "16:00": { display: true, active: false, count: 0 },
+    "16:30": { display: true, active: false, count: 0 },
+    "17:00": { display: true, active: false, count: 0 },
+    "17:30": { display: true, active: false, count: 0 },
+    "18:00": { display: true, active: false, count: 0 },
+    "18:30": { display: true, active: false, count: 0 },
   };
   let topics = ["بوتاکس", "فیلر", "مشاوره", "ترمیم", "سایر"];
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر حاجیلو"];
@@ -322,31 +322,47 @@ export default function DatePicker({ visits }) {
       setDisplayForm(false);
       return;
     }
-    if (
-      selectDoctor === "دکتر فراهانی" &&
-      (day.month > 11 || (day.day > 15 && day.month === 11) || day.year > 1403)
-    ) {
+    if (selectDoctor === "دکتر فراهانی" && day.year === 1403) {
       originalTimes = {
-        "10:30": { active: false, count: 0 },
-        "11:00": { active: false, count: 0 },
-        "11:30": { active: false, count: 0 },
-        "12:00": { active: false, count: 0 },
-        "12:30": { active: false, count: 0 },
-        "13:00": { active: false, count: 0 },
-        "13:30": { active: false, count: 0 },
-        "14:00": { active: false, count: 0 },
-        "14:30": { active: false, count: 0 },
-        "15:00": { active: false, count: 0 },
-        "15:30": { active: false, count: 0 },
-        "16:00": { active: false, count: 0 },
-        "16:30": { active: false, count: 0 },
-        "17:00": { active: false, count: 0 },
-        "17:30": { active: false, count: 0 },
-        "18:00": { active: false, count: 0 },
-        "18:30": { active: false, count: 0 },
+        "10:30": { display: true, active: false, count: 0 },
+        "11:00": { display: true, active: false, count: 0 },
+        "11:30": { display: true, active: false, count: 0 },
+        "12:00": { display: true, active: false, count: 0 },
+        "12:30": { display: true, active: false, count: 0 },
+        "13:00": { display: true, active: false, count: 0 },
+        "13:30": { display: true, active: false, count: 0 },
+        "14:00": { display: true, active: false, count: 0 },
+        "14:30": { display: true, active: false, count: 0 },
+        "15:00": { display: true, active: false, count: 0 },
+        "15:30": { display: true, active: false, count: 0 },
+        "16:00": { display: true, active: false, count: 0 },
+        "16:30": { display: true, active: false, count: 0 },
+        "17:00": { display: true, active: false, count: 0 },
+        "17:30": { display: true, active: false, count: 0 },
+        "18:00": { display: true, active: false, count: 0 },
+        "18:30": { display: true, active: false, count: 0 },
       };
-      setTimes(originalTimes);
-      setDisplayForm(true);
+    }
+    if (selectDoctor === "دکتر فراهانی" && day.year === 1404) {
+      originalTimes = {
+        "10:30": { display: false, active: false, count: 0 },
+        "11:00": { display: true, active: false, count: 0 },
+        "11:30": { display: true, active: false, count: 0 },
+        "12:00": { display: true, active: false, count: 0 },
+        "12:30": { display: true, active: false, count: 0 },
+        "13:00": { display: true, active: false, count: 0 },
+        "13:30": { display: true, active: false, count: 0 },
+        "14:00": { display: true, active: false, count: 0 },
+        "14:30": { display: true, active: false, count: 0 },
+        "15:00": { display: true, active: false, count: 0 },
+        "15:30": { display: true, active: false, count: 0 },
+        "16:00": { display: true, active: false, count: 0 },
+        "16:30": { display: true, active: false, count: 0 },
+        "17:00": { display: true, active: false, count: 0 },
+        "17:30": { display: true, active: false, count: 0 },
+        "18:00": { display: true, active: false, count: 0 },
+        "18:30": { display: true, active: false, count: 0 },
+      };
     }
     setDisplayForm(true);
     let timeToUse;
@@ -566,21 +582,25 @@ export default function DatePicker({ visits }) {
         </h3>
       )}
       <div className={classes.timeContainer}>
-        {Object.keys(times).map((time, index) => (
-          <div key={index} className={classes.timeBox}>
-            {currentUser.permission === "admin" && (
-              <p className={classes.count}>{times[time]["count"]}</p>
-            )}
-            <p
-              className={times[time].active ? classes.activeTime : classes.time}
-              onClick={() => displayDate(time)}
-            >
-              {toFarsiNumber(time).slice(0, 2) +
-                ":" +
-                toFarsiNumber(time).slice(2)}
-            </p>
-          </div>
-        ))}
+        {Object.keys(times).map((time, index) => {
+          return times[time]["display"] ? (
+            <div key={index} className={classes.timeBox}>
+              {currentUser.permission === "admin" && (
+                <p className={classes.count}>{times[time]["count"]}</p>
+              )}
+              <p
+                className={
+                  times[time].active ? classes.activeTime : classes.time
+                }
+                onClick={() => displayDate(time)}
+              >
+                {toFarsiNumber(time).slice(0, 2) +
+                  ":" +
+                  toFarsiNumber(time).slice(2)}
+              </p>
+            </div>
+          ) : null;
+        })}
       </div>
       {day && Object.keys(times).length === 0 && (
         <Fragment>{renderMessage()}</Fragment>
