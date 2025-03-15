@@ -1,5 +1,6 @@
 import Visit from "@/models/Visit";
 import dbConnect from "@/services/dbConnect";
+import { getCurrentDateFarsi } from "@/services/utility";
 
 export default async function visitsHandler(req, res) {
   res.setHeader("Cache-Control", "s-maxage=10");
@@ -21,7 +22,9 @@ export default async function visitsHandler(req, res) {
         if (req.query.id) {
           visits = await Visit.findById(req.query.id);
         } else {
+          // const [year] = getCurrentDateFarsi().split("/");
           visits = await Visit.find();
+          // visits = await Visit.find({ time: { $regex: `^${year}` } });
         }
         return res.status(200).json(visits);
       } catch (err) {

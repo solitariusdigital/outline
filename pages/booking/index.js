@@ -10,6 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import logo from "@/assets/logo.png";
+import { getCurrentDateFarsi } from "@/services/utility";
 
 export default function Booking({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -95,7 +96,9 @@ export default function Booking({ visits }) {
 export async function getServerSideProps(context) {
   try {
     await dbConnect();
+    // const [year] = getCurrentDateFarsi().split("/");
     let visits = await visitModel.find();
+    // let visits = await visitModel.find({ time: { $regex: `^${year}` } });
     let activeVisits = visits.filter(
       (visit) => !visit.completed && !visit.canceled
     );
