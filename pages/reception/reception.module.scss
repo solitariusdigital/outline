@@ -1,0 +1,113 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  font-weight: 300;
+  padding: 50px 0px;
+
+  h3 {
+    margin-top: 50px;
+    margin-bottom: 20px;
+
+    color: config.$blue;
+  }
+
+  .button {
+    @include mixins.button(config.$blue, config.$blue, config.$white);
+  }
+  .alert {
+    color: config.$red;
+    margin-top: 20px;
+  }
+
+  .formAction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px 0px;
+
+    .disclaimer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 50px;
+
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.form,
+.formEntry {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
+  gap: 24px;
+  direction: rtl;
+  width: calc(100% - 200px);
+  border-bottom: 1px solid config.$grey;
+  padding-bottom: 50px;
+
+  @include mixins.mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 24px);
+  }
+
+  .input {
+    width: 100%;
+
+    .bar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0px;
+    }
+
+    .label {
+      color: config.$grey;
+      font-size: config.$small-font;
+
+      span {
+        color: config.$red;
+        font-size: config.$tiny-font;
+      }
+    }
+
+    input,
+    select {
+      @include mixins.input();
+      width: 100%;
+    }
+  }
+
+  .options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 40%;
+  }
+}
+
+.formEntry {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  border: none;
+
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
+}

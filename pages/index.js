@@ -384,6 +384,14 @@ export default function Home({ activeVisits }) {
               مدیریت
             </div>
           )}
+          {currentUser?.super && (
+            <div
+              className={classes.nav}
+              onClick={() => Router.push("/reception")}
+            >
+              پذیرش
+            </div>
+          )}
           {!checkDatesComplete && !currentUser?.super && isUserAuthorized && (
             <div
               className={classes.checkType}
