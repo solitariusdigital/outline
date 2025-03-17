@@ -12,11 +12,11 @@ export default function Index() {
       <NextSeo
         title="اوت‌لاین"
         description="خدمات آنلاین"
-        canonical="https://outlinecommunity.com"
+        canonical="https://outlinecommunity.com/portal"
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://outlinecommunity.com",
+          url: "https://outlinecommunity.com/portal",
           title: "اوت‌لاین",
           description: "خدمات آنلاین",
           siteName: "Outline Community",

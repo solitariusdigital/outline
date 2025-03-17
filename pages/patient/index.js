@@ -84,11 +84,11 @@ export default function Patient({ user, visits }) {
       <NextSeo
         title="پورتال بیمار"
         description="پورتال بیمار"
-        canonical="https://outlinecommunity.com"
+        canonical="https://outlinecommunity.com/portal"
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://outlinecommunity.com",
+          url: "https://outlinecommunity.com/portal",
           title: "پورتال بیمار",
           description: "پورتال بیمار",
           siteName: "Outline Community",

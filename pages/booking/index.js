@@ -41,11 +41,11 @@ export default function Booking({ visits }) {
       <NextSeo
         title="ثبت نوبت آنلاین"
         description="ثبت نوبت آنلاین"
-        canonical="https://outlinecommunity.com"
+        canonical="https://outlinecommunity.com/booking"
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://outlinecommunity.com",
+          url: "https://outlinecommunity.com/booking",
           title: "ثبت نوبت آنلاین",
           description: "ثبت نوبت آنلاین",
           siteName: "Outline Community",
