@@ -176,15 +176,3 @@ export function calculateTimeDifference(time1, time2) {
   const seconds = differenceInSeconds % 60;
   return { hours, minutes, seconds };
 }
-
-export function isValidDateFormat(dateString) {
-  // Check if the input is a string
-  if (typeof dateString !== "string") {
-    return false; // Return false for non-string inputs
-  }
-  // Regular expression to match the format dd/mm/yyyy with both English and Farsi numbers
-  const regex =
-    /^(0[0-9]|[12][0-9]|3[01]|[۰-۹]{2})\/(0[0-9]|1[0-2]|[۰-۹]{2})\/(\d{4}|[۰-۹]{4})$/;
-  // Test the date string against the regex
-  return regex.test(dateString);
-}

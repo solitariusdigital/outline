@@ -2,14 +2,16 @@ import { useContext, useState, useEffect, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./reception.module.scss";
 import { NextSeo } from "next-seo";
+import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import CloseIcon from "@mui/icons-material/Close";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import DatePicker from "@hassanmojab/react-modern-calendar-datepicker";
+import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import {
   toEnglishNumber,
   isEnglishNumber,
-  isValidDateFormat,
   getCurrentDateFarsi,
   convertPersianDate,
   fourGenerator,
@@ -18,7 +20,7 @@ import { createUserApi, getUsersApi } from "@/services/api";
 
 export default function Reception() {
   const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+  const [birthDate, setBirthDate] = useState(null);
   const [id, setId] = useState("");
   const [phone, setPhone] = useState("");
   const [tel, setTel] = useState("");
@@ -62,7 +64,28 @@ export default function Reception() {
 
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
-  const [displayForm, setDisplayForm] = useState(false);
+  const [displayForm, setDisplayForm] = useState(true);
+
+  const renderCustomInput = ({ ref }) => (
+    <input
+      readOnly
+      ref={ref}
+      value={
+        birthDate
+          ? `${birthDate.day}/${birthDate.month}/${birthDate.year}`
+          : "انتخاب"
+      }
+      style={{
+        textAlign: "center",
+        padding: "1rem 1.5rem",
+        fontSize: "1rem",
+        borderRadius: "100px",
+        outline: "none",
+        height: "50px",
+        background: "none",
+      }}
+    />
+  );
 
   const handleVerification = async () => {
     let verificationEnglish = isEnglishNumber(verification)
@@ -82,10 +105,12 @@ export default function Reception() {
         showAlert("موبایل اشتباه");
       }
     }
+    // setDisplayForm(true);
   };
 
   const handleSubmit = async () => {
-    setDisableButton(true);
+    // setDisableButton(true);
+    const [currentYear] = getCurrentDateFarsi().split("/");
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
     let telEnglish = isEnglishNumber(tel) ? tel : toEnglishNumber(tel);
     let idEnglish = isEnglishNumber(id) ? id : toEnglishNumber(id);
@@ -102,11 +127,6 @@ export default function Reception() {
       !confirmation
     ) {
       showAlert("موارد ستاره‌دار الزامیست");
-      setDisableButton(false);
-      return;
-    }
-    if (!isValidDateFormat(birthDate)) {
-      showAlert("تاریخ نامعتبر");
       setDisableButton(false);
       return;
     }
@@ -141,6 +161,7 @@ export default function Reception() {
       recordId: recordId,
       name: name.trim(),
       birthDate: birthDate,
+      age: toEnglishNumber(currentYear) - birthDate.year,
       id: idEnglish,
       phone: phoneEnglish,
       tel: telEnglish,
@@ -272,29 +293,24 @@ export default function Reception() {
                   dir="rtl"
                 />
               </div>
+
               <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>
                     تاریخ تولد
                     <span>*</span>
                   </p>
-                  <CloseIcon
-                    className="icon"
-                    onClick={() => setBirthDate("")}
-                    sx={{ fontSize: 16 }}
+                </div>
+                <div>
+                  <DatePicker
+                    value={birthDate}
+                    onChange={setBirthDate}
+                    renderInput={renderCustomInput}
+                    locale="fa"
                   />
                 </div>
-                <input
-                  placeholder="dd/mm/yyyy"
-                  type="text"
-                  id="birthDate"
-                  name="birthDate"
-                  onChange={(e) => setBirthDate(e.target.value)}
-                  value={birthDate}
-                  autoComplete="off"
-                  dir="rtl"
-                />
               </div>
+
               <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>
@@ -552,7 +568,6 @@ export default function Reception() {
                   )}
                 </div>
               ))}
-
               <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>توضیحات</p>
@@ -579,7 +594,8 @@ export default function Reception() {
               {name && (
                 <div className={classes.disclaimer}>
                   <p>
-                    اینجانب <span>{name}</span>
+                    <span>{name}</span>
+                    <span className={classes.star}>*</span>
                   </p>
                   <p>
                     در تاریخ <span>{getCurrentDateFarsi()}</span> صحت اطلاعات
@@ -591,10 +607,12 @@ export default function Reception() {
                       onClick={() => setConfirmation(false)}
                     />
                   ) : (
-                    <RadioButtonUncheckedIcon
-                      className="icon"
-                      onClick={() => setConfirmation(true)}
-                    />
+                    <Fragment>
+                      <RadioButtonUncheckedIcon
+                        className="icon"
+                        onClick={() => setConfirmation(true)}
+                      />
+                    </Fragment>
                   )}
                 </div>
               )}
@@ -609,6 +627,9 @@ export default function Reception() {
             </div>
           </Fragment>
         )}
+        <div>
+          <Image width={200} height={140} src={logo} alt="logo" priority />
+        </div>
       </div>
     </Fragment>
   );
