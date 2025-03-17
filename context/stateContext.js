@@ -8,7 +8,7 @@ export const StateProvider = (props) => {
     "684E475442526B426237454A7836434D42394F3368324463527569754F4453616B386B2F573756303439413D"
   );
   const [screenSize, setScreenSize] = useState(
-    "desktop" || "tablet" || "mobile"
+    "desktop" || "tablet-landscape" || "tablet-portrait" || "mobile"
   );
   const [selectDoctor, setSelectDoctor] = useState("");
   const [notification, setNotification] = useState(false);

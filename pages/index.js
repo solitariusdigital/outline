@@ -15,6 +15,7 @@ import { getCurrentDateFarsi, getCurrentTimeFarsi } from "@/services/utility";
 export default function Home({ activeVisits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
+  const { screenSize, setScreenSize } = useContext(StateContext);
   const [hideBooking, setHideBooking] = useState(true);
   const [checkType, setCheckType] = useState("checkin" || "checkout");
   const [checkDatesComplete, setCheckDatesComplete] = useState(false);
@@ -384,7 +385,7 @@ export default function Home({ activeVisits }) {
               مدیریت
             </div>
           )}
-          {currentUser?.super && (
+          {currentUser?.super && screenSize !== "mobile" && (
             <div
               className={classes.nav}
               onClick={() => Router.push("/reception")}

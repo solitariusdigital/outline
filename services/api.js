@@ -78,6 +78,46 @@ export const getVisitsApi = async () => {
   return await response.json();
 };
 
+// records api
+export const updateRecordApi = async (data) => {
+  const response = await fetch("/api/records", {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const createRecordApi = async (data) => {
+  const response = await fetch("/api/records", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getSingleRecordApi = async (id) => {
+  const response = await fetch(`/api/records?id=${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getRecordsApi = async () => {
+  const response = await fetch("/api/records", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+
 // controls api
 export const updateControlApi = async (data) => {
   const response = await fetch("/api/controls", {

@@ -1,12 +1,13 @@
-import { useContext, useState, useEffect, Fragment } from "react";
-import { StateContext } from "@/context/stateContext";
+import { useState, Fragment } from "react";
 import classes from "./reception.module.scss";
 import { NextSeo } from "next-seo";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
+import { useRouter } from "next/router";
 import CloseIcon from "@mui/icons-material/Close";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import CheckIcon from "@mui/icons-material/Check";
 import DatePicker from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import {
@@ -16,12 +17,18 @@ import {
   convertPersianDate,
   fourGenerator,
 } from "@/services/utility";
-import { createUserApi, getUsersApi } from "@/services/api";
+import {
+  createRecordApi,
+  createUserApi,
+  getRecordsApi,
+  getUsersApi,
+  updateRecordApi,
+} from "@/services/api";
 
 export default function Reception() {
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState(null);
-  const [id, setId] = useState("");
+  const [idMeli, setIdMeli] = useState("");
   const [phone, setPhone] = useState("");
   const [tel, setTel] = useState("");
   const [address, setAddress] = useState("");
@@ -29,7 +36,7 @@ export default function Reception() {
   const [referral, setReferral] = useState("");
   const [sharePermission, setSharePermission] = useState(false);
   const [confirmation, setConfirmation] = useState(false);
-  const [medicalHistory, setMedicalHistory] = useState([
+  const [medical, setMedical] = useState([
     { active: false, label: "جراحی" },
     { active: false, label: "آلرژی" },
     { active: false, label: "فشار خون" },
@@ -39,7 +46,7 @@ export default function Reception() {
     { active: false, label: "بیماری انعقادی" },
     { active: false, label: "بیماری قلبی" },
   ]);
-  const [medicalHistoryFamily, setMedicalHistoryFamily] = useState([
+  const [medicalFamily, setMedicalFamily] = useState([
     { active: false, label: "جراحی" },
     { active: false, label: "آلرژی" },
     { active: false, label: "فشار خون" },
@@ -55,16 +62,17 @@ export default function Reception() {
     { active: false, label: "مصرف الکل" },
     { active: false, label: "مصرف قلیان" },
   ]);
-  const [medicalHistoryDescription, setMedicalHistoryDescription] =
-    useState("");
-  const [medicineHistory, setMedicineHistory] = useState("");
-  const [medicalHistoryFamilyDescription, setMedicalHistoryFamilyDescription] =
-    useState("");
-  const [verification, setVerification] = useState("");
+  const [medicalDescription, setMedicalDescription] = useState("");
+  const [medicalFamilyDescription, setMedicalFamilyDescription] = useState("");
+  const [medicineDescription, setMedicineDescription] = useState("");
 
+  const [verification, setVerification] = useState("");
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
-  const [displayForm, setDisplayForm] = useState(true);
+  const [displayForm, setDisplayForm] = useState(false);
+  const [displayMessage, setDisplayMessage] = useState(false);
+  const [existingRecord, setExistingRecord] = useState(null);
+  const router = useRouter();
 
   const renderCustomInput = ({ ref }) => (
     <input
@@ -86,40 +94,93 @@ export default function Reception() {
       }}
     />
   );
-
   const handleVerification = async () => {
-    let verificationEnglish = isEnglishNumber(verification)
+    setDisableButton(true);
+    const verificationEnglish = isEnglishNumber(verification)
       ? verification
       : toEnglishNumber(verification);
-
     if (verificationEnglish.length < 10) {
       showAlert("کد ملی یا موبایل اشتباه");
+      setDisableButton(false);
       return;
     }
+    const getRecordData = await getRecordsApi();
     if (verificationEnglish.length === 10) {
-      console.log("code");
+      const userRecord = getRecordData.find(
+        (user) => user.idMeli === verificationEnglish
+      );
+      if (userRecord) {
+        assignUserRecord(userRecord);
+      } else {
+        setIdMeli(verificationEnglish);
+      }
+      setDisplayForm(true);
     } else if (verificationEnglish.length === 11) {
       if (verificationEnglish.startsWith("09")) {
-        console.log("mobile");
+        const userId = await checkUserData(verificationEnglish);
+        const userRecord = getRecordData.find((user) => user.userId === userId);
+        if (userRecord) {
+          assignUserRecord(userRecord);
+        } else {
+          setPhone(verificationEnglish);
+        }
+        setDisplayForm(true);
       } else {
         showAlert("موبایل اشتباه");
+        setDisableButton(false);
       }
     }
-    // setDisplayForm(true);
+  };
+
+  const assignUserRecord = (userRecord) => {
+    const [day, month, year] = userRecord.birthDate.split("/").map(Number);
+    const dateObject = {
+      day: day,
+      month: month,
+      year: year,
+    };
+    setBirthDate(dateObject);
+    setName(userRecord.name);
+    setIdMeli(userRecord.idMeli);
+    setPhone(userRecord.phone);
+    setTel(userRecord.tel);
+    setAddress(userRecord.address);
+    setOccupation(userRecord.occupation);
+    setExistingRecord(userRecord);
+  };
+
+  const checkUserData = async (verificationEnglish) => {
+    let userId = null;
+    const appUsers = await getUsersApi();
+    const userData = appUsers.find(
+      (user) => user.phone === verificationEnglish
+    );
+    if (userData) {
+      userId = userData["_id"];
+    } else {
+      const user = {
+        name: "",
+        phone: verificationEnglish,
+        permission: "patient",
+      };
+      const userData = await createUserApi(user);
+      userId = userData["_id"];
+    }
+    return userId;
   };
 
   const handleSubmit = async () => {
-    // setDisableButton(true);
+    setDisableButton(true);
     const [currentYear] = getCurrentDateFarsi().split("/");
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
     let telEnglish = isEnglishNumber(tel) ? tel : toEnglishNumber(tel);
-    let idEnglish = isEnglishNumber(id) ? id : toEnglishNumber(id);
+    let idEnglish = isEnglishNumber(idMeli) ? idMeli : toEnglishNumber(idMeli);
     let recordId = convertPersianDate(getCurrentDateFarsi()) + fourGenerator();
 
     if (
       !name ||
       !birthDate ||
-      !id ||
+      !idMeli ||
       !phone ||
       !tel ||
       !address ||
@@ -130,7 +191,6 @@ export default function Reception() {
       setDisableButton(false);
       return;
     }
-
     if (phoneEnglish.length !== 11 || !phoneEnglish.startsWith("09")) {
       showAlert("موبایل اشتباه");
       setDisableButton(false);
@@ -141,43 +201,44 @@ export default function Reception() {
       setDisableButton(false);
       return;
     }
-
-    let userId = null;
-    const appUsers = await getUsersApi();
-    const userData = appUsers.find((user) => user.phone === phoneEnglish);
-    if (userData) {
-      userId = userData["_id"];
-    } else {
-      const user = {
-        name: "",
-        phone: phoneEnglish,
-        permission: "patient",
-      };
-      const userData = await createUserApi(user);
-      userId = userData["_id"];
-    }
-
+    const userId = await checkUserData(phoneEnglish);
     const recordObject = {
-      recordId: recordId,
       name: name.trim(),
-      birthDate: birthDate,
+      birthDate: `${birthDate.day}/${birthDate.month}/${birthDate.year}`,
       age: toEnglishNumber(currentYear) - birthDate.year,
-      id: idEnglish,
+      idMeli: idEnglish,
+      userId: userId,
+      recordId: recordId,
       phone: phoneEnglish,
       tel: telEnglish,
       address: address.trim(),
       occupation: occupation.trim(),
-      referral: referral.trim(),
+      referral: referral ? referral.trim() : "-",
       sharePermission: sharePermission,
       confirmation: confirmation,
-      medicalHistory: medicalHistory,
-      medicalHistoryFamily: medicalHistoryFamily,
+      medicalDescription: medicalDescription,
+      medicalFamilyDescription: medicalFamilyDescription,
+      medicineDescription: medicineDescription,
+      medical: medical,
+      medicalFamily: medicalFamily,
       habits: habits,
+      records: [],
     };
+    if (existingRecord) {
+      recordObject.id = existingRecord["_id"];
+      await updateRecordApi(recordObject);
+    } else {
+      await createRecordApi(recordObject);
+    }
+    setDisplayForm(false);
+    setDisplayMessage(true);
+    setTimeout(() => {
+      router.reload(router.asPath);
+    }, 5000);
   };
 
   const handleMedicalHistoryChange = (index, isActive) => {
-    setMedicalHistory((prevState) =>
+    setMedical((prevState) =>
       prevState.map((item, i) =>
         i === index ? { ...item, active: isActive } : item
       )
@@ -191,7 +252,7 @@ export default function Reception() {
     );
   };
   const handleMedicalHistoryFamilyChange = (index, isActive) => {
-    setMedicalHistoryFamily((prevState) =>
+    setMedicalFamily((prevState) =>
       prevState.map((item, i) =>
         i === index ? { ...item, active: isActive } : item
       )
@@ -210,11 +271,11 @@ export default function Reception() {
       <NextSeo
         title="پذیرش"
         description="کلینیک زیبایی"
-        canonical="https://outlinecommunity.com"
+        canonical="https://outlinecommunity.com/reception"
         openGraph={{
           type: "website",
           locale: "fa_IR",
-          url: "https://outlinecommunity.com",
+          url: "https://outlinecommunity.com/reception",
           title: "پذیرش",
           description: "کلینیک زیبایی",
           siteName: "Outline Community",
@@ -232,7 +293,13 @@ export default function Reception() {
         }}
       />
       <div className={classes.container}>
-        {!displayForm && (
+        {displayMessage && (
+          <div className={classes.message}>
+            <h3>پرونده شما ثبت شد. لطفا به پذیرش مراجعه کنید</h3>
+            <CheckIcon sx={{ fontSize: 60, color: "#2d2b7f" }} />
+          </div>
+        )}
+        {!displayForm && !displayMessage && (
           <section className={classes.formEntry}>
             <div className={classes.input}>
               <div className={classes.bar}>
@@ -319,16 +386,16 @@ export default function Reception() {
                   </p>
                   <CloseIcon
                     className="icon"
-                    onClick={() => setId("")}
+                    onClick={() => setIdMeli("")}
                     sx={{ fontSize: 16 }}
                   />
                 </div>
                 <input
                   type="tel"
-                  id="id"
-                  name="id"
-                  onChange={(e) => setId(e.target.value)}
-                  value={id}
+                  id="idMeli"
+                  name="idMeli"
+                  onChange={(e) => setIdMeli(e.target.value)}
+                  value={idMeli}
                   autoComplete="off"
                   dir="rtl"
                   maxLength={10}
@@ -464,22 +531,18 @@ export default function Reception() {
             </section>
             <h3>تاریخچه پزشکی بیمار</h3>
             <section className={classes.form}>
-              {medicalHistory.map((option, index) => (
+              {medical.map((option, index) => (
                 <div key={index} className={classes.options}>
                   <span style={{ marginLeft: "8px" }}>{option.label}</span>
                   {option.active ? (
                     <RadioButtonCheckedIcon
                       className="icon"
-                      onClick={
-                        () => handleMedicalHistoryChange(index, false) // Toggle to false
-                      }
+                      onClick={() => handleMedicalHistoryChange(index, false)}
                     />
                   ) : (
                     <RadioButtonUncheckedIcon
                       className="icon"
-                      onClick={
-                        () => handleMedicalHistoryChange(index, true) // Toggle to true
-                      }
+                      onClick={() => handleMedicalHistoryChange(index, true)}
                     />
                   )}
                 </div>
@@ -489,16 +552,16 @@ export default function Reception() {
                   <p className={classes.label}>توضیحات</p>
                   <CloseIcon
                     className="icon"
-                    onClick={() => setMedicalHistoryDescription("")}
+                    onClick={() => setMedicalDescription("")}
                     sx={{ fontSize: 16 }}
                   />
                 </div>
                 <input
                   type="text"
-                  id="medicalHistoryDescription"
-                  name="medicalHistoryDescription"
-                  onChange={(e) => setMedicalHistoryDescription(e.target.value)}
-                  value={medicalHistoryDescription}
+                  id="medicalDescription"
+                  name="medicalDescription"
+                  onChange={(e) => setMedicalDescription(e.target.value)}
+                  value={medicalDescription}
                   autoComplete="off"
                   dir="rtl"
                 />
@@ -508,16 +571,16 @@ export default function Reception() {
                   <p className={classes.label}>سابقه دارویی</p>
                   <CloseIcon
                     className="icon"
-                    onClick={() => setMedicineHistory("")}
+                    onClick={() => setMedicineDescription("")}
                     sx={{ fontSize: 16 }}
                   />
                 </div>
                 <input
                   type="text"
-                  id="medicineHistory"
-                  name="medicineHistory"
-                  onChange={(e) => setMedicineHistory(e.target.value)}
-                  value={medicineHistory}
+                  id="medicineDescription"
+                  name="medicineDescription"
+                  onChange={(e) => setMedicineDescription(e.target.value)}
+                  value={medicineDescription}
                   autoComplete="off"
                   dir="rtl"
                 />
@@ -531,16 +594,12 @@ export default function Reception() {
                   {option.active ? (
                     <RadioButtonCheckedIcon
                       className="icon"
-                      onClick={
-                        () => handleHabitsChange(index, false) // Toggle to false
-                      }
+                      onClick={() => handleHabitsChange(index, false)}
                     />
                   ) : (
                     <RadioButtonUncheckedIcon
                       className="icon"
-                      onClick={
-                        () => handleHabitsChange(index, true) // Toggle to true
-                      }
+                      onClick={() => handleHabitsChange(index, true)}
                     />
                   )}
                 </div>
@@ -548,21 +607,21 @@ export default function Reception() {
             </section>
             <h3>تاریخچه پزشکی اعضاء خانواده درجه ۱ و ۲</h3>
             <section className={classes.form}>
-              {medicalHistoryFamily.map((option, index) => (
+              {medicalFamily.map((option, index) => (
                 <div key={index} className={classes.options}>
                   <span style={{ marginLeft: "8px" }}>{option.label}</span>
                   {option.active ? (
                     <RadioButtonCheckedIcon
                       className="icon"
-                      onClick={
-                        () => handleMedicalHistoryFamilyChange(index, false) // Toggle to false
+                      onClick={() =>
+                        handleMedicalHistoryFamilyChange(index, false)
                       }
                     />
                   ) : (
                     <RadioButtonUncheckedIcon
                       className="icon"
-                      onClick={
-                        () => handleMedicalHistoryFamilyChange(index, true) // Toggle to true
+                      onClick={() =>
+                        handleMedicalHistoryFamilyChange(index, true)
                       }
                     />
                   )}
@@ -573,18 +632,16 @@ export default function Reception() {
                   <p className={classes.label}>توضیحات</p>
                   <CloseIcon
                     className="icon"
-                    onClick={() => setMedicalHistoryFamilyDescription("")}
+                    onClick={() => setMedicalFamilyDescription("")}
                     sx={{ fontSize: 16 }}
                   />
                 </div>
                 <input
                   type="text"
-                  id="medicalHistoryFamilyDescription"
-                  name="medicalHistoryFamilyDescription"
-                  onChange={(e) =>
-                    setMedicalHistoryFamilyDescription(e.target.value)
-                  }
-                  value={medicalHistoryFamilyDescription}
+                  id="medicalFamilyDescription"
+                  name="medicalFamilyDescription"
+                  onChange={(e) => setMedicalFamilyDescription(e.target.value)}
+                  value={medicalFamilyDescription}
                   autoComplete="off"
                   dir="rtl"
                 />
