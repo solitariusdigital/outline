@@ -329,6 +329,14 @@ export default function Home({ activeVisits }) {
               پورتال نوبت‌ها
             </div>
           )}
+          {currentUser?.permission === "admin" && (
+            <div
+              className={classes.nav}
+              onClick={() => Router.push("/portal/reception")}
+            >
+              پورتال پذیرش
+            </div>
+          )}
           {!hideBooking && (
             <Fragment>
               <div
@@ -385,7 +393,7 @@ export default function Home({ activeVisits }) {
               مدیریت
             </div>
           )}
-          {currentUser?.super && screenSize !== "mobile" && (
+          {screenSize !== "mobile" && (
             <div
               className={classes.nav}
               onClick={() => Router.push("/reception")}

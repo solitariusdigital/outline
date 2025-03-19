@@ -21,6 +21,7 @@ const RecordSchema = new Schema(
     address: String,
     occupation: String,
     referral: String,
+    date: String,
     sharePermission: Boolean,
     confirmation: Boolean,
     medicalDescription: String,

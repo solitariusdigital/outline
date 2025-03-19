@@ -304,6 +304,63 @@
       }
     }
   }
+
+  .records {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    gap: 12px;
+    direction: rtl;
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      text-align: right;
+      box-shadow: config.$card-shadow;
+      background: config.$white;
+      padding: 12px;
+      @include mixins.border-radius();
+    }
+  }
+
+  .dataRefresh {
+    max-width: 350px;
+    margin: auto;
+
+    .row {
+      @include mixins.row-space-between-center();
+    }
+  }
+}
+
+.navigation {
+  margin: 16px auto;
+  width: 100%;
+  max-width: 350px;
+  @include mixins.row-space-between-center();
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  border: 1px solid config.$grey;
+  border-radius: 50px;
+  padding: 8px;
+
+  @include mixins.mobile {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .nav {
+    @include mixins.desktop {
+      &:hover {
+        color: config.$blue;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
+  }
+  .activeNav {
+    color: config.$blue;
+    font-weight: bold;
+  }
 }
 
 .loader {

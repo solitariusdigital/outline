@@ -72,6 +72,8 @@ export default function Reception() {
   const [displayForm, setDisplayForm] = useState(false);
   const [displayMessage, setDisplayMessage] = useState(false);
   const [existingRecord, setExistingRecord] = useState(null);
+  const [selectDoctor, setSelectDoctor] = useState("");
+  const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر حاجیلو"];
   const router = useRouter();
 
   const renderCustomInput = ({ ref }) => (
@@ -127,9 +129,9 @@ export default function Reception() {
         setDisplayForm(true);
       } else {
         showAlert("موبایل اشتباه");
-        setDisableButton(false);
       }
     }
+    setDisableButton(false);
   };
 
   const assignUserRecord = (userRecord) => {
@@ -175,7 +177,8 @@ export default function Reception() {
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
     let telEnglish = isEnglishNumber(tel) ? tel : toEnglishNumber(tel);
     let idEnglish = isEnglishNumber(idMeli) ? idMeli : toEnglishNumber(idMeli);
-    let recordId = convertPersianDate(getCurrentDateFarsi()) + fourGenerator();
+    let digitalDate = convertPersianDate(getCurrentDateFarsi());
+    let recordId = digitalDate + fourGenerator();
 
     if (
       !name ||
@@ -185,7 +188,8 @@ export default function Reception() {
       !tel ||
       !address ||
       !occupation ||
-      !confirmation
+      !confirmation ||
+      !selectDoctor
     ) {
       showAlert("موارد ستاره‌دار الزامیست");
       setDisableButton(false);
@@ -204,7 +208,7 @@ export default function Reception() {
     const userId = await checkUserData(phoneEnglish);
     const recordObject = {
       name: name.trim(),
-      birthDate: `${birthDate.day}/${birthDate.month}/${birthDate.year}`,
+      birthDate: `${birthDate.year}/${birthDate.month}/${birthDate.day}`,
       age: toEnglishNumber(currentYear) - birthDate.year,
       idMeli: idEnglish,
       userId: userId,
@@ -214,6 +218,7 @@ export default function Reception() {
       address: address.trim(),
       occupation: occupation.trim(),
       referral: referral ? referral.trim() : "-",
+      date: digitalDate,
       sharePermission: sharePermission,
       confirmation: confirmation,
       medicalDescription: medicalDescription,
@@ -226,8 +231,17 @@ export default function Reception() {
     };
     if (existingRecord) {
       recordObject.id = existingRecord["_id"];
+      recordObject.records = [...existingRecord.records];
+      recordObject.records.push({
+        doctor: selectDoctor,
+        date: getCurrentDateFarsi(),
+      });
       await updateRecordApi(recordObject);
     } else {
+      recordObject.records.push({
+        doctor: selectDoctor,
+        date: getCurrentDateFarsi(),
+      });
       await createRecordApi(recordObject);
     }
     setDisplayForm(false);
@@ -341,7 +355,7 @@ export default function Reception() {
               <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>
-                    نام کامل
+                    نام کامل بیمار
                     <span>*</span>
                   </p>
                   <CloseIcon
@@ -360,24 +374,31 @@ export default function Reception() {
                   dir="rtl"
                 />
               </div>
-
               <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>
-                    تاریخ تولد
+                    انتخاب دکتر
                     <span>*</span>
                   </p>
                 </div>
-                <div>
-                  <DatePicker
-                    value={birthDate}
-                    onChange={setBirthDate}
-                    renderInput={renderCustomInput}
-                    locale="fa"
-                  />
-                </div>
+                <select
+                  defaultValue={"default"}
+                  onChange={(e) => {
+                    setSelectDoctor(e.target.value);
+                  }}
+                >
+                  <option value="default" disabled>
+                    {selectDoctor ? selectDoctor : "انتخاب"}
+                  </option>
+                  {doctors.map((doctor, index) => {
+                    return (
+                      <option key={index} value={doctor}>
+                        {doctor}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
-
               <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>
@@ -400,6 +421,22 @@ export default function Reception() {
                   dir="rtl"
                   maxLength={10}
                 />
+              </div>
+              <div className={classes.input}>
+                <div className={classes.bar}>
+                  <p className={classes.label}>
+                    تاریخ تولد
+                    <span>*</span>
+                  </p>
+                </div>
+                <div>
+                  <DatePicker
+                    value={birthDate}
+                    onChange={setBirthDate}
+                    renderInput={renderCustomInput}
+                    locale="fa"
+                  />
+                </div>
               </div>
               <div className={classes.input}>
                 <div className={classes.bar}>
