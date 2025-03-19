@@ -367,12 +367,12 @@ export default function DatePicker({ visits }) {
     setDisplayForm(true);
     let timeToUse;
     if (isSelectedDateFriday) {
-      timeToUse = Object.entries(originalTimes)
-        .slice(9)
-        .reduce((acc, [key, value]) => {
-          acc[key] = value;
-          return acc;
-        }, {});
+      const isSpecialDate =
+        day.month === 1 && (day.day === 15 || day.day === 29);
+      const numberSlice = isSpecialDate ? 0 : 9;
+      timeToUse = Object.fromEntries(
+        Object.entries(originalTimes).slice(numberSlice)
+      );
     } else {
       timeToUse = originalTimes;
     }
@@ -499,9 +499,6 @@ export default function DatePicker({ visits }) {
       return <p className={classes.message}>نوبت در این روز پر است</p>;
     }
     if (selectDoctor === "دکتر گنجه") {
-      if (day.day === 8 && day.month === 11) {
-        return;
-      }
       if (!ganjeDays(day)) {
         return <p className={classes.message}>نوبت در این روز پر است</p>;
       } else {
