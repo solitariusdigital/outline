@@ -96,9 +96,8 @@ export default function Booking({ visits }) {
 export async function getServerSideProps(context) {
   try {
     await dbConnect();
-    // const [year] = getCurrentDateFarsi().split("/");
-    let visits = await visitModel.find();
-    // let visits = await visitModel.find({ time: { $regex: `^${year}` } });
+    const [year] = getCurrentDateFarsi().split("/");
+    let visits = await visitModel.find({ time: { $regex: `^${year}` } });
     let activeVisits = visits.filter(
       (visit) => !visit.completed && !visit.canceled
     );

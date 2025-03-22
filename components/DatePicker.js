@@ -322,28 +322,7 @@ export default function DatePicker({ visits }) {
       setDisplayForm(false);
       return;
     }
-    if (selectDoctor === "دکتر فراهانی" && day.year === 1403) {
-      originalTimes = {
-        "10:30": { display: true, active: false, count: 0 },
-        "11:00": { display: true, active: false, count: 0 },
-        "11:30": { display: true, active: false, count: 0 },
-        "12:00": { display: true, active: false, count: 0 },
-        "12:30": { display: true, active: false, count: 0 },
-        "13:00": { display: true, active: false, count: 0 },
-        "13:30": { display: true, active: false, count: 0 },
-        "14:00": { display: true, active: false, count: 0 },
-        "14:30": { display: true, active: false, count: 0 },
-        "15:00": { display: true, active: false, count: 0 },
-        "15:30": { display: true, active: false, count: 0 },
-        "16:00": { display: true, active: false, count: 0 },
-        "16:30": { display: true, active: false, count: 0 },
-        "17:00": { display: true, active: false, count: 0 },
-        "17:30": { display: true, active: false, count: 0 },
-        "18:00": { display: true, active: false, count: 0 },
-        "18:30": { display: true, active: false, count: 0 },
-      };
-    }
-    if (selectDoctor === "دکتر فراهانی" && day.year === 1404) {
+    if (selectDoctor === "دکتر فراهانی") {
       originalTimes = {
         "10:30": { display: false, active: false, count: 0 },
         "11:00": { display: true, active: false, count: 0 },
