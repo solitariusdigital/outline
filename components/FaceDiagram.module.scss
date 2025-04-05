@@ -1,0 +1,22 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.diagram {
+  position: relative;
+  height: 50%;
+
+  .zone {
+    position: relative;
+    width: 30%;
+    margin: auto;
+    z-index: 1;
+    opacity: 0.5;
+
+    @include mixins.mobile {
+      width: 100%;
+    }
+    @include mixins.tablet {
+      width: 60%;
+    }
+  }
+}

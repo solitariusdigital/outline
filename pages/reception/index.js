@@ -233,7 +233,7 @@ export default function Reception() {
       doctor: selectDoctor,
       date: getCurrentDateFarsi(),
       sharePermission: sharePermission,
-      plan: [],
+      zones: {},
       message: "",
     };
     if (existingRecord) {
