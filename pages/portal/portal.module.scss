@@ -352,13 +352,29 @@
           opacity: 0.5;
         }
       }
-    }
-  }
 
-  .activeButton {
-    margin: 20px 0px;
-    @include mixins.button(config.$green, config.$green, config.$white);
-    width: 100%;
+      .recordText {
+        color: config.$grey;
+        font-size: small;
+      }
+
+      .input {
+        width: 100%;
+
+        textarea {
+          @include mixins.input();
+          width: 100%;
+          border-radius: 5px;
+          height: 100px;
+          max-width: 100%;
+        }
+
+        .button {
+          @include mixins.button(config.$green, config.$green, config.$white);
+          width: 100%;
+        }
+      }
+    }
   }
 
   .dataRefresh {

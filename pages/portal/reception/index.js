@@ -12,6 +12,8 @@ import Router from "next/router";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
 import { getCurrentDateFarsi, convertPersianDate } from "@/services/utility";
 import { getSingleRecordApi, updateRecordApi } from "@/services/api";
@@ -20,6 +22,8 @@ export default function Reception({ records }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const [receptionCards, setReceptionCards] = useState([]);
   const [expandedItem, setExpandedItem] = useState(null);
+  const [expandRecords, setExpandRecords] = useState(null);
+  const [message, setMessage] = useState(null);
   const [navigation, setNavigation] = useState(
     "دکتر فراهانی" || "دکتر گنجه" || "دکتر حاجیلو"
   );
@@ -58,12 +62,17 @@ export default function Reception({ records }) {
 
   const completeRecord = async (id) => {
     const confirm = window.confirm("تکمیل نوبت، مطمئنی؟");
-    let recordData = await getSingleRecordApi(id);
-
     if (confirm) {
-      recordData.completed = true;
-      await updateRecordApi(recordData);
-      router.reload(router.asPath);
+      let recordData = await getSingleRecordApi(id);
+      const recordsArray = recordData.records;
+      if (recordsArray.length > 0) {
+        const lastRecordIndex = recordsArray.length - 1;
+        const lastRecord = recordsArray[lastRecordIndex];
+        lastRecord.message = message;
+        recordData.completed = true;
+        await updateRecordApi(recordData);
+        router.reload(router.asPath);
+      }
     }
   };
 
@@ -163,8 +172,14 @@ export default function Reception({ records }) {
                 <p>{record.birthDate}</p>
                 <p>{record.age}</p>
               </div>
-              <div className={classes.row}>
-                <span>تعداد مراجعه</span>
+              <div
+                className={classes.row}
+                onClick={() => setExpandRecords(!expandRecords)}
+              >
+                <div className={classes.row}>
+                  <span>مراجعه</span>
+                  <MoreHorizIcon sx={{ color: "#999999" }} />
+                </div>
                 <p>{record.records.length}</p>
               </div>
               {currentUser?.permission === "admin" && (
@@ -177,12 +192,31 @@ export default function Reception({ records }) {
                     <span>کد ملی</span>
                     <p>{record.idMeli}</p>
                   </div>
-                  <button
-                    className={classes.activeButton}
-                    onClick={() => completeRecord(record["_id"])}
-                  >
-                    تکمیل نوبت
-                  </button>
+                  <div className={classes.input}>
+                    <div className={classes.bar}>
+                      <CloseIcon
+                        className="icon"
+                        onClick={() => setMessage("")}
+                        sx={{ fontSize: 16 }}
+                      />
+                      <p className={classes.label}>توضیحات تکمیلی</p>
+                    </div>
+                    <textarea
+                      type="text"
+                      id="message"
+                      name="message"
+                      onChange={(e) => setMessage(e.target.value)}
+                      value={message}
+                      autoComplete="off"
+                      dir="rtl"
+                    />
+                    <button
+                      className={classes.button}
+                      onClick={() => completeRecord(record["_id"])}
+                    >
+                      تکمیل مراجعه
+                    </button>
+                  </div>
                   {expandedItem === record["_id"] && (
                     <Fragment>
                       <div className={classes.row}>
@@ -198,15 +232,6 @@ export default function Reception({ records }) {
                         <span>معرف</span>
                         <p>{record.referral}</p>
                       </div>
-                      <p
-                        style={{
-                          color: record.sharePermission ? "#15b392" : "#d40d12",
-                        }}
-                      >
-                        {record.sharePermission
-                          ? "عکس اشتراک گذاشته شود"
-                          : "عکس اشتراک گذاشته نشود"}
-                      </p>
                     </Fragment>
                   )}
                 </Fragment>
@@ -282,7 +307,7 @@ export default function Reception({ records }) {
                       className={classes.zone}
                       style={{
                         backgroundColor: "#BAD8B6",
-                        height: "10%",
+                        height: "12%",
                       }}
                     ></div>
                     <Image
@@ -296,6 +321,16 @@ export default function Reception({ records }) {
                       unoptimized
                     />
                   </div>
+                </Fragment>
+              )}
+              {expandRecords && (
+                <Fragment>
+                  {record.records.map((item, index) => (
+                    <div key={index} className={classes.row}>
+                      <p className={classes.recordText}>{item.date}</p>
+                      <p>{item.doctor}</p>
+                    </div>
+                  ))}
                 </Fragment>
               )}
             </div>

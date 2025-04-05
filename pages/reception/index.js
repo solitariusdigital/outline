@@ -219,7 +219,6 @@ export default function Reception() {
       occupation: occupation.trim(),
       referral: referral ? referral.trim() : "-",
       date: digitalDate,
-      sharePermission: sharePermission,
       confirmation: confirmation,
       medicalDescription: medicalDescription,
       medicalFamilyDescription: medicalFamilyDescription,
@@ -230,23 +229,20 @@ export default function Reception() {
       habits: habits,
       records: [],
     };
+    const recordData = {
+      doctor: selectDoctor,
+      date: getCurrentDateFarsi(),
+      sharePermission: sharePermission,
+      plan: [],
+      message: "",
+    };
     if (existingRecord) {
       recordObject.id = existingRecord["_id"];
       recordObject.records = [...existingRecord.records];
-      recordObject.records.push({
-        doctor: selectDoctor,
-        date: getCurrentDateFarsi(),
-        plan: [],
-        message: "",
-      });
+      recordObject.records.push(recordData);
       await updateRecordApi(recordObject);
     } else {
-      recordObject.records.push({
-        doctor: selectDoctor,
-        date: getCurrentDateFarsi(),
-        plan: [],
-        message: "",
-      });
+      recordObject.records.push(recordData);
       await createRecordApi(recordObject);
     }
     setDisplayForm(false);
