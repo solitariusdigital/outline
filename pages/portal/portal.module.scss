@@ -325,11 +325,38 @@
       padding: 12px;
       height: fit-content;
       @include mixins.border-radius();
+
+      .info {
+        padding: 5px 0px;
+
+        span {
+          color: config.$grey;
+          font-size: small;
+        }
+      }
+
+      .item {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+      }
+
+      .image {
+        position: relative;
+        height: 250px;
+
+        .zone {
+          position: relative;
+          width: 80%;
+          margin: auto;
+          z-index: 1;
+          opacity: 0.5;
+        }
+      }
     }
   }
 
   .activeButton {
-    margin-top: 20px;
+    margin: 20px 0px;
     @include mixins.button(config.$green, config.$green, config.$white);
     width: 100%;
   }
@@ -341,6 +368,11 @@
 
   .row {
     @include mixins.row-space-between-center();
+
+    span {
+      color: config.$grey;
+      font-size: small;
+    }
   }
 }
 

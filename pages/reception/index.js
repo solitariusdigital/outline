@@ -236,12 +236,16 @@ export default function Reception() {
       recordObject.records.push({
         doctor: selectDoctor,
         date: getCurrentDateFarsi(),
+        plan: [],
+        message: "",
       });
       await updateRecordApi(recordObject);
     } else {
       recordObject.records.push({
         doctor: selectDoctor,
         date: getCurrentDateFarsi(),
+        plan: [],
+        message: "",
       });
       await createRecordApi(recordObject);
     }

@@ -329,7 +329,8 @@ export default function Home({ activeVisits }) {
               پورتال نوبت‌ها
             </div>
           )}
-          {currentUser?.permission === "admin" && (
+          {(currentUser?.permission === "admin" ||
+            currentUser?.permission === "doctor") && (
             <div
               className={classes.nav}
               onClick={() => Router.push("/portal/reception")}

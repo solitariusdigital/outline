@@ -3,7 +3,9 @@ import { StateContext } from "@/context/stateContext";
 import { useRouter } from "next/router";
 import classes from "../portal.module.scss";
 import { NextSeo } from "next-seo";
+import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
+import faceDiagram from "@/assets/faceDiagram.jpg";
 import dbConnect from "@/services/dbConnect";
 import recordModel from "@/models/Record";
 import Router from "next/router";
@@ -24,10 +26,12 @@ export default function Reception({ records }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (currentUser?.permission !== "admin") {
-      Router.push("/");
-    } else {
+    if (currentUser?.permission === "admin") {
       filterReceptionCards(navigation);
+    } else if (currentUser?.permission === "doctor") {
+      filterReceptionCards(currentUser?.name);
+    } else {
+      Router.push("/");
     }
   }, []);
 
@@ -58,9 +62,9 @@ export default function Reception({ records }) {
 
     if (confirm) {
       recordData.completed = true;
+      await updateRecordApi(recordData);
+      router.reload(router.asPath);
     }
-    await updateRecordApi(recordData);
-    router.reload(router.asPath);
   };
 
   return (
@@ -103,38 +107,40 @@ export default function Reception({ records }) {
             <HomeIcon onClick={() => Router.push("/")} className="icon" />
           </div>
         </div>
-        <div className={classes.navigation}>
-          <p
-            className={
-              navigation === "دکتر فراهانی" ? classes.activeNav : classes.nav
-            }
-            onClick={() => {
-              filterReceptionCards("دکتر فراهانی");
-            }}
-          >
-            دکتر فراهانی
-          </p>
-          <p
-            className={
-              navigation === "دکتر گنجه" ? classes.activeNav : classes.nav
-            }
-            onClick={() => {
-              filterReceptionCards("دکتر گنجه");
-            }}
-          >
-            دکتر گنجه
-          </p>
-          <p
-            className={
-              navigation === "دکتر حاجیلو" ? classes.activeNav : classes.nav
-            }
-            onClick={() => {
-              filterReceptionCards("دکتر حاجیلو");
-            }}
-          >
-            دکتر حاجیلو
-          </p>
-        </div>
+        {currentUser?.permission === "admin" && (
+          <div className={classes.navigation}>
+            <p
+              className={
+                navigation === "دکتر فراهانی" ? classes.activeNav : classes.nav
+              }
+              onClick={() => {
+                filterReceptionCards("دکتر فراهانی");
+              }}
+            >
+              دکتر فراهانی
+            </p>
+            <p
+              className={
+                navigation === "دکتر گنجه" ? classes.activeNav : classes.nav
+              }
+              onClick={() => {
+                filterReceptionCards("دکتر گنجه");
+              }}
+            >
+              دکتر گنجه
+            </p>
+            <p
+              className={
+                navigation === "دکتر حاجیلو" ? classes.activeNav : classes.nav
+              }
+              onClick={() => {
+                filterReceptionCards("دکتر حاجیلو");
+              }}
+            >
+              دکتر حاجیلو
+            </p>
+          </div>
+        )}
         <div className={classes.records}>
           {receptionCards.map((record, index) => (
             <div key={index} className={classes.card}>
@@ -143,34 +149,153 @@ export default function Reception({ records }) {
                 onClick={() => expandInformation(record["_id"])}
               >
                 <h3>{record.name}</h3>
-                {expandedItem === record["_id"] ? (
-                  <ExpandLessIcon className="icon" />
-                ) : (
-                  <ExpandMoreIcon className="icon" />
+                {currentUser?.permission === "admin" && (
+                  <Fragment>
+                    {expandedItem === record["_id"] ? (
+                      <ExpandLessIcon className="icon" />
+                    ) : (
+                      <ExpandMoreIcon className="icon" />
+                    )}
+                  </Fragment>
                 )}
               </div>
-              <p>{record.phone}</p>
-              <p>{record.idMeli}</p>
-              <p>{record.birthDate}</p>
-
-              <button
-                className={classes.activeButton}
-                onClick={() => completeRecord(record["_id"])}
-              >
-                تکمیل نوبت
-              </button>
-
-              {expandedItem === record["_id"] && (
+              <div className={classes.row}>
+                <p>{record.birthDate}</p>
+                <p>{record.age}</p>
+              </div>
+              <div className={classes.row}>
+                <span>تعداد مراجعه</span>
+                <p>{record.records.length}</p>
+              </div>
+              {currentUser?.permission === "admin" && (
                 <Fragment>
-                  <p>{record.tel}</p>
-                  <p>{record.address}</p>
-                  <p>{record.occupation}</p>
-                  <p>{record.referral}</p>
-                  <p>
-                    {record.sharePermission
-                      ? "عکس اشتراک گذاشته شود"
-                      : "عکس اشتراک گذاشته نشود"}
-                  </p>
+                  <div className={classes.row}>
+                    <span>موبایل</span>
+                    <p>{record.phone}</p>
+                  </div>
+                  <div className={classes.row}>
+                    <span>کد ملی</span>
+                    <p>{record.idMeli}</p>
+                  </div>
+                  <button
+                    className={classes.activeButton}
+                    onClick={() => completeRecord(record["_id"])}
+                  >
+                    تکمیل نوبت
+                  </button>
+                  {expandedItem === record["_id"] && (
+                    <Fragment>
+                      <div className={classes.row}>
+                        <span>ثابت</span>
+                        <p>{record.tel}</p>
+                      </div>
+                      <p>{record.address}</p>
+                      <div className={classes.row}>
+                        <span>شغل</span>
+                        <p>{record.occupation}</p>
+                      </div>
+                      <div className={classes.row}>
+                        <span>معرف</span>
+                        <p>{record.referral}</p>
+                      </div>
+                      <p
+                        style={{
+                          color: record.sharePermission ? "#15b392" : "#d40d12",
+                        }}
+                      >
+                        {record.sharePermission
+                          ? "عکس اشتراک گذاشته شود"
+                          : "عکس اشتراک گذاشته نشود"}
+                      </p>
+                    </Fragment>
+                  )}
+                </Fragment>
+              )}
+              {currentUser?.permission === "doctor" && (
+                <Fragment>
+                  <div className={classes.info}>
+                    <span>تاریخچه پزشکی</span>
+                    <div className={classes.item}>
+                      {record.medical
+                        .filter((item) => item.active)
+                        .map((item) => (
+                          <h4 key={item.label}>{item.label}</h4>
+                        ))}
+                    </div>
+                    <p>{record.medicalDescription}</p>
+                  </div>
+                  <div className={classes.info}>
+                    <span>سابقه دارویی</span>
+                    <p>{record.medicineDescription}</p>
+                  </div>
+                  <div className={classes.info}>
+                    <span>عادات بیمار</span>
+                    <div className={classes.item}>
+                      {record.habits
+                        .filter((item) => item.active)
+                        .map((item) => (
+                          <h4 key={item.label}>{item.label}</h4>
+                        ))}
+                    </div>
+                  </div>
+                  <div className={classes.info}>
+                    <span>تاریخچه پزشکی اعضاء خانواده</span>
+                    <div className={classes.item}>
+                      {record.medicalFamily
+                        .filter((item) => item.active)
+                        .map((item) => (
+                          <h4 key={item.label}>{item.label}</h4>
+                        ))}
+                    </div>
+                    <p>{record.medicalFamilyDescription}</p>
+                  </div>
+                  <div className={classes.image}>
+                    <div
+                      className={classes.zone}
+                      style={{
+                        backgroundColor: "#E6B2BA",
+                        height: "20%",
+                      }}
+                    ></div>
+                    <div
+                      className={classes.zone}
+                      style={{
+                        backgroundColor: "#C7D9DD",
+                        height: "12%",
+                      }}
+                    ></div>
+                    <div
+                      className={classes.zone}
+                      style={{
+                        backgroundColor: "#F2E2B1",
+                        height: "20%",
+                      }}
+                    ></div>
+                    <div
+                      className={classes.zone}
+                      style={{
+                        backgroundColor: "#FDB7EA",
+                        height: "20%",
+                      }}
+                    ></div>
+                    <div
+                      className={classes.zone}
+                      style={{
+                        backgroundColor: "#BAD8B6",
+                        height: "10%",
+                      }}
+                    ></div>
+                    <Image
+                      src={faceDiagram}
+                      blurDataURL={faceDiagram}
+                      alt="faceDiagram"
+                      placeholder="blur"
+                      layout="fill"
+                      objectFit="contain"
+                      as="image"
+                      unoptimized
+                    />
+                  </div>
                 </Fragment>
               )}
             </div>
