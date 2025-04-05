@@ -8,11 +8,16 @@ import dbConnect from "@/services/dbConnect";
 import recordModel from "@/models/Record";
 import Router from "next/router";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import HomeIcon from "@mui/icons-material/Home";
 import { getCurrentDateFarsi, convertPersianDate } from "@/services/utility";
+import { getSingleRecordApi, updateRecordApi } from "@/services/api";
 
 export default function Reception({ records }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const [receptionCards, setReceptionCards] = useState([]);
+  const [expandedItem, setExpandedItem] = useState(null);
   const [navigation, setNavigation] = useState(
     "دکتر فراهانی" || "دکتر گنجه" || "دکتر حاجیلو"
   );
@@ -38,6 +43,24 @@ export default function Reception({ records }) {
       return false;
     });
     setReceptionCards(filteredRecords);
+  };
+
+  const expandInformation = (id) => {
+    setExpandedItem(id);
+    if (expandedItem === id) {
+      setExpandedItem(null);
+    }
+  };
+
+  const completeRecord = async (id) => {
+    const confirm = window.confirm("تکمیل نوبت، مطمئنی؟");
+    let recordData = await getSingleRecordApi(id);
+
+    if (confirm) {
+      recordData.completed = true;
+    }
+    await updateRecordApi(recordData);
+    router.reload(router.asPath);
   };
 
   return (
@@ -69,14 +92,15 @@ export default function Reception({ records }) {
       <div className={classes.container}>
         <div className={classes.dataRefresh}>
           <h3>{getCurrentDateFarsi()}</h3>
-          <div
-            className={classes.row}
-            onClick={() => {
-              router.reload(router.asPath);
-            }}
-          >
+          <div className={classes.row}>
+            <RefreshIcon
+              className="icon"
+              onClick={() => {
+                router.reload(router.asPath);
+              }}
+            />
             <h4>{receptionCards.length}</h4>
-            <RefreshIcon />
+            <HomeIcon onClick={() => Router.push("/")} className="icon" />
           </div>
         </div>
         <div className={classes.navigation}>
@@ -114,19 +138,41 @@ export default function Reception({ records }) {
         <div className={classes.records}>
           {receptionCards.map((record, index) => (
             <div key={index} className={classes.card}>
-              <h3>{record.name}</h3>
+              <div
+                className={classes.row}
+                onClick={() => expandInformation(record["_id"])}
+              >
+                <h3>{record.name}</h3>
+                {expandedItem === record["_id"] ? (
+                  <ExpandLessIcon className="icon" />
+                ) : (
+                  <ExpandMoreIcon className="icon" />
+                )}
+              </div>
               <p>{record.phone}</p>
               <p>{record.idMeli}</p>
               <p>{record.birthDate}</p>
-              <p>{record.tel}</p>
-              <p>{record.address}</p>
-              <p>{record.occupation}</p>
-              <p>{record.referral}</p>
-              <p>
-                {record.sharePermission
-                  ? "عکس اشتراک گذاشته شود"
-                  : "عکس اشتراک گذاشته نشود"}
-              </p>
+
+              <button
+                className={classes.activeButton}
+                onClick={() => completeRecord(record["_id"])}
+              >
+                تکمیل نوبت
+              </button>
+
+              {expandedItem === record["_id"] && (
+                <Fragment>
+                  <p>{record.tel}</p>
+                  <p>{record.address}</p>
+                  <p>{record.occupation}</p>
+                  <p>{record.referral}</p>
+                  <p>
+                    {record.sharePermission
+                      ? "عکس اشتراک گذاشته شود"
+                      : "عکس اشتراک گذاشته نشود"}
+                  </p>
+                </Fragment>
+              )}
             </div>
           ))}
         </div>
@@ -143,10 +189,11 @@ export async function getServerSideProps(context) {
       date: { $regex: `^${convertPersianDate(getCurrentDateFarsi())}` },
     });
     records.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    let activeRecords = records.filter((record) => !record.completed);
 
     return {
       props: {
-        records: JSON.parse(JSON.stringify(records)),
+        records: JSON.parse(JSON.stringify(activeRecords)),
       },
     };
   } catch (error) {

@@ -311,6 +311,11 @@
     gap: 12px;
     direction: rtl;
 
+    @include mixins.mobile {
+      display: flex;
+      flex-direction: column;
+    }
+
     .card {
       display: flex;
       flex-direction: column;
@@ -318,17 +323,24 @@
       box-shadow: config.$card-shadow;
       background: config.$white;
       padding: 12px;
+      height: fit-content;
       @include mixins.border-radius();
     }
+  }
+
+  .activeButton {
+    margin-top: 20px;
+    @include mixins.button(config.$green, config.$green, config.$white);
+    width: 100%;
   }
 
   .dataRefresh {
     max-width: 350px;
     margin: auto;
+  }
 
-    .row {
-      @include mixins.row-space-between-center();
-    }
+  .row {
+    @include mixins.row-space-between-center();
   }
 }
 

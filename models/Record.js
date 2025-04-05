@@ -27,6 +27,7 @@ const RecordSchema = new Schema(
     medicalDescription: String,
     medicalFamilyDescription: String,
     medicineDescription: String,
+    completed: Boolean,
     medical: [],
     medicalFamily: [],
     habits: [],

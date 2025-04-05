@@ -224,6 +224,7 @@ export default function Reception() {
       medicalDescription: medicalDescription,
       medicalFamilyDescription: medicalFamilyDescription,
       medicineDescription: medicineDescription,
+      completed: false,
       medical: medical,
       medicalFamily: medicalFamily,
       habits: habits,
