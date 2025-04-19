@@ -14,7 +14,9 @@ html {
 }
 
 body {
-  user-select: none;
+  @include mixins.mobile {
+    user-select: none;
+  }
 }
 
 a {

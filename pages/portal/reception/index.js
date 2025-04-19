@@ -72,7 +72,7 @@ export default function Reception({ records }) {
   };
 
   const completeRecord = async (id, index) => {
-    const confirm = window.confirm("تکمیل نوبت، مطمئنی؟");
+    const confirm = window.confirm("تکمیل مراجعه، مطمئنی؟");
     if (confirm) {
       let recordData = await getSingleRecordApi(id);
       const recordsArray = recordData.records;
@@ -197,9 +197,12 @@ export default function Reception({ records }) {
                 {expandRecords === record["_id"] && (
                   <Fragment>
                     {record.records.map((item, index) => (
-                      <div key={index} className={classes.row}>
-                        <p className={classes.recordText}>{item.date}</p>
-                        <p>{item.doctor}</p>
+                      <div key={index} className={classes.recordBox}>
+                        <div className={classes.recordRow}>
+                          <p className={classes.recordText}>{item.date}</p>
+                          <p className={classes.recordText}> {item.doctor}</p>
+                        </div>
+                        <p className={classes.recordMessage}>{item.message}</p>
                       </div>
                     ))}
                   </Fragment>
