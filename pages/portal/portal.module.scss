@@ -328,6 +328,7 @@
       background: config.$white;
       padding: 12px;
       height: fit-content;
+      max-width: 500px;
       @include mixins.border-radius();
 
       .info {

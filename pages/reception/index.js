@@ -135,7 +135,16 @@ export default function Reception() {
   };
 
   const assignUserRecord = (userRecord) => {
-    const [day, month, year] = userRecord.birthDate.split("/").map(Number);
+    const birthDateParts = userRecord.birthDate.split("/").map(Number);
+    // Assuming the format is DD/MM/YYYY
+    let day, month, year;
+    if (birthDateParts[0] > 12) {
+      // Likely YYYY/MM/DD format
+      [year, month, day] = birthDateParts;
+    } else {
+      // Likely DD/MM/YYYY format
+      [day, month, year] = birthDateParts;
+    }
     const dateObject = {
       day: day,
       month: month,
@@ -206,6 +215,8 @@ export default function Reception() {
       return;
     }
     const userId = await checkUserData(phoneEnglish);
+    console.log(toEnglishNumber(currentYear) - birthDate.year);
+    console.log(birthDate);
     const recordObject = {
       name: name.trim(),
       birthDate: `${birthDate.year}/${birthDate.month}/${birthDate.day}`,
@@ -220,18 +231,18 @@ export default function Reception() {
       referral: referral ? referral.trim() : "-",
       date: digitalDate,
       confirmation: confirmation,
-      medicalDescription: medicalDescription,
-      medicalFamilyDescription: medicalFamilyDescription,
-      medicineDescription: medicineDescription,
-      completed: false,
-      medical: medical,
-      medicalFamily: medicalFamily,
-      habits: habits,
       records: [],
+      completed: false,
     };
     const recordData = {
       doctor: selectDoctor,
       date: getCurrentDateFarsi(),
+      medicalDescription: medicalDescription,
+      medicalFamilyDescription: medicalFamilyDescription,
+      medicineDescription: medicineDescription,
+      medical: medical,
+      medicalFamily: medicalFamily,
+      habits: habits,
       sharePermission: sharePermission,
       zones: {},
       message: "",

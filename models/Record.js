@@ -23,14 +23,8 @@ const RecordSchema = new Schema(
     referral: String,
     date: String,
     confirmation: Boolean,
-    medicalDescription: String,
-    medicalFamilyDescription: String,
-    medicineDescription: String,
-    completed: Boolean,
-    medical: [],
-    medicalFamily: [],
-    habits: [],
     records: [],
+    completed: Boolean,
   },
   { timestamps: true }
 );

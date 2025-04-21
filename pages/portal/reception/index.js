@@ -23,7 +23,8 @@ export default function Reception({ records }) {
   const [expandInformation, setExpandInformation] = useState(null);
   const [expandRecords, setExpandRecords] = useState(null);
   const [messages, setMessages] = useState(Array(records.length).fill(""));
-  const [popupObject, setPopupObject] = useState(null);
+  const [zoneObject, setZoneObject] = useState(null);
+  const [recordObject, setRecordObject] = useState(null);
   const [navigation, setNavigation] = useState(
     "دکتر فراهانی" || "دکتر گنجه" || "دکتر حاجیلو"
   );
@@ -197,7 +198,11 @@ export default function Reception({ records }) {
                 {expandRecords === record["_id"] && (
                   <Fragment>
                     {record.records.map((item, index) => (
-                      <div key={index} className={classes.recordBox}>
+                      <div
+                        key={index}
+                        className={classes.recordBox}
+                        onClick={() => setRecordObject(item)}
+                      >
                         <div className={classes.recordRow}>
                           <p className={classes.recordText}>{item.date}</p>
                           <p className={classes.recordText}> {item.doctor}</p>
@@ -277,80 +282,139 @@ export default function Reception({ records }) {
                 )}
                 {currentUser?.permission === "doctor" && (
                   <Fragment>
-                    <button
-                      className={classes.button}
-                      style={{ margin: "10px 0px" }}
-                      onClick={() =>
-                        setPopupObject({
-                          name: record.name,
-                          zones: {
-                            one: true,
-                            two: true,
-                            three: true,
-                            four: true,
-                            five: true,
-                          },
-                        })
-                      }
-                    >
-                      دیاگرام صورت جدید
-                    </button>
-                    {expandInformation === record["_id"] && (
-                      <Fragment>
-                        <div className={classes.info}>
-                          <span>تاریخچه پزشکی</span>
-                          <div className={classes.item}>
-                            {record.medical
-                              .filter((item) => item.active)
-                              .map((item) => (
-                                <h4 key={item.label}>{item.label}</h4>
-                              ))}
-                          </div>
-                          <p>{record.medicalDescription}</p>
-                        </div>
-                        <div className={classes.info}>
-                          <span>سابقه دارویی</span>
-                          <p>{record.medicineDescription}</p>
-                        </div>
-                        <div className={classes.info}>
-                          <span>عادات بیمار</span>
-                          <div className={classes.item}>
-                            {record.habits
-                              .filter((item) => item.active)
-                              .map((item) => (
-                                <h4 key={item.label}>{item.label}</h4>
-                              ))}
-                          </div>
-                        </div>
-                        <div className={classes.info}>
-                          <span>تاریخچه پزشکی اعضاء خانواده</span>
-                          <div className={classes.item}>
-                            {record.medicalFamily
-                              .filter((item) => item.active)
-                              .map((item) => (
-                                <h4 key={item.label}>{item.label}</h4>
-                              ))}
-                          </div>
-                          <p>{record.medicalFamilyDescription}</p>
-                        </div>
-                      </Fragment>
-                    )}
+                    {(() => {
+                      const lastRecord =
+                        record.records[record.records.length - 1];
+                      return (
+                        <>
+                          <button
+                            className={classes.button}
+                            style={{ margin: "10px 0px" }}
+                            onClick={() =>
+                              setZoneObject({
+                                name: record.name,
+                                zones: {
+                                  one: true,
+                                  two: true,
+                                  three: true,
+                                  four: true,
+                                  five: true,
+                                },
+                              })
+                            }
+                          >
+                            دیاگرام صورت جدید
+                          </button>
+                          {expandInformation === record["_id"] && (
+                            <Fragment>
+                              <div className={classes.info}>
+                                <span>تاریخچه پزشکی</span>
+                                <div className={classes.item}>
+                                  {lastRecord.medical
+                                    .filter((item) => item.active)
+                                    .map((item) => (
+                                      <h4 key={item.label}>{item.label}</h4>
+                                    ))}
+                                </div>
+                                <p>{lastRecord.medicalDescription}</p>
+                              </div>
+                              <div className={classes.info}>
+                                <span>سابقه دارویی</span>
+                                <p>{lastRecord.medicineDescription}</p>
+                              </div>
+                              <div className={classes.info}>
+                                <span>عادات بیمار</span>
+                                <div className={classes.item}>
+                                  {lastRecord.habits
+                                    .filter((item) => item.active)
+                                    .map((item) => (
+                                      <h4 key={item.label}>{item.label}</h4>
+                                    ))}
+                                </div>
+                              </div>
+                              <div className={classes.info}>
+                                <span>تاریخچه پزشکی اعضاء خانواده</span>
+                                <div className={classes.item}>
+                                  {lastRecord.medicalFamily
+                                    .filter((item) => item.active)
+                                    .map((item) => (
+                                      <h4 key={item.label}>{item.label}</h4>
+                                    ))}
+                                </div>
+                                <p>{lastRecord.medicalFamilyDescription}</p>
+                              </div>
+                            </Fragment>
+                          )}
+                        </>
+                      );
+                    })()}
                   </Fragment>
                 )}
               </div>
             </Fragment>
           ))}
-          {popupObject && (
+          {zoneObject && (
+            <div className={classes.popup}>
+              <CloseIcon className="icon" onClick={() => setZoneObject(null)} />
+              <h3>{zoneObject.name}</h3>
+              <FaceDiagram zones={zoneObject.zones} />
+              <button
+                className={classes.button}
+                onClick={() => setZoneObject(null)}
+              >
+                تکمیل
+              </button>
+            </div>
+          )}
+          {recordObject && (
             <div className={classes.popup}>
               <CloseIcon
                 className="icon"
-                onClick={() => setPopupObject(null)}
+                onClick={() => setRecordObject(null)}
               />
-              <h3>{popupObject.name}</h3>
-              <FaceDiagram zones={popupObject.zones} />
+              <p>{recordObject.doctor}</p>
+              <p>{recordObject.date}</p>
+              <div className={classes.card}>
+                <div className={classes.info}>
+                  <span>تاریخچه پزشکی</span>
+                  <div className={classes.item}>
+                    {recordObject.medical
+                      .filter((item) => item.active)
+                      .map((item) => (
+                        <h4 key={item.label}>{item.label}</h4>
+                      ))}
+                  </div>
+                  <p>{recordObject.medicalDescription}</p>
+                </div>
+                <div className={classes.info}>
+                  <span>سابقه دارویی</span>
+                  <p>{recordObject.medicineDescription}</p>
+                </div>
+                <div className={classes.info}>
+                  <span>عادات بیمار</span>
+                  <div className={classes.item}>
+                    {recordObject.habits
+                      .filter((item) => item.active)
+                      .map((item) => (
+                        <h4 key={item.label}>{item.label}</h4>
+                      ))}
+                  </div>
+                </div>
+                <div className={classes.info}>
+                  <span>تاریخچه پزشکی اعضاء خانواده</span>
+                  <div className={classes.item}>
+                    {recordObject.medicalFamily
+                      .filter((item) => item.active)
+                      .map((item) => (
+                        <h4 key={item.label}>{item.label}</h4>
+                      ))}
+                  </div>
+                  <p>{recordObject.medicalFamilyDescription}</p>
+                </div>
+              </div>
               <button
                 className={classes.button}
-                onClick={() => setPopupObject(null)}
+                onClick={() => setRecordObject(null)}
               >
                 تکمیل
               </button>
