@@ -346,9 +346,7 @@ export default function DatePicker({ visits }) {
     setDisplayForm(true);
     let timeToUse;
     if (isSelectedDateFriday) {
-      const isSpecialDate =
-        day.month === 1 && (day.day === 15 || day.day === 29);
-      const numberSlice = isSpecialDate ? 0 : 9;
+      const numberSlice = 9;
       timeToUse = Object.fromEntries(
         Object.entries(originalTimes).slice(numberSlice)
       );
