@@ -22,7 +22,7 @@ export default function Reception({ records }) {
   const [receptionCards, setReceptionCards] = useState([]);
   const [expandInformation, setExpandInformation] = useState(null);
   const [expandRecords, setExpandRecords] = useState(null);
-  const [messages, setMessages] = useState(Array(records.length).fill(""));
+  const [messages, setMessages] = useState([]);
   const [zoneObject, setZoneObject] = useState(null);
   const [recordObject, setRecordObject] = useState(null);
   const [navigation, setNavigation] = useState(
@@ -39,6 +39,15 @@ export default function Reception({ records }) {
       Router.push("/");
     }
   }, []);
+
+  useEffect(() => {
+    const messagesValue = receptionCards.map((record) => {
+      const recordsArray = record.records;
+      const lastRecord = recordsArray[recordsArray.length - 1];
+      return lastRecord.message;
+    });
+    setMessages(messagesValue);
+  }, [receptionCards]);
 
   const filterReceptionCards = (doctor) => {
     setNavigation(doctor);
@@ -66,25 +75,28 @@ export default function Reception({ records }) {
     }
   };
 
-  const handleMessageChange = (index, value) => {
+  const updateLastRecordMessage = async (id, message, completed = false) => {
+    let recordData = await getSingleRecordApi(id);
+    const recordsArray = recordData.records;
+    if (recordsArray.length > 0) {
+      const lastRecordIndex = recordsArray.length - 1;
+      const lastRecord = recordsArray[lastRecordIndex];
+      lastRecord.message = message;
+      recordData.completed = completed;
+      await updateRecordApi(recordData);
+    }
+  };
+  const handleMessageChange = async (id, index, value) => {
     const newMessages = [...messages];
     newMessages[index] = value;
     setMessages(newMessages);
+    await updateLastRecordMessage(id, newMessages[index]);
   };
-
   const completeRecord = async (id, index) => {
     const confirm = window.confirm("تکمیل مراجعه، مطمئنی؟");
     if (confirm) {
-      let recordData = await getSingleRecordApi(id);
-      const recordsArray = recordData.records;
-      if (recordsArray.length > 0) {
-        const lastRecordIndex = recordsArray.length - 1;
-        const lastRecord = recordsArray[lastRecordIndex];
-        lastRecord.message = messages[index];
-        recordData.completed = true;
-        await updateRecordApi(recordData);
-        router.reload(router.asPath);
-      }
+      await updateLastRecordMessage(id, messages[index], true);
+      router.reload(router.asPath);
     }
   };
 
@@ -174,6 +186,7 @@ export default function Reception({ records }) {
                 </div>
                 <div
                   className={classes.row}
+                  style={{ cursor: "pointer" }}
                   onClick={() => expandInformationAction(record["_id"])}
                 >
                   <h3
@@ -193,6 +206,7 @@ export default function Reception({ records }) {
                 </div>
                 <div
                   className={classes.row}
+                  style={{ cursor: "pointer" }}
                   onClick={() => expandRecordsAction(record["_id"])}
                 >
                   <div className={classes.row}>
@@ -207,6 +221,7 @@ export default function Reception({ records }) {
                       <div
                         key={index}
                         className={classes.recordBox}
+                        style={{ cursor: "pointer" }}
                         onClick={() => setRecordObject(item)}
                       >
                         <div className={classes.recordRow}>
@@ -257,7 +272,9 @@ export default function Reception({ records }) {
                       <div className={classes.bar}>
                         <CloseIcon
                           className="icon"
-                          onClick={() => handleMessageChange(index, "")}
+                          onClick={() =>
+                            handleMessageChange(record["_id"], index, "")
+                          }
                           sx={{ fontSize: 16 }}
                         />
                       </div>
@@ -267,7 +284,11 @@ export default function Reception({ records }) {
                         id={`message-${index}`}
                         name={`message-${index}`}
                         onChange={(e) =>
-                          handleMessageChange(index, e.target.value)
+                          handleMessageChange(
+                            record["_id"],
+                            index,
+                            e.target.value
+                          )
                         }
                         value={messages[index]}
                         autoComplete="off"
