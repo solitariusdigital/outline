@@ -73,6 +73,12 @@
     width: calc(100% - 24px);
   }
 
+  .row {
+    @include mixins.row-space-between-center();
+    width: 150px;
+    margin: 0px 10px;
+  }
+
   .input {
     width: 100%;
 
@@ -98,6 +104,15 @@
     select {
       @include mixins.input();
       width: 100%;
+    }
+  }
+
+  .inputBirth {
+    @include mixins.row-space-between-center();
+
+    input {
+      @include mixins.input();
+      width: 33%;
     }
   }
 

@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckIcon from "@mui/icons-material/Check";
-import DatePicker from "@hassanmojab/react-modern-calendar-datepicker";
+import loaderImage from "@/assets/loader.png";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import {
   toEnglishNumber,
@@ -23,18 +23,22 @@ import {
   getRecordsApi,
   getUsersApi,
   updateRecordApi,
+  getVisitsApi,
 } from "@/services/api";
 
 export default function Reception() {
   const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState(null);
+  const [birthDate, setBirthDate] = useState({
+    day: "",
+    month: "",
+    year: "",
+  });
   const [idMeli, setIdMeli] = useState("");
   const [phone, setPhone] = useState("");
-  const [tel, setTel] = useState("");
   const [address, setAddress] = useState("");
   const [occupation, setOccupation] = useState("");
   const [referral, setReferral] = useState("");
-  const [sharePermission, setSharePermission] = useState(false);
+  const [sharePermission, setSharePermission] = useState(true);
   const [confirmation, setConfirmation] = useState(false);
   const [medical, setMedical] = useState([
     { active: false, label: "جراحی" },
@@ -76,26 +80,6 @@ export default function Reception() {
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر حاجیلو"];
   const router = useRouter();
 
-  const renderCustomInput = ({ ref }) => (
-    <input
-      readOnly
-      ref={ref}
-      value={
-        birthDate
-          ? `${birthDate.day}/${birthDate.month}/${birthDate.year}`
-          : "انتخاب"
-      }
-      style={{
-        textAlign: "center",
-        padding: "1rem 1.5rem",
-        fontSize: "1rem",
-        borderRadius: "100px",
-        outline: "none",
-        height: "50px",
-        background: "none",
-      }}
-    />
-  );
   const handleVerification = async () => {
     setDisableButton(true);
     const verificationEnglish = isEnglishNumber(verification)
@@ -119,7 +103,7 @@ export default function Reception() {
       setDisplayForm(true);
     } else if (verificationEnglish.length === 11) {
       if (verificationEnglish.startsWith("09")) {
-        const userId = await checkUserData(verificationEnglish);
+        const userId = await getUserId(verificationEnglish);
         const userRecord = getRecordData.find((user) => user.userId === userId);
         if (userRecord) {
           assignUserRecord(userRecord);
@@ -154,13 +138,12 @@ export default function Reception() {
     setName(userRecord.name);
     setIdMeli(userRecord.idMeli);
     setPhone(userRecord.phone);
-    setTel(userRecord.tel);
     setAddress(userRecord.address);
     setOccupation(userRecord.occupation);
     setExistingRecord(userRecord);
   };
 
-  const checkUserData = async (verificationEnglish) => {
+  const getUserId = async (verificationEnglish) => {
     let userId = null;
     const appUsers = await getUsersApi();
     const userData = appUsers.find(
@@ -180,13 +163,34 @@ export default function Reception() {
     return userId;
   };
 
+  const getUserTime = async (verificationEnglish) => {
+    try {
+      const userId = await getUserId(verificationEnglish);
+      const visits = await getVisitsApi();
+
+      const userVisit = visits.find((visit) => visit.userId === userId);
+      if (userVisit) {
+        const incompleteVisits = visits.filter(
+          (visit) =>
+            visit.userId === userId && !visit.completed && !visit.canceled
+        );
+        return incompleteVisits[0].time.split(" - ")[1];
+      } else {
+        return "-";
+      }
+    } catch (error) {
+      console.error("Error fetching user time:", error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async () => {
     setDisableButton(true);
     const [currentYear] = getCurrentDateFarsi().split("/");
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
-    let telEnglish = isEnglishNumber(tel) ? tel : toEnglishNumber(tel);
     let idEnglish = isEnglishNumber(idMeli) ? idMeli : toEnglishNumber(idMeli);
     let digitalDate = convertPersianDate(getCurrentDateFarsi());
+    let time = await getUserTime(phoneEnglish);
     let recordId = digitalDate + fourGenerator();
 
     if (
@@ -194,7 +198,6 @@ export default function Reception() {
       !birthDate ||
       !idMeli ||
       !phone ||
-      !tel ||
       !address ||
       !occupation ||
       !confirmation ||
@@ -214,9 +217,11 @@ export default function Reception() {
       setDisableButton(false);
       return;
     }
-    const userId = await checkUserData(phoneEnglish);
-    console.log(toEnglishNumber(currentYear) - birthDate.year);
-    console.log(birthDate);
+
+    setDisplayForm(false);
+    setDisplayMessage(true);
+
+    const userId = await getUserId(phoneEnglish);
     const recordObject = {
       name: name.trim(),
       birthDate: `${birthDate.year}/${birthDate.month}/${birthDate.day}`,
@@ -225,13 +230,14 @@ export default function Reception() {
       userId: userId,
       recordId: recordId,
       phone: phoneEnglish,
-      tel: telEnglish,
       address: address.trim(),
       occupation: occupation.trim(),
       referral: referral ? referral.trim() : "-",
       date: digitalDate,
+      time: time,
       confirmation: confirmation,
       records: [],
+      checkup: false,
       completed: false,
     };
     const recordData = {
@@ -256,8 +262,6 @@ export default function Reception() {
       recordObject.records.push(recordData);
       await createRecordApi(recordObject);
     }
-    setDisplayForm(false);
-    setDisplayMessage(true);
     setTimeout(() => {
       router.reload(router.asPath);
     }, 5000);
@@ -357,6 +361,17 @@ export default function Reception() {
             >
               بعدی
             </button>
+            {disableButton && (
+              <div className={classes.loader}>
+                <Image
+                  width={50}
+                  height={50}
+                  src={loaderImage}
+                  alt="isLoading"
+                  unoptimized
+                />
+              </div>
+            )}
             <p className={classes.alert}>{alert}</p>
           </section>
         )}
@@ -441,12 +456,51 @@ export default function Reception() {
                     <span>*</span>
                   </p>
                 </div>
-                <div>
-                  <DatePicker
-                    value={birthDate}
-                    onChange={setBirthDate}
-                    renderInput={renderCustomInput}
-                    locale="fa"
+                <div className={classes.inputBirth}>
+                  <input
+                    placeholder="15"
+                    type="tel"
+                    id="day"
+                    name="day"
+                    onChange={(e) =>
+                      setBirthDate((prev) => ({ ...prev, day: e.target.value }))
+                    }
+                    value={birthDate.day}
+                    autoComplete="off"
+                    dir="rtl"
+                    maxLength={2}
+                  />
+                  <input
+                    placeholder="05"
+                    type="tel"
+                    id="month"
+                    name="month"
+                    onChange={(e) =>
+                      setBirthDate((prev) => ({
+                        ...prev,
+                        month: e.target.value,
+                      }))
+                    }
+                    value={birthDate.month}
+                    autoComplete="off"
+                    dir="rtl"
+                    maxLength={2}
+                  />
+                  <input
+                    placeholder="1365"
+                    type="tel"
+                    id="year"
+                    name="year"
+                    onChange={(e) =>
+                      setBirthDate((prev) => ({
+                        ...prev,
+                        year: e.target.value,
+                      }))
+                    }
+                    value={birthDate.year}
+                    autoComplete="off"
+                    dir="rtl"
+                    maxLength={4}
                   />
                 </div>
               </div>
@@ -469,29 +523,6 @@ export default function Reception() {
                   name="phone"
                   onChange={(e) => setPhone(e.target.value)}
                   value={phone}
-                  autoComplete="off"
-                  dir="rtl"
-                  maxLength={11}
-                />
-              </div>
-              <div className={classes.input}>
-                <div className={classes.bar}>
-                  <p className={classes.label}>
-                    شماره ثابت
-                    <span>*</span>
-                  </p>
-                  <CloseIcon
-                    className="icon"
-                    onClick={() => setTel("")}
-                    sx={{ fontSize: 16 }}
-                  />
-                </div>
-                <input
-                  type="tel"
-                  id="tel"
-                  name="tel"
-                  onChange={(e) => setTel(e.target.value)}
-                  value={tel}
                   autoComplete="off"
                   dir="rtl"
                   maxLength={11}
@@ -561,21 +592,47 @@ export default function Reception() {
                 />
               </div>
               <div>
+                <p
+                  style={{
+                    marginBottom: "12px",
+                  }}
+                >
+                  عکس قبل و بعد برای تکمیل پرونده شما گرفته میشود
+                </p>
                 <p>
                   اینجانب رضایت دارم تا عکس من قبل و بعد از درمان در صورت لزوم
                   در مقالات پزشکی و شبکه اجتماعی به صورت ناشناس قرار گیرد
                 </p>
-                {sharePermission ? (
-                  <RadioButtonCheckedIcon
-                    className="icon"
-                    onClick={() => setSharePermission(false)}
-                  />
-                ) : (
-                  <RadioButtonUncheckedIcon
-                    className="icon"
-                    onClick={() => setSharePermission(true)}
-                  />
-                )}
+                <div className={classes.row}>
+                  <div className={classes.row}>
+                    <p>بله</p>
+                    {sharePermission ? (
+                      <RadioButtonCheckedIcon
+                        className="icon"
+                        onClick={() => setSharePermission(false)}
+                      />
+                    ) : (
+                      <RadioButtonUncheckedIcon
+                        className="icon"
+                        onClick={() => setSharePermission(true)}
+                      />
+                    )}
+                  </div>
+                  <div className={classes.row}>
+                    <p>خیر</p>
+                    {!sharePermission ? (
+                      <RadioButtonCheckedIcon
+                        className="icon"
+                        onClick={() => setSharePermission(true)}
+                      />
+                    ) : (
+                      <RadioButtonUncheckedIcon
+                        className="icon"
+                        onClick={() => setSharePermission(false)}
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
             </section>
             <h3>تاریخچه پزشکی بیمار</h3>

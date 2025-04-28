@@ -166,6 +166,12 @@ export default function Reception({ records }) {
           {receptionCards.map((record, index) => (
             <Fragment key={index}>
               <div className={classes.card}>
+                <div className={classes.row}>
+                  <h4 style={{ color: record.checkup ? "#15b392" : "#999999" }}>
+                    {record.checkup ? "بیمار ویزیت شده" : "بیمار در انتظار"}
+                  </h4>
+                  <h4>{record.time}</h4>
+                </div>
                 <div
                   className={classes.row}
                   onClick={() => expandInformationAction(record["_id"])}
@@ -236,10 +242,6 @@ export default function Reception({ records }) {
                     </div>
                     {expandInformation === record["_id"] && (
                       <Fragment>
-                        <div className={classes.row}>
-                          <span>ثابت</span>
-                          <p>{record.tel}</p>
-                        </div>
                         <p>{record.address}</p>
                         <div className={classes.row}>
                           <span>شغل</span>
@@ -433,7 +435,10 @@ export async function getServerSideProps(context) {
     let records = await recordModel.find({
       date: { $regex: `^${convertPersianDate(getCurrentDateFarsi())}` },
     });
-    records.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    records.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
+    records.sort((a, b) => {
+      return a.checkup === b.checkup ? 0 : a.checkup ? 1 : -1;
+    });
     let activeRecords = records.filter((record) => !record.completed);
 
     return {
