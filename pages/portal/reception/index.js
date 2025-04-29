@@ -294,6 +294,14 @@ export default function Reception({ records }) {
                         autoComplete="off"
                         dir="rtl"
                       />
+                      {record.checkup && (
+                        <button
+                          className={classes.button}
+                          onClick={() => setRecordObject(null)}
+                        >
+                          دیاگرام صورت
+                        </button>
+                      )}
                       <button
                         className={classes.button}
                         onClick={() => completeRecord(record["_id"], index)}
@@ -381,12 +389,6 @@ export default function Reception({ records }) {
               <CloseIcon className="icon" onClick={() => setZoneObject(null)} />
               <h3>{zoneObject.name}</h3>
               <FaceDiagram zones={zoneObject.zones} />
-              <button
-                className={classes.button}
-                onClick={() => setZoneObject(null)}
-              >
-                تکمیل
-              </button>
             </div>
           )}
           {recordObject && (
@@ -433,6 +435,19 @@ export default function Reception({ records }) {
                       ))}
                   </div>
                   <p>{recordObject.medicalFamilyDescription}</p>
+                </div>
+                <div className={classes.info}>
+                  <p
+                    style={{
+                      color: recordObject.sharePermission
+                        ? "#15b392"
+                        : "#d40d12",
+                    }}
+                  >
+                    {recordObject.sharePermission
+                      ? "عکس اشتراک گذاشته شود"
+                      : "عکس اشتراک گذاشته نشود"}
+                  </p>
                 </div>
               </div>
               <button
