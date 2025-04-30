@@ -1,14 +1,26 @@
 import { useState, useContext, Fragment, useEffect } from "react";
 import classes from "./FaceDiagram.module.scss";
 import Image from "next/legacy/image";
-import faceDiagram from "@/assets/faceDiagram.jpg";
+import faceDiagram from "@/assets/faceDiagram.png";
 
-export default function FaceDiagram({ zones }) {
+export default function FaceDiagram() {
   const [navigation, setNavigation] = useState(
     "فیلر" || "بوتاکس" || "مزوتراپی" || "جوانساز" || "پی آر پی"
   );
   const categories = {
-    فیلر: [""],
+    فیلر: [
+      "پیشانی",
+      "شقیقه",
+      "زیرچشم",
+      "میدفیس",
+      "بینی",
+      "خط خنده",
+      "ساب مالار",
+      "زاویه فک",
+      "میکرو",
+      "لب",
+      "چانه",
+    ],
     بوتاکس: ["اوت لاین", "بینی", "مستر"],
     مزوتراپی: ["مو", "زیرچشم", "فول فیس", "گردن"],
     جوانساز: ["پروفایلو فیس", "پروفایلو استراکچر", "فول فیس", "گردن", "دست"],
@@ -21,6 +33,19 @@ export default function FaceDiagram({ zones }) {
     جوانساز: [],
     "پی آر پی": [],
   });
+  const fillerColor = [
+    "#FFD0D0",
+    "#BCEDA7",
+    "#FECD5B",
+    "#B54EFF",
+    "#9099FD",
+    "#DBDDDD",
+    "#99F0FA",
+    "#EEFB84",
+    "#F07474",
+    "#F4B1E1",
+    "#CBA374",
+  ];
 
   const handleSubcategoryToggle = (subcategory) => {
     setSelectedSubcategories((prevSelected) => {
@@ -67,6 +92,7 @@ export default function FaceDiagram({ zones }) {
             {categories[navigation].map((item, index) => (
               <p
                 className={classes.nav}
+                style={{ fontWeight: "bold" }}
                 onClick={() => handleSubcategoryToggle(item)}
                 key={index}
               >
@@ -77,53 +103,32 @@ export default function FaceDiagram({ zones }) {
         </Fragment>
       )}
       {navigation === "فیلر" && (
-        <div className={classes.diagram}>
-          <div
-            className={classes.zone}
-            style={{
-              backgroundColor: zones.one ? "#E6B2BA" : "",
-              height: "20%",
-            }}
-          ></div>
-          <div
-            className={classes.zone}
-            style={{
-              backgroundColor: zones.two ? "#C7D9DD" : "",
-              height: "12%",
-            }}
-          ></div>
-          <div
-            className={classes.zone}
-            style={{
-              backgroundColor: zones.three ? "#F2E2B1" : "",
-              height: "20%",
-            }}
-          ></div>
-          <div
-            className={classes.zone}
-            style={{
-              backgroundColor: zones.four ? "#FDB7EA" : "",
-              height: "20%",
-            }}
-          ></div>
-          <div
-            className={classes.zone}
-            style={{
-              backgroundColor: zones.five ? "#BAD8B6" : "",
-              height: "12%",
-            }}
-          ></div>
-          <Image
-            src={faceDiagram}
-            blurDataURL={faceDiagram}
-            alt="faceDiagram"
-            placeholder="blur"
-            layout="fill"
-            objectFit="contain"
-            as="image"
-            unoptimized
-          />
-        </div>
+        <Fragment>
+          <div className={classes.navigationFiller}>
+            {categories[navigation].map((item, index) => (
+              <p
+                key={index}
+                className={classes.nav}
+                style={{ fontWeight: "bold", background: fillerColor[index] }}
+                onClick={() => handleSubcategoryToggle(item)}
+              >
+                {item}
+              </p>
+            ))}
+          </div>
+          <div className={classes.diagram}>
+            <Image
+              src={faceDiagram}
+              blurDataURL={faceDiagram}
+              alt="faceDiagram"
+              placeholder="blur"
+              layout="fill"
+              objectFit="contain"
+              as="image"
+              unoptimized
+            />
+          </div>
+        </Fragment>
       )}
       {Object.entries(selectedSubcategories).map(([key, values]) => (
         <div className={classes.selectedSubcategories} key={key}>

@@ -250,7 +250,7 @@ export default function Reception() {
       medicalFamily: medicalFamily,
       habits: habits,
       sharePermission: sharePermission,
-      zones: {},
+      visitHistory: [],
       message: "",
     };
     if (existingRecord) {

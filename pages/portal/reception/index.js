@@ -324,13 +324,6 @@ export default function Reception({ records }) {
                             onClick={() =>
                               setZoneObject({
                                 name: record.name,
-                                zones: {
-                                  one: true,
-                                  two: true,
-                                  three: true,
-                                  four: true,
-                                  five: true,
-                                },
                               })
                             }
                           >
@@ -388,7 +381,7 @@ export default function Reception({ records }) {
             <div className={classes.popup}>
               <CloseIcon className="icon" onClick={() => setZoneObject(null)} />
               <h3>{zoneObject.name}</h3>
-              <FaceDiagram zones={zoneObject.zones} />
+              <FaceDiagram />
             </div>
           )}
           {recordObject && (
