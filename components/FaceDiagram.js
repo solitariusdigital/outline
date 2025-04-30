@@ -34,7 +34,7 @@ export default function FaceDiagram() {
     "پی آر پی": [],
   });
   const fillerColor = [
-    "#FFD0D0",
+    "#FFE7D0",
     "#BCEDA7",
     "#FECD5B",
     "#B54EFF",
@@ -88,7 +88,7 @@ export default function FaceDiagram() {
       </div>
       {navigation !== "فیلر" && (
         <Fragment>
-          <div className={classes.navigation}>
+          <div className={classes.navigationTypes}>
             {categories[navigation].map((item, index) => (
               <p
                 className={classes.nav}
@@ -104,12 +104,16 @@ export default function FaceDiagram() {
       )}
       {navigation === "فیلر" && (
         <Fragment>
-          <div className={classes.navigationFiller}>
+          <div className={classes.navigationTypes}>
             {categories[navigation].map((item, index) => (
               <p
                 key={index}
                 className={classes.nav}
-                style={{ fontWeight: "bold", background: fillerColor[index] }}
+                style={{
+                  fontWeight: "bold",
+                  background: fillerColor[index],
+                  color: "#1b1b1b",
+                }}
                 onClick={() => handleSubcategoryToggle(item)}
               >
                 {item}

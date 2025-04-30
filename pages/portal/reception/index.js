@@ -320,14 +320,23 @@ export default function Reception({ records }) {
                         <>
                           <button
                             className={classes.button}
-                            style={{ margin: "10px 0px" }}
                             onClick={() =>
                               setZoneObject({
                                 name: record.name,
                               })
                             }
                           >
-                            دیاگرام صورت جدید
+                            دیاگرام صورت
+                          </button>
+                          <button
+                            className={classes.button}
+                            onClick={() =>
+                              setZoneObject({
+                                name: record.name,
+                              })
+                            }
+                          >
+                            تکمیل ویزیت
                           </button>
                           {expandInformation === record["_id"] && (
                             <Fragment>
@@ -443,12 +452,6 @@ export default function Reception({ records }) {
                   </p>
                 </div>
               </div>
-              <button
-                className={classes.button}
-                onClick={() => setRecordObject(null)}
-              >
-                تکمیل
-              </button>
             </div>
           )}
         </div>

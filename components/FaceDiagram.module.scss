@@ -11,7 +11,7 @@
 }
 
 .navigation,
-.navigationFiller {
+.navigationTypes {
   margin: 16px auto;
   width: 100%;
   max-width: 400px;
@@ -20,31 +20,49 @@
   border: 1px solid config.$grey;
   border-radius: 50px;
   padding: 4px;
+}
+
+.navigation {
+  cursor: pointer;
 
   .nav {
     @include mixins.desktop {
       &:hover {
+        background: config.$white;
         color: config.$blue;
-        cursor: pointer;
       }
     }
   }
+
   .activeNav {
     color: config.$blue;
     font-weight: bold;
   }
 }
 
-.navigationFiller {
+.navigationTypes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   border: none;
-  gap: 4px;
+  gap: 8px;
 
-  .circle {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+  .nav {
+    border: 1px solid config.$blue;
+    cursor: pointer;
+
+    @include mixins.desktop {
+      &:hover {
+        background: config.$blue;
+        color: config.$white;
+      }
+    }
+  }
+
+  p {
+    background: config.$white;
+    color: config.$blue;
+    padding: 4px;
+    border-radius: 50px;
   }
 }
 
