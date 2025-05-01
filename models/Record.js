@@ -21,6 +21,7 @@ const RecordSchema = new Schema(
     occupation: String,
     referral: String,
     date: String,
+    visitId: String,
     time: String,
     confirmation: Boolean,
     sharePermission: Boolean,

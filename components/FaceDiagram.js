@@ -1,4 +1,4 @@
-import { useState, useContext, Fragment, useEffect } from "react";
+import { useState, useContext, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./FaceDiagram.module.scss";
 import Image from "next/legacy/image";
@@ -13,7 +13,6 @@ export default function FaceDiagram() {
   );
   const activeFunctionality =
     currentUser?.permission === "doctor" ? true : false;
-
   const [navigation, setNavigation] = useState(
     "فیلر" || "بوتاکس" || "مزوتراپی" || "جوانساز" || "پی آر پی"
   );
@@ -36,7 +35,6 @@ export default function FaceDiagram() {
     جوانساز: ["پروفایلو فیس", "پروفایلو استراکچر", "فول فیس", "گردن", "دست"],
     "پی آر پی": ["مو", "صورت"],
   };
-
   const fillerColor = {
     پیشانی: "#FFE7D0",
     شقیقه: "#BCEDA7",

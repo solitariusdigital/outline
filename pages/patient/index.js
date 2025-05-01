@@ -10,12 +10,12 @@ import Router from "next/router";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import userModel from "@/models/User";
-import { convertDate, filterVisitsByDate } from "@/services/utility";
 import CloseIcon from "@mui/icons-material/Close";
-import { NextSeo } from "next-seo";
-import { getSingleVisitApi, updateVisitApi } from "@/services/api";
-import Kavenegar from "kavenegar";
 import logo from "@/assets/logo.png";
+import { NextSeo } from "next-seo";
+import Kavenegar from "kavenegar";
+import { convertDate, filterVisitsByDate } from "@/services/utility";
+import { getSingleVisitApi, updateVisitApi } from "@/services/api";
 
 export default function Patient({ user, visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);

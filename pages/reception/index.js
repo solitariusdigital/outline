@@ -174,7 +174,10 @@ export default function Reception() {
           (visit) =>
             visit.userId === userId && !visit.completed && !visit.canceled
         );
-        return incompleteVisits[0].time.split(" - ")[1];
+        return {
+          time: incompleteVisits[0].time.split(" - ")[1],
+          id: incompleteVisits[0]["_id"],
+        };
       } else {
         return "-";
       }
@@ -190,7 +193,7 @@ export default function Reception() {
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
     let idEnglish = isEnglishNumber(idMeli) ? idMeli : toEnglishNumber(idMeli);
     let digitalDate = convertPersianDate(getCurrentDateFarsi());
-    let time = await getUserTime(phoneEnglish);
+    let { time, id: visitId } = await getUserTime(phoneEnglish);
     let recordId = digitalDate + fourGenerator();
 
     if (
@@ -234,6 +237,7 @@ export default function Reception() {
       occupation: occupation.trim(),
       referral: referral ? referral.trim() : "-",
       date: digitalDate,
+      visitId: visitId,
       time: time,
       confirmation: confirmation,
       records: [],

@@ -14,12 +14,19 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
 import FaceDiagram from "@/components/FaceDiagram";
+import Kavenegar from "kavenegar";
 import { getCurrentDateFarsi, convertPersianDate } from "@/services/utility";
-import { getSingleRecordApi, updateRecordApi } from "@/services/api";
+import {
+  getSingleRecordApi,
+  updateRecordApi,
+  getSingleVisitApi,
+  updateVisitApi,
+} from "@/services/api";
 
 export default function Reception({ records }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { popupDiagramData, setPopupDiagramData } = useContext(StateContext);
+  const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const [receptionCards, setReceptionCards] = useState([]);
   const [expandInformation, setExpandInformation] = useState(null);
   const [expandRecords, setExpandRecords] = useState(null);
@@ -86,17 +93,40 @@ export default function Reception({ records }) {
       await updateRecordApi(recordData);
     }
   };
+
   const handleMessageChange = async (id, index, value) => {
     const newMessages = [...messages];
     newMessages[index] = value;
     setMessages(newMessages);
     await updateLastRecordMessage(id, newMessages[index]);
   };
+
   const completeRecord = async (id, index) => {
     const confirm = window.confirm("تکمیل مراجعه، مطمئنی؟");
     if (confirm) {
       await updateLastRecordMessage(id, messages[index], true);
+      await completePatientVisit(id);
       router.reload(router.asPath);
+    }
+  };
+
+  const completePatientVisit = async (id) => {
+    const api = Kavenegar.KavenegarApi({
+      apikey: kavenegarKey,
+    });
+    let recordData = await getSingleRecordApi(id);
+    let visitData = await getSingleVisitApi(recordData.visitId);
+    if (visitData) {
+      visitData.completed = true;
+      await updateVisitApi(visitData);
+      api.VerifyLookup(
+        {
+          receptor: recordData.phone,
+          token: getCurrentDateFarsi(),
+          template: "completeOutline",
+        },
+        function (response, status) {}
+      );
     }
   };
 
