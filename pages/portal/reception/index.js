@@ -19,11 +19,11 @@ import { getSingleRecordApi, updateRecordApi } from "@/services/api";
 
 export default function Reception({ records }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { popupDiagramData, setPopupDiagramData } = useContext(StateContext);
   const [receptionCards, setReceptionCards] = useState([]);
   const [expandInformation, setExpandInformation] = useState(null);
   const [expandRecords, setExpandRecords] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [zoneObject, setZoneObject] = useState(null);
   const [recordObject, setRecordObject] = useState(null);
   const [navigation, setNavigation] = useState(
     "دکتر فراهانی" || "دکتر گنجه" || "دکتر حاجیلو"
@@ -97,6 +97,15 @@ export default function Reception({ records }) {
     if (confirm) {
       await updateLastRecordMessage(id, messages[index], true);
       router.reload(router.asPath);
+    }
+  };
+
+  const completeVisit = async (id) => {
+    const confirm = window.confirm("تکمیل ویزیت، مطمئنی؟");
+    if (confirm) {
+      let recordData = await getSingleRecordApi(id);
+      recordData.checkup = true;
+      await updateRecordApi(recordData);
     }
   };
 
@@ -175,283 +184,328 @@ export default function Reception({ records }) {
           </div>
         )}
         <div className={classes.records}>
-          {receptionCards.map((record, index) => (
-            <Fragment key={index}>
-              <div className={classes.card}>
-                <div className={classes.row}>
-                  <h4 style={{ color: record.checkup ? "#15b392" : "#999999" }}>
-                    {record.checkup ? "بیمار ویزیت شده" : "بیمار در انتظار"}
-                  </h4>
-                  <h4>{record.time}</h4>
-                </div>
-                <div
-                  className={classes.row}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => expandInformationAction(record["_id"])}
-                >
-                  <h3
-                    onClick={() => navigator.clipboard.writeText(record.name)}
-                  >
-                    {record.name}
-                  </h3>
-                  {expandInformation === record["_id"] ? (
-                    <ExpandLessIcon className="icon" />
-                  ) : (
-                    <ExpandMoreIcon className="icon" />
-                  )}
-                </div>
-                <div className={classes.row}>
-                  <p>{record.birthDate}</p>
-                  <p>{record.age}</p>
-                </div>
-                <div
-                  className={classes.row}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => expandRecordsAction(record["_id"])}
-                >
-                  <div className={classes.row}>
-                    <span>مراجعه</span>
-                    <MoreHorizIcon sx={{ color: "#999999" }} />
-                  </div>
-                  <p>{record.records.length}</p>
-                </div>
-                {expandRecords === record["_id"] && (
-                  <Fragment>
-                    {record.records.map((item, index) => (
-                      <div
-                        key={index}
-                        className={classes.recordBox}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setRecordObject(item)}
+          {!popupDiagramData && (
+            <Fragment>
+              {receptionCards.map((record, index) => (
+                <Fragment key={index}>
+                  <div className={classes.card}>
+                    <div className={classes.row}>
+                      <h4
+                        style={{
+                          color: record.checkup ? "#15b392" : "#999999",
+                        }}
                       >
-                        <div className={classes.recordRow}>
-                          <p className={classes.recordText}>{item.date}</p>
-                          <p className={classes.recordText}> {item.doctor}</p>
-                        </div>
-                        <p className={classes.recordMessage}>{item.message}</p>
+                        {record.checkup ? "ویزیت تکمیل" : "در انتظار"}
+                      </h4>
+                      <h4>{record.time}</h4>
+                    </div>
+                    <div
+                      className={classes.row}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => expandInformationAction(record["_id"])}
+                    >
+                      <h3
+                        onClick={() =>
+                          navigator.clipboard.writeText(record.name)
+                        }
+                      >
+                        {record.name}
+                      </h3>
+                      {expandInformation === record["_id"] ? (
+                        <ExpandLessIcon className="icon" />
+                      ) : (
+                        <ExpandMoreIcon className="icon" />
+                      )}
+                    </div>
+                    <div className={classes.row}>
+                      <p>{record.birthDate}</p>
+                      <p>{record.age}</p>
+                    </div>
+                    <div
+                      className={classes.row}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => expandRecordsAction(record["_id"])}
+                    >
+                      <div className={classes.row}>
+                        <span>مراجعه</span>
+                        <MoreHorizIcon sx={{ color: "#999999" }} />
                       </div>
-                    ))}
-                  </Fragment>
-                )}
-                {currentUser?.permission === "admin" && (
-                  <Fragment>
-                    <div className={classes.row}>
-                      <span>موبایل</span>
-                      <p
-                        onClick={() =>
-                          navigator.clipboard.writeText(record.phone)
-                        }
-                      >
-                        {record.phone}
-                      </p>
+                      <p>{record.records.length}</p>
                     </div>
-                    <div className={classes.row}>
-                      <span>کد ملی</span>
-                      <p
-                        onClick={() =>
-                          navigator.clipboard.writeText(record.idMeli)
-                        }
-                      >
-                        {record.idMeli}
-                      </p>
-                    </div>
-                    {expandInformation === record["_id"] && (
+                    {expandRecords === record["_id"] && (
                       <Fragment>
-                        <p>{record.address}</p>
-                        <div className={classes.row}>
-                          <span>شغل</span>
-                          <p>{record.occupation}</p>
-                        </div>
-                        <div className={classes.row}>
-                          <span>معرف</span>
-                          <p>{record.referral}</p>
-                        </div>
+                        {record.records.map((item, index) => (
+                          <div
+                            key={index}
+                            className={classes.recordBox}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => setRecordObject(item)}
+                          >
+                            <div className={classes.recordRow}>
+                              <p className={classes.recordText}>{item.date}</p>
+                              <p className={classes.recordText}>
+                                {" "}
+                                {item.doctor}
+                              </p>
+                            </div>
+                            <p className={classes.recordMessage}>
+                              {item.message}
+                            </p>
+                          </div>
+                        ))}
                       </Fragment>
                     )}
-                    <div className={classes.input}>
-                      <div className={classes.bar}>
-                        <CloseIcon
-                          className="icon"
-                          onClick={() =>
-                            handleMessageChange(record["_id"], index, "")
-                          }
-                          sx={{ fontSize: 16 }}
-                        />
+                    {currentUser?.permission === "admin" && (
+                      <Fragment>
+                        {(() => {
+                          const lastRecord =
+                            record.records[record.records.length - 1];
+                          return (
+                            <>
+                              <div className={classes.row}>
+                                <span>موبایل</span>
+                                <p
+                                  onClick={() =>
+                                    navigator.clipboard.writeText(record.phone)
+                                  }
+                                >
+                                  {record.phone}
+                                </p>
+                              </div>
+                              <div className={classes.row}>
+                                <span>کد ملی</span>
+                                <p
+                                  onClick={() =>
+                                    navigator.clipboard.writeText(record.idMeli)
+                                  }
+                                >
+                                  {record.idMeli}
+                                </p>
+                              </div>
+                              {expandInformation === record["_id"] && (
+                                <Fragment>
+                                  <p>{record.address}</p>
+                                  <div className={classes.row}>
+                                    <span>شغل</span>
+                                    <p>{record.occupation}</p>
+                                  </div>
+                                  <div className={classes.row}>
+                                    <span>معرف</span>
+                                    <p>{record.referral}</p>
+                                  </div>
+                                </Fragment>
+                              )}
+                              <div className={classes.input}>
+                                <div className={classes.bar}>
+                                  <CloseIcon
+                                    className="icon"
+                                    onClick={() =>
+                                      handleMessageChange(
+                                        record["_id"],
+                                        index,
+                                        ""
+                                      )
+                                    }
+                                    sx={{ fontSize: 16 }}
+                                  />
+                                </div>
+                                <textarea
+                                  placeholder="توضیحات تکمیلی"
+                                  type="text"
+                                  id={`message-${index}`}
+                                  name={`message-${index}`}
+                                  onChange={(e) =>
+                                    handleMessageChange(
+                                      record["_id"],
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                  value={messages[index]}
+                                  autoComplete="off"
+                                  dir="rtl"
+                                />
+                                {record.checkup && (
+                                  <button
+                                    className={classes.button}
+                                    onClick={() =>
+                                      setPopupDiagramData({
+                                        record: record,
+                                        lastRecord: lastRecord,
+                                      })
+                                    }
+                                  >
+                                    مناطق صورت
+                                  </button>
+                                )}
+                                <button
+                                  className={classes.button}
+                                  onClick={() =>
+                                    completeRecord(record["_id"], index)
+                                  }
+                                >
+                                  تکمیل مراجعه
+                                </button>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </Fragment>
+                    )}
+                    {currentUser?.permission === "doctor" && (
+                      <Fragment>
+                        {(() => {
+                          const lastRecord =
+                            record.records[record.records.length - 1];
+                          return (
+                            <>
+                              <button
+                                className={classes.button}
+                                onClick={() =>
+                                  setPopupDiagramData({
+                                    record: record,
+                                    lastRecord: lastRecord,
+                                  })
+                                }
+                              >
+                                تجویز تزریق
+                              </button>
+                              {!record.checkup && (
+                                <button
+                                  className={classes.button}
+                                  onClick={() => completeVisit(record["_id"])}
+                                >
+                                  تکمیل ویزیت
+                                </button>
+                              )}
+                              {expandInformation === record["_id"] && (
+                                <Fragment>
+                                  <div className={classes.info}>
+                                    <span>تاریخچه پزشکی</span>
+                                    <div className={classes.item}>
+                                      {lastRecord.medical
+                                        .filter((item) => item.active)
+                                        .map((item) => (
+                                          <h4 key={item.label}>{item.label}</h4>
+                                        ))}
+                                    </div>
+                                    <p>{lastRecord.medicalDescription}</p>
+                                  </div>
+                                  <div className={classes.info}>
+                                    <span>سابقه دارویی</span>
+                                    <p>{lastRecord.medicineDescription}</p>
+                                  </div>
+                                  <div className={classes.info}>
+                                    <span>عادات بیمار</span>
+                                    <div className={classes.item}>
+                                      {lastRecord.habits
+                                        .filter((item) => item.active)
+                                        .map((item) => (
+                                          <h4 key={item.label}>{item.label}</h4>
+                                        ))}
+                                    </div>
+                                  </div>
+                                  <div className={classes.info}>
+                                    <span>تاریخچه پزشکی اعضاء خانواده</span>
+                                    <div className={classes.item}>
+                                      {lastRecord.medicalFamily
+                                        .filter((item) => item.active)
+                                        .map((item) => (
+                                          <h4 key={item.label}>{item.label}</h4>
+                                        ))}
+                                    </div>
+                                    <p>{lastRecord.medicalFamilyDescription}</p>
+                                  </div>
+                                </Fragment>
+                              )}
+                            </>
+                          );
+                        })()}
+                      </Fragment>
+                    )}
+                  </div>
+                </Fragment>
+              ))}
+              {recordObject && (
+                <div className={classes.popup}>
+                  <CloseIcon
+                    className="icon"
+                    onClick={() => setRecordObject(null)}
+                  />
+                  <p>{recordObject.doctor}</p>
+                  <p>{recordObject.date}</p>
+                  <div className={classes.card}>
+                    <div className={classes.info}>
+                      <span>تاریخچه پزشکی</span>
+                      <div className={classes.item}>
+                        {recordObject.medical
+                          .filter((item) => item.active)
+                          .map((item) => (
+                            <h4 key={item.label}>{item.label}</h4>
+                          ))}
                       </div>
-                      <textarea
-                        placeholder="توضیحات تکمیلی"
-                        type="text"
-                        id={`message-${index}`}
-                        name={`message-${index}`}
-                        onChange={(e) =>
-                          handleMessageChange(
-                            record["_id"],
-                            index,
-                            e.target.value
-                          )
-                        }
-                        value={messages[index]}
-                        autoComplete="off"
-                        dir="rtl"
-                      />
-                      {record.checkup && (
-                        <button
-                          className={classes.button}
-                          onClick={() => setRecordObject(null)}
-                        >
-                          دیاگرام صورت
-                        </button>
-                      )}
-                      <button
-                        className={classes.button}
-                        onClick={() => completeRecord(record["_id"], index)}
-                      >
-                        تکمیل مراجعه
-                      </button>
+                      <p>{recordObject.medicalDescription}</p>
                     </div>
-                  </Fragment>
-                )}
-                {currentUser?.permission === "doctor" && (
-                  <Fragment>
-                    {(() => {
-                      const lastRecord =
-                        record.records[record.records.length - 1];
-                      return (
-                        <>
-                          <button
-                            className={classes.button}
-                            onClick={() =>
-                              setZoneObject({
-                                name: record.name,
-                              })
-                            }
-                          >
-                            دیاگرام صورت
-                          </button>
-                          <button
-                            className={classes.button}
-                            onClick={() =>
-                              setZoneObject({
-                                name: record.name,
-                              })
-                            }
-                          >
-                            تکمیل ویزیت
-                          </button>
-                          {expandInformation === record["_id"] && (
-                            <Fragment>
-                              <div className={classes.info}>
-                                <span>تاریخچه پزشکی</span>
-                                <div className={classes.item}>
-                                  {lastRecord.medical
-                                    .filter((item) => item.active)
-                                    .map((item) => (
-                                      <h4 key={item.label}>{item.label}</h4>
-                                    ))}
-                                </div>
-                                <p>{lastRecord.medicalDescription}</p>
-                              </div>
-                              <div className={classes.info}>
-                                <span>سابقه دارویی</span>
-                                <p>{lastRecord.medicineDescription}</p>
-                              </div>
-                              <div className={classes.info}>
-                                <span>عادات بیمار</span>
-                                <div className={classes.item}>
-                                  {lastRecord.habits
-                                    .filter((item) => item.active)
-                                    .map((item) => (
-                                      <h4 key={item.label}>{item.label}</h4>
-                                    ))}
-                                </div>
-                              </div>
-                              <div className={classes.info}>
-                                <span>تاریخچه پزشکی اعضاء خانواده</span>
-                                <div className={classes.item}>
-                                  {lastRecord.medicalFamily
-                                    .filter((item) => item.active)
-                                    .map((item) => (
-                                      <h4 key={item.label}>{item.label}</h4>
-                                    ))}
-                                </div>
-                                <p>{lastRecord.medicalFamilyDescription}</p>
-                              </div>
-                            </Fragment>
-                          )}
-                        </>
-                      );
-                    })()}
-                  </Fragment>
-                )}
-              </div>
+                    <div className={classes.info}>
+                      <span>سابقه دارویی</span>
+                      <p>{recordObject.medicineDescription}</p>
+                    </div>
+                    <div className={classes.info}>
+                      <span>عادات بیمار</span>
+                      <div className={classes.item}>
+                        {recordObject.habits
+                          .filter((item) => item.active)
+                          .map((item) => (
+                            <h4 key={item.label}>{item.label}</h4>
+                          ))}
+                      </div>
+                    </div>
+                    <div className={classes.info}>
+                      <span>تاریخچه پزشکی اعضاء خانواده</span>
+                      <div className={classes.item}>
+                        {recordObject.medicalFamily
+                          .filter((item) => item.active)
+                          .map((item) => (
+                            <h4 key={item.label}>{item.label}</h4>
+                          ))}
+                      </div>
+                      <p>{recordObject.medicalFamilyDescription}</p>
+                    </div>
+                    <div className={classes.info}>
+                      <p
+                        style={{
+                          color: recordObject.sharePermission
+                            ? "#15b392"
+                            : "#d40d12",
+                        }}
+                      >
+                        {recordObject.sharePermission
+                          ? "عکس اشتراک گذاشته شود"
+                          : "عکس اشتراک گذاشته نشود"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </Fragment>
-          ))}
-          {zoneObject && (
-            <div className={classes.popup}>
-              <CloseIcon className="icon" onClick={() => setZoneObject(null)} />
-              <h3>{zoneObject.name}</h3>
-              <FaceDiagram />
-            </div>
           )}
-          {recordObject && (
+          {popupDiagramData && (
             <div className={classes.popup}>
-              <CloseIcon
-                className="icon"
-                onClick={() => setRecordObject(null)}
-              />
-              <p>{recordObject.doctor}</p>
-              <p>{recordObject.date}</p>
-              <div className={classes.card}>
-                <div className={classes.info}>
-                  <span>تاریخچه پزشکی</span>
-                  <div className={classes.item}>
-                    {recordObject.medical
-                      .filter((item) => item.active)
-                      .map((item) => (
-                        <h4 key={item.label}>{item.label}</h4>
-                      ))}
-                  </div>
-                  <p>{recordObject.medicalDescription}</p>
-                </div>
-                <div className={classes.info}>
-                  <span>سابقه دارویی</span>
-                  <p>{recordObject.medicineDescription}</p>
-                </div>
-                <div className={classes.info}>
-                  <span>عادات بیمار</span>
-                  <div className={classes.item}>
-                    {recordObject.habits
-                      .filter((item) => item.active)
-                      .map((item) => (
-                        <h4 key={item.label}>{item.label}</h4>
-                      ))}
-                  </div>
-                </div>
-                <div className={classes.info}>
-                  <span>تاریخچه پزشکی اعضاء خانواده</span>
-                  <div className={classes.item}>
-                    {recordObject.medicalFamily
-                      .filter((item) => item.active)
-                      .map((item) => (
-                        <h4 key={item.label}>{item.label}</h4>
-                      ))}
-                  </div>
-                  <p>{recordObject.medicalFamilyDescription}</p>
-                </div>
-                <div className={classes.info}>
-                  <p
-                    style={{
-                      color: recordObject.sharePermission
-                        ? "#15b392"
-                        : "#d40d12",
-                    }}
-                  >
-                    {recordObject.sharePermission
-                      ? "عکس اشتراک گذاشته شود"
-                      : "عکس اشتراک گذاشته نشود"}
-                  </p>
-                </div>
+              <div className={classes.row}>
+                <CloseIcon
+                  className="icon"
+                  onClick={() => setPopupDiagramData(null)}
+                />
+                <h4>{popupDiagramData.record.name}</h4>
+                <h4>
+                  {
+                    popupDiagramData.record.records[
+                      popupDiagramData.record.records.length - 1
+                    ].date
+                  }
+                </h4>
               </div>
+              <FaceDiagram />
             </div>
           )}
         </div>

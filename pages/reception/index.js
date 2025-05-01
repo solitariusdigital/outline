@@ -250,7 +250,13 @@ export default function Reception() {
       medicalFamily: medicalFamily,
       habits: habits,
       sharePermission: sharePermission,
-      visitHistory: [],
+      visitHistory: {
+        فیلر: [],
+        بوتاکس: [],
+        مزوتراپی: [],
+        جوانساز: [],
+        "پی آر پی": [],
+      },
       message: "",
     };
     if (existingRecord) {

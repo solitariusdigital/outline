@@ -10,44 +10,16 @@
   }
 }
 
-.navigation,
-.navigationTypes {
-  margin: 16px auto;
-  width: 100%;
-  max-width: 400px;
-  @include mixins.row-space-between-center();
-  justify-content: space-around;
-  border: 1px solid config.$grey;
-  border-radius: 50px;
-  padding: 4px;
-}
-
-.navigation {
-  cursor: pointer;
-
-  .nav {
-    @include mixins.desktop {
-      &:hover {
-        background: config.$white;
-        color: config.$blue;
-      }
-    }
-  }
-
-  .activeNav {
-    color: config.$blue;
-    font-weight: bold;
-  }
-}
-
 .navigationTypes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   border: none;
-  gap: 8px;
+  gap: 4px;
+  margin: 16px auto;
+  width: 100%;
+  max-width: 400px;
 
   .nav {
-    border: 1px solid config.$blue;
     cursor: pointer;
 
     @include mixins.desktop {
@@ -60,7 +32,6 @@
 
   p {
     background: config.$white;
-    color: config.$blue;
     padding: 4px;
     border-radius: 50px;
   }
@@ -73,13 +44,32 @@
   @include mixins.row-space-between-center();
   flex-wrap: wrap;
   justify-content: flex-start;
-  background: config.$white;
   padding: 4px 8px;
   border-radius: 10px;
+
+  &:hover {
+    cursor: pointer;
+    border: 1px solid config.$blue !important;
+
+    p {
+      color: config.$blue;
+      font-weight: bold;
+    }
+  }
+
+  .row {
+    @include mixins.row-space-between-center();
+  }
 
   h4 {
     margin: 0px 8px;
     text-align: right;
+  }
+
+  p {
+    font-size: small;
+    color: config.$grey;
+    font-weight: bold;
   }
 }
 

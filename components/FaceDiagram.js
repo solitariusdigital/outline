@@ -1,9 +1,19 @@
 import { useState, useContext, Fragment, useEffect } from "react";
+import { StateContext } from "@/context/stateContext";
 import classes from "./FaceDiagram.module.scss";
 import Image from "next/legacy/image";
 import faceDiagram from "@/assets/faceDiagram.png";
+import { updateRecordApi } from "@/services/api";
 
 export default function FaceDiagram() {
+  const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { popupDiagramData, setPopupDiagramData } = useContext(StateContext);
+  const [selectedSubcategories, setSelectedSubcategories] = useState(
+    popupDiagramData.lastRecord?.visitHistory
+  );
+  const activeFunctionality =
+    currentUser?.permission === "doctor" ? true : false;
+
   const [navigation, setNavigation] = useState(
     "فیلر" || "بوتاکس" || "مزوتراپی" || "جوانساز" || "پی آر پی"
   );
@@ -26,26 +36,20 @@ export default function FaceDiagram() {
     جوانساز: ["پروفایلو فیس", "پروفایلو استراکچر", "فول فیس", "گردن", "دست"],
     "پی آر پی": ["مو", "صورت"],
   };
-  const [selectedSubcategories, setSelectedSubcategories] = useState({
-    فیلر: [],
-    بوتاکس: [],
-    مزوتراپی: [],
-    جوانساز: [],
-    "پی آر پی": [],
-  });
-  const fillerColor = [
-    "#FFE7D0",
-    "#BCEDA7",
-    "#FECD5B",
-    "#B54EFF",
-    "#9099FD",
-    "#DBDDDD",
-    "#99F0FA",
-    "#EEFB84",
-    "#F07474",
-    "#F4B1E1",
-    "#CBA374",
-  ];
+
+  const fillerColor = {
+    پیشانی: "#FFE7D0",
+    شقیقه: "#BCEDA7",
+    زیرچشم: "#FECD5B",
+    میدفیس: "#B54EFF",
+    بینی: "#9099FD",
+    "خط خنده": "#DBDDDD",
+    "ساب مالار": "#99F0FA",
+    "زاویه فک": "#EEFB84",
+    میکرو: "#F07474",
+    لب: "#F4B1E1",
+    چانه: "#CBA374",
+  };
 
   const handleSubcategoryToggle = (subcategory) => {
     setSelectedSubcategories((prevSelected) => {
@@ -66,33 +70,85 @@ export default function FaceDiagram() {
     });
   };
 
-  const handleCategories = () => {
-    console.log(selectedSubcategories);
+  const handleCategories = async () => {
+    let allRecords = popupDiagramData.record.records;
+    let currentRecord = popupDiagramData.lastRecord;
+    currentRecord.visitHistory = selectedSubcategories;
+    let updatedRecords = [...allRecords];
+    if (updatedRecords.length > 0) {
+      updatedRecords[updatedRecords.length - 1] = currentRecord;
+    }
+    let updateRecordObject = {
+      ...popupDiagramData.record,
+      records: updatedRecords,
+    };
+    await updateRecordApi(updateRecordObject);
+    setPopupDiagramData(null);
+  };
+
+  const getFillerColor = (key) => {
+    if (fillerColor[key]) {
+      return (
+        <div
+          style={{
+            backgroundColor: fillerColor[key],
+            width: "20px",
+            height: "20px",
+            borderRadius: "50%",
+          }}
+        ></div>
+      );
+    }
+    return null;
   };
 
   return (
     <div className={classes.container}>
-      <div className={classes.navigation}>
-        {Object.entries(categories).map(([category, items]) => (
-          <div key={category}>
-            <p
-              className={
-                navigation === category ? classes.activeNav : classes.nav
-              }
-              onClick={() => setNavigation(category)}
-            >
-              {category}
-            </p>
-          </div>
-        ))}
-      </div>
-      {navigation !== "فیلر" && (
+      {Object.entries(selectedSubcategories).map(([key, values]) => (
+        <div
+          key={key}
+          className={classes.selectedSubcategories}
+          style={{
+            background:
+              key === navigation && activeFunctionality ? "#ffffff" : "",
+            border:
+              key === navigation && activeFunctionality
+                ? "1px solid #2d2b7f"
+                : "1px solid #d6d6d6",
+            pointerEvents: activeFunctionality ? "auto" : "none",
+          }}
+          onClick={() => {
+            activeFunctionality ? setNavigation(key) : null;
+          }}
+        >
+          <p
+            style={{
+              color:
+                key === navigation && activeFunctionality ? " #2d2b7f" : "",
+            }}
+          >
+            {key}
+          </p>
+          {values.map((value, index) => (
+            <div key={index} className={classes.row}>
+              <h4>{value}</h4>
+              {!activeFunctionality && key === "فیلر" && (
+                <>{getFillerColor(value)}</>
+              )}
+            </div>
+          ))}
+        </div>
+      ))}
+      {navigation !== "فیلر" && activeFunctionality && (
         <Fragment>
           <div className={classes.navigationTypes}>
             {categories[navigation].map((item, index) => (
               <p
                 className={classes.nav}
-                style={{ fontWeight: "bold" }}
+                style={{
+                  fontWeight: "bold",
+                  border: "1px solid #2d2b7f",
+                }}
                 onClick={() => handleSubcategoryToggle(item)}
                 key={index}
               >
@@ -104,21 +160,34 @@ export default function FaceDiagram() {
       )}
       {navigation === "فیلر" && (
         <Fragment>
-          <div className={classes.navigationTypes}>
-            {categories[navigation].map((item, index) => (
-              <p
-                key={index}
-                className={classes.nav}
-                style={{
-                  fontWeight: "bold",
-                  background: fillerColor[index],
-                  color: "#1b1b1b",
-                }}
-                onClick={() => handleSubcategoryToggle(item)}
-              >
-                {item}
-              </p>
-            ))}
+          {activeFunctionality && (
+            <div className={classes.navigationTypes}>
+              {categories[navigation].map((item, index) => (
+                <p
+                  key={index}
+                  className={classes.nav}
+                  style={{
+                    fontWeight: "bold",
+                    background: fillerColor[item],
+                    color: "#1b1b1b",
+                  }}
+                  onClick={() => handleSubcategoryToggle(item)}
+                >
+                  {item}
+                </p>
+              ))}
+            </div>
+          )}
+          <div
+            style={{
+              margin: "8px 0px",
+              color: "#999999",
+            }}
+          >
+            {!activeFunctionality && (
+              <p>برای اعمال تزریق روی صورت بیمار به جدول بالا مراجعه کنید</p>
+            )}
+            <p>مناطق روی صورت جهت راهنمای فیلر نشان داده شده</p>
           </div>
           <div className={classes.diagram}>
             <Image
@@ -134,17 +203,11 @@ export default function FaceDiagram() {
           </div>
         </Fragment>
       )}
-      {Object.entries(selectedSubcategories).map(([key, values]) => (
-        <div className={classes.selectedSubcategories} key={key}>
-          <p>{key}</p>
-          {values.map((value, index) => (
-            <h4 key={index}>{value}</h4>
-          ))}
-        </div>
-      ))}
-      <button className={classes.button} onClick={() => handleCategories()}>
-        تکمیل
-      </button>
+      {currentUser?.permission === "doctor" && (
+        <button className={classes.button} onClick={() => handleCategories()}>
+          تکمیل
+        </button>
+      )}
     </div>
   );
 }
