@@ -345,6 +345,21 @@
         grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
       }
 
+      .historyItem {
+        span {
+          color: config.$grey;
+          font-size: small;
+        }
+
+        .historyRow {
+          @include mixins.row-space-between-center();
+          justify-content: right;
+          h4 {
+            margin: 0px 8px;
+          }
+        }
+      }
+
       .recordBox {
         border-bottom: 1px solid config.$lightgrey;
         margin-bottom: 4px;

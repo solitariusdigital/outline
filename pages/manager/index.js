@@ -1,12 +1,17 @@
 import { useContext, useState, useEffect, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
+import { useRouter } from "next/router";
 import classes from "./manager.module.scss";
 import dbConnect from "@/services/dbConnect";
 import controlModel from "@/models/Control";
 import visitModel from "@/models/Visit";
 import HomeIcon from "@mui/icons-material/Home";
 import Router from "next/router";
-import { getSingleUserApi } from "@/services/api";
+import {
+  getSingleUserApi,
+  updateControlApi,
+  getControlsApi,
+} from "@/services/api";
 import {
   calculateTimeDifference,
   getCurrentDateFarsi,
@@ -22,7 +27,8 @@ export default function Manager({ control, visits }) {
   const [currentYear, setCurrentYear] = useState("");
   const [currentMonth, setCurrentMonth] = useState("");
   const [navigation, setNavigation] = useState("time" || "reminder" || "count");
-
+  const [displayReception, setDisplayReception] = useState(false);
+  const router = useRouter();
   const adminsName = {
     "#EAD8B1": "Site",
     "#F05A7E": "Tanaz",
@@ -99,6 +105,16 @@ export default function Manager({ control, visits }) {
     }
   }, [navigation, visits, currentYear, currentMonth]);
 
+  useEffect(() => {
+    const handleControl = async () => {
+      const controlData = await getControlsApi();
+      setDisplayReception(controlData[0].reception);
+    };
+    if (currentUser?.super) {
+      handleControl();
+    }
+  }, []);
+
   const countColorOccurrences = (visits, currentYear, currentMonth) => {
     const colorCounts = {};
     visits
@@ -140,9 +156,48 @@ export default function Manager({ control, visits }) {
     setDisplaySelectedUser(userData[index]);
   };
 
+  const updateReception = async (type) => {
+    const message = `${
+      type === "active" ? "پذیرش فعال، مطمئنی؟" : "پذیرش غیرفعال، مطمئنی؟"
+    }`;
+    const confirm = window.confirm(message);
+    if (confirm) {
+      const controlData = await getControlsApi();
+      switch (type) {
+        case "disable":
+          controlData[0].reception = false;
+          break;
+        case "active":
+          controlData[0].reception = true;
+          break;
+      }
+      await updateControlApi(controlData[0]);
+      router.reload(router.asPath);
+    }
+  };
+
   return (
     <div className={classes.container}>
       <HomeIcon onClick={() => Router.push("/")} className="icon" />
+      {currentUser?.super && (
+        <Fragment>
+          {displayReception ? (
+            <button
+              className={classes.activeButton}
+              onClick={() => updateReception("disable")}
+            >
+              پذیرش فعال
+            </button>
+          ) : (
+            <button
+              className={classes.disableButton}
+              onClick={() => updateReception("active")}
+            >
+              پذیرش غیرفعال
+            </button>
+          )}
+        </Fragment>
+      )}
       {currentUser?.super && (
         <div className={classes.navigation}>
           <p

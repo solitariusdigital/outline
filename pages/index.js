@@ -19,6 +19,7 @@ export default function Home({ activeVisits }) {
   const [hideBooking, setHideBooking] = useState(true);
   const [checkType, setCheckType] = useState("checkin" || "checkout");
   const [checkDatesComplete, setCheckDatesComplete] = useState(false);
+  const [displayReception, setDisplayReception] = useState(false);
 
   const locationLink =
     "https://www.google.com/maps/place/35%C2%B047'47.0%22N+51%C2%B025'32.1%22E/@35.7963889,51.4249382,19z/data=!3m1!4b1!4m4!3m3!8m2!3d35.7963889!4d51.4255833?entry=ttu&g_ep=EgoyMDI0MDgyOC4wIKXMDSoASAFQAw%3D%3D";
@@ -54,6 +55,7 @@ export default function Home({ activeVisits }) {
     const handleUserVisits = async () => {
       // Fetch control data from the API
       const controlData = await getControlsApi();
+      setDisplayReception(controlData[0].reception);
       const currentDate = getCurrentDateFarsi();
       const currentUserId = currentUser["_id"];
       // Retrieve timesheets for the current user
@@ -394,7 +396,7 @@ export default function Home({ activeVisits }) {
               مدیریت
             </div>
           )}
-          {screenSize !== "mobile" && (
+          {(displayReception || screenSize !== "mobile") && (
             <div
               className={classes.nav}
               onClick={() => Router.push("/reception")}

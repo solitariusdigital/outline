@@ -136,6 +136,7 @@ export default function Reception({ records }) {
       let recordData = await getSingleRecordApi(id);
       recordData.checkup = true;
       await updateRecordApi(recordData);
+      router.reload(router.asPath);
     }
   };
 
@@ -500,6 +501,23 @@ export default function Reception({ records }) {
                           ))}
                       </div>
                       <p>{recordObject.medicalFamilyDescription}</p>
+                    </div>
+                    <div className={classes.historyItem}>
+                      <span>تاریخچه تزریق</span>
+                      {Object.entries(recordObject.visitHistory).map(
+                        ([key, items]) => {
+                          if (items.length > 0) {
+                            return (
+                              <div key={key} className={classes.historyRow}>
+                                <span>{key}</span>
+                                {items.map((item, index) => (
+                                  <h4 key={index}>{item}</h4>
+                                ))}
+                              </div>
+                            );
+                          }
+                        }
+                      )}
                     </div>
                     <div className={classes.info}>
                       <p

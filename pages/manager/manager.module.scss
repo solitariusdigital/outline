@@ -16,6 +16,16 @@
     width: calc(100% - 24px);
   }
 
+  .activeButton {
+    margin-top: 12px;
+    @include mixins.button(config.$red, config.$red, config.$white);
+  }
+
+  .disableButton {
+    margin-top: 12px;
+    @include mixins.button(config.$green, config.$green, config.$white);
+  }
+
   .selector {
     display: flex;
     flex-direction: column;

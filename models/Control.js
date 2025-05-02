@@ -5,6 +5,7 @@ const ControlSchema = new Schema(
     disableDates: {},
     timesheets: {},
     reminder: {},
+    reception: Boolean,
   },
   { timestamps: true }
 );
