@@ -143,7 +143,15 @@ export default function DatePicker({ visits }) {
       return;
     }
     if (currentUser.permission === "admin") {
-      let hasConflict = await checkExistingBooking(phoneEnglish);
+      let hasConflict = await checkActiveBooking(phoneEnglish);
+      if (hasConflict) {
+        window.alert("بیمار نوبت فعال دارد");
+        setDisableButton(false);
+        return;
+      }
+    }
+    if (currentUser.permission === "admin") {
+      let hasConflict = await checkExistingSameBooking(phoneEnglish);
       if (hasConflict) {
         window.alert("نوبت در زمان مشابه ثبت شده");
         setDisableButton(false);
@@ -188,25 +196,33 @@ export default function DatePicker({ visits }) {
     }
   };
 
-  // Check for existing visit on the selected date time
-  const checkExistingBooking = async (phoneEnglish) => {
+  // Helper function to get visit data for a user
+  const getUserVisits = async (phoneEnglish) => {
     try {
       const users = await getUsersApi();
       let userData = users.find((user) => user.phone === phoneEnglish);
       if (userData) {
         const visits = await getVisitsApi();
-        let visitData = visits.filter(
-          (visit) => visit.userId === userData["_id"]
-        );
-        const hasConflict = visitData.some(
-          (visit) => visit.time === selectedDate
-        );
-        return hasConflict;
+        return visits.filter((visit) => visit.userId === userData["_id"]);
       }
-      return false;
+      return [];
     } catch (error) {
-      return false;
+      return [];
     }
+  };
+  // Check for existing visit on date time
+  const checkExistingSameBooking = async (phoneEnglish, selectedDate) => {
+    const visitData = await getUserVisits(phoneEnglish);
+    const hasConflict = visitData.some((visit) => visit.time === selectedDate);
+    return hasConflict;
+  };
+  // Check for active visit
+  const checkActiveBooking = async (phoneEnglish) => {
+    const visitData = await getUserVisits(phoneEnglish);
+    const hasConflict = visitData.some(
+      (visit) => !visit.canceled && !visit.completed
+    );
+    return hasConflict;
   };
 
   const setUserId = async (phoneEnglish) => {
