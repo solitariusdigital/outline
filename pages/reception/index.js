@@ -189,12 +189,6 @@ export default function Reception() {
 
   const handleSubmit = async () => {
     setDisableButton(true);
-    const [currentYear] = getCurrentDateFarsi().split("/");
-    let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
-    let idEnglish = isEnglishNumber(idMeli) ? idMeli : toEnglishNumber(idMeli);
-    let digitalDate = convertPersianDate(getCurrentDateFarsi());
-    let { time, id: visitId } = await getUserTime(phoneEnglish);
-    let recordId = digitalDate + fourGenerator();
 
     if (
       !name ||
@@ -210,6 +204,14 @@ export default function Reception() {
       setDisableButton(false);
       return;
     }
+
+    const [currentYear] = getCurrentDateFarsi().split("/");
+    let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
+    let idEnglish = isEnglishNumber(idMeli) ? idMeli : toEnglishNumber(idMeli);
+    let digitalDate = convertPersianDate(getCurrentDateFarsi());
+    let recordId = digitalDate + fourGenerator();
+    let { time, id: visitId } = await getUserTime(phoneEnglish);
+
     if (phoneEnglish.length !== 11 || !phoneEnglish.startsWith("09")) {
       showAlert("موبایل اشتباه");
       setDisableButton(false);
@@ -721,7 +723,7 @@ export default function Reception() {
                 </div>
               ))}
             </section>
-            <h3>تاریخچه پزشکی اعضاء خانواده درجه ۱ و ۲</h3>
+            <h3>تاریخچه پزشکی اعضاء خانواده</h3>
             <section className={classes.form}>
               {medicalFamily.map((option, index) => (
                 <div key={index} className={classes.options}>
@@ -796,6 +798,17 @@ export default function Reception() {
               >
                 تایید
               </button>
+              {disableButton && (
+                <div className={classes.loader}>
+                  <Image
+                    width={50}
+                    height={50}
+                    src={loaderImage}
+                    alt="isLoading"
+                    unoptimized
+                  />
+                </div>
+              )}
               <p className={classes.alert}>{alert}</p>
             </div>
           </Fragment>
