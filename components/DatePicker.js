@@ -177,15 +177,12 @@ export default function DatePicker({ visits }) {
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
-    api.VerifyLookup(
-      {
-        receptor: phoneEnglish,
-        token: selectedDate.split(" - ")[0].trim(),
-        token2: selectedDate.split(" - ")[1].trim(),
-        template: "confirmationOutline",
-      },
-      function (response, status) {}
-    );
+    api.VerifyLookup({
+      receptor: phoneEnglish,
+      token: selectedDate.split(" - ")[0].trim(),
+      token2: selectedDate.split(" - ")[1].trim(),
+      template: "confirmationOutline",
+    });
     if (currentUser.permission === "admin") {
       router.reload(router.asPath);
     } else {

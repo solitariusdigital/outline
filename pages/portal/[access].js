@@ -220,14 +220,11 @@ export default function Access() {
           visitData.canceled = true;
           break;
       }
-      api.VerifyLookup(
-        {
-          receptor: phone,
-          token: time.split(" - ")[0].trim(),
-          template: template,
-        },
-        function (response, status) {}
-      );
+      api.VerifyLookup({
+        receptor: phone,
+        token: time.split(" - ")[0].trim(),
+        template: template,
+      });
       await updateVisitApi(visitData);
 
       let visits = await getVisitsApi();

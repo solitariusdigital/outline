@@ -106,7 +106,9 @@ export default function Reception({ records }) {
     if (confirm) {
       await updateLastRecordMessage(id, messages[index], true);
       await completePatientVisit(id);
-      router.reload(router.asPath);
+      setTimeout(() => {
+        router.reload(router.asPath);
+      }, 100);
     }
   };
 
@@ -119,15 +121,12 @@ export default function Reception({ records }) {
     if (visitData) {
       visitData.completed = true;
       await updateVisitApi(visitData);
-      api.VerifyLookup(
-        {
-          receptor: recordData.phone,
-          token: getCurrentDateFarsi(),
-          template: "completeOutline",
-        },
-        function (response, status) {}
-      );
     }
+    api.VerifyLookup({
+      receptor: recordData.phone,
+      token: getCurrentDateFarsi(),
+      template: "completeOutline",
+    });
   };
 
   const completeVisit = async (id) => {
@@ -243,9 +242,15 @@ export default function Reception({ records }) {
                         {record.name}
                       </h3>
                       {expandInformation === record["_id"] ? (
-                        <ExpandLessIcon className="icon" />
+                        <ExpandLessIcon
+                          className="icon"
+                          sx={{ color: "#2d2b7f" }}
+                        />
                       ) : (
-                        <ExpandMoreIcon className="icon" />
+                        <ExpandMoreIcon
+                          className="icon"
+                          sx={{ color: "#2d2b7f" }}
+                        />
                       )}
                     </div>
                     <div className={classes.row}>
@@ -258,8 +263,8 @@ export default function Reception({ records }) {
                       onClick={() => expandRecordsAction(record["_id"])}
                     >
                       <div className={classes.row}>
-                        <span>مراجعه</span>
-                        <MoreHorizIcon sx={{ color: "#999999" }} />
+                        <span className={classes.more}>سابقه بیمار</span>
+                        <MoreHorizIcon sx={{ color: "#2d2b7f" }} />
                       </div>
                       <p>{record.records.length}</p>
                     </div>
@@ -275,7 +280,6 @@ export default function Reception({ records }) {
                             <div className={classes.recordRow}>
                               <p className={classes.recordText}>{item.date}</p>
                               <p className={classes.recordText}>
-                                {" "}
                                 {item.doctor}
                               </p>
                             </div>
@@ -503,7 +507,7 @@ export default function Reception({ records }) {
                       <p>{recordObject.medicalFamilyDescription}</p>
                     </div>
                     <div className={classes.historyItem}>
-                      <span>تاریخچه تزریق</span>
+                      <span>سابقه تزریق</span>
                       {Object.entries(recordObject.visitHistory).map(
                         ([key, items]) => {
                           if (items.length > 0) {
@@ -519,6 +523,11 @@ export default function Reception({ records }) {
                         }
                       )}
                     </div>
+                    {recordObject.message && (
+                      <div className={classes.info}>
+                        <p>{recordObject.message}</p>
+                      </div>
+                    )}
                     <div className={classes.info}>
                       <p
                         style={{

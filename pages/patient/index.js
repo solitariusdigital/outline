@@ -66,14 +66,11 @@ export default function Patient({ user, visits }) {
           visitData.canceled = true;
           break;
       }
-      api.VerifyLookup(
-        {
-          receptor: phone,
-          token: time.split(" - ")[0].trim(),
-          template: template,
-        },
-        function (response, status) {}
-      );
+      api.VerifyLookup({
+        receptor: phone,
+        token: time.split(" - ")[0].trim(),
+        template: template,
+      });
       await updateVisitApi(visitData);
       router.replace(router.asPath);
     }

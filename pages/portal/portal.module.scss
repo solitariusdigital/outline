@@ -331,8 +331,14 @@
       max-width: 500px;
       @include mixins.border-radius();
 
-      .info {
-        padding: 5px 0px;
+      h3 {
+        color: config.$blue;
+      }
+
+      .info,
+      .historyItem {
+        margin-bottom: 4px;
+        border-bottom: 1px solid config.$lightgrey;
 
         span {
           color: config.$grey;
@@ -346,11 +352,6 @@
       }
 
       .historyItem {
-        span {
-          color: config.$grey;
-          font-size: small;
-        }
-
         .historyRow {
           @include mixins.row-space-between-center();
           justify-content: right;
@@ -370,8 +371,9 @@
       }
 
       .recordText {
-        color: config.$grey;
+        color: config.$blue;
         font-size: small;
+        font-weight: bold;
       }
 
       .recordMessage {
@@ -437,6 +439,10 @@
     span {
       color: config.$grey;
       font-size: small;
+    }
+
+    .more {
+      color: config.$blue;
     }
   }
 }

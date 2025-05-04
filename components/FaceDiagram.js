@@ -90,11 +90,16 @@ export default function FaceDiagram() {
         <div
           style={{
             backgroundColor: fillerColor[key],
-            width: "20px",
-            height: "20px",
-            borderRadius: "50%",
+            backgroundColor: fillerColor[key],
+            borderRadius: "50px",
+            padding: "4px 8px",
+            margin: "0px 2px",
+            fontWeight: "bold",
+            minWidth: "80px",
           }}
-        ></div>
+        >
+          {key}
+        </div>
       );
     }
     return null;
@@ -129,10 +134,7 @@ export default function FaceDiagram() {
           </p>
           {values.map((value, index) => (
             <div key={index} className={classes.row}>
-              <h4>{value}</h4>
-              {!activeFunctionality && key === "فیلر" && (
-                <>{getFillerColor(value)}</>
-              )}
+              {key === "فیلر" ? getFillerColor(value) : <h4>{value}</h4>}
             </div>
           ))}
         </div>
