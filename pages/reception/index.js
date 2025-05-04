@@ -61,7 +61,7 @@ export default function Reception() {
     { active: false, label: "بیماری قلبی" },
   ]);
   const [habits, setHabits] = useState([
-    { active: false, label: "سابقه خاصی ندارم" },
+    { active: false, label: "سابقه ندارم" },
     { active: false, label: "مصرف سیگار" },
     { active: false, label: "مصرف الکل" },
     { active: false, label: "مصرف قلیان" },
@@ -263,6 +263,7 @@ export default function Reception() {
         جوانساز: [],
         "پی آر پی": [],
       },
+      comment: "",
       message: "",
     };
     if (existingRecord) {

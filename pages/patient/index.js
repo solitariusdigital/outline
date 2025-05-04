@@ -134,7 +134,6 @@ export default function Patient({ user, visits }) {
                   <p>{user.phone}</p>
                   <p>{user.name}</p>
                 </div>
-                <h4>نوبت‌ها</h4>
                 <div className={classes.row}>
                   <p>
                     {

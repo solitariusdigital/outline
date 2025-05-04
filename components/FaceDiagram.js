@@ -3,6 +3,7 @@ import { StateContext } from "@/context/stateContext";
 import classes from "./FaceDiagram.module.scss";
 import Image from "next/legacy/image";
 import faceDiagram from "@/assets/faceDiagram.png";
+import CloseIcon from "@mui/icons-material/Close";
 import { updateRecordApi } from "@/services/api";
 
 export default function FaceDiagram() {
@@ -11,6 +12,7 @@ export default function FaceDiagram() {
   const [selectedSubcategories, setSelectedSubcategories] = useState(
     popupDiagramData.lastRecord?.visitHistory
   );
+  const [comment, setComment] = useState(popupDiagramData.lastRecord?.comment);
   const activeFunctionality =
     currentUser?.permission === "doctor" ? true : false;
   const [navigation, setNavigation] = useState(
@@ -72,6 +74,7 @@ export default function FaceDiagram() {
     let allRecords = popupDiagramData.record.records;
     let currentRecord = popupDiagramData.lastRecord;
     currentRecord.visitHistory = selectedSubcategories;
+    currentRecord.comment = comment;
     let updatedRecords = [...allRecords];
     if (updatedRecords.length > 0) {
       updatedRecords[updatedRecords.length - 1] = currentRecord;
@@ -92,8 +95,8 @@ export default function FaceDiagram() {
             backgroundColor: fillerColor[key],
             backgroundColor: fillerColor[key],
             borderRadius: "50px",
-            padding: "4px 8px",
-            margin: "0px 2px",
+            padding: "4px",
+            margin: "2px",
             fontWeight: "bold",
             minWidth: "80px",
           }}
@@ -126,6 +129,7 @@ export default function FaceDiagram() {
         >
           <p
             style={{
+              marginLeft: "8px",
               color:
                 key === navigation && activeFunctionality ? " #2d2b7f" : "",
             }}
@@ -178,6 +182,11 @@ export default function FaceDiagram() {
               ))}
             </div>
           )}
+          {!activeFunctionality && (
+            <div className={classes.comment}>
+              <h3>{comment}</h3>
+            </div>
+          )}
           <div
             style={{
               margin: "8px 0px",
@@ -204,9 +213,27 @@ export default function FaceDiagram() {
         </Fragment>
       )}
       {currentUser?.permission === "doctor" && (
-        <button className={classes.button} onClick={() => handleCategories()}>
-          تکمیل
-        </button>
+        <div className={classes.input}>
+          <div className={classes.bar}>
+            <CloseIcon
+              className="icon"
+              onClick={() => setComment("")}
+              sx={{ fontSize: 16 }}
+            />
+          </div>
+          <textarea
+            placeholder="نظر پزشک"
+            type="text"
+            name="comment"
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+            autoComplete="off"
+            dir="rtl"
+          />
+          <button className={classes.button} onClick={() => handleCategories()}>
+            تکمیل
+          </button>
+        </div>
       )}
     </div>
   );

@@ -355,6 +355,8 @@
         .historyRow {
           @include mixins.row-space-between-center();
           justify-content: right;
+          flex-wrap: wrap;
+
           h4 {
             margin: 0px 8px;
           }
@@ -374,10 +376,6 @@
         color: config.$blue;
         font-size: small;
         font-weight: bold;
-      }
-
-      .recordMessage {
-        font-size: small;
       }
 
       .input {
@@ -448,7 +446,7 @@
 }
 
 .navigation {
-  margin: 16px auto;
+  margin: 8px auto;
   width: 100%;
   max-width: 350px;
   @include mixins.row-space-between-center();
