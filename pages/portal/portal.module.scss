@@ -402,6 +402,12 @@
         width: 100%;
         margin: 5px 0px;
       }
+
+      .buttonCheck {
+        @include mixins.button(config.$green, config.$green, config.$white);
+        width: 100%;
+        margin: 5px 0px;
+      }
     }
 
     .popup {
@@ -413,6 +419,7 @@
       height: 100vh;
       background: config.$background;
       padding: 20px;
+      overflow-y: auto;
 
       @include mixins.mobile {
         padding: 12px;

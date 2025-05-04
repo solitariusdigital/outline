@@ -219,14 +219,20 @@ export default function Reception({ records }) {
               {receptionCards.map((record, index) => (
                 <div key={index} className={classes.card}>
                   <div className={classes.row}>
-                    <h4
+                    <p
                       style={{
                         color: record.checkup ? "#15b392" : "#999999",
                       }}
                     >
                       {record.checkup ? "ویزیت تکمیل" : "در انتظار"}
-                    </h4>
-                    <h4>{record.time}</h4>
+                    </p>
+                    <p
+                      style={{
+                        color: "#999999",
+                      }}
+                    >
+                      {record.time ? record.time : "بدون نوبت"}
+                    </p>
                   </div>
                   <div
                     className={classes.row}
@@ -354,7 +360,7 @@ export default function Reception({ records }) {
                               />
                               {record.checkup && (
                                 <button
-                                  className={classes.button}
+                                  className={classes.buttonCheck}
                                   onClick={() =>
                                     setPopupDiagramData({
                                       record: record,

@@ -184,15 +184,11 @@ export default function FaceDiagram() {
           )}
           {!activeFunctionality && (
             <div className={classes.comment}>
-              <h3>{comment}</h3>
+              <span>نظر پزشک</span>
+              <h4>{comment ? comment : "-"}</h4>
             </div>
           )}
-          <div
-            style={{
-              margin: "8px 0px",
-              color: "#999999",
-            }}
-          >
+          <div className={classes.text}>
             {!activeFunctionality && (
               <p>برای اعمال تزریق روی صورت بیمار به جدول بالا مراجعه کنید</p>
             )}

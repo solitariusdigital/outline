@@ -2,7 +2,7 @@
 @use "styles/_mixins.scss" as mixins;
 
 .container {
-  height: 100%;
+  padding: 12px 0px;
 
   .diagram {
     position: relative;
@@ -72,10 +72,21 @@
     font-weight: bold;
   }
 }
+
 .comment {
   max-width: 400px;
   margin: 16px auto;
   text-align: right;
+
+  span {
+    color: config.$grey;
+  }
+}
+
+.text {
+  max-width: 400px;
+  margin: 16px auto;
+  color: config.$grey;
 }
 
 .input {
