@@ -108,7 +108,7 @@ export default function Reception({ records }) {
       await completePatientVisit(id);
       setTimeout(() => {
         router.reload(router.asPath);
-      }, 100);
+      }, 500);
     }
   };
 
@@ -117,16 +117,16 @@ export default function Reception({ records }) {
       apikey: kavenegarKey,
     });
     let recordData = await getSingleRecordApi(id);
+    await api.VerifyLookup({
+      receptor: recordData.phone,
+      token: getCurrentDateFarsi(),
+      template: "completeOutline",
+    });
     let visitData = await getSingleVisitApi(recordData.visitId);
     if (visitData) {
       visitData.completed = true;
       await updateVisitApi(visitData);
     }
-    api.VerifyLookup({
-      receptor: recordData.phone,
-      token: getCurrentDateFarsi(),
-      template: "completeOutline",
-    });
   };
 
   const completeVisit = async (id) => {
@@ -224,7 +224,7 @@ export default function Reception({ records }) {
                         color: record.checkup ? "#15b392" : "#999999",
                       }}
                     >
-                      {record.checkup ? "ویزیت تکمیل" : "در انتظار"}
+                      {record.checkup ? "انجام مشاوره" : "در انتظار"}
                     </p>
                     <p
                       style={{
@@ -315,6 +315,16 @@ export default function Reception({ records }) {
                                 {record.idMeli}
                               </p>
                             </div>
+                            <div className={classes.row}>
+                              <span>شماره پرونده</span>
+                              <p
+                                onClick={() =>
+                                  navigator.clipboard.writeText(record.recordId)
+                                }
+                              >
+                                {record.recordId}
+                              </p>
+                            </div>
                             {expandInformation === record["_id"] && (
                               <Fragment>
                                 <p>{record.address}</p>
@@ -368,7 +378,7 @@ export default function Reception({ records }) {
                                     })
                                   }
                                 >
-                                  مناطق صورت
+                                  مناطق تزریق صورت
                                 </button>
                               )}
                               <button
@@ -403,14 +413,6 @@ export default function Reception({ records }) {
                             >
                               تجویز تزریق
                             </button>
-                            {!record.checkup && (
-                              <button
-                                className={classes.button}
-                                onClick={() => completeVisit(record["_id"])}
-                              >
-                                تکمیل ویزیت
-                              </button>
-                            )}
                             {expandInformation === record["_id"] && (
                               <Fragment>
                                 <div className={classes.info}>
@@ -419,7 +421,7 @@ export default function Reception({ records }) {
                                     {lastRecord.medical
                                       .filter((item) => item.active)
                                       .map((item) => (
-                                        <h4 key={item.label}>{item.label}</h4>
+                                        <h5 key={item.label}>{item.label}</h5>
                                       ))}
                                   </div>
                                   <p>{lastRecord.medicalDescription}</p>
@@ -434,7 +436,7 @@ export default function Reception({ records }) {
                                     {lastRecord.habits
                                       .filter((item) => item.active)
                                       .map((item) => (
-                                        <h4 key={item.label}>{item.label}</h4>
+                                        <h5 key={item.label}>{item.label}</h5>
                                       ))}
                                   </div>
                                 </div>
@@ -444,7 +446,7 @@ export default function Reception({ records }) {
                                     {lastRecord.medicalFamily
                                       .filter((item) => item.active)
                                       .map((item) => (
-                                        <h4 key={item.label}>{item.label}</h4>
+                                        <h5 key={item.label}>{item.label}</h5>
                                       ))}
                                   </div>
                                   <p>{lastRecord.medicalFamilyDescription}</p>
@@ -475,7 +477,7 @@ export default function Reception({ records }) {
                     {recordObject.medical
                       .filter((item) => item.active)
                       .map((item) => (
-                        <h4 key={item.label}>{item.label}</h4>
+                        <h5 key={item.label}>{item.label}</h5>
                       ))}
                   </div>
                   <p>{recordObject.medicalDescription}</p>
@@ -490,7 +492,7 @@ export default function Reception({ records }) {
                     {recordObject.habits
                       .filter((item) => item.active)
                       .map((item) => (
-                        <h4 key={item.label}>{item.label}</h4>
+                        <h5 key={item.label}>{item.label}</h5>
                       ))}
                   </div>
                 </div>
@@ -500,7 +502,7 @@ export default function Reception({ records }) {
                     {recordObject.medicalFamily
                       .filter((item) => item.active)
                       .map((item) => (
-                        <h4 key={item.label}>{item.label}</h4>
+                        <h5 key={item.label}>{item.label}</h5>
                       ))}
                   </div>
                   <p>{recordObject.medicalFamilyDescription}</p>
@@ -514,7 +516,7 @@ export default function Reception({ records }) {
                           <div key={key} className={classes.historyRow}>
                             <span>{key}</span>
                             {items.map((item, index) => (
-                              <h4 key={index}>{item}</h4>
+                              <h5 key={index}>{item}</h5>
                             ))}
                           </div>
                         );

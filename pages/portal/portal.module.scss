@@ -307,7 +307,7 @@
 
   .records {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
     gap: 12px;
     direction: rtl;
     margin-top: 20px;
@@ -357,7 +357,7 @@
           justify-content: right;
           flex-wrap: wrap;
 
-          h4 {
+          h5 {
             margin: 0px 8px;
           }
         }

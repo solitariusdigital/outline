@@ -190,19 +190,22 @@ export default function Reception() {
   const handleSubmit = async () => {
     setDisableButton(true);
 
-    if (
-      !name ||
-      !birthDate ||
-      !idMeli ||
-      !phone ||
-      !address ||
-      !occupation ||
-      !confirmation ||
-      !selectDoctor
-    ) {
-      showAlert("موارد ستاره‌دار الزامیست");
-      setDisableButton(false);
-      return;
+    const fields = [
+      { value: name, message: "نام الزامیست" },
+      { value: selectDoctor, message: "انتخاب دکتر الزامیست" },
+      { value: idMeli, message: "کد ملی الزامیست" },
+      { value: birthDate.year, message: "سال تولد الزامیست" },
+      { value: phone, message: "موبایل الزامیست" },
+      { value: address, message: "آدرس الزامیست" },
+      { value: occupation, message: "شغل الزامیست" },
+      { value: confirmation, message: "صحت اطلاعات الزامیست" },
+    ];
+    for (const field of fields) {
+      if (!field.value) {
+        showAlert(field.message);
+        setDisableButton(false);
+        return;
+      }
     }
 
     const [currentYear] = getCurrentDateFarsi().split("/");

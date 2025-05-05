@@ -1,9 +1,11 @@
 import { useState, useContext, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
+import { useRouter } from "next/router";
 import classes from "./FaceDiagram.module.scss";
 import Image from "next/legacy/image";
 import faceDiagram from "@/assets/faceDiagram.png";
 import CloseIcon from "@mui/icons-material/Close";
+import Router from "next/router";
 import { updateRecordApi } from "@/services/api";
 
 export default function FaceDiagram() {
@@ -18,6 +20,8 @@ export default function FaceDiagram() {
   const [navigation, setNavigation] = useState(
     "فیلر" || "بوتاکس" || "مزوتراپی" || "جوانساز" || "پی آر پی"
   );
+  const router = useRouter();
+
   const categories = {
     فیلر: [
       "پیشانی",
@@ -32,7 +36,17 @@ export default function FaceDiagram() {
       "لب",
       "چانه",
     ],
-    بوتاکس: ["اوت لاین", "بینی", "مستر"],
+    بوتاکس: [
+      "اوت‌لاین",
+      "بینی",
+      "مستر",
+      "زیربغل",
+      "کف دست",
+      "گامی اسمایل",
+      "خط اخم",
+      "دور چشم",
+      "چانه",
+    ],
     مزوتراپی: ["مو", "زیرچشم", "فول فیس", "گردن"],
     جوانساز: ["پروفایلو فیس", "پروفایلو استراکچر", "فول فیس", "گردن", "دست"],
     "پی آر پی": ["مو", "صورت"],
@@ -81,10 +95,11 @@ export default function FaceDiagram() {
     }
     let updateRecordObject = {
       ...popupDiagramData.record,
+      checkup: true,
       records: updatedRecords,
     };
     await updateRecordApi(updateRecordObject);
-    setPopupDiagramData(null);
+    router.reload(router.asPath);
   };
 
   const getFillerColor = (key) => {
