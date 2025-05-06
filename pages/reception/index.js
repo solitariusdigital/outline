@@ -85,13 +85,13 @@ export default function Reception() {
     const verificationEnglish = isEnglishNumber(verification)
       ? verification
       : toEnglishNumber(verification);
-    if (verificationEnglish.length < 10) {
+    if (verificationEnglish.length < 9) {
       showAlert("کد ملی یا موبایل اشتباه");
       setDisableButton(false);
       return;
     }
     const getRecordData = await getRecordsApi();
-    if (verificationEnglish.length === 10) {
+    if (verificationEnglish.length <= 10) {
       const userRecord = getRecordData.find(
         (user) => user.idMeli === verificationEnglish
       );
@@ -220,7 +220,7 @@ export default function Reception() {
       setDisableButton(false);
       return;
     }
-    if (idEnglish.length !== 10) {
+    if (idEnglish.length !== 9 && idEnglish.length !== 10) {
       showAlert("کد ملی اشتباه");
       setDisableButton(false);
       return;
