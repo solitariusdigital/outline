@@ -6,7 +6,7 @@
   flex-direction: column;
   text-align: center;
   max-width: config.$max-widthHeigh;
-  width: config.$content-width;
+  width: config.$content-widthTablet;
   margin: auto;
   font-weight: 300;
   padding: 20px 0px;
@@ -317,7 +317,7 @@
       flex-direction: column;
     }
     @include mixins.tablet {
-      grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
     }
 
     .card {

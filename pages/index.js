@@ -396,7 +396,7 @@ export default function Home({ activeVisits }) {
               مدیریت
             </div>
           )}
-          {currentUser?.permission === "admin" && (
+          {(displayReception || screenSize !== "mobile") && (
             <div
               className={classes.nav}
               onClick={() => Router.push("/reception")}
@@ -404,14 +404,6 @@ export default function Home({ activeVisits }) {
               پذیرش
             </div>
           )}
-          {/* {(displayReception || screenSize !== "mobile") && (
-            <div
-              className={classes.nav}
-              onClick={() => Router.push("/reception")}
-            >
-              پذیرش
-            </div>
-          )} */}
           {!checkDatesComplete && !currentUser?.super && isUserAuthorized && (
             <div
               className={classes.checkType}

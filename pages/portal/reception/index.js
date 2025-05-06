@@ -129,16 +129,6 @@ export default function Reception({ records }) {
     }
   };
 
-  const completeVisit = async (id) => {
-    const confirm = window.confirm("تکمیل ویزیت، مطمئنی؟");
-    if (confirm) {
-      let recordData = await getSingleRecordApi(id);
-      recordData.checkup = true;
-      await updateRecordApi(recordData);
-      router.reload(router.asPath);
-    }
-  };
-
   return (
     <Fragment>
       <NextSeo

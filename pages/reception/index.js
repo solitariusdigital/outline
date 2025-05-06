@@ -280,7 +280,7 @@ export default function Reception() {
     }
     setTimeout(() => {
       router.reload(router.asPath);
-    }, 5000);
+    }, 3000);
   };
 
   const handleMedicalHistoryChange = (index, isActive) => {
