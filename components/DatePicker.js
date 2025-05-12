@@ -495,11 +495,7 @@ export default function DatePicker({ visits }) {
       if (!ganjeDays(day)) {
         return <p className={classes.message}>نوبت در این روز پر است</p>;
       } else {
-        return (
-          <p className={classes.message}>
-            نوبت دکتر گنجه شنبه و سه‌شنبه و پنجشنبه
-          </p>
-        );
+        return <p className={classes.message}>نوبت دکتر گنجه موجود نیست</p>;
       }
     }
     if (selectDoctor === "دکتر حاجیلو") {
@@ -600,7 +596,7 @@ export default function DatePicker({ visits }) {
           <div className={classes.input} ref={targetInputBox}>
             <div className={classes.bar}>
               <p className={classes.label}>
-                نام
+                نام و نام خانوادگی
                 <span>*</span>
               </p>
               <CloseIcon

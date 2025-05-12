@@ -70,7 +70,13 @@ export function ganjeDays(persianDate) {
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
-  return dayOfWeek !== 2 && dayOfWeek !== 4 && dayOfWeek !== 6;
+  return (
+    dayOfWeek !== 1 &&
+    dayOfWeek !== 2 &&
+    dayOfWeek !== 3 &&
+    dayOfWeek !== 4 &&
+    dayOfWeek !== 6
+  );
 }
 
 export function hajiluDays(persianDate) {
