@@ -15,7 +15,7 @@
     "@mui/icons-material": "^5.17.1",
     "@mui/material": "^5.17.1",
     "aws-sdk": "^2.1692.0",
-    "eslint": "9.24.0",
+    "eslint": "9.25.1",
     "eslint-config-next": "15.3.0",
     "kavenegar": "^1.1.4",
     "moment": "^2.30.1",
