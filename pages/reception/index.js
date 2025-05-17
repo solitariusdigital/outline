@@ -86,7 +86,7 @@ export default function Reception() {
       ? verification
       : toEnglishNumber(verification);
     if (verificationEnglish.length < 9) {
-      showAlert("کد ملی یا موبایل اشتباه");
+      showAlert("کدملی یا موبایل اشتباه");
       setDisableButton(false);
       return;
     }
@@ -193,7 +193,7 @@ export default function Reception() {
     const fields = [
       { value: name, message: "نام الزامیست" },
       { value: selectDoctor, message: "انتخاب دکتر الزامیست" },
-      { value: idMeli, message: "کد ملی الزامیست" },
+      { value: idMeli, message: "کدملی الزامیست" },
       { value: birthDate.year, message: "سال تولد الزامیست" },
       { value: phone, message: "موبایل الزامیست" },
       { value: address, message: "آدرس الزامیست" },
@@ -221,7 +221,7 @@ export default function Reception() {
       return;
     }
     if (idEnglish.length !== 9 && idEnglish.length !== 10) {
-      showAlert("کد ملی اشتباه");
+      showAlert("کدملی اشتباه");
       setDisableButton(false);
       return;
     }
@@ -350,7 +350,7 @@ export default function Reception() {
             <div className={classes.input}>
               <div className={classes.bar}>
                 <p className={classes.label}>
-                  کد ملی یا موبایل خود را وارد کنید
+                  کدملی یا موبایل خود را وارد کنید
                   <span>*</span>
                 </p>
                 <CloseIcon
@@ -398,7 +398,7 @@ export default function Reception() {
               <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>
-                    نام کامل بیمار
+                    نام و نام خانوادگی
                     <span>*</span>
                   </p>
                   <CloseIcon
@@ -445,7 +445,7 @@ export default function Reception() {
               <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>
-                    کد ملی
+                    کدملی
                     <span>*</span>
                   </p>
                   <CloseIcon

@@ -296,7 +296,7 @@ export default function Reception({ records }) {
                               </p>
                             </div>
                             <div className={classes.row}>
-                              <span>کد ملی</span>
+                              <span>کدملی</span>
                               <p
                                 onClick={() =>
                                   navigator.clipboard.writeText(record.idMeli)
