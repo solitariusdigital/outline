@@ -325,6 +325,26 @@ export default function DatePicker({ visits }) {
     hajiluDays,
     day
   ) => {
+    if (selectDoctor === "دکتر گنجه") {
+      originalTimes = {
+        "11:00": { display: false, active: false, count: 0 },
+        "11:30": { display: false, active: false, count: 0 },
+        "12:00": { display: true, active: false, count: 0 },
+        "12:30": { display: true, active: false, count: 0 },
+        "13:00": { display: true, active: false, count: 0 },
+        "13:30": { display: true, active: false, count: 0 },
+        "14:00": { display: true, active: false, count: 0 },
+        "14:30": { display: true, active: false, count: 0 },
+        "15:00": { display: true, active: false, count: 0 },
+        "15:30": { display: true, active: false, count: 0 },
+        "16:00": { display: true, active: false, count: 0 },
+        "16:30": { display: true, active: false, count: 0 },
+        "17:00": { display: true, active: false, count: 0 },
+        "17:30": { display: true, active: false, count: 0 },
+        "18:00": { display: true, active: false, count: 0 },
+        "18:30": { display: true, active: false, count: 0 },
+      };
+    }
     if (selectDoctor === "دکتر گنجه" && ganjeDays) {
       setTimes({});
       setDisplayForm(false);
@@ -492,11 +512,7 @@ export default function DatePicker({ visits }) {
       if (!ganjeDays(day)) {
         return <p className={classes.message}>نوبت در این روز پر است</p>;
       } else {
-        return (
-          <p className={classes.message}>
-            نوبت دکتر گنجه شنبه و سه‌شنبه و پنجشنبه
-          </p>
-        );
+        return <p className={classes.message}>نوبت دکتر گنجه موجود نیست</p>;
       }
     }
     if (selectDoctor === "دکتر حاجیلو") {
@@ -597,7 +613,7 @@ export default function DatePicker({ visits }) {
           <div className={classes.input} ref={targetInputBox}>
             <div className={classes.bar}>
               <p className={classes.label}>
-                نام
+                نام و نام خانوادگی
                 <span>*</span>
               </p>
               <CloseIcon
