@@ -15,7 +15,6 @@ import { getCurrentDateFarsi, getCurrentTimeFarsi } from "@/services/utility";
 export default function Home({ activeVisits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
-  const { screenSize, setScreenSize } = useContext(StateContext);
   const [hideBooking, setHideBooking] = useState(true);
   const [checkType, setCheckType] = useState("checkin" || "checkout");
   const [checkDatesComplete, setCheckDatesComplete] = useState(false);
@@ -388,7 +387,7 @@ export default function Home({ activeVisits }) {
           >
             تماس با ما
           </div>
-          {(currentUser?.super || currentUser?.access) && (
+          {currentUser?.super && (
             <div
               className={classes.fillNav}
               onClick={() => Router.push("/manager")}
@@ -396,7 +395,7 @@ export default function Home({ activeVisits }) {
               مدیریت
             </div>
           )}
-          {(displayReception || screenSize !== "mobile") && (
+          {(displayReception || currentUser?.permission === "reception") && (
             <div
               className={classes.nav}
               onClick={() => Router.push("/reception")}

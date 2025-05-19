@@ -87,7 +87,7 @@ export default function Manager({ control, visits }) {
         console.error(error);
       }
     };
-    if (controlData.timesheets && (currentUser?.super || currentUser?.access)) {
+    if (controlData.timesheets && currentUser?.super) {
       fetchUserData();
     } else {
       Router.push("/");
