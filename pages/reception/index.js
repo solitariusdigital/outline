@@ -408,6 +408,7 @@ export default function Reception() {
                   />
                 </div>
                 <input
+                  placeholder="فارسی وارد کنید"
                   type="text"
                   id="name"
                   name="name"
@@ -624,11 +625,13 @@ export default function Reception() {
                     <p>بله</p>
                     {sharePermission ? (
                       <RadioButtonCheckedIcon
+                        sx={{ fontSize: 28 }}
                         className="icon"
                         onClick={() => setSharePermission(false)}
                       />
                     ) : (
                       <RadioButtonUncheckedIcon
+                        sx={{ fontSize: 28 }}
                         className="icon"
                         onClick={() => setSharePermission(true)}
                       />
@@ -638,11 +641,13 @@ export default function Reception() {
                     <p>خیر</p>
                     {!sharePermission ? (
                       <RadioButtonCheckedIcon
+                        sx={{ fontSize: 28 }}
                         className="icon"
                         onClick={() => setSharePermission(true)}
                       />
                     ) : (
                       <RadioButtonUncheckedIcon
+                        sx={{ fontSize: 28 }}
                         className="icon"
                         onClick={() => setSharePermission(false)}
                       />
@@ -658,11 +663,13 @@ export default function Reception() {
                   <span style={{ marginLeft: "8px" }}>{option.label}</span>
                   {option.active ? (
                     <RadioButtonCheckedIcon
+                      sx={{ fontSize: 28 }}
                       className="icon"
                       onClick={() => handleMedicalHistoryChange(index, false)}
                     />
                   ) : (
                     <RadioButtonUncheckedIcon
+                      sx={{ fontSize: 28 }}
                       className="icon"
                       onClick={() => handleMedicalHistoryChange(index, true)}
                     />
@@ -715,11 +722,13 @@ export default function Reception() {
                   <span style={{ marginLeft: "8px" }}>{option.label}</span>
                   {option.active ? (
                     <RadioButtonCheckedIcon
+                      sx={{ fontSize: 28 }}
                       className="icon"
                       onClick={() => handleHabitsChange(index, false)}
                     />
                   ) : (
                     <RadioButtonUncheckedIcon
+                      sx={{ fontSize: 28 }}
                       className="icon"
                       onClick={() => handleHabitsChange(index, true)}
                     />
@@ -734,6 +743,7 @@ export default function Reception() {
                   <span style={{ marginLeft: "8px" }}>{option.label}</span>
                   {option.active ? (
                     <RadioButtonCheckedIcon
+                      sx={{ fontSize: 28 }}
                       className="icon"
                       onClick={() =>
                         handleMedicalHistoryFamilyChange(index, false)
@@ -741,6 +751,7 @@ export default function Reception() {
                     />
                   ) : (
                     <RadioButtonUncheckedIcon
+                      sx={{ fontSize: 28 }}
                       className="icon"
                       onClick={() =>
                         handleMedicalHistoryFamilyChange(index, true)
