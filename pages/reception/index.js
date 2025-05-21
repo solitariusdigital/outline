@@ -80,11 +80,13 @@ export default function Reception() {
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر حاجیلو"];
   const router = useRouter();
 
+  const checkConvertNumber = (number) => {
+    return isEnglishNumber(number) ? number : toEnglishNumber(number);
+  };
+
   const handleVerification = async () => {
     setDisableButton(true);
-    const verificationEnglish = isEnglishNumber(verification)
-      ? verification
-      : toEnglishNumber(verification);
+    const verificationEnglish = checkConvertNumber(verification);
     if (verificationEnglish.length < 9) {
       showAlert("کدملی یا موبایل اشتباه");
       setDisableButton(false);
@@ -209,8 +211,8 @@ export default function Reception() {
     }
 
     const [currentYear] = getCurrentDateFarsi().split("/");
-    let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
-    let idEnglish = isEnglishNumber(idMeli) ? idMeli : toEnglishNumber(idMeli);
+    let phoneEnglish = checkConvertNumber(phone);
+    let idEnglish = checkConvertNumber(idMeli);
     let digitalDate = convertPersianDate(getCurrentDateFarsi());
     let recordId = digitalDate + fourGenerator();
     let { time, id: visitId } = await getUserTime(phoneEnglish);
@@ -232,8 +234,10 @@ export default function Reception() {
     const userId = await getUserId(phoneEnglish);
     const recordObject = {
       name: name.trim(),
-      birthDate: `${birthDate.year}/${birthDate.month}/${birthDate.day}`,
-      age: toEnglishNumber(currentYear) - birthDate.year,
+      birthDate: `${checkConvertNumber(birthDate.year)}/${checkConvertNumber(
+        birthDate.month
+      )}/${checkConvertNumber(birthDate.day)}`,
+      age: toEnglishNumber(currentYear) - checkConvertNumber(birthDate.year),
       idMeli: idEnglish,
       userId: userId,
       recordId: recordId,
