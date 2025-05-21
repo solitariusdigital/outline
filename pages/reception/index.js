@@ -181,7 +181,10 @@ export default function Reception() {
           id: incompleteVisits[0]["_id"],
         };
       } else {
-        return "-";
+        return {
+          time: "بدون نوبت",
+          id: null,
+        };
       }
     } catch (error) {
       console.error("Error fetching user time:", error);

@@ -106,27 +106,27 @@ export default function Reception({ records }) {
     if (confirm) {
       await updateLastRecordMessage(id, messages[index], true);
       await completePatientVisit(id);
-      setTimeout(() => {
-        router.reload(router.asPath);
-      }, 500);
     }
   };
 
   const completePatientVisit = async (id) => {
+    let recordData = await getSingleRecordApi(id);
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
-    let recordData = await getSingleRecordApi(id);
     await api.VerifyLookup({
       receptor: recordData.phone,
       token: getCurrentDateFarsi(),
       template: "completeOutline",
     });
-    let visitData = await getSingleVisitApi(recordData.visitId);
-    if (visitData) {
+    if (recordData.visitId) {
+      let visitData = await getSingleVisitApi(recordData.visitId);
       visitData.completed = true;
       await updateVisitApi(visitData);
     }
+    setTimeout(() => {
+      router.reload(router.asPath);
+    }, 500);
   };
 
   return (
@@ -221,7 +221,7 @@ export default function Reception({ records }) {
                         color: "#999999",
                       }}
                     >
-                      {record.time ? record.time : "بدون نوبت"}
+                      {record.time}
                     </p>
                   </div>
                   <div
