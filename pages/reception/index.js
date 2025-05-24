@@ -132,9 +132,9 @@ export default function Reception() {
       [day, month, year] = birthDateParts;
     }
     const dateObject = {
-      day: day,
-      month: month,
-      year: year,
+      day: String(day),
+      month: String(month),
+      year: String(year),
     };
     setBirthDate(dateObject);
     setName(userRecord.name);
