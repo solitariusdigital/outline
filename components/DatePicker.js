@@ -65,7 +65,7 @@ export default function DatePicker({ visits }) {
     "18:30": { display: true, active: false, count: 0 },
   };
   let topics = ["بوتاکس", "فیلر", "مشاوره", "ترمیم", "سایر"];
-  const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر حاجیلو"];
+  const doctors = ["دکتر فراهانی", "دکتر گنجه"];
   const targetInputBox = useRef(null);
 
   const router = useRouter();

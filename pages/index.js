@@ -359,15 +359,6 @@ export default function Home({ activeVisits }) {
               >
                 نوبت دکتر گنجه
               </div>
-              <div
-                className={classes.fillNav}
-                onClick={() => {
-                  Router.push(currentUser ? "/booking" : "/portal");
-                  setSelectDoctor("دکتر حاجیلو");
-                }}
-              >
-                نوبت دکتر حاجیلو
-              </div>
             </Fragment>
           )}
           <div className={classes.nav} onClick={() => Router.push("/about")}>

@@ -32,9 +32,7 @@ export default function Reception({ records }) {
   const [expandRecords, setExpandRecords] = useState(null);
   const [messages, setMessages] = useState([]);
   const [recordObject, setRecordObject] = useState(null);
-  const [navigation, setNavigation] = useState(
-    "دکتر فراهانی" || "دکتر گنجه" || "دکتر حاجیلو"
-  );
+  const [navigation, setNavigation] = useState("دکتر فراهانی" || "دکتر گنجه");
   const router = useRouter();
 
   useEffect(() => {
@@ -190,16 +188,6 @@ export default function Reception({ records }) {
               }}
             >
               دکتر گنجه
-            </p>
-            <p
-              className={
-                navigation === "دکتر حاجیلو" ? classes.activeNav : classes.nav
-              }
-              onClick={() => {
-                filterReceptionCards("دکتر حاجیلو");
-              }}
-            >
-              دکتر حاجیلو
             </p>
           </div>
         )}
