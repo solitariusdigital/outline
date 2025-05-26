@@ -208,22 +208,28 @@ export default function Reception({ records }) {
             <Fragment>
               {receptionCards.map((record, index) => (
                 <div key={index} className={classes.card}>
-                  <div className={classes.row}>
-                    <p
-                      style={{
-                        color: record.checkup ? "#15b392" : "#999999",
-                      }}
-                    >
-                      {record.checkup ? "انجام مشاوره" : "در انتظار"}
-                    </p>
-                    <p
-                      style={{
-                        color: "#999999",
-                      }}
-                    >
-                      {record.time}
-                    </p>
-                  </div>
+                  {!record.completed ? (
+                    <div className={classes.row}>
+                      <p
+                        style={{
+                          color: record.checkup ? "#15b392" : "#999999",
+                        }}
+                      >
+                        {record.checkup ? "انجام مشاوره" : "در انتظار"}
+                      </p>
+                      <p
+                        style={{
+                          color: "#999999",
+                        }}
+                      >
+                        {record.time}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className={classes.row}>
+                      <p>مراجعه تکمیل</p>
+                    </div>
+                  )}
                   <div
                     className={classes.row}
                     style={{ cursor: "pointer" }}
@@ -328,58 +334,60 @@ export default function Reception({ records }) {
                                 </div>
                               </Fragment>
                             )}
-                            <div className={classes.input}>
-                              <div className={classes.bar}>
-                                <CloseIcon
-                                  className="icon"
-                                  onClick={() =>
+                            {!record.completed && (
+                              <div className={classes.input}>
+                                <div className={classes.bar}>
+                                  <CloseIcon
+                                    className="icon"
+                                    onClick={() =>
+                                      handleMessageChange(
+                                        record["_id"],
+                                        index,
+                                        ""
+                                      )
+                                    }
+                                    sx={{ fontSize: 16 }}
+                                  />
+                                </div>
+                                <textarea
+                                  placeholder="توضیحات"
+                                  type="text"
+                                  id={`message-${index}`}
+                                  name={`message-${index}`}
+                                  onChange={(e) =>
                                     handleMessageChange(
                                       record["_id"],
                                       index,
-                                      ""
+                                      e.target.value
                                     )
                                   }
-                                  sx={{ fontSize: 16 }}
+                                  value={messages[index]}
+                                  autoComplete="off"
+                                  dir="rtl"
                                 />
-                              </div>
-                              <textarea
-                                placeholder="توضیحات"
-                                type="text"
-                                id={`message-${index}`}
-                                name={`message-${index}`}
-                                onChange={(e) =>
-                                  handleMessageChange(
-                                    record["_id"],
-                                    index,
-                                    e.target.value
-                                  )
-                                }
-                                value={messages[index]}
-                                autoComplete="off"
-                                dir="rtl"
-                              />
-                              {record.checkup && (
+                                {record.checkup && (
+                                  <button
+                                    className={classes.buttonCheck}
+                                    onClick={() =>
+                                      setPopupDiagramData({
+                                        record: record,
+                                        lastRecord: lastRecord,
+                                      })
+                                    }
+                                  >
+                                    مناطق تزریق صورت
+                                  </button>
+                                )}
                                 <button
-                                  className={classes.buttonCheck}
+                                  className={classes.button}
                                   onClick={() =>
-                                    setPopupDiagramData({
-                                      record: record,
-                                      lastRecord: lastRecord,
-                                    })
+                                    completeRecord(record["_id"], index)
                                   }
                                 >
-                                  مناطق تزریق صورت
+                                  تکمیل مراجعه
                                 </button>
-                              )}
-                              <button
-                                className={classes.button}
-                                onClick={() =>
-                                  completeRecord(record["_id"], index)
-                                }
-                              >
-                                تکمیل مراجعه
-                              </button>
-                            </div>
+                              </div>
+                            )}
                           </>
                         );
                       })()}
@@ -392,17 +400,19 @@ export default function Reception({ records }) {
                           record.records[record.records.length - 1];
                         return (
                           <>
-                            <button
-                              className={classes.button}
-                              onClick={() =>
-                                setPopupDiagramData({
-                                  record: record,
-                                  lastRecord: lastRecord,
-                                })
-                              }
-                            >
-                              تجویز تزریق
-                            </button>
+                            {!record.completed && (
+                              <button
+                                className={classes.button}
+                                onClick={() =>
+                                  setPopupDiagramData({
+                                    record: record,
+                                    lastRecord: lastRecord,
+                                  })
+                                }
+                              >
+                                تجویز تزریق
+                              </button>
+                            )}
                             {expandInformation === record["_id"] && (
                               <Fragment>
                                 <div className={classes.info}>
@@ -574,15 +584,22 @@ export async function getServerSideProps(context) {
     let records = await recordModel.find({
       date: { $regex: `^${convertPersianDate(getCurrentDateFarsi())}` },
     });
-    records.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
     records.sort((a, b) => {
-      return a.checkup === b.checkup ? 0 : a.checkup ? 1 : -1;
+      // Sort by completed (false first)
+      if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+      }
+      // Sort by checkup (false first)
+      if (a.checkup !== b.checkup) {
+        return a.checkup ? 1 : -1;
+      }
+      // Sort by updatedAt (ascending)
+      return new Date(a.updatedAt) - new Date(b.updatedAt);
     });
-    let activeRecords = records.filter((record) => !record.completed);
 
     return {
       props: {
-        records: JSON.parse(JSON.stringify(activeRecords)),
+        records: JSON.parse(JSON.stringify(records)),
       },
     };
   } catch (error) {

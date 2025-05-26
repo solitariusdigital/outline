@@ -311,6 +311,7 @@
     gap: 12px;
     direction: rtl;
     margin-top: 20px;
+    margin-bottom: 120px;
 
     @include mixins.mobile {
       display: flex;

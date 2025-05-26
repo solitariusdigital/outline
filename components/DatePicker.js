@@ -358,8 +358,8 @@ export default function DatePicker({ visits }) {
     if (selectDoctor === "دکتر فراهانی") {
       originalTimes = {
         "10:30": { display: false, active: false, count: 0 },
-        "11:00": { display: true, active: false, count: 0 },
-        "11:30": { display: true, active: false, count: 0 },
+        "11:00": { display: false, active: false, count: 0 },
+        "11:30": { display: false, active: false, count: 0 },
         "12:00": { display: true, active: false, count: 0 },
         "12:30": { display: true, active: false, count: 0 },
         "13:00": { display: true, active: false, count: 0 },
