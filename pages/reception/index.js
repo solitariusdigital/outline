@@ -176,10 +176,17 @@ export default function Reception() {
           (visit) =>
             visit.userId === userId && !visit.completed && !visit.canceled
         );
-        return {
-          time: incompleteVisits[0].time.split(" - ")[1],
-          id: incompleteVisits[0]["_id"],
-        };
+        if (incompleteVisits.length > 0) {
+          return {
+            time: incompleteVisits[0].time.split(" - ")[1],
+            id: incompleteVisits[0]["_id"],
+          };
+        } else {
+          return {
+            time: "بدون نوبت",
+            id: null,
+          };
+        }
       } else {
         return {
           time: "بدون نوبت",
