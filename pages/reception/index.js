@@ -223,16 +223,27 @@ export default function Reception() {
     const [currentYear] = getCurrentDateFarsi().split("/");
     let phoneEnglish = checkConvertNumber(phone);
     let idEnglish = checkConvertNumber(idMeli);
+    let birthYear = checkConvertNumber(birthDate.year);
     let digitalDate = convertPersianDate(getCurrentDateFarsi());
     let recordId = digitalDate + fourGenerator();
     let { time, id: visitId } = await getUserTime(phoneEnglish);
 
+    if (birthYear.length !== 4 || !birthYear.startsWith("13")) {
+      showAlert("سال تولد اشتباه");
+      setDisableButton(false);
+      return;
+    }
     if (phoneEnglish.length !== 11 || !phoneEnglish.startsWith("09")) {
       showAlert("موبایل اشتباه");
       setDisableButton(false);
       return;
     }
     if (idEnglish.length !== 9 && idEnglish.length !== 10) {
+      showAlert("کدملی اشتباه");
+      setDisableButton(false);
+      return;
+    }
+    if (isAllSameCharacter(idEnglish)) {
       showAlert("کدملی اشتباه");
       setDisableButton(false);
       return;
@@ -244,10 +255,10 @@ export default function Reception() {
     const userId = await getUserId(phoneEnglish);
     const recordObject = {
       name: name.trim(),
-      birthDate: `${checkConvertNumber(birthDate.year)}/${checkConvertNumber(
+      birthDate: `${birthYear}/${checkConvertNumber(
         birthDate.month
       )}/${checkConvertNumber(birthDate.day)}`,
-      age: toEnglishNumber(currentYear) - checkConvertNumber(birthDate.year),
+      age: toEnglishNumber(currentYear) - birthYear,
       idMeli: idEnglish,
       userId: userId,
       recordId: recordId,
@@ -295,6 +306,10 @@ export default function Reception() {
     setTimeout(() => {
       router.reload(router.asPath);
     }, 3000);
+  };
+
+  const isAllSameCharacter = (str) => {
+    return str.split("").every((char) => char === str[0]);
   };
 
   const handleMedicalHistoryChange = (index, isActive) => {

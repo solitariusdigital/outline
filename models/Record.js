@@ -8,7 +8,6 @@ const RecordSchema = new Schema(
     idMeli: {
       type: String,
       required: true,
-      unique: true,
     },
     userId: String,
     recordId: String,
