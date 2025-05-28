@@ -35,6 +35,7 @@ import {
   getCurrentDate,
   getCurrentDateFarsi,
 } from "@/services/utility";
+import { exportToExcel } from "@/services/exportToExcel";
 
 export default function Access() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -428,6 +429,18 @@ export default function Access() {
     setCurrentUser(null);
   };
 
+  const handleDownloadExcel = () => {
+    const transformedData = filterVisits.map((item) => ({
+      doctor: item.doctor,
+      time: item.time,
+      title: item.title,
+      name: item.user.name,
+      phone: item.user.phone,
+    }));
+
+    exportToExcel(transformedData, "today_visits");
+  };
+
   return (
     <Fragment>
       <NextSeo
@@ -697,6 +710,13 @@ export default function Access() {
                   </button>
                 </div>
               )}
+            {currentUser.permission === "admin" && visitTypes === "today" && (
+              <div className={classes.buttonContainer}>
+                <button onClick={() => handleDownloadExcel()}>
+                  Excel امروز
+                </button>
+              </div>
+            )}
             {currentUser.permission === "admin" &&
               visitTypes === "afterTomorrow" && (
                 <div className={classes.buttonContainer}>
