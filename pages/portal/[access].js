@@ -39,6 +39,7 @@ import { exportToExcel } from "@/services/exportToExcel";
 
 export default function Access() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { screenSize, setScreenSize } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { notification, setNotification } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
@@ -437,7 +438,6 @@ export default function Access() {
       name: item.user.name,
       phone: item.user.phone,
     }));
-
     exportToExcel(transformedData, "today_visits");
   };
 
@@ -710,13 +710,15 @@ export default function Access() {
                   </button>
                 </div>
               )}
-            {currentUser.permission === "admin" && visitTypes === "today" && (
-              <div className={classes.buttonContainer}>
-                <button onClick={() => handleDownloadExcel()}>
-                  Excel امروز
-                </button>
-              </div>
-            )}
+            {screenSize === "desktop" &&
+              currentUser.permission === "admin" &&
+              visitTypes === "today" && (
+                <div className={classes.buttonContainer}>
+                  <button onClick={() => handleDownloadExcel()}>
+                    Excel امروز
+                  </button>
+                </div>
+              )}
             {currentUser.permission === "admin" &&
               visitTypes === "afterTomorrow" && (
                 <div className={classes.buttonContainer}>
