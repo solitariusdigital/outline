@@ -139,3 +139,116 @@
     }
   }
 }
+
+.records {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  gap: 12px;
+  direction: rtl;
+  margin-top: 20px;
+  margin-bottom: 120px;
+  width: 100%;
+
+  @include mixins.mobile {
+    display: flex;
+    flex-direction: column;
+  }
+  @include mixins.tablet {
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    box-shadow: config.$card-shadow;
+    background: config.$white;
+    padding: 12px;
+    height: fit-content;
+    max-width: 500px;
+    @include mixins.border-radius();
+
+    h3 {
+      color: config.$blue;
+    }
+
+    .row {
+      @include mixins.row-space-between-center();
+
+      span {
+        color: config.$grey;
+        font-size: small;
+      }
+
+      .more {
+        color: config.$blue;
+      }
+    }
+
+    .info,
+    .historyItem {
+      margin-bottom: 4px;
+      border-bottom: 1px solid config.$lightgrey;
+
+      span {
+        color: config.$grey;
+        font-size: small;
+      }
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    }
+
+    .historyItem {
+      .historyRow {
+        @include mixins.row-space-between-center();
+        justify-content: right;
+        flex-wrap: wrap;
+
+        h5 {
+          margin: 0px 8px;
+        }
+      }
+    }
+
+    .recordBox {
+      border-bottom: 1px solid config.$lightgrey;
+      margin-bottom: 4px;
+
+      .recordRow {
+        @include mixins.row-space-between-center();
+      }
+    }
+
+    .recordText {
+      color: config.$blue;
+      font-size: small;
+      font-weight: bold;
+    }
+  }
+
+  .popup {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100vh;
+    background: config.$background;
+    padding: 20px;
+    overflow-y: auto;
+    text-align: center;
+
+    @include mixins.mobile {
+      padding: 12px;
+    }
+
+    .row {
+      @include mixins.row-space-between-center();
+      max-width: 400px;
+      margin: auto;
+    }
+  }
+}

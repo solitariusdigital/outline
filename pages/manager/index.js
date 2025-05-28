@@ -5,8 +5,13 @@ import classes from "./manager.module.scss";
 import dbConnect from "@/services/dbConnect";
 import controlModel from "@/models/Control";
 import visitModel from "@/models/Visit";
+import recordModel from "@/models/Record";
 import HomeIcon from "@mui/icons-material/Home";
 import Router from "next/router";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   getSingleUserApi,
   updateControlApi,
@@ -17,7 +22,7 @@ import {
   getCurrentDateFarsi,
 } from "@/services/utility";
 
-export default function Manager({ control, visits }) {
+export default function Manager({ control, visits, records }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
@@ -26,7 +31,12 @@ export default function Manager({ control, visits }) {
   const [count, setCount] = useState({});
   const [currentYear, setCurrentYear] = useState("");
   const [currentMonth, setCurrentMonth] = useState("");
-  const [navigation, setNavigation] = useState("time" || "reminder" || "count");
+  const [expandInformation, setExpandInformation] = useState(null);
+  const [expandRecords, setExpandRecords] = useState(null);
+  const [recordObject, setRecordObject] = useState(null);
+  const [navigation, setNavigation] = useState(
+    "time" || "reminder" || "count" || "reception"
+  );
   const [displayReception, setDisplayReception] = useState(false);
   const router = useRouter();
   const adminsName = {
@@ -176,28 +186,22 @@ export default function Manager({ control, visits }) {
     }
   };
 
+  const expandInformationAction = (id) => {
+    setExpandInformation(id);
+    if (expandInformation === id) {
+      setExpandInformation(null);
+    }
+  };
+  const expandRecordsAction = (id) => {
+    setExpandRecords(id);
+    if (expandRecords === id) {
+      setExpandRecords(null);
+    }
+  };
+
   return (
     <div className={classes.container}>
       <HomeIcon onClick={() => Router.push("/")} className="icon" />
-      {currentUser?.super && (
-        <Fragment>
-          {displayReception ? (
-            <button
-              className={classes.activeButton}
-              onClick={() => updateReception("disable")}
-            >
-              پذیرش فعال
-            </button>
-          ) : (
-            <button
-              className={classes.disableButton}
-              onClick={() => updateReception("active")}
-            >
-              پذیرش غیرفعال
-            </button>
-          )}
-        </Fragment>
-      )}
       {currentUser?.super && (
         <div className={classes.navigation}>
           <p
@@ -220,6 +224,16 @@ export default function Manager({ control, visits }) {
           >
             یادآوری
           </p>
+          {currentUser?.super && (
+            <p
+              className={
+                navigation === "reception" ? classes.activeNav : classes.nav
+              }
+              onClick={() => setNavigation("reception")}
+            >
+              پذیرش
+            </p>
+          )}
         </div>
       )}
       {navigation === "time" && (
@@ -434,6 +448,227 @@ export default function Manager({ control, visits }) {
             .slice(0, 30)}
         </div>
       )}
+      {navigation === "reception" && (
+        <Fragment>
+          {displayReception ? (
+            <button
+              className={classes.activeButton}
+              onClick={() => updateReception("disable")}
+            >
+              پذیرش فعال
+            </button>
+          ) : (
+            <button
+              className={classes.disableButton}
+              onClick={() => updateReception("active")}
+            >
+              پذیرش غیرفعال
+            </button>
+          )}
+          <div className={classes.records}>
+            {!recordObject && (
+              <Fragment>
+                {records?.map((record, index) => (
+                  <div key={index} className={classes.card}>
+                    <div
+                      className={classes.row}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => expandInformationAction(record["_id"])}
+                    >
+                      <h3
+                        onClick={() =>
+                          navigator.clipboard.writeText(record.name)
+                        }
+                      >
+                        {record.name}
+                      </h3>
+                      {expandInformation === record["_id"] ? (
+                        <ExpandLessIcon
+                          className="icon"
+                          sx={{ color: "#2d2b7f" }}
+                        />
+                      ) : (
+                        <ExpandMoreIcon
+                          className="icon"
+                          sx={{ color: "#2d2b7f" }}
+                        />
+                      )}
+                    </div>
+                    <div className={classes.row}>
+                      <p>{record.birthDate}</p>
+                      <p>{record.age}</p>
+                    </div>
+                    <div className={classes.row}>
+                      <span>موبایل</span>
+                      <p
+                        onClick={() =>
+                          navigator.clipboard.writeText(record.phone)
+                        }
+                      >
+                        {record.phone}
+                      </p>
+                    </div>
+                    <div className={classes.row}>
+                      <span>کدملی</span>
+                      <p
+                        onClick={() =>
+                          navigator.clipboard.writeText(record.idMeli)
+                        }
+                      >
+                        {record.idMeli}
+                      </p>
+                    </div>
+                    <div className={classes.row}>
+                      <span>شماره پرونده</span>
+                      <p
+                        onClick={() =>
+                          navigator.clipboard.writeText(record.recordId)
+                        }
+                      >
+                        {record.recordId}
+                      </p>
+                    </div>
+                    {expandInformation === record["_id"] && (
+                      <Fragment>
+                        <p>{record.address}</p>
+                        <div className={classes.row}>
+                          <span>شغل</span>
+                          <p>{record.occupation}</p>
+                        </div>
+                        <div className={classes.row}>
+                          <span>معرف</span>
+                          <p>{record.referral}</p>
+                        </div>
+                      </Fragment>
+                    )}
+                    <div
+                      className={classes.row}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => expandRecordsAction(record["_id"])}
+                    >
+                      <div className={classes.row}>
+                        <span className={classes.more}>سابقه بیمار</span>
+                        <MoreHorizIcon sx={{ color: "#2d2b7f" }} />
+                      </div>
+                      <p>{record.records.length}</p>
+                    </div>
+                    {expandRecords === record["_id"] && (
+                      <Fragment>
+                        {record.records.map((item, index) => (
+                          <div
+                            key={index}
+                            className={classes.recordBox}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => setRecordObject(item)}
+                          >
+                            <div className={classes.recordRow}>
+                              <p className={classes.recordText}>{item.date}</p>
+                              <p className={classes.recordText}>
+                                {item.doctor}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </Fragment>
+                    )}
+                  </div>
+                ))}
+              </Fragment>
+            )}
+            {recordObject && (
+              <div className={classes.popup}>
+                <CloseIcon
+                  className="icon"
+                  onClick={() => setRecordObject(null)}
+                />
+                <p>{recordObject.doctor}</p>
+                <p>{recordObject.date}</p>
+                <div className={classes.card}>
+                  <div className={classes.info}>
+                    <span>تاریخچه پزشکی</span>
+                    <div className={classes.item}>
+                      {recordObject.medical
+                        .filter((item) => item.active)
+                        .map((item) => (
+                          <h5 key={item.label}>{item.label}</h5>
+                        ))}
+                    </div>
+                    <p>{recordObject.medicalDescription}</p>
+                  </div>
+                  <div className={classes.info}>
+                    <span>سابقه دارویی</span>
+                    <p>{recordObject.medicineDescription}</p>
+                  </div>
+                  <div className={classes.info}>
+                    <span>عادات بیمار</span>
+                    <div className={classes.item}>
+                      {recordObject.habits
+                        .filter((item) => item.active)
+                        .map((item) => (
+                          <h5 key={item.label}>{item.label}</h5>
+                        ))}
+                    </div>
+                  </div>
+                  <div className={classes.info}>
+                    <span>تاریخچه پزشکی اعضاء خانواده</span>
+                    <div className={classes.item}>
+                      {recordObject.medicalFamily
+                        .filter((item) => item.active)
+                        .map((item) => (
+                          <h5 key={item.label}>{item.label}</h5>
+                        ))}
+                    </div>
+                    <p>{recordObject.medicalFamilyDescription}</p>
+                  </div>
+                  <div className={classes.historyItem}>
+                    <span>سابقه تزریق</span>
+                    {Object.entries(recordObject.visitHistory).map(
+                      ([key, items]) => {
+                        if (items.length > 0) {
+                          return (
+                            <div key={key} className={classes.historyRow}>
+                              <span>{key}</span>
+                              {items.map((item, index) => (
+                                <h5 key={index}>{item}</h5>
+                              ))}
+                            </div>
+                          );
+                        }
+                      }
+                    )}
+                  </div>
+                  {recordObject.comment && (
+                    <div className={classes.info}>
+                      <span>نظر پزشک</span>
+                      <p>{recordObject.comment}</p>
+                    </div>
+                  )}
+                  {recordObject.message && (
+                    <div className={classes.info}>
+                      <span>توضیحات</span>
+                      <p>{recordObject.message}</p>
+                    </div>
+                  )}
+                  <div className={classes.info}>
+                    <p
+                      style={{
+                        fontSize: "small",
+                        color: recordObject.sharePermission
+                          ? "#15b392"
+                          : "#d40d12",
+                      }}
+                    >
+                      {recordObject.sharePermission
+                        ? "عکس اشتراک گذاشته شود"
+                        : "عکس اشتراک گذاشته نشود"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </Fragment>
+      )}
     </div>
   );
 }
@@ -443,11 +678,14 @@ export async function getServerSideProps(context) {
     await dbConnect();
     let control = await controlModel.find();
     let visits = await visitModel.find();
+    let records = await recordModel.find();
+    records.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return {
       props: {
         control: JSON.parse(JSON.stringify(control)),
         visits: JSON.parse(JSON.stringify(visits)),
+        records: JSON.parse(JSON.stringify(records)),
       },
     };
   } catch (error) {

@@ -527,6 +527,7 @@ export default function Reception({ records }) {
                 <div className={classes.info}>
                   <p
                     style={{
+                      fontSize: "small",
                       color: recordObject.sharePermission
                         ? "#15b392"
                         : "#d40d12",
