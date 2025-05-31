@@ -475,13 +475,13 @@ export default function Manager({ control, visits, records }) {
                       style={{ cursor: "pointer" }}
                       onClick={() => expandInformationAction(record["_id"])}
                     >
-                      <h3
+                      <h4
                         onClick={() =>
                           navigator.clipboard.writeText(record.name)
                         }
                       >
                         {record.name}
-                      </h3>
+                      </h4>
                       {expandInformation === record["_id"] ? (
                         <ExpandLessIcon
                           className="icon"
