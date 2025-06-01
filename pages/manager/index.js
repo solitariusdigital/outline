@@ -99,6 +99,8 @@ export default function Manager({ control, visits, records }) {
     };
     if (controlData.timesheets && currentUser?.super) {
       fetchUserData();
+    } else if (currentUser?.permission === "doctor") {
+      setNavigation("reception");
     } else {
       Router.push("/");
     }
@@ -224,16 +226,14 @@ export default function Manager({ control, visits, records }) {
           >
             یادآوری
           </p>
-          {currentUser?.super && (
-            <p
-              className={
-                navigation === "reception" ? classes.activeNav : classes.nav
-              }
-              onClick={() => setNavigation("reception")}
-            >
-              پذیرش
-            </p>
-          )}
+          <p
+            className={
+              navigation === "reception" ? classes.activeNav : classes.nav
+            }
+            onClick={() => setNavigation("reception")}
+          >
+            پذیرش
+          </p>
         </div>
       )}
       {navigation === "time" && (
@@ -450,20 +450,24 @@ export default function Manager({ control, visits, records }) {
       )}
       {navigation === "reception" && (
         <Fragment>
-          {displayReception ? (
-            <button
-              className={classes.activeButton}
-              onClick={() => updateReception("disable")}
-            >
-              پذیرش فعال
-            </button>
-          ) : (
-            <button
-              className={classes.disableButton}
-              onClick={() => updateReception("active")}
-            >
-              پذیرش غیرفعال
-            </button>
+          {currentUser?.super && (
+            <Fragment>
+              {displayReception ? (
+                <button
+                  className={classes.activeButton}
+                  onClick={() => updateReception("disable")}
+                >
+                  پذیرش فعال
+                </button>
+              ) : (
+                <button
+                  className={classes.disableButton}
+                  onClick={() => updateReception("active")}
+                >
+                  پذیرش غیرفعال
+                </button>
+              )}
+            </Fragment>
           )}
           <div className={classes.records}>
             {!recordObject && (

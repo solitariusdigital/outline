@@ -327,7 +327,7 @@ export default function Home({ activeVisits }) {
                 })
               }
             >
-              پورتال نوبت‌ها
+              پورتال نوبت‌
             </div>
           )}
           {(currentUser?.permission === "admin" ||
@@ -360,6 +360,14 @@ export default function Home({ activeVisits }) {
                 نوبت دکتر گنجه
               </div>
             </Fragment>
+          )}
+          {currentUser?.permission === "doctor" && (
+            <div
+              className={classes.fillNav}
+              onClick={() => Router.push("/manager")}
+            >
+              پرونده بیمار
+            </div>
           )}
           <div className={classes.nav} onClick={() => Router.push("/about")}>
             فلسفه متد اوت‌لاین

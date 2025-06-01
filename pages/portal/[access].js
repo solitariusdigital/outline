@@ -495,12 +495,13 @@ export default function Access() {
             <div className={classes.analytics}>
               <div
                 className={classes.row}
+                style={{ cursor: "pointer" }}
                 onClick={() => {
                   router.reload(router.asPath);
                 }}
               >
                 <RefreshIcon />
-                <h4>بروزرسانی نوبت‌ها</h4>
+                <h4>بروزرسانی نوبت‌</h4>
               </div>
               {currentUser.permission === "admin" && (
                 <div className={classes.row}>
