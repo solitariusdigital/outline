@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 import classes from "./manager.module.scss";
 import dbConnect from "@/services/dbConnect";
 import controlModel from "@/models/Control";
-import visitModel from "@/models/Visit";
-import recordModel from "@/models/Record";
 import HomeIcon from "@mui/icons-material/Home";
 import Router from "next/router";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -16,13 +14,15 @@ import {
   getSingleUserApi,
   updateControlApi,
   getControlsApi,
+  getRecordsApi,
+  getVisitsApi,
 } from "@/services/api";
 import {
   calculateTimeDifference,
   getCurrentDateFarsi,
 } from "@/services/utility";
 
-export default function Manager({ control, visits, records }) {
+export default function Manager({ control }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
@@ -34,6 +34,7 @@ export default function Manager({ control, visits, records }) {
   const [expandInformation, setExpandInformation] = useState(null);
   const [expandRecords, setExpandRecords] = useState(null);
   const [recordObject, setRecordObject] = useState(null);
+  const [displayRecords, setDisplayRecords] = useState(null);
   const [navigation, setNavigation] = useState(
     "time" || "reminder" || "count" || "reception"
   );
@@ -79,7 +80,18 @@ export default function Manager({ control, visits, records }) {
   }, []);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
+      let recordsData = await getRecordsApi();
+      recordsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setDisplayRecords(recordsData);
+    };
+    if (navigation === "reception") {
+      fetchData();
+    }
+  }, [navigation]);
+
+  useEffect(() => {
+    const fetchData = async () => {
       let usersId = Object.keys(controlData.timesheets);
       try {
         const data = await Promise.all(
@@ -98,7 +110,7 @@ export default function Manager({ control, visits, records }) {
       }
     };
     if (controlData.timesheets && currentUser?.super) {
-      fetchUserData();
+      fetchData();
     } else if (currentUser?.permission === "doctor") {
       setNavigation("reception");
     } else {
@@ -107,15 +119,19 @@ export default function Manager({ control, visits, records }) {
   }, [controlData]);
 
   useEffect(() => {
-    if (navigation === "count") {
+    const fetchData = async () => {
+      let visits = await getVisitsApi();
       const sortedColorValues = countColorOccurrences(
         visits,
         currentYear,
         currentMonth
       );
       setCount(sortedColorValues);
+    };
+    if (navigation === "count") {
+      fetchData();
     }
-  }, [navigation, visits, currentYear, currentMonth]);
+  }, [navigation, currentYear, currentMonth]);
 
   useEffect(() => {
     const handleControl = async () => {
@@ -232,7 +248,7 @@ export default function Manager({ control, visits, records }) {
             }
             onClick={() => setNavigation("reception")}
           >
-            پذیرش
+            پرونده
           </p>
         </div>
       )}
@@ -472,7 +488,7 @@ export default function Manager({ control, visits, records }) {
           <div className={classes.records}>
             {!recordObject && (
               <Fragment>
-                {records?.map((record, index) => (
+                {displayRecords?.map((record, index) => (
                   <div key={index} className={classes.card}>
                     <div
                       className={classes.row}
@@ -681,15 +697,10 @@ export async function getServerSideProps(context) {
   try {
     await dbConnect();
     let control = await controlModel.find();
-    let visits = await visitModel.find();
-    let records = await recordModel.find();
-    records.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return {
       props: {
         control: JSON.parse(JSON.stringify(control)),
-        visits: JSON.parse(JSON.stringify(visits)),
-        records: JSON.parse(JSON.stringify(records)),
       },
     };
   } catch (error) {
