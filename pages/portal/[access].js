@@ -438,7 +438,7 @@ export default function Access() {
       name: item.user.name,
       phone: item.user.phone,
     }));
-    exportToExcel(transformedData, "today_visits");
+    exportToExcel(transformedData, `${visitTypes}_visits`);
   };
 
   return (
@@ -713,10 +713,10 @@ export default function Access() {
               )}
             {screenSize === "desktop" &&
               currentUser.permission === "admin" &&
-              visitTypes === "today" && (
+              (visitTypes === "today" || visitTypes === "tomorrow") && (
                 <div className={classes.buttonContainer}>
                   <button onClick={() => handleDownloadExcel()}>
-                    Excel امروز
+                    {visitTypes === "today" ? "Excel امروز" : "Excel فردا"}
                   </button>
                 </div>
               )}
