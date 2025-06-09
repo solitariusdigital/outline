@@ -98,7 +98,9 @@
 
   .button {
     @include mixins.button(config.$blue, config.$blue, config.$white);
-    margin-top: 20px;
+    & {
+      margin-top: 20px;
+    }
   }
 
   .alert {
@@ -112,11 +114,15 @@
 }
 
 .activeButton {
-  margin-top: 20px;
+  & {
+    margin-top: 20px;
+  }
   @include mixins.button(config.$red, config.$red, config.$white);
 }
 
 .disableButton {
-  margin-top: 20px;
+  & {
+    margin-top: 20px;
+  }
   @include mixins.button(config.$green, config.$green, config.$white);
 }
