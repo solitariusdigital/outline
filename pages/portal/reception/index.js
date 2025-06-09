@@ -14,9 +14,15 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
 import EditIcon from "@mui/icons-material/Edit";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import FaceDiagram from "@/components/FaceDiagram";
 import Kavenegar from "kavenegar";
-import { getCurrentDateFarsi, convertPersianDate } from "@/services/utility";
+import {
+  getCurrentDateFarsi,
+  convertPersianDate,
+  toEnglishNumber,
+  isEnglishNumber,
+} from "@/services/utility";
 import {
   getSingleRecordApi,
   updateRecordApi,
@@ -34,7 +40,40 @@ export default function Reception({ records }) {
   const [messages, setMessages] = useState([]);
   const [recordObject, setRecordObject] = useState(null);
   const [navigation, setNavigation] = useState("دکتر فراهانی" || "دکتر گنجه");
+  const [alert, setAlert] = useState("");
+  const [disableButton, setDisableButton] = useState(false);
   const router = useRouter();
+
+  // variables to edit user info
+  const [editFormData, setEditFormData] = useState(null);
+  const [name, setName] = useState("");
+  const [idMeli, setIdMeli] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [referral, setReferral] = useState("");
+  const [birthDate, setBirthDate] = useState({
+    day: "",
+    month: "",
+    year: "",
+  });
+
+  useEffect(() => {
+    if (editFormData) {
+      setName(editFormData.name);
+      setIdMeli(editFormData.idMeli);
+      setPhone(editFormData.phone);
+      setAddress(editFormData.address);
+      setOccupation(editFormData.occupation);
+      setReferral(editFormData.referral);
+      const [year, month, day] = editFormData.birthDate.split("/");
+      setBirthDate({
+        day,
+        month,
+        year,
+      });
+    }
+  }, [editFormData]);
 
   useEffect(() => {
     if (currentUser?.permission === "admin") {
@@ -128,6 +167,77 @@ export default function Reception({ records }) {
     }, 500);
   };
 
+  const checkConvertNumber = (number) => {
+    return isEnglishNumber(number) ? number : toEnglishNumber(number);
+  };
+
+  const handleEditFormData = async () => {
+    setDisableButton(true);
+
+    const fields = [
+      { value: name, message: "نام الزامیست" },
+      { value: idMeli, message: "کدملی الزامیست" },
+      { value: birthDate.year, message: "سال تولد الزامیست" },
+      { value: birthDate.month, message: "ماه تولد الزامیست" },
+      { value: birthDate.day, message: "روز تولد الزامیست" },
+      { value: phone, message: "موبایل الزامیست" },
+      { value: address, message: "آدرس الزامیست" },
+      { value: occupation, message: "شغل الزامیست" },
+    ];
+    for (const field of fields) {
+      if (!field.value) {
+        showAlert(field.message);
+        setDisableButton(false);
+        return;
+      }
+    }
+
+    const [currentYear] = getCurrentDateFarsi().split("/");
+    let phoneEnglish = checkConvertNumber(phone);
+    let idEnglish = checkConvertNumber(idMeli);
+    let birthYear = checkConvertNumber(birthDate.year);
+
+    if (birthYear.length !== 4 || !birthYear.startsWith("13")) {
+      showAlert("سال تولد اشتباه");
+      setDisableButton(false);
+      return;
+    }
+    if (phoneEnglish.length !== 11 || !phoneEnglish.startsWith("09")) {
+      showAlert("موبایل اشتباه");
+      setDisableButton(false);
+      return;
+    }
+    if (idEnglish.length !== 9 && idEnglish.length !== 10) {
+      showAlert("کدملی اشتباه");
+      setDisableButton(false);
+      return;
+    }
+
+    let recordData = {
+      ...editFormData,
+      name: name.trim(),
+      birthDate: `${birthYear}/${checkConvertNumber(
+        birthDate.month
+      )}/${checkConvertNumber(birthDate.day)}`,
+      age: toEnglishNumber(currentYear) - birthYear,
+      idMeli: idEnglish,
+      phone: phoneEnglish,
+      address: address.trim(),
+      occupation: occupation.trim(),
+      referral: referral ? referral.trim() : "-",
+    };
+    await updateRecordApi(recordData);
+    setEditFormData(null);
+    router.reload(router.asPath);
+  };
+
+  const showAlert = (message) => {
+    setAlert(message);
+    setTimeout(() => {
+      setAlert("");
+    }, 3000);
+  };
+
   return (
     <Fragment>
       <NextSeo
@@ -193,13 +303,12 @@ export default function Reception({ records }) {
           </div>
         )}
         <div className={classes.records}>
-          {!popupDiagramData && !recordObject && (
+          {!editFormData && !popupDiagramData && !recordObject && (
             <Fragment>
               {receptionCards.map((record, index) => (
                 <div key={index} className={classes.card}>
                   {!record.completed ? (
                     <div className={classes.row}>
-                      {/* <EditIcon className="icon" sx={{ fontSize: 20 }} /> */}
                       <p
                         style={{
                           color: record.checkup ? "#15b392" : "#999999",
@@ -214,10 +323,21 @@ export default function Reception({ records }) {
                       >
                         {record.time}
                       </p>
+                      <EditIcon
+                        className="icon"
+                        sx={{ fontSize: 20 }}
+                        onClick={() => setEditFormData(record)}
+                      />
                     </div>
                   ) : (
-                    <div className={classes.row}>
+                    <div
+                      className={classes.row}
+                      style={{
+                        color: "#999999",
+                      }}
+                    >
                       <p>مراجعه تکمیل</p>
+                      <DoneOutlineIcon sx={{ fontSize: 20 }} />
                     </div>
                   )}
                   <div
@@ -554,6 +674,216 @@ export default function Reception({ records }) {
                 </h4>
               </div>
               <FaceDiagram />
+            </div>
+          )}
+          {editFormData && (
+            <div className={classes.popup}>
+              <div className={classes.row}>
+                <CloseIcon
+                  className="icon"
+                  onClick={() => setEditFormData(null)}
+                />
+              </div>
+              <section className={classes.form}>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      <span>*</span>
+                      نام و نام خانوادگی
+                    </p>
+                    <CloseIcon
+                      className="icon"
+                      onClick={() => setName("")}
+                      sx={{ fontSize: 16 }}
+                    />
+                  </div>
+                  <input
+                    placeholder="فارسی وارد کنید"
+                    type="text"
+                    id="name"
+                    name="name"
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
+                    autoComplete="off"
+                    dir="rtl"
+                  />
+                </div>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      <span>*</span>
+                      کدملی
+                    </p>
+                    <CloseIcon
+                      className="icon"
+                      onClick={() => setIdMeli("")}
+                      sx={{ fontSize: 16 }}
+                    />
+                  </div>
+                  <input
+                    type="tel"
+                    id="idMeli"
+                    name="idMeli"
+                    onChange={(e) => setIdMeli(e.target.value)}
+                    value={idMeli}
+                    autoComplete="off"
+                    dir="rtl"
+                    maxLength={10}
+                  />
+                </div>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      <span>*</span>
+                      تاریخ تولد
+                    </p>
+                  </div>
+                  <div className={classes.inputBirth}>
+                    <input
+                      placeholder="15"
+                      type="tel"
+                      id="day"
+                      name="day"
+                      onChange={(e) =>
+                        setBirthDate((prev) => ({
+                          ...prev,
+                          day: e.target.value,
+                        }))
+                      }
+                      value={birthDate.day}
+                      autoComplete="off"
+                      dir="rtl"
+                      maxLength={2}
+                    />
+                    <input
+                      placeholder="05"
+                      type="tel"
+                      id="month"
+                      name="month"
+                      onChange={(e) =>
+                        setBirthDate((prev) => ({
+                          ...prev,
+                          month: e.target.value,
+                        }))
+                      }
+                      value={birthDate.month}
+                      autoComplete="off"
+                      dir="rtl"
+                      maxLength={2}
+                    />
+                    <input
+                      placeholder="1365"
+                      type="tel"
+                      id="year"
+                      name="year"
+                      onChange={(e) =>
+                        setBirthDate((prev) => ({
+                          ...prev,
+                          year: e.target.value,
+                        }))
+                      }
+                      value={birthDate.year}
+                      autoComplete="off"
+                      dir="rtl"
+                      maxLength={4}
+                    />
+                  </div>
+                </div>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      <span>*</span>
+                      موبایل
+                    </p>
+                    <CloseIcon
+                      className="icon"
+                      onClick={() => setPhone("")}
+                      sx={{ fontSize: 16 }}
+                    />
+                  </div>
+                  <input
+                    placeholder="09123456789"
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    onChange={(e) => setPhone(e.target.value)}
+                    value={phone}
+                    autoComplete="off"
+                    dir="rtl"
+                    maxLength={11}
+                  />
+                </div>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      <span>*</span>
+                      آدرس محل سکونت
+                    </p>
+                    <CloseIcon
+                      className="icon"
+                      onClick={() => setAddress("")}
+                      sx={{ fontSize: 16 }}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    onChange={(e) => setAddress(e.target.value)}
+                    value={address}
+                    autoComplete="off"
+                    dir="rtl"
+                  />
+                </div>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      <span>*</span>
+                      شغل
+                    </p>
+                    <CloseIcon
+                      className="icon"
+                      onClick={() => setOccupation("")}
+                      sx={{ fontSize: 16 }}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    id="occupation"
+                    name="occupation"
+                    onChange={(e) => setOccupation(e.target.value)}
+                    value={occupation}
+                    autoComplete="off"
+                    dir="rtl"
+                  />
+                </div>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>معرف</p>
+                    <CloseIcon
+                      className="icon"
+                      onClick={() => setReferral("")}
+                      sx={{ fontSize: 16 }}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    id="referral"
+                    name="referral"
+                    onChange={(e) => setReferral(e.target.value)}
+                    value={referral}
+                    autoComplete="off"
+                    dir="rtl"
+                  />
+                </div>
+                <p className={classes.alert}>{alert}</p>
+                <button
+                  disabled={disableButton}
+                  onClick={() => handleEditFormData()}
+                >
+                  ذخیره
+                </button>
+              </section>
             </div>
           )}
         </div>

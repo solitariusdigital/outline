@@ -207,6 +207,8 @@ export default function Reception() {
       { value: selectDoctor, message: "انتخاب دکتر الزامیست" },
       { value: idMeli, message: "کدملی الزامیست" },
       { value: birthDate.year, message: "سال تولد الزامیست" },
+      { value: birthDate.month, message: "ماه تولد الزامیست" },
+      { value: birthDate.day, message: "روز تولد الزامیست" },
       { value: phone, message: "موبایل الزامیست" },
       { value: address, message: "آدرس الزامیست" },
       { value: occupation, message: "شغل الزامیست" },
@@ -620,7 +622,7 @@ export default function Reception() {
               </div>
               <div className={classes.input}>
                 <div className={classes.bar}>
-                  <p className={classes.label}>نام معرف</p>
+                  <p className={classes.label}>معرف</p>
                   <CloseIcon
                     className="icon"
                     onClick={() => setReferral("")}

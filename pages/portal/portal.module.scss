@@ -445,6 +445,36 @@
         max-width: 400px;
         margin: auto;
       }
+
+      .form {
+        .bar {
+          display: flex;
+          flex-direction: row;
+        }
+
+        .label {
+          color: config.$grey;
+          font-size: config.$small-font;
+
+          span {
+            color: config.$red;
+            font-size: config.$tiny-font;
+          }
+        }
+
+        .inputBirth {
+          @include mixins.row-space-between-center();
+        }
+
+        button {
+          @include mixins.button(config.$blue, config.$blue, config.$white);
+        }
+
+        .alert {
+          color: config.$red;
+          margin-bottom: 8px;
+        }
+      }
     }
   }
 
