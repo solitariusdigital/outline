@@ -13,6 +13,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
+import EditIcon from "@mui/icons-material/Edit";
 import FaceDiagram from "@/components/FaceDiagram";
 import Kavenegar from "kavenegar";
 import { getCurrentDateFarsi, convertPersianDate } from "@/services/utility";
@@ -198,6 +199,7 @@ export default function Reception({ records }) {
                 <div key={index} className={classes.card}>
                   {!record.completed ? (
                     <div className={classes.row}>
+                      {/* <EditIcon className="icon" sx={{ fontSize: 20 }} /> */}
                       <p
                         style={{
                           color: record.checkup ? "#15b392" : "#999999",
@@ -229,15 +231,9 @@ export default function Reception({ records }) {
                       {record.name}
                     </h4>
                     {expandInformation === record["_id"] ? (
-                      <ExpandLessIcon
-                        className="icon"
-                        sx={{ color: "#2d2b7f" }}
-                      />
+                      <ExpandLessIcon className="icon" />
                     ) : (
-                      <ExpandMoreIcon
-                        className="icon"
-                        sx={{ color: "#2d2b7f" }}
-                      />
+                      <ExpandMoreIcon className="icon" />
                     )}
                   </div>
                   <div className={classes.row}>
@@ -251,7 +247,7 @@ export default function Reception({ records }) {
                   >
                     <div className={classes.row}>
                       <span className={classes.more}>سابقه بیمار</span>
-                      <MoreHorizIcon sx={{ color: "#2d2b7f" }} />
+                      <MoreHorizIcon className="icon" />
                     </div>
                     <p>{record.records.length}</p>
                   </div>

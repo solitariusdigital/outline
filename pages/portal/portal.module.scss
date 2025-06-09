@@ -69,17 +69,23 @@
 
     button {
       @include mixins.button(config.$white, config.$white, config.$blue);
-      border: 1px solid config.$blue;
-      width: 45%;
-      margin-bottom: 10px;
+      & {
+        border: 1px solid config.$blue;
+        width: 45%;
+        margin-bottom: 10px;
+      }
     }
     .booking {
       @include mixins.button(config.$blue, config.$blue, config.$white);
-      width: 45%;
+      & {
+        width: 45%;
+      }
     }
     .reminder {
       @include mixins.button(config.$green, config.$green, config.$white);
-      width: 100%;
+      & {
+        width: 100%;
+      }
     }
   }
 
@@ -112,8 +118,10 @@
 
     button {
       @include mixins.button(config.$blue, config.$blue, config.$white);
-      margin: auto;
-      margin-top: 20px;
+      & {
+        margin: auto;
+        margin-top: 20px;
+      }
     }
 
     .item {
@@ -200,8 +208,10 @@
       @include mixins.mobile {
         flex-direction: row-reverse;
       }
-      text-align: right;
-      width: 100%;
+      & {
+        text-align: right;
+        width: 100%;
+      }
 
       .title {
         font-weight: bold;
@@ -400,14 +410,18 @@
 
       .button {
         @include mixins.button(config.$blue, config.$blue, config.$white);
-        width: 100%;
-        margin: 5px 0px;
+        & {
+          width: 100%;
+          margin: 5px 0px;
+        }
       }
 
       .buttonCheck {
         @include mixins.button(config.$green, config.$green, config.$white);
-        width: 100%;
-        margin: 5px 0px;
+        & {
+          width: 100%;
+          margin: 5px 0px;
+        }
       }
     }
 

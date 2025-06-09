@@ -108,6 +108,8 @@
 
 .button {
   @include mixins.button(config.$blue, config.$blue, config.$white);
-  width: 150px;
-  margin: 32px 0px;
+  & {
+    width: 150px;
+    margin: 32px 0px;
+  }
 }
