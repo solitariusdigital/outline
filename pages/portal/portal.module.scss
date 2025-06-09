@@ -447,6 +447,24 @@
       }
 
       .form {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
+        width: 60%;
+        margin: auto;
+
+        @include mixins.tablet {
+          width: 100%;
+        }
+        @include mixins.mobile {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .input {
+          width: 100%;
+        }
+
         .bar {
           display: flex;
           flex-direction: row;
@@ -473,6 +491,7 @@
         .alert {
           color: config.$red;
           margin-bottom: 8px;
+          justify-content: center;
         }
       }
     }

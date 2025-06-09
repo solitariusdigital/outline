@@ -678,12 +678,10 @@ export default function Reception({ records }) {
           )}
           {editFormData && (
             <div className={classes.popup}>
-              <div className={classes.row}>
-                <CloseIcon
-                  className="icon"
-                  onClick={() => setEditFormData(null)}
-                />
-              </div>
+              <CloseIcon
+                className="icon"
+                onClick={() => setEditFormData(null)}
+              />
               <section className={classes.form}>
                 <div className={classes.input}>
                   <div className={classes.bar}>
@@ -729,6 +727,30 @@ export default function Reception({ records }) {
                     autoComplete="off"
                     dir="rtl"
                     maxLength={10}
+                  />
+                </div>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      <span>*</span>
+                      موبایل
+                    </p>
+                    <CloseIcon
+                      className="icon"
+                      onClick={() => setPhone("")}
+                      sx={{ fontSize: 16 }}
+                    />
+                  </div>
+                  <input
+                    placeholder="09123456789"
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    onChange={(e) => setPhone(e.target.value)}
+                    value={phone}
+                    autoComplete="off"
+                    dir="rtl"
+                    maxLength={11}
                   />
                 </div>
                 <div className={classes.input}>
@@ -793,30 +815,6 @@ export default function Reception({ records }) {
                   <div className={classes.bar}>
                     <p className={classes.label}>
                       <span>*</span>
-                      موبایل
-                    </p>
-                    <CloseIcon
-                      className="icon"
-                      onClick={() => setPhone("")}
-                      sx={{ fontSize: 16 }}
-                    />
-                  </div>
-                  <input
-                    placeholder="09123456789"
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    onChange={(e) => setPhone(e.target.value)}
-                    value={phone}
-                    autoComplete="off"
-                    dir="rtl"
-                    maxLength={11}
-                  />
-                </div>
-                <div className={classes.input}>
-                  <div className={classes.bar}>
-                    <p className={classes.label}>
-                      <span>*</span>
                       آدرس محل سکونت
                     </p>
                     <CloseIcon
@@ -876,13 +874,15 @@ export default function Reception({ records }) {
                     dir="rtl"
                   />
                 </div>
-                <p className={classes.alert}>{alert}</p>
-                <button
-                  disabled={disableButton}
-                  onClick={() => handleEditFormData()}
-                >
-                  ذخیره
-                </button>
+                <div className={classes.input}>
+                  <p className={classes.alert}>{alert}</p>
+                  <button
+                    disabled={disableButton}
+                    onClick={() => handleEditFormData()}
+                  >
+                    ذخیره
+                  </button>
+                </div>
               </section>
             </div>
           )}
