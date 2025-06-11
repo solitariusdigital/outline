@@ -35,6 +35,7 @@ export default function FaceDiagram() {
       "میکرو",
       "لب",
       "چانه",
+      "گردن",
     ],
     بوتاکس: [
       "اوت‌لاین",
@@ -73,6 +74,7 @@ export default function FaceDiagram() {
     میکرو: "#F07474",
     لب: "#F4B1E1",
     چانه: "#CBA374",
+    گردن: "#C6DEFF",
   };
 
   const handleSubcategoryToggle = (subcategory) => {
