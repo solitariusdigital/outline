@@ -20,6 +20,7 @@ import {
 import {
   calculateTimeDifference,
   getCurrentDateFarsi,
+  toEnglishNumber,
 } from "@/services/utility";
 
 export default function Manager({ control }) {
@@ -167,11 +168,11 @@ export default function Manager({ control }) {
     );
   };
 
-  const filterDisplayMonths = (monthNumber, typeNumber) => {
+  const filterDisplayMonths = (monthNumber) => {
     setAllUserData(allUserData);
     let filtered = allUserData.timesheets.filter((data) => {
       const parts = data.date.split("/");
-      return parts[typeNumber] === monthNumber;
+      return parts[1] === monthNumber;
     });
     setDisplaySelectedUser((prevData) => ({
       ...prevData,
@@ -279,7 +280,7 @@ export default function Manager({ control }) {
                 <select
                   defaultValue={"default"}
                   onChange={(e) => {
-                    filterDisplayMonths(e.target.value, 1);
+                    filterDisplayMonths(e.target.value);
                   }}
                 >
                   <option value="default" disabled>
@@ -298,6 +299,9 @@ export default function Manager({ control }) {
           </div>
           <div className={classes.cards}>
             {displaySelectedUser?.timesheets
+              .filter(
+                (sheet) => toEnglishNumber(sheet.date.split("/")[0]) > 1403
+              )
               .map((sheet, index) => (
                 <div
                   key={index}
@@ -316,7 +320,9 @@ export default function Manager({ control }) {
                         <h5>
                           {
                             calculateTimeDifference(
-                              sheet.timesheet.checkIn,
+                              toEnglishNumber(sheet.date.split("/")[1]) > 3
+                                ? "۲۰:۳۰:۰۰"
+                                : sheet.timesheet.checkIn,
                               sheet.timesheet.checkOut
                             ).hours
                           }
@@ -331,7 +337,9 @@ export default function Manager({ control }) {
                         <h5>
                           {
                             calculateTimeDifference(
-                              sheet.timesheet.checkIn,
+                              toEnglishNumber(sheet.date.split("/")[1]) > 3
+                                ? "۲۰:۳۰:۰۰"
+                                : sheet.timesheet.checkIn,
                               sheet.timesheet.checkOut
                             ).minutes
                           }
@@ -347,20 +355,8 @@ export default function Manager({ control }) {
                     )}
                   </div>
                   <div className={classes.row}>
-                    <p
-                      style={{
-                        width: "30px",
-                      }}
-                    >
-                      ورود
-                    </p>
-                    <h4
-                      style={{
-                        width: "70px",
-                      }}
-                    >
-                      {sheet.timesheet.checkIn}
-                    </h4>
+                    <p>ورود</p>
+                    <h4>{sheet.timesheet.checkIn}</h4>
                     <p
                       style={{
                         width: "170px",
@@ -369,21 +365,12 @@ export default function Manager({ control }) {
                       {sheet.address.checkIn}
                     </p>
                   </div>
+
                   <div className={classes.row}>
-                    <p
-                      style={{
-                        width: "30px",
-                      }}
-                    >
-                      خروج
+                    <p>
+                      {sheet.timesheet.checkOut ? "خروج" : "اضافه کار ندارد"}
                     </p>
-                    <h4
-                      style={{
-                        width: "70px",
-                      }}
-                    >
-                      {sheet.timesheet.checkOut}
-                    </h4>
+                    <h4>{sheet.timesheet.checkOut}</h4>
                     <p
                       style={{
                         width: "170px",

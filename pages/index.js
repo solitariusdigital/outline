@@ -149,7 +149,7 @@ export default function Home({ activeVisits }) {
     userId,
     entryIndex
   ) => {
-    const confirm = window.confirm("ثبت ساعت خروج؟");
+    const confirm = window.confirm("ثبت ساعت اضافه کار؟");
     if (!confirm) {
       setCheckDatesComplete(false);
       return;
@@ -164,7 +164,7 @@ export default function Home({ activeVisits }) {
       address
     );
     setCheckDatesComplete(true);
-    window.alert("ساعت خروج ثبت شد");
+    window.alert("ساعت اضافه کار ثبت شد");
   };
 
   const getUserLocation = async () => {
@@ -410,7 +410,7 @@ export default function Home({ activeVisits }) {
                 background: checkType === "checkin" ? "#15b392" : "#d40d12",
               }}
             >
-              {checkType === "checkin" ? "ثبت ساعت ورود" : "ثبت ساعت خروج"}
+              {checkType === "checkin" ? "ثبت ساعت ورود" : "ثبت ساعت اضافه کار"}
             </div>
           )}
         </section>
