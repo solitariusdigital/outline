@@ -14,7 +14,6 @@ import {
   toEnglishNumber,
   isEnglishNumber,
   ganjeDays,
-  hajiluDays,
   getCurrentDate,
 } from "@/services/utility";
 import {
@@ -271,7 +270,6 @@ export default function DatePicker({ visits }) {
       )}`,
       isSelectedDateFriday(day),
       ganjeDays(day),
-      hajiluDays(day),
       day
     );
   };
@@ -322,7 +320,6 @@ export default function DatePicker({ visits }) {
     selectedDate,
     isSelectedDateFriday,
     ganjeDays,
-    hajiluDays,
     day
   ) => {
     if (selectDoctor === "دکتر گنجه") {
@@ -346,11 +343,6 @@ export default function DatePicker({ visits }) {
       };
     }
     if (selectDoctor === "دکتر گنجه" && ganjeDays) {
-      setTimes({});
-      setDisplayForm(false);
-      return;
-    }
-    if (selectDoctor === "دکتر حاجیلو" && !hajiluDays) {
       setTimes({});
       setDisplayForm(false);
       return;
@@ -513,15 +505,6 @@ export default function DatePicker({ visits }) {
         return <p className={classes.message}>نوبت در این روز پر است</p>;
       } else {
         return <p className={classes.message}>نوبت دکتر گنجه موجود نیست</p>;
-      }
-    }
-    if (selectDoctor === "دکتر حاجیلو") {
-      if (hajiluDays(day)) {
-        return <p className={classes.message}>نوبت در این روز پر است</p>;
-      } else {
-        return (
-          <p className={classes.message}>نوبت دکتر حاجیلو شنبه تا چهارشنبه</p>
-        );
       }
     }
   };
