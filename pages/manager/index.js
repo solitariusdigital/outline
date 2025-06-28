@@ -366,7 +366,8 @@ export default function Manager({ control }) {
                     </p>
                   </div>
                   <div className={classes.row}>
-                    {toEnglishNumber(sheet.date.split("/")[1]) > 3 ? (
+                    {!sheet.timesheet.checkOut &&
+                    toEnglishNumber(sheet.date.split("/")[1]) > 3 ? (
                       <p>اضافه کار ندارد</p>
                     ) : (
                       <p>خروج</p>
