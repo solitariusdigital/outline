@@ -365,11 +365,12 @@ export default function Manager({ control }) {
                       {sheet.address.checkIn}
                     </p>
                   </div>
-
                   <div className={classes.row}>
-                    <p>
-                      {sheet.timesheet.checkOut ? "خروج" : "اضافه کار ندارد"}
-                    </p>
+                    {toEnglishNumber(sheet.date.split("/")[1]) > 3 ? (
+                      <p>اضافه کار ندارد</p>
+                    ) : (
+                      <p>خروج</p>
+                    )}
                     <h4>{sheet.timesheet.checkOut}</h4>
                     <p
                       style={{
