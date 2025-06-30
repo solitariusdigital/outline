@@ -298,6 +298,7 @@ export default function Reception() {
     };
     if (existingRecord) {
       recordObject.id = existingRecord["_id"];
+      recordObject.recordId = existingRecord.recordId;
       recordObject.records = [...existingRecord.records];
       recordObject.records.push(recordData);
       await updateRecordApi(recordObject);

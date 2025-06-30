@@ -83,7 +83,7 @@ export default function Manager({ control }) {
   useEffect(() => {
     const fetchData = async () => {
       let recordsData = await getRecordsApi();
-      recordsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      recordsData.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
       setDisplayRecords(recordsData);
     };
     if (navigation === "reception") {
