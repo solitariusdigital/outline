@@ -41,6 +41,7 @@ export default function Access() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
+  const { selectBranch, setSelectBranch } = useContext(StateContext);
   const { notification, setNotification } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const { adminColorCode, setAdminColorCode } = useContext(StateContext);
@@ -654,6 +655,7 @@ export default function Access() {
                     onClick={() => {
                       Router.push("/booking");
                       setSelectDoctor("دکتر فراهانی");
+                      setSelectBranch("tehran");
                     }}
                   >
                     دکتر فراهانی
@@ -663,9 +665,20 @@ export default function Access() {
                     onClick={() => {
                       Router.push("/booking");
                       setSelectDoctor("دکتر گنجه");
+                      setSelectBranch("tehran");
                     }}
                   >
                     دکتر گنجه
+                  </button>
+                  <button
+                    className={classes.booking}
+                    onClick={() => {
+                      Router.push("/booking");
+                      setSelectDoctor("دکتر فراهانی");
+                      setSelectBranch("kish");
+                    }}
+                  >
+                    شعبه کیش
                   </button>
                 </div>
               )}
@@ -862,6 +875,12 @@ export default function Access() {
                                           }
                                         >
                                           {item.user?.name}
+                                        </p>
+                                        <p>
+                                          {!item.branch ||
+                                          item.branch === "tehran"
+                                            ? "شعبه تهران"
+                                            : "شعبه کیش"}
                                         </p>
                                       </div>
                                     )}

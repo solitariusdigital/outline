@@ -14,6 +14,7 @@ import {
   toEnglishNumber,
   isEnglishNumber,
   ganjeDays,
+  tehranBranch,
   getCurrentDate,
 } from "@/services/utility";
 import {
@@ -29,6 +30,7 @@ import {
 export default function DatePicker({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
+  const { selectBranch, setSelectBranch } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const { adminColorCode, setAdminColorCode } = useContext(StateContext);
   const [name, setName] = useState(
@@ -168,6 +170,7 @@ export default function DatePicker({ visits }) {
       date: dateObject,
       adminId: currentUser["_id"],
       adminColor: colorCode,
+      branch: selectBranch,
       completed: false,
       canceled: false,
     };
@@ -270,6 +273,7 @@ export default function DatePicker({ visits }) {
       )}`,
       isSelectedDateFriday(day),
       ganjeDays(day),
+      tehranBranch(day),
       day
     );
   };
@@ -316,14 +320,9 @@ export default function DatePicker({ visits }) {
     setTimeCountPerDate(timeCountPerDate);
   };
 
-  const updateDisplayTime = (
-    selectedDate,
-    isSelectedDateFriday,
-    ganjeDays,
-    day
-  ) => {
-    if (selectDoctor === "دکتر گنجه") {
-      originalTimes = {
+  const setOriginalTimes = (doctor, branch) => {
+    const times = {
+      "دکتر گنجه": {
         "11:00": { display: false, active: false, count: 0 },
         "11:30": { display: false, active: false, count: 0 },
         "12:00": { display: true, active: false, count: 0 },
@@ -340,35 +339,92 @@ export default function DatePicker({ visits }) {
         "17:30": { display: true, active: false, count: 0 },
         "18:00": { display: true, active: false, count: 0 },
         "18:30": { display: true, active: false, count: 0 },
-      };
+      },
+      "دکتر فراهانی": {
+        tehran: {
+          "10:30": { display: false, active: false, count: 0 },
+          "11:00": { display: false, active: false, count: 0 },
+          "11:30": { display: false, active: false, count: 0 },
+          "12:00": { display: true, active: false, count: 0 },
+          "12:30": { display: true, active: false, count: 0 },
+          "13:00": { display: true, active: false, count: 0 },
+          "13:30": { display: true, active: false, count: 0 },
+          "14:00": { display: true, active: false, count: 0 },
+          "14:30": { display: true, active: false, count: 0 },
+          "15:00": { display: true, active: false, count: 0 },
+          "15:30": { display: true, active: false, count: 0 },
+          "16:00": { display: true, active: false, count: 0 },
+          "16:30": { display: true, active: false, count: 0 },
+          "17:00": { display: true, active: false, count: 0 },
+          "17:30": { display: true, active: false, count: 0 },
+          "18:00": { display: true, active: false, count: 0 },
+          "18:30": { display: true, active: false, count: 0 },
+        },
+        kish: {
+          "10:30": { display: false, active: false, count: 0 },
+          "11:00": { display: false, active: false, count: 0 },
+          "11:30": { display: false, active: false, count: 0 },
+          "12:00": { display: false, active: false, count: 0 },
+          "12:30": { display: false, active: false, count: 0 },
+          "13:00": { display: false, active: false, count: 0 },
+          "13:30": { display: false, active: false, count: 0 },
+          "14:00": { display: false, active: false, count: 0 },
+          "14:30": { display: false, active: false, count: 0 },
+          "15:00": { display: false, active: false, count: 0 },
+          "15:30": { display: false, active: false, count: 0 },
+          "16:00": { display: false, active: false, count: 0 },
+          "16:30": { display: false, active: false, count: 0 },
+          "17:00": { display: true, active: false, count: 0 },
+          "17:30": { display: true, active: false, count: 0 },
+          "18:00": { display: true, active: false, count: 0 },
+          "18:30": { display: true, active: false, count: 0 },
+          "19:00": { display: true, active: false, count: 0 },
+          "19:30": { display: true, active: false, count: 0 },
+          "20:00": { display: true, active: false, count: 0 },
+        },
+      },
+    };
+    if (doctor === "دکتر گنجه") {
+      return times["دکتر گنجه"];
+    } else if (doctor === "دکتر فراهانی") {
+      return times["دکتر فراهانی"][branch] || {};
     }
+    return {};
+  };
+
+  const updateDisplayTime = (
+    selectedDate,
+    isSelectedDateFriday,
+    ganjeDays,
+    tehranBranch,
+    day
+  ) => {
     if (selectDoctor === "دکتر گنجه" && ganjeDays) {
       setTimes({});
       setDisplayForm(false);
       return;
     }
-    if (selectDoctor === "دکتر فراهانی") {
-      originalTimes = {
-        "10:30": { display: false, active: false, count: 0 },
-        "11:00": { display: false, active: false, count: 0 },
-        "11:30": { display: false, active: false, count: 0 },
-        "12:00": { display: true, active: false, count: 0 },
-        "12:30": { display: true, active: false, count: 0 },
-        "13:00": { display: true, active: false, count: 0 },
-        "13:30": { display: true, active: false, count: 0 },
-        "14:00": { display: true, active: false, count: 0 },
-        "14:30": { display: true, active: false, count: 0 },
-        "15:00": { display: true, active: false, count: 0 },
-        "15:30": { display: true, active: false, count: 0 },
-        "16:00": { display: true, active: false, count: 0 },
-        "16:30": { display: true, active: false, count: 0 },
-        "17:00": { display: true, active: false, count: 0 },
-        "17:30": { display: true, active: false, count: 0 },
-        "18:00": { display: true, active: false, count: 0 },
-        "18:30": { display: true, active: false, count: 0 },
-      };
+    if (
+      selectDoctor === "دکتر فراهانی" &&
+      selectBranch === "tehran" &&
+      tehranBranch
+    ) {
+      setTimes({});
+      setDisplayForm(false);
+      return;
     }
+    if (
+      selectDoctor === "دکتر فراهانی" &&
+      selectBranch === "kish" &&
+      !tehranBranch
+    ) {
+      setTimes({});
+      setDisplayForm(false);
+      return;
+    }
+    originalTimes = setOriginalTimes(selectDoctor, selectBranch);
     setDisplayForm(true);
+
     let timeToUse;
     if (isSelectedDateFriday) {
       const numberSlice = 9;
@@ -382,12 +438,13 @@ export default function DatePicker({ visits }) {
     Object.keys(timeCountPerDate).forEach((date) => {
       if (date === selectedDate) {
         Object.keys(timeCountPerDate[date]).forEach((time) => {
+          const limitCount = selectBranch === "tehran" ? 3 : 4;
           const timeCount = timeCountPerDate[date][time];
           updatedTimes[time].count = timeCountPerDate[date][time];
           if (
             (currentUser.permission === "patient" ||
               currentUser.permission === "staff") &&
-            timeCount >= 3
+            timeCount >= limitCount
           ) {
             delete updatedTimes[time];
           }
@@ -496,44 +553,36 @@ export default function DatePicker({ visits }) {
     }, 3000);
   };
 
-  const renderMessage = () => {
-    if (selectDoctor === "دکتر فراهانی") {
-      return <p className={classes.message}>نوبت در این روز پر است</p>;
-    }
-    if (selectDoctor === "دکتر گنجه") {
-      if (!ganjeDays(day)) {
-        return <p className={classes.message}>نوبت در این روز پر است</p>;
-      } else {
-        return <p className={classes.message}>نوبت دکتر گنجه موجود نیست</p>;
-      }
-    }
-  };
-
   return (
     <div className={classes.container}>
+      {selectBranch === "kish" && (
+        <h5>پنجشنبه و جمعه نوبت‌دهی شعبه کیش فعال است</h5>
+      )}
       <div className={classes.input}>
-        <select
-          defaultValue={"default"}
-          onChange={(e) => {
-            setSelectDoctor(e.target.value);
-            countFullDateTime(e.target.value);
-            setDisplayForm(false);
-            setSelectedDate("");
-            setDay(null);
-            setTimes({});
-          }}
-        >
-          <option value="default" disabled>
-            {selectDoctor ? selectDoctor : "انتخاب دکتر"}
-          </option>
-          {doctors.map((doctor, index) => {
-            return (
-              <option key={index} value={doctor}>
-                {doctor}
-              </option>
-            );
-          })}
-        </select>
+        {selectBranch === "tehran" && (
+          <select
+            defaultValue={"default"}
+            onChange={(e) => {
+              setSelectDoctor(e.target.value);
+              countFullDateTime(e.target.value);
+              setDisplayForm(false);
+              setSelectedDate("");
+              setDay(null);
+              setTimes({});
+            }}
+          >
+            <option value="default" disabled>
+              {selectDoctor ? selectDoctor : "انتخاب دکتر"}
+            </option>
+            {doctors.map((doctor, index) => {
+              return (
+                <option key={index} value={doctor}>
+                  {doctor}
+                </option>
+              );
+            })}
+          </select>
+        )}
       </div>
       {selectDoctor && (
         <Calendar
@@ -589,7 +638,7 @@ export default function DatePicker({ visits }) {
         })}
       </div>
       {day && Object.keys(times).length === 0 && (
-        <Fragment>{renderMessage()}</Fragment>
+        <p className={classes.message}>در این روز امکان نوبت‌دهی وجود ندارد</p>
       )}
       {selectDoctor && displayForm && (
         <Fragment>

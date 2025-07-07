@@ -11,6 +11,7 @@ export const StateProvider = (props) => {
     "desktop" || "tablet-landscape" || "tablet-portrait" || "mobile"
   );
   const [selectDoctor, setSelectDoctor] = useState("");
+  const [selectBranch, setSelectBranch] = useState("tehran" || "kish");
   const [notification, setNotification] = useState(false);
   const [cachedVisitsData, setCachedVisitsData] = useState(null);
   const [popupDiagramData, setPopupDiagramData] = useState(null);
@@ -41,6 +42,8 @@ export const StateProvider = (props) => {
     setCachedVisitsData,
     popupDiagramData,
     setPopupDiagramData,
+    selectBranch,
+    setSelectBranch,
   };
   return (
     <StateContext.Provider value={stateContext}>

@@ -9,6 +9,7 @@ const VisitSchema = new Schema(
     date: Date,
     adminId: String,
     adminColor: String,
+    branch: String,
     completed: Boolean,
     canceled: Boolean,
   },

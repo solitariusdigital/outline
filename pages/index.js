@@ -15,16 +15,16 @@ import { getCurrentDateFarsi, getCurrentTimeFarsi } from "@/services/utility";
 export default function Home({ activeVisits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
+  const { selectBranch, setSelectBranch } = useContext(StateContext);
   const [hideBooking, setHideBooking] = useState(true);
   const [checkType, setCheckType] = useState("checkin" || "checkout");
   const [checkDatesComplete, setCheckDatesComplete] = useState(false);
   const [displayReception, setDisplayReception] = useState(false);
-
-  const locationLink =
-    "https://www.google.com/maps/place/35%C2%B047'47.0%22N+51%C2%B025'32.1%22E/@35.7963889,51.4249382,19z/data=!3m1!4b1!4m4!3m3!8m2!3d35.7963889!4d51.4255833?entry=ttu&g_ep=EgoyMDI0MDgyOC4wIKXMDSoASAFQAw%3D%3D";
   const router = useRouter();
   const isUserAuthorized =
     currentUser?.permission === "admin" || currentUser?.permission === "staff";
+  const tehranLocation =
+    "https://www.google.com/maps/place/35%C2%B047'47.0%22N+51%C2%B025'32.1%22E/@35.7963889,51.4249382,19z/data=!3m1!4b1!4m4!3m3!8m2!3d35.7963889!4d51.4255833?entry=ttu&g_ep=EgoyMDI0MDgyOC4wIKXMDSoASAFQAw%3D%3D";
 
   useEffect(() => {
     const handleUserVisits = async () => {
@@ -346,6 +346,7 @@ export default function Home({ activeVisits }) {
                 onClick={() => {
                   Router.push(currentUser ? "/booking" : "/portal");
                   setSelectDoctor("دکتر فراهانی");
+                  setSelectBranch("tehran");
                 }}
               >
                 نوبت دکتر فراهانی
@@ -355,9 +356,20 @@ export default function Home({ activeVisits }) {
                 onClick={() => {
                   Router.push(currentUser ? "/booking" : "/portal");
                   setSelectDoctor("دکتر گنجه");
+                  setSelectBranch("tehran");
                 }}
               >
                 نوبت دکتر گنجه
+              </div>
+              <div
+                className={classes.fillNav}
+                onClick={() => {
+                  Router.push(currentUser ? "/booking" : "/portal");
+                  setSelectDoctor("دکتر فراهانی");
+                  setSelectBranch("kish");
+                }}
+              >
+                نوبت شعبه کیش
               </div>
             </Fragment>
           )}
@@ -372,11 +384,25 @@ export default function Home({ activeVisits }) {
           <div className={classes.nav} onClick={() => Router.push("/about")}>
             فلسفه متد اوت‌لاین
           </div>
-          <div
-            className={classes.nav}
-            onClick={() => window.open(locationLink)}
-          >
-            آدرس کلینیک
+          <div className={classes.row}>
+            <div
+              className={classes.nav}
+              style={{
+                width: "49%",
+              }}
+              // onClick={() => window.open(tehranLocation)}
+            >
+              آدرس شعبه کیش
+            </div>
+            <div
+              className={classes.nav}
+              style={{
+                width: "49%",
+              }}
+              onClick={() => window.open(tehranLocation)}
+            >
+              آدرس شعبه تهران
+            </div>
           </div>
           <div
             className={classes.nav}

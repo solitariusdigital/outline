@@ -18,6 +18,15 @@
     width: calc(100% - 24px);
   }
 
+  .row {
+    @include mixins.row-space-between-center();
+
+    .nav,
+    .fillNav {
+      margin: 0px;
+    }
+  }
+
   .nav,
   .fillNav,
   .checkType {
