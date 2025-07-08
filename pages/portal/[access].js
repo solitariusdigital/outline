@@ -122,7 +122,6 @@ export default function Access() {
       const doctorIdTagName = {
         "66eb1dc863ab34979e6dd0a3": "دکتر فراهانی",
         "66f3129d0207273bf017248d": "دکتر گنجه",
-        // "67582f5e6cf19cb68b17c00b": "دکتر حاجیلو",
       };
 
       switch (currentUser.permission) {

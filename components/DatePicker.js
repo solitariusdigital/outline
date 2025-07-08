@@ -463,15 +463,7 @@ export default function DatePicker({ visits }) {
         }
       }
     }
-    if (selectDoctor === "دکتر حاجیلو") {
-      // Remove last available hour from the time object
-      const keys = Object.keys(updatedTimes);
-      const lastKey = keys[keys.length - 1];
-      delete updatedTimes[lastKey];
-      setTimes(updatedTimes);
-    } else {
-      setTimes(updatedTimes);
-    }
+    setTimes(updatedTimes);
   };
 
   // to compare today's date with the selected date
@@ -555,6 +547,7 @@ export default function DatePicker({ visits }) {
 
   return (
     <div className={classes.container}>
+      {selectBranch === "tehran" && <h5>نوبت‌دهی شعبه تهران</h5>}
       {selectBranch === "kish" && (
         <h5>پنجشنبه و جمعه نوبت‌دهی شعبه کیش فعال است</h5>
       )}
@@ -611,7 +604,7 @@ export default function DatePicker({ visits }) {
             بستن روز
           </button>
         ))}
-      {day && currentUser.permission === "admin" && (
+      {day && displayForm && currentUser.permission === "admin" && (
         <h3 className={classes.totalCount}>
           {Object.values(times).reduce((acc, time) => acc + time.count, 0)}
         </h3>
