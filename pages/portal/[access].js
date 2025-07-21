@@ -111,8 +111,22 @@ export default function Access() {
   }, [loadPage, cachedVisitsData]);
 
   useEffect(() => {
-    window.addEventListener("scroll", loadMore);
-  });
+    if (visitTypes !== "all") {
+      const loadMore = () => {
+        if (
+          window.innerHeight + document.documentElement.scrollTop ===
+          document.scrollingElement.scrollHeight
+        ) {
+          setReqNumber(reqNumber + 50);
+        }
+      };
+      window.addEventListener("scroll", loadMore);
+      // Cleanup function to remove the event listener
+      return () => {
+        window.removeEventListener("scroll", loadMore);
+      };
+    }
+  }, [visitTypes, reqNumber, setReqNumber]);
 
   const fetchRefreshData = async () => {
     try {
@@ -186,15 +200,6 @@ export default function Access() {
       .sort((a, b) => a.canceled - b.canceled);
   };
 
-  const loadMore = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.scrollingElement.scrollHeight
-    ) {
-      setReqNumber(reqNumber + 50);
-    }
-  };
-
   const scrollToDiv = () => {
     if (targetDivRef.current) {
       targetDivRef.current.scrollIntoView({ behavior: "smooth" });
@@ -246,7 +251,8 @@ export default function Access() {
     }
   };
 
-  const searchUserVisits = (phone) => {
+  const searchUserVisits = (e) => {
+    let phone = e.target.value;
     setPhone(phone);
     if (phone.length === 11) {
       let phoneEnglish = isEnglishNumber(phone)
@@ -352,7 +358,7 @@ export default function Access() {
     scrollToDiv();
     switch (type) {
       case "all":
-        setFilterVisits(displayVisits);
+        setFilterVisits([]);
         break;
       case "active":
         setFilterVisits(
@@ -541,61 +547,68 @@ export default function Access() {
                   </p>
                 </div>
                 {(currentUser.permission === "admin" ||
-                  currentUser.permission === "doctor") && (
-                  <Fragment>
-                    <div className={classes.row}>
-                      <p>
-                        {filterVisitsByDate(cachedVisitsData.visits).length}
-                      </p>
-                      <p
-                        className={
-                          visitTypes === "today"
-                            ? classes.itemActive
-                            : classes.item
-                        }
-                        onClick={() => {
-                          filterDisplayVisits("today");
-                        }}
-                      >
-                        امروز
-                      </p>
+                  currentUser.permission === "doctor") &&
+                  visitTypes !== "all" && (
+                    <div>
+                      <div className={classes.row}>
+                        <p>
+                          {filterVisitsByDate(cachedVisitsData.visits).length}
+                        </p>
+                        <p
+                          className={
+                            visitTypes === "today"
+                              ? classes.itemActive
+                              : classes.item
+                          }
+                          onClick={() => {
+                            filterDisplayVisits("today");
+                          }}
+                        >
+                          امروز
+                        </p>
+                      </div>
+                      <div className={classes.row}>
+                        <p>
+                          {
+                            filterVisitsByDate(cachedVisitsData.visits, 1)
+                              .length
+                          }
+                        </p>
+                        <p
+                          className={
+                            visitTypes === "tomorrow"
+                              ? classes.itemActive
+                              : classes.item
+                          }
+                          onClick={() => {
+                            filterDisplayVisits("tomorrow");
+                          }}
+                        >
+                          فردا
+                        </p>
+                      </div>
+                      <div className={classes.row}>
+                        <p>
+                          {
+                            filterVisitsByDate(cachedVisitsData.visits, 2)
+                              .length
+                          }
+                        </p>
+                        <p
+                          className={
+                            visitTypes === "afterTomorrow"
+                              ? classes.itemActive
+                              : classes.item
+                          }
+                          onClick={() => {
+                            filterDisplayVisits("afterTomorrow");
+                          }}
+                        >
+                          پس‌فردا
+                        </p>
+                      </div>
                     </div>
-                    <div className={classes.row}>
-                      <p>
-                        {filterVisitsByDate(cachedVisitsData.visits, 1).length}
-                      </p>
-                      <p
-                        className={
-                          visitTypes === "tomorrow"
-                            ? classes.itemActive
-                            : classes.item
-                        }
-                        onClick={() => {
-                          filterDisplayVisits("tomorrow");
-                        }}
-                      >
-                        فردا
-                      </p>
-                    </div>
-                    <div className={classes.row}>
-                      <p>
-                        {filterVisitsByDate(cachedVisitsData.visits, 2).length}
-                      </p>
-                      <p
-                        className={
-                          visitTypes === "afterTomorrow"
-                            ? classes.itemActive
-                            : classes.item
-                        }
-                        onClick={() => {
-                          filterDisplayVisits("afterTomorrow");
-                        }}
-                      >
-                        پس‌فردا
-                      </p>
-                    </div>
-                  </Fragment>
-                )}
+                  )}
                 <div className={classes.row}>
                   <p>
                     {
@@ -647,7 +660,8 @@ export default function Access() {
               displayVisits.filter(
                 (visit) => !visit.completed && !visit.canceled
               ).length === 0) &&
-              visitTypes !== "afterTomorrow" && (
+              visitTypes !== "afterTomorrow" &&
+              visitTypes !== "all" && (
                 <div className={classes.buttonContainer}>
                   <button
                     className={classes.booking}
@@ -752,7 +766,7 @@ export default function Access() {
                     className="icon"
                     onClick={() => {
                       setPhone("");
-                      setFilterVisits(displayVisits);
+                      setFilterVisits([]);
                     }}
                     sx={{ fontSize: 16 }}
                   />
@@ -763,9 +777,7 @@ export default function Access() {
                   id="phone"
                   name="phone"
                   maxLength={11}
-                  onChange={(e) => {
-                    searchUserVisits(e.target.value);
-                  }}
+                  onChange={searchUserVisits}
                   value={phone}
                   autoComplete="off"
                   dir="rtl"
