@@ -24,7 +24,9 @@ export default function Home({ activeVisits }) {
   const isUserAuthorized =
     currentUser?.permission === "admin" || currentUser?.permission === "staff";
   const tehranLocation =
-    "https://www.google.com/maps/place/35%C2%B047'47.0%22N+51%C2%B025'32.1%22E/@35.7963889,51.4249382,19z/data=!3m1!4b1!4m4!3m3!8m2!3d35.7963889!4d51.4255833?entry=ttu&g_ep=EgoyMDI0MDgyOC4wIKXMDSoASAFQAw%3D%3D";
+    "https://www.google.com/maps/place/%D8%AF%DA%A9%D8%AA%D8%B1+%D9%81%D8%B1%D8%A7%D9%87%D8%A7%D9%86%DB%8C+%D8%A7%D9%88%D8%AA+%D9%84%D8%A7%DB%8C%D9%86%E2%80%AD/@35.7966147,51.425542,20.39z/data=!4m6!3m5!1s0x3f8e070074e7f933:0x1b60689649d061a8!8m2!3d35.7966208!4d51.4254661!16s%2Fg%2F11wv3h85d_?entry=ttu&g_ep=EgoyMDI1MDgwNi4wIKXMDSoASAFQAw%3D%3D";
+  const kishLocation =
+    "https://www.google.com/maps/place/%D8%A7%D9%88%D8%AA%E2%80%8C%D9%84%D8%A7%DB%8C%D9%86+%DA%A9%DB%8C%D8%B4%E2%80%AD/@26.5527385,54.0211711,17z/data=!4m14!1m7!3m6!1s0x3e50ab003291c53d:0x81c83549d1a6e13!2z2KfZiNiq4oCM2YTYp9uM2YYg2qnbjNi0!8m2!3d26.5527385!4d54.0211711!16s%2Fg%2F11yhhlzkdn!3m5!1s0x3e50ab003291c53d:0x81c83549d1a6e13!8m2!3d26.5527385!4d54.0211711!16s%2Fg%2F11yhhlzkdn?entry=ttu&g_ep=EgoyMDI1MDgwNi4wIKXMDSoASAFQAw%3D%3D";
 
   useEffect(() => {
     const handleUserVisits = async () => {
@@ -390,7 +392,7 @@ export default function Home({ activeVisits }) {
               style={{
                 width: "49%",
               }}
-              // onClick={() => window.open(tehranLocation)}
+              onClick={() => window.open(kishLocation)}
             >
               آدرس شعبه کیش
             </div>
