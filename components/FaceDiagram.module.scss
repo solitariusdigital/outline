@@ -7,6 +7,9 @@
   .diagram {
     position: relative;
     height: 250px;
+    & {
+      margin-top: 12px;
+    }
   }
 }
 
@@ -73,6 +76,24 @@
   }
 }
 
+.selectedInjections {
+  width: 100%;
+  max-width: 400px;
+  margin: 8px auto;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid config.$lightgrey;
+
+  p {
+    color: config.$grey;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  }
+}
+
 .comment {
   max-width: 400px;
   margin: 16px auto;
@@ -93,12 +114,13 @@
   }
 }
 
-.input {
+.textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 400px;
   margin: auto;
+  margin-top: 24px;
 
   textarea {
     @include mixins.input();
@@ -110,10 +132,15 @@
   }
 }
 
+.button-base {
+  width: 150px !important;
+  margin: 32px 0px;
+}
 .button {
   @include mixins.button(config.$blue, config.$blue, config.$white);
-  & {
-    width: 150px;
-    margin: 32px 0px;
-  }
+  @extend .button-base;
+}
+.buttonGuide {
+  @include mixins.button(config.$blue, config.$white, config.$blue);
+  @extend .button-base;
 }

@@ -630,7 +630,7 @@ export default function Manager({ control }) {
                     <p>{recordObject.medicalFamilyDescription}</p>
                   </div>
                   <div className={classes.historyItem}>
-                    <span>سابقه تزریق</span>
+                    <span>سابقه مشاوره</span>
                     {Object.entries(recordObject.visitHistory).map(
                       ([key, items]) => {
                         if (items.length > 0) {
@@ -646,6 +646,32 @@ export default function Manager({ control }) {
                       }
                     )}
                   </div>
+                  {recordObject.injectHistory && (
+                    <div className={classes.historyItem}>
+                      <span>سابقه تزریق</span>
+                      {Object.entries(recordObject.injectHistory).map(
+                        ([key, items]) => {
+                          if (items.length > 0) {
+                            // Filter the items to only include those that are active
+                            const activeItems = items.filter(
+                              (item) => item.active
+                            );
+                            // Check if there are any active items to render
+                            if (activeItems.length > 0) {
+                              return (
+                                <div key={key} className={classes.historyRow}>
+                                  <span>{key}</span>
+                                  {activeItems.map((item, index) => (
+                                    <h5 key={index}>{item.name}</h5>
+                                  ))}
+                                </div>
+                              );
+                            }
+                          }
+                        }
+                      )}
+                    </div>
+                  )}
                   {recordObject.comment && (
                     <div className={classes.info}>
                       <span>نظر پزشک</span>

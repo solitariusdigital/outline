@@ -5,8 +5,17 @@ import classes from "./FaceDiagram.module.scss";
 import Image from "next/legacy/image";
 import faceDiagram from "@/assets/faceDiagram.png";
 import CloseIcon from "@mui/icons-material/Close";
-import Router from "next/router";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { updateRecordApi } from "@/services/api";
+
+const defaultInjections = {
+  فیلر: [],
+  بوتاکس: [],
+  مزوتراپی: [],
+  جوانساز: [],
+  "پی آر پی": [],
+};
 
 export default function FaceDiagram() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -14,9 +23,13 @@ export default function FaceDiagram() {
   const [selectedSubcategories, setSelectedSubcategories] = useState(
     popupDiagramData.lastRecord?.visitHistory
   );
+  const [selectedInjections, setSelectedInjections] = useState(
+    popupDiagramData.lastRecord?.injectHistory ?? defaultInjections
+  );
   const [comment, setComment] = useState(popupDiagramData.lastRecord?.comment);
   const activeFunctionality =
     currentUser?.permission === "doctor" ? true : false;
+  const [displayGuide, setDisplayGuide] = useState(false);
   const [navigation, setNavigation] = useState(
     "فیلر" || "بوتاکس" || "مزوتراپی" || "جوانساز" || "پی آر پی"
   );
@@ -94,12 +107,52 @@ export default function FaceDiagram() {
         };
       }
     });
+    setSelectedInjections((prevState) => {
+      return {
+        ...prevState,
+        [navigation]: prevState[navigation].map((item) =>
+          item.name === subcategory ? { ...item, active: false } : item
+        ),
+      };
+    });
   };
 
-  const handleCategories = async () => {
+  const handleChangeInjections = (key, value) => {
+    setSelectedInjections((prevState) => {
+      const currentCategory = prevState[key] || [];
+      const index = currentCategory.findIndex((item) => item.name === value); // Find the index of the item
+      if (index !== -1) {
+        // If the item exists, toggle its active state
+        const updatedItem = {
+          ...currentCategory[index],
+          active: !currentCategory[index].active,
+        };
+        return {
+          ...prevState,
+          [key]: [
+            ...currentCategory.slice(0, index), // Items before the index
+            updatedItem, // Updated item
+            ...currentCategory.slice(index + 1), // Items after the index
+          ],
+        };
+      } else {
+        // If the item does not exist, add it with active set to true
+        return {
+          ...prevState,
+          [key]: [
+            ...currentCategory,
+            { name: value, amount: "", active: true },
+          ],
+        };
+      }
+    });
+  };
+
+  const handleSaveData = async () => {
     let allRecords = popupDiagramData.record.records;
     let currentRecord = popupDiagramData.lastRecord;
     currentRecord.visitHistory = selectedSubcategories;
+    currentRecord.injectHistory = selectedInjections;
     currentRecord.comment = comment;
     let updatedRecords = [...allRecords];
     if (updatedRecords.length > 0) {
@@ -137,6 +190,9 @@ export default function FaceDiagram() {
 
   return (
     <div className={classes.container}>
+      <div className={classes.text}>
+        <h3>مشاوره</h3>
+      </div>
       {Object.entries(selectedSubcategories).map(([key, values]) => (
         <div
           key={key}
@@ -215,28 +271,78 @@ export default function FaceDiagram() {
               <h4>{comment ? comment : "-"}</h4>
             </div>
           )}
-          <div className={classes.text}>
-            {!activeFunctionality && (
-              <p>برای اعمال تزریق روی صورت بیمار به جدول بالا مراجعه کنید</p>
-            )}
-            <p>مناطق روی صورت جهت راهنمای فیلر نشان داده شده</p>
-          </div>
-          <div className={classes.diagram}>
-            <Image
-              src={faceDiagram}
-              blurDataURL={faceDiagram}
-              alt="faceDiagram"
-              placeholder="blur"
-              layout="fill"
-              objectFit="contain"
-              as="image"
-              unoptimized
-            />
-          </div>
+          <button
+            className={classes.buttonGuide}
+            onClick={() => setDisplayGuide(!displayGuide)}
+          >
+            راهنما فیلر
+          </button>
+          {displayGuide && (
+            <div className={classes.text}>
+              {!activeFunctionality && (
+                <p>
+                  برای اعمال تزریق روی صورت بیمار به جدول مشاوره مراجعه کنید
+                </p>
+              )}
+              <p>مناطق روی صورت جهت راهنما فیلر نشان داده شده</p>
+              <div className={classes.diagram}>
+                <Image
+                  src={faceDiagram}
+                  blurDataURL={faceDiagram}
+                  alt="faceDiagram"
+                  placeholder="blur"
+                  layout="fill"
+                  objectFit="contain"
+                  as="image"
+                  unoptimized
+                />
+              </div>
+            </div>
+          )}
         </Fragment>
       )}
+      <div
+        className={classes.text}
+        style={{
+          marginTop: "24px",
+        }}
+      >
+        <h3>تزریق</h3>
+        <p>تزریق انجام شده را انتخاب و ذخیره کنید</p>
+      </div>
+      {Object.entries(selectedSubcategories).map(([key, values]) => (
+        <Fragment key={key}>
+          {values.length > 0 && (
+            <div className={classes.selectedInjections}>
+              <p style={{ marginBottom: "8px" }}>{key}</p>
+              <div className={classes.grid}>
+                {values.map((value, index) => (
+                  <div key={`${key}-${value}-${index}`}>
+                    <h4>{value}</h4>
+                    {!!selectedInjections[key].find(
+                      (item) => item.name === value
+                    )?.active ? (
+                      <RadioButtonCheckedIcon
+                        sx={{ fontSize: 28 }}
+                        className="icon"
+                        onClick={() => handleChangeInjections(key, value)}
+                      />
+                    ) : (
+                      <RadioButtonUncheckedIcon
+                        sx={{ fontSize: 28 }}
+                        className="icon"
+                        onClick={() => handleChangeInjections(key, value)}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </Fragment>
+      ))}
       {currentUser?.permission === "doctor" && (
-        <div className={classes.input}>
+        <div className={classes.textarea}>
           <div className={classes.bar}>
             <CloseIcon
               className="icon"
@@ -253,11 +359,11 @@ export default function FaceDiagram() {
             autoComplete="off"
             dir="rtl"
           />
-          <button className={classes.button} onClick={() => handleCategories()}>
-            تکمیل
-          </button>
         </div>
       )}
+      <button className={classes.button} onClick={() => handleSaveData()}>
+        ذخیره
+      </button>
     </div>
   );
 }
