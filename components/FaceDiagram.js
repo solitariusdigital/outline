@@ -191,7 +191,7 @@ export default function FaceDiagram() {
   return (
     <div className={classes.container}>
       <div className={classes.text}>
-        <h3>مشاوره</h3>
+        <h4>جدول مشاوره</h4>
       </div>
       {Object.entries(selectedSubcategories).map(([key, values]) => (
         <div
@@ -301,14 +301,37 @@ export default function FaceDiagram() {
           )}
         </Fragment>
       )}
+      {currentUser?.permission === "doctor" && (
+        <div className={classes.textarea}>
+          <div className={classes.bar}>
+            <CloseIcon
+              className="icon"
+              onClick={() => setComment("")}
+              sx={{ fontSize: 16 }}
+            />
+          </div>
+          <textarea
+            placeholder="نظر پزشک"
+            type="text"
+            name="comment"
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+            autoComplete="off"
+            dir="rtl"
+          />
+          <button className={classes.button} onClick={() => handleSaveData()}>
+            تکمیل مشاوره
+          </button>
+        </div>
+      )}
       <div
         className={classes.text}
         style={{
           marginTop: "24px",
         }}
       >
-        <h3>تزریق</h3>
-        <p>تزریق انجام شده را انتخاب و ذخیره کنید</p>
+        <h4>جدول تزریق</h4>
+        <p>تزریق انجام شده را انتخاب کنید</p>
       </div>
       {Object.entries(selectedSubcategories).map(([key, values]) => (
         <Fragment key={key}>
@@ -341,28 +364,8 @@ export default function FaceDiagram() {
           )}
         </Fragment>
       ))}
-      {currentUser?.permission === "doctor" && (
-        <div className={classes.textarea}>
-          <div className={classes.bar}>
-            <CloseIcon
-              className="icon"
-              onClick={() => setComment("")}
-              sx={{ fontSize: 16 }}
-            />
-          </div>
-          <textarea
-            placeholder="نظر پزشک"
-            type="text"
-            name="comment"
-            onChange={(e) => setComment(e.target.value)}
-            value={comment}
-            autoComplete="off"
-            dir="rtl"
-          />
-        </div>
-      )}
       <button className={classes.button} onClick={() => handleSaveData()}>
-        ذخیره
+        تکمیل تزریق
       </button>
     </div>
   );
