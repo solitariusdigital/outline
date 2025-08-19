@@ -174,11 +174,10 @@ export default function FaceDiagram() {
           style={{
             backgroundColor: fillerColor[key],
             backgroundColor: fillerColor[key],
-            borderRadius: "50px",
-            padding: "4px",
+            borderRadius: "10px",
+            padding: "5px",
             margin: "2px",
             fontWeight: "bold",
-            minWidth: "80px",
           }}
         >
           {key}
@@ -190,183 +189,185 @@ export default function FaceDiagram() {
 
   return (
     <div className={classes.container}>
-      <div className={classes.text}>
-        <h4>جدول مشاوره</h4>
-      </div>
-      {Object.entries(selectedSubcategories).map(([key, values]) => (
-        <div
-          key={key}
-          className={classes.selectedSubcategories}
-          style={{
-            background:
-              key === navigation && activeFunctionality ? "#ffffff" : "",
-            border:
-              key === navigation && activeFunctionality
-                ? "1px solid #2d2b7f"
-                : "1px solid #d6d6d6",
-            pointerEvents: activeFunctionality ? "auto" : "none",
-          }}
-          onClick={() => {
-            activeFunctionality ? setNavigation(key) : null;
-          }}
-        >
-          <p
+      <div>
+        <div className={classes.text}>
+          <h4>جدول مشاوره</h4>
+        </div>
+        {Object.entries(selectedSubcategories).map(([key, values]) => (
+          <div
+            key={key}
+            className={classes.selectedSubcategories}
             style={{
-              marginLeft: "8px",
-              color:
-                key === navigation && activeFunctionality ? " #2d2b7f" : "",
+              background:
+                key === navigation && activeFunctionality ? "#ffffff" : "",
+              border:
+                key === navigation && activeFunctionality
+                  ? "1px solid #2d2b7f"
+                  : "1px solid #d6d6d6",
+              pointerEvents: activeFunctionality ? "auto" : "none",
+            }}
+            onClick={() => {
+              activeFunctionality ? setNavigation(key) : null;
             }}
           >
-            {key}
-          </p>
-          {values.map((value, index) => (
-            <div key={index} className={classes.row}>
-              {key === "فیلر" ? getFillerColor(value) : <h4>{value}</h4>}
+            <p
+              style={{
+                color:
+                  key === navigation && activeFunctionality ? " #2d2b7f" : "",
+              }}
+            >
+              {key}
+            </p>
+            <div className={classes.grid}>
+              {values.map((value, index) => (
+                <Fragment key={index}>
+                  {key === "فیلر" ? getFillerColor(value) : <h4>{value}</h4>}
+                </Fragment>
+              ))}
             </div>
-          ))}
-        </div>
-      ))}
-      {navigation !== "فیلر" && activeFunctionality && (
-        <Fragment>
-          <div className={classes.navigationTypes}>
-            {categories[navigation].map((item, index) => (
-              <p
-                className={classes.nav}
-                style={{
-                  fontWeight: "bold",
-                  border: "1px solid #2d2b7f",
-                }}
-                onClick={() => handleSubcategoryToggle(item)}
-                key={index}
-              >
-                {item}
-              </p>
-            ))}
           </div>
-        </Fragment>
-      )}
-      {navigation === "فیلر" && (
-        <Fragment>
-          {activeFunctionality && (
+        ))}
+        {navigation !== "فیلر" && activeFunctionality && (
+          <Fragment>
             <div className={classes.navigationTypes}>
               {categories[navigation].map((item, index) => (
                 <p
-                  key={index}
                   className={classes.nav}
                   style={{
                     fontWeight: "bold",
-                    background: fillerColor[item],
-                    color: "#1b1b1b",
+                    border: "1px solid #2d2b7f",
                   }}
                   onClick={() => handleSubcategoryToggle(item)}
+                  key={index}
                 >
                   {item}
                 </p>
               ))}
             </div>
-          )}
-          {!activeFunctionality && (
-            <div className={classes.comment}>
-              <span>نظر پزشک</span>
-              <h4>{comment ? comment : "-"}</h4>
-            </div>
-          )}
-          <button
-            className={classes.buttonGuide}
-            onClick={() => setDisplayGuide(!displayGuide)}
-          >
-            راهنما فیلر
-          </button>
-          {displayGuide && (
-            <div className={classes.text}>
-              {!activeFunctionality && (
-                <p>
-                  برای اعمال تزریق روی صورت بیمار به جدول مشاوره مراجعه کنید
-                </p>
-              )}
-              <p>مناطق روی صورت جهت راهنما فیلر نشان داده شده</p>
-              <div className={classes.diagram}>
-                <Image
-                  src={faceDiagram}
-                  blurDataURL={faceDiagram}
-                  alt="faceDiagram"
-                  placeholder="blur"
-                  layout="fill"
-                  objectFit="contain"
-                  as="image"
-                  unoptimized
-                />
-              </div>
-            </div>
-          )}
-        </Fragment>
-      )}
-      {currentUser?.permission === "doctor" && (
-        <div className={classes.textarea}>
-          <div className={classes.bar}>
-            <CloseIcon
-              className="icon"
-              onClick={() => setComment("")}
-              sx={{ fontSize: 16 }}
-            />
-          </div>
-          <textarea
-            placeholder="نظر پزشک"
-            type="text"
-            name="comment"
-            onChange={(e) => setComment(e.target.value)}
-            value={comment}
-            autoComplete="off"
-            dir="rtl"
-          />
-          <button className={classes.button} onClick={() => handleSaveData()}>
-            تکمیل مشاوره
-          </button>
-        </div>
-      )}
-      <div
-        className={classes.text}
-        style={{
-          marginTop: "24px",
-        }}
-      >
-        <h4>جدول تزریق</h4>
-        <p>تزریق انجام شده را انتخاب کنید</p>
-      </div>
-      {Object.entries(selectedSubcategories).map(([key, values]) => (
-        <Fragment key={key}>
-          {values.length > 0 && (
-            <div className={classes.selectedInjections}>
-              <p style={{ marginBottom: "8px" }}>{key}</p>
-              <div className={classes.grid}>
-                {values.map((value, index) => (
-                  <div key={`${key}-${value}-${index}`}>
-                    <h4>{value}</h4>
-                    {!!selectedInjections[key].find(
-                      (item) => item.name === value
-                    )?.active ? (
-                      <RadioButtonCheckedIcon
-                        sx={{ fontSize: 28 }}
-                        className="icon"
-                        onClick={() => handleChangeInjections(key, value)}
-                      />
-                    ) : (
-                      <RadioButtonUncheckedIcon
-                        sx={{ fontSize: 28 }}
-                        className="icon"
-                        onClick={() => handleChangeInjections(key, value)}
-                      />
-                    )}
-                  </div>
+          </Fragment>
+        )}
+        {navigation === "فیلر" && (
+          <Fragment>
+            {activeFunctionality && (
+              <div className={classes.navigationTypes}>
+                {categories[navigation].map((item, index) => (
+                  <p
+                    key={index}
+                    className={classes.nav}
+                    style={{
+                      fontWeight: "bold",
+                      color: "#1b1b1b",
+                      background: fillerColor[item],
+                    }}
+                    onClick={() => handleSubcategoryToggle(item)}
+                  >
+                    {item}
+                  </p>
                 ))}
               </div>
+            )}
+            {!activeFunctionality && (
+              <div className={classes.comment}>
+                <span>نظر پزشک</span>
+                <h4>{comment ? comment : "-"}</h4>
+              </div>
+            )}
+            <button
+              className={classes.buttonGuide}
+              onClick={() => setDisplayGuide(!displayGuide)}
+            >
+              راهنما فیلر
+            </button>
+            {displayGuide && (
+              <div className={classes.text}>
+                {!activeFunctionality && (
+                  <p>
+                    برای اعمال تزریق روی صورت بیمار به جدول مشاوره مراجعه کنید
+                  </p>
+                )}
+                <p>مناطق روی صورت جهت راهنما فیلر نشان داده شده</p>
+                <div className={classes.diagram}>
+                  <Image
+                    src={faceDiagram}
+                    blurDataURL={faceDiagram}
+                    alt="faceDiagram"
+                    placeholder="blur"
+                    layout="fill"
+                    objectFit="contain"
+                    as="image"
+                    unoptimized
+                  />
+                </div>
+              </div>
+            )}
+          </Fragment>
+        )}
+        {currentUser?.permission === "doctor" && (
+          <div className={classes.textarea}>
+            <div className={classes.bar}>
+              <CloseIcon
+                className="icon"
+                onClick={() => setComment("")}
+                sx={{ fontSize: 16 }}
+              />
             </div>
-          )}
-        </Fragment>
-      ))}
-      <button className={classes.button} onClick={() => handleSaveData()}>
-        تکمیل تزریق
-      </button>
+            <textarea
+              placeholder="نظر پزشک"
+              type="text"
+              name="comment"
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
+              autoComplete="off"
+              dir="rtl"
+            />
+            <button className={classes.button} onClick={() => handleSaveData()}>
+              تکمیل مشاوره
+            </button>
+          </div>
+        )}
+      </div>
+      <div>
+        <div className={classes.text}>
+          <h4>جدول تزریق</h4>
+          <p>تزریق انجام شده را انتخاب کنید</p>
+        </div>
+        {Object.entries(selectedSubcategories).map(([key, values]) => (
+          <Fragment key={key}>
+            {values.length > 0 && (
+              <div className={classes.selectedInjections}>
+                <p>{key}</p>
+                <div className={classes.grid}>
+                  {values.map((value, index) => (
+                    <div
+                      key={`${key}-${value}-${index}`}
+                      className={classes.row}
+                      onClick={() => handleChangeInjections(key, value)}
+                    >
+                      <h4>{value}</h4>
+                      {!!selectedInjections[key].find(
+                        (item) => item.name === value
+                      )?.active ? (
+                        <RadioButtonCheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                        />
+                      ) : (
+                        <RadioButtonUncheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </Fragment>
+        ))}
+        <button className={classes.button} onClick={() => handleSaveData()}>
+          تکمیل تزریق
+        </button>
+      </div>
     </div>
   );
 }
