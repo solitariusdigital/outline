@@ -2,8 +2,6 @@
 @use "styles/_mixins.scss" as mixins;
 
 .container {
-  padding: 12px 0px;
-
   @include mixins.desktop {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
