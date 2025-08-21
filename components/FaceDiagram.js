@@ -15,6 +15,70 @@ const defaultInjections = {
   مزوتراپی: [],
   جوانساز: [],
   "پی آر پی": [],
+  آنزیم: [],
+  سونوگرافی: [],
+};
+const categories = {
+  فیلر: [
+    "پیشانی",
+    "شقیقه",
+    "زیرچشم",
+    "میدفیس",
+    "بینی",
+    "خط خنده",
+    "ساب مالار",
+    "زاویه فک",
+    "میکرو",
+    "لب",
+    "چانه",
+    "گردن",
+    "خط غم",
+    "قاب صورت",
+    "دست",
+  ],
+  بوتاکس: [
+    "اوت‌لاین",
+    "بینی",
+    "مستر",
+    "زیربغل",
+    "کف دست",
+    "گامی اسمایل",
+    "خط اخم",
+    "دورچشم",
+    "چانه",
+    "گردن",
+    "میگرن",
+  ],
+  مزوتراپی: ["مو", "زیرچشم", "فول فیس", "گردن", "چربی سوز"],
+  جوانساز: [
+    "پروفایلو فیس",
+    "پروفایلو استراکچر",
+    "فول فیس",
+    "گردن",
+    "دست",
+    "Sline زیرچشم",
+    "Sline فیس",
+  ],
+  "پی آر پی": ["مو", "صورت"],
+  آنزیم: ["آنزیم"],
+  سونوگرافی: ["سونوگرافی"],
+};
+const fillerColor = {
+  پیشانی: "#FFE7D0",
+  شقیقه: "#BCEDA7",
+  زیرچشم: "#FECD5B",
+  میدفیس: "#B54EFF",
+  بینی: "#9099FD",
+  "خط خنده": "#DBDDDD",
+  "ساب مالار": "#99F0FA",
+  "زاویه فک": "#EEFB84",
+  میکرو: "#F07474",
+  لب: "#F4B1E1",
+  چانه: "#CBA374",
+  گردن: "#C6DEFF",
+  "خط غم": "",
+  "قاب صورت": "",
+  دست: "",
 };
 
 export default function FaceDiagram() {
@@ -31,64 +95,15 @@ export default function FaceDiagram() {
     currentUser?.permission === "doctor" ? true : false;
   const [displayGuide, setDisplayGuide] = useState(false);
   const [navigation, setNavigation] = useState(
-    "فیلر" || "بوتاکس" || "مزوتراپی" || "جوانساز" || "پی آر پی"
+    "فیلر" ||
+      "بوتاکس" ||
+      "مزوتراپی" ||
+      "جوانساز" ||
+      "پی آر پی" ||
+      "آنزیم" ||
+      "سونوگرافی"
   );
   const router = useRouter();
-
-  const categories = {
-    فیلر: [
-      "پیشانی",
-      "شقیقه",
-      "زیرچشم",
-      "میدفیس",
-      "بینی",
-      "خط خنده",
-      "ساب مالار",
-      "زاویه فک",
-      "میکرو",
-      "لب",
-      "چانه",
-      "گردن",
-    ],
-    بوتاکس: [
-      "اوت‌لاین",
-      "بینی",
-      "مستر",
-      "زیربغل",
-      "کف دست",
-      "گامی اسمایل",
-      "خط اخم",
-      "دورچشم",
-      "چانه",
-      "گردن",
-      "میگرن",
-    ],
-    مزوتراپی: ["مو", "زیرچشم", "فول فیس", "گردن", "چربی سوز"],
-    جوانساز: [
-      "پروفایلو فیس",
-      "پروفایلو استراکچر",
-      "فول فیس",
-      "گردن",
-      "دست",
-      "Sline زیرچشم",
-      "Sline فیس",
-    ],
-    "پی آر پی": ["مو", "صورت"],
-  };
-  const fillerColor = {
-    پیشانی: "#FFE7D0",
-    شقیقه: "#BCEDA7",
-    زیرچشم: "#FECD5B",
-    میدفیس: "#B54EFF",
-    بینی: "#9099FD",
-    "خط خنده": "#DBDDDD",
-    "ساب مالار": "#99F0FA",
-    "زاویه فک": "#EEFB84",
-    میکرو: "#F07474",
-    لب: "#F4B1E1",
-    چانه: "#CBA374",
-    گردن: "#C6DEFF",
-  };
 
   const handleSubcategoryToggle = (subcategory) => {
     setSelectedSubcategories((prevSelected) => {
@@ -168,23 +183,19 @@ export default function FaceDiagram() {
   };
 
   const getFillerColor = (key) => {
-    if (fillerColor[key]) {
-      return (
-        <div
-          style={{
-            backgroundColor: fillerColor[key],
-            backgroundColor: fillerColor[key],
-            borderRadius: "10px",
-            padding: "5px",
-            margin: "2px",
-            fontWeight: "bold",
-          }}
-        >
-          {key}
-        </div>
-      );
-    }
-    return null;
+    return (
+      <div
+        style={{
+          backgroundColor: fillerColor[key],
+          borderRadius: "10px",
+          padding: "5px",
+          margin: "2px",
+          fontWeight: "bold",
+        }}
+      >
+        {key}
+      </div>
+    );
   };
 
   return (
@@ -258,6 +269,9 @@ export default function FaceDiagram() {
                       fontWeight: "bold",
                       color: "#1b1b1b",
                       background: fillerColor[item],
+                      border: `1px solid ${
+                        !fillerColor[item] ? "#2d2b7f" : "none"
+                      }`,
                     }}
                     onClick={() => handleSubcategoryToggle(item)}
                   >

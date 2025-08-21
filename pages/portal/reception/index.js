@@ -934,8 +934,7 @@ export async function getServerSideProps(context) {
       if (a.checkup !== b.checkup) {
         return a.checkup ? 1 : -1;
       }
-      // Sort by updatedAt (ascending)
-      return new Date(a.updatedAt) - new Date(b.updatedAt);
+      return new Date(b.updatedAt) - new Date(a.updatedAt);
     });
 
     return {

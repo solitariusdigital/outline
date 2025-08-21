@@ -292,6 +292,8 @@ export default function Reception() {
         مزوتراپی: [],
         جوانساز: [],
         "پی آر پی": [],
+        آنزیم: [],
+        سونوگرافی: [],
       },
       comment: "",
       message: "",
