@@ -144,17 +144,9 @@ export default function DatePicker({ visits }) {
       return;
     }
     if (currentUser.permission === "admin") {
-      let hasConflict = await checkActiveBooking(phoneEnglish);
-      if (hasConflict) {
-        window.alert("بیمار نوبت فعال دارد");
-        setDisableButton(false);
-        return;
-      }
-    }
-    if (currentUser.permission === "admin") {
-      let hasConflict = await checkExistingSameBooking(phoneEnglish);
-      if (hasConflict) {
-        window.alert("نوبت در زمان مشابه ثبت شده");
+      let checkBooking = await checkActiveBooking(phoneEnglish);
+      if (checkBooking.hasConflict) {
+        window.alert(`بیمار نوبت فعال دارد ${checkBooking.conflictingTime}`);
         setDisableButton(false);
         return;
       }
@@ -209,19 +201,17 @@ export default function DatePicker({ visits }) {
       return [];
     }
   };
-  // Check for existing visit on date time
-  const checkExistingSameBooking = async (phoneEnglish, selectedDate) => {
-    const visitData = await getUserVisits(phoneEnglish);
-    const hasConflict = visitData.some((visit) => visit.time === selectedDate);
-    return hasConflict;
-  };
   // Check for active visit
   const checkActiveBooking = async (phoneEnglish) => {
     const visitData = await getUserVisits(phoneEnglish);
-    const hasConflict = visitData.some(
+    const conflictingVisit = visitData.find(
       (visit) => !visit.canceled && !visit.completed
     );
-    return hasConflict;
+    const hasConflict = !!conflictingVisit; // Convert to boolean
+    return {
+      hasConflict,
+      conflictingTime: conflictingVisit ? conflictingVisit.time : null,
+    };
   };
 
   const setUserId = async (phoneEnglish) => {
