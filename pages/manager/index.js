@@ -319,12 +319,8 @@ export default function Manager({ control }) {
                       >
                         <h5>
                           {
-                            calculateTimeDifference(
-                              toEnglishNumber(sheet.date.split("/")[1]) > 3
-                                ? "۲۰:۳۰:۰۰"
-                                : sheet.timesheet.checkIn,
-                              sheet.timesheet.checkOut
-                            ).hours
+                            calculateTimeDifference(sheet.timesheet.checkOut)
+                              .hours
                           }
                           <span
                             style={{
@@ -336,12 +332,8 @@ export default function Manager({ control }) {
                         </h5>
                         <h5>
                           {
-                            calculateTimeDifference(
-                              toEnglishNumber(sheet.date.split("/")[1]) > 3
-                                ? "۲۰:۳۰:۰۰"
-                                : sheet.timesheet.checkIn,
-                              sheet.timesheet.checkOut
-                            ).minutes
+                            calculateTimeDifference(sheet.timesheet.checkOut)
+                              .minutes
                           }
                           <span
                             style={{
@@ -366,11 +358,10 @@ export default function Manager({ control }) {
                     </p>
                   </div>
                   <div className={classes.row}>
-                    {!sheet.timesheet.checkOut &&
-                    toEnglishNumber(sheet.date.split("/")[1]) > 3 ? (
-                      <p>اضافه کار ندارد</p>
-                    ) : (
+                    {sheet.timesheet.checkOut ? (
                       <p>خروج</p>
+                    ) : (
+                      <p>اضافه کار ندارد</p>
                     )}
                     <h4>{sheet.timesheet.checkOut}</h4>
                     <p

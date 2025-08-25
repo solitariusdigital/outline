@@ -155,15 +155,23 @@ function parsePersianTime(timeString) {
   return { hours, minutes, seconds };
 }
 
-export function calculateTimeDifference(time1, time2) {
-  const t1 = parsePersianTime(time1);
+export function calculateTimeDifference(time2) {
+  const thresholdTime = "۲۰:۳۰:۰۰"; // The fixed time to compare with
+  const tThreshold = parsePersianTime(thresholdTime);
   const t2 = parsePersianTime(time2);
-  // Convert both times to total seconds
-  const totalSeconds1 = t1.hours * 3600 + t1.minutes * 60 + t1.seconds;
+  // Convert threshold time and time2 to total seconds for comparison
+  const totalSecondsThreshold =
+    tThreshold.hours * 3600 + tThreshold.minutes * 60 + tThreshold.seconds;
   const totalSeconds2 = t2.hours * 3600 + t2.minutes * 60 + t2.seconds;
-  // Calculate the difference in seconds
+  // Check if time2 has passed the threshold time
+  if (totalSeconds2 <= totalSecondsThreshold) {
+    const hours = 0;
+    const minutes = 0;
+    return { hours, minutes };
+  }
+  const t1 = parsePersianTime(thresholdTime);
+  const totalSeconds1 = t1.hours * 3600 + t1.minutes * 60 + t1.seconds;
   const differenceInSeconds = Math.abs(totalSeconds1 - totalSeconds2);
-  // Convert back to hours, minutes, and seconds
   const hours = Math.floor(differenceInSeconds / 3600);
   const minutes = Math.floor((differenceInSeconds % 3600) / 60);
   const seconds = differenceInSeconds % 60;
