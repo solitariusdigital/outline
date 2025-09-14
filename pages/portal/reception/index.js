@@ -323,11 +323,13 @@ export default function Reception({ records }) {
                       >
                         {record.time}
                       </p>
-                      <EditIcon
-                        className="icon"
-                        sx={{ fontSize: 20 }}
-                        onClick={() => setEditFormData(record)}
-                      />
+                      {currentUser?.permission === "admin" && (
+                        <EditIcon
+                          className="icon"
+                          sx={{ fontSize: 20 }}
+                          onClick={() => setEditFormData(record)}
+                        />
+                      )}
                     </div>
                   ) : (
                     <div
@@ -427,7 +429,6 @@ export default function Reception({ records }) {
                             </div>
                             {expandInformation === record["_id"] && (
                               <Fragment>
-                                <p>{record.address}</p>
                                 <div className={classes.row}>
                                   <span>شغل</span>
                                   <p>{record.occupation}</p>
@@ -436,6 +437,7 @@ export default function Reception({ records }) {
                                   <span>معرف</span>
                                   <p>{record.referral}</p>
                                 </div>
+                                <p>{record.address}</p>
                               </Fragment>
                             )}
                             {!record.completed && (
@@ -519,6 +521,17 @@ export default function Reception({ records }) {
                             )}
                             {expandInformation === record["_id"] && (
                               <Fragment>
+                                <div className={classes.info}>
+                                  <div className={classes.row}>
+                                    <span>شغل</span>
+                                    <p>{record.occupation}</p>
+                                  </div>
+                                  <div className={classes.row}>
+                                    <span>معرف</span>
+                                    <p>{record.referral}</p>
+                                  </div>
+                                  <p>{record.address}</p>
+                                </div>
                                 <div className={classes.info}>
                                   <span>تاریخچه پزشکی</span>
                                   <div className={classes.item}>
