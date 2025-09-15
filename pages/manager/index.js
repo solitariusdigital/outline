@@ -21,6 +21,7 @@ import {
   calculateTimeDifference,
   getCurrentDateFarsi,
   toEnglishNumber,
+  isEnglishNumber,
 } from "@/services/utility";
 
 export default function Manager({ control }) {
@@ -35,11 +36,14 @@ export default function Manager({ control }) {
   const [expandInformation, setExpandInformation] = useState(null);
   const [expandRecords, setExpandRecords] = useState(null);
   const [recordObject, setRecordObject] = useState(null);
-  const [displayRecords, setDisplayRecords] = useState(null);
+  const [displayRecords, setDisplayRecords] = useState([]);
+  const [filterRecords, setFilterRecords] = useState([]);
   const [navigation, setNavigation] = useState(
     "time" || "reminder" || "count" || "reception"
   );
   const [displayReception, setDisplayReception] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [reqNumber, setReqNumber] = useState(52);
   const router = useRouter();
   const adminsName = {
     "#EAD8B1": "Site",
@@ -75,6 +79,22 @@ export default function Manager({ control }) {
   ];
 
   useEffect(() => {
+    const loadMore = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop ===
+        document.scrollingElement.scrollHeight
+      ) {
+        setReqNumber(reqNumber + 52);
+      }
+    };
+    window.addEventListener("scroll", loadMore);
+    // Cleanup function to remove the event listener
+    return () => {
+      window.removeEventListener("scroll", loadMore);
+    };
+  }, [reqNumber, setReqNumber]);
+
+  useEffect(() => {
     const [year, month] = getCurrentDateFarsi().split("/");
     setCurrentYear(year);
     setCurrentMonth(month);
@@ -85,6 +105,7 @@ export default function Manager({ control }) {
       let recordsData = await getRecordsApi();
       recordsData.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
       setDisplayRecords(recordsData);
+      setFilterRecords(recordsData);
     };
     if (navigation === "reception") {
       fetchData();
@@ -112,7 +133,10 @@ export default function Manager({ control }) {
     };
     if (controlData.timesheets && currentUser?.super) {
       fetchData();
-    } else if (currentUser?.permission === "doctor") {
+    } else if (
+      currentUser?.permission === "admin" ||
+      currentUser?.permission === "doctor"
+    ) {
       setNavigation("reception");
     } else {
       Router.push("/");
@@ -215,6 +239,19 @@ export default function Manager({ control }) {
     setExpandRecords(id);
     if (expandRecords === id) {
       setExpandRecords(null);
+    }
+  };
+
+  const searchUserRecord = (e) => {
+    let phone = e.target.value;
+    setPhone(phone);
+    if (phone.length === 11) {
+      let phoneEnglish = isEnglishNumber(phone)
+        ? phone
+        : toEnglishNumber(phone);
+      setFilterRecords(
+        displayRecords.filter((record) => record?.phone === phoneEnglish)
+      );
     }
   };
 
@@ -465,114 +502,142 @@ export default function Manager({ control }) {
               )}
             </Fragment>
           )}
+          <div className={classes.input}>
+            <div className={classes.bar}>
+              <p className={classes.label}>جستجو</p>
+              <CloseIcon
+                className="icon"
+                onClick={() => {
+                  setPhone("");
+                  setFilterRecords(displayRecords);
+                }}
+                sx={{ fontSize: 16 }}
+              />
+            </div>
+            <input
+              placeholder="09123456789"
+              type="tel"
+              id="phone"
+              name="phone"
+              maxLength={11}
+              onChange={searchUserRecord}
+              value={phone}
+              autoComplete="off"
+              dir="rtl"
+            />
+          </div>
           <div className={classes.records}>
             {!recordObject && (
               <Fragment>
-                {displayRecords?.map((record, index) => (
-                  <div key={index} className={classes.card}>
-                    <div
-                      className={classes.row}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => expandInformationAction(record["_id"])}
-                    >
-                      <h4
-                        onClick={() =>
-                          navigator.clipboard.writeText(record.name)
-                        }
+                {filterRecords
+                  ?.map((record, index) => (
+                    <div key={index} className={classes.card}>
+                      <div
+                        className={classes.row}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => expandInformationAction(record["_id"])}
                       >
-                        {record.name}
-                      </h4>
-                      {expandInformation === record["_id"] ? (
-                        <ExpandLessIcon
-                          className="icon"
-                          sx={{ color: "#2d2b7f" }}
-                        />
-                      ) : (
-                        <ExpandMoreIcon
-                          className="icon"
-                          sx={{ color: "#2d2b7f" }}
-                        />
+                        <h4
+                          onClick={() =>
+                            navigator.clipboard.writeText(record.name)
+                          }
+                        >
+                          {record.name}
+                        </h4>
+                        {expandInformation === record["_id"] ? (
+                          <ExpandLessIcon
+                            className="icon"
+                            sx={{ color: "#2d2b7f" }}
+                          />
+                        ) : (
+                          <ExpandMoreIcon
+                            className="icon"
+                            sx={{ color: "#2d2b7f" }}
+                          />
+                        )}
+                      </div>
+                      <div className={classes.row}>
+                        <p>{record.birthDate}</p>
+                        <p>{record.age}</p>
+                      </div>
+                      <div className={classes.row}>
+                        <span>موبایل</span>
+                        <p
+                          onClick={() =>
+                            navigator.clipboard.writeText(record.phone)
+                          }
+                        >
+                          {record.phone}
+                        </p>
+                      </div>
+                      <div className={classes.row}>
+                        <span>کدملی</span>
+                        <p
+                          onClick={() =>
+                            navigator.clipboard.writeText(record.idMeli)
+                          }
+                        >
+                          {record.idMeli}
+                        </p>
+                      </div>
+                      <div className={classes.row}>
+                        <span>شماره پرونده</span>
+                        <p
+                          onClick={() =>
+                            navigator.clipboard.writeText(record.recordId)
+                          }
+                        >
+                          {record.recordId}
+                        </p>
+                      </div>
+                      {expandInformation === record["_id"] && (
+                        <Fragment>
+                          <div className={classes.row}>
+                            <span>شغل</span>
+                            <p>{record.occupation}</p>
+                          </div>
+                          <div className={classes.row}>
+                            <span>معرف</span>
+                            <p>{record.referral}</p>
+                          </div>
+                          <p>{record.address}</p>
+                        </Fragment>
+                      )}
+                      <div
+                        className={classes.row}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => expandRecordsAction(record["_id"])}
+                      >
+                        <div className={classes.row}>
+                          <span className={classes.more}>سابقه بیمار</span>
+                          <MoreHorizIcon sx={{ color: "#2d2b7f" }} />
+                        </div>
+                        <p>{record.records.length}</p>
+                      </div>
+                      {expandRecords === record["_id"] && (
+                        <Fragment>
+                          {record.records.map((item, index) => (
+                            <div
+                              key={index}
+                              className={classes.recordBox}
+                              style={{ cursor: "pointer" }}
+                              onClick={() => setRecordObject(item)}
+                            >
+                              <div className={classes.recordRow}>
+                                <p className={classes.recordText}>
+                                  {item.date}
+                                </p>
+                                <p className={classes.recordText}>
+                                  {item.doctor}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </Fragment>
                       )}
                     </div>
-                    <div className={classes.row}>
-                      <p>{record.birthDate}</p>
-                      <p>{record.age}</p>
-                    </div>
-                    <div className={classes.row}>
-                      <span>موبایل</span>
-                      <p
-                        onClick={() =>
-                          navigator.clipboard.writeText(record.phone)
-                        }
-                      >
-                        {record.phone}
-                      </p>
-                    </div>
-                    <div className={classes.row}>
-                      <span>کدملی</span>
-                      <p
-                        onClick={() =>
-                          navigator.clipboard.writeText(record.idMeli)
-                        }
-                      >
-                        {record.idMeli}
-                      </p>
-                    </div>
-                    <div className={classes.row}>
-                      <span>شماره پرونده</span>
-                      <p
-                        onClick={() =>
-                          navigator.clipboard.writeText(record.recordId)
-                        }
-                      >
-                        {record.recordId}
-                      </p>
-                    </div>
-                    {expandInformation === record["_id"] && (
-                      <Fragment>
-                        <p>{record.address}</p>
-                        <div className={classes.row}>
-                          <span>شغل</span>
-                          <p>{record.occupation}</p>
-                        </div>
-                        <div className={classes.row}>
-                          <span>معرف</span>
-                          <p>{record.referral}</p>
-                        </div>
-                      </Fragment>
-                    )}
-                    <div
-                      className={classes.row}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => expandRecordsAction(record["_id"])}
-                    >
-                      <div className={classes.row}>
-                        <span className={classes.more}>سابقه بیمار</span>
-                        <MoreHorizIcon sx={{ color: "#2d2b7f" }} />
-                      </div>
-                      <p>{record.records.length}</p>
-                    </div>
-                    {expandRecords === record["_id"] && (
-                      <Fragment>
-                        {record.records.map((item, index) => (
-                          <div
-                            key={index}
-                            className={classes.recordBox}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => setRecordObject(item)}
-                          >
-                            <div className={classes.recordRow}>
-                              <p className={classes.recordText}>{item.date}</p>
-                              <p className={classes.recordText}>
-                                {item.doctor}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </Fragment>
-                    )}
-                  </div>
-                ))}
+                  ))
+                  .slice(0, reqNumber)}
               </Fragment>
             )}
             {recordObject && (

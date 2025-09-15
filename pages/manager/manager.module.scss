@@ -16,6 +16,34 @@
     width: calc(100% - 24px);
   }
 
+  .input {
+    width: 100%;
+    max-width: 350px;
+    margin: 20px auto;
+
+    @include mixins.mobile {
+      max-width: 100%;
+    }
+
+    .bar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .label {
+      color: config.$grey;
+      font-size: config.$small-font;
+      margin-bottom: 4px;
+    }
+
+    input {
+      @include mixins.input();
+      width: 100%;
+    }
+  }
+
   .activeButton {
     margin-top: 12px;
     @include mixins.button(config.$red, config.$red, config.$white);

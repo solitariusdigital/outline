@@ -95,3 +95,13 @@ p {
 .Calendar__yearSelectorItem.-active .Calendar__yearSelectorText {
   background: config.$blue !important;
 }
+
+::selection {
+  background: config.$blue;
+  color: config.$white;
+}
+
+::-moz-selection {
+  background: config.$blue;
+  color: config.$white;
+}

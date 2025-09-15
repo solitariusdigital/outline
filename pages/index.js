@@ -334,11 +334,25 @@ export default function Home({ activeVisits }) {
           )}
           {(currentUser?.permission === "admin" ||
             currentUser?.permission === "doctor") && (
-            <div
-              className={classes.nav}
-              onClick={() => Router.push("/portal/reception")}
-            >
-              پورتال پذیرش
+            <div className={classes.row}>
+              <div
+                className={classes.fillNav}
+                style={{
+                  width: "49%",
+                }}
+                onClick={() => Router.push("/manager")}
+              >
+                پرونده بیمار
+              </div>
+              <div
+                className={classes.nav}
+                style={{
+                  width: "49%",
+                }}
+                onClick={() => Router.push("/portal/reception")}
+              >
+                پورتال پذیرش
+              </div>
             </div>
           )}
           {!hideBooking && (
@@ -374,14 +388,6 @@ export default function Home({ activeVisits }) {
                 نوبت شعبه کیش
               </div>
             </Fragment>
-          )}
-          {currentUser?.permission === "doctor" && (
-            <div
-              className={classes.fillNav}
-              onClick={() => Router.push("/manager")}
-            >
-              پرونده بیمار
-            </div>
           )}
           <div className={classes.nav} onClick={() => Router.push("/about")}>
             فلسفه متد اوت‌لاین
