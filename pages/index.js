@@ -335,15 +335,27 @@ export default function Home({ activeVisits }) {
           {(currentUser?.permission === "admin" ||
             currentUser?.permission === "doctor") && (
             <div className={classes.row}>
-              <div
-                className={classes.fillNav}
-                style={{
-                  width: "49%",
-                }}
-                onClick={() => Router.push("/manager")}
-              >
-                پرونده بیمار
-              </div>
+              {currentUser?.super ? (
+                <div
+                  className={classes.fillNav}
+                  style={{
+                    width: "49%",
+                  }}
+                  onClick={() => Router.push("/manager")}
+                >
+                  مدیریت
+                </div>
+              ) : (
+                <div
+                  className={classes.fillNav}
+                  style={{
+                    width: "49%",
+                  }}
+                  onClick={() => Router.push("/manager")}
+                >
+                  پرونده بیمار
+                </div>
+              )}
               <div
                 className={classes.nav}
                 style={{
@@ -420,14 +432,6 @@ export default function Home({ activeVisits }) {
           >
             تماس با ما
           </div>
-          {currentUser?.super && (
-            <div
-              className={classes.fillNav}
-              onClick={() => Router.push("/manager")}
-            >
-              مدیریت
-            </div>
-          )}
           {(displayReception || currentUser?.permission === "reception") && (
             <div
               className={classes.nav}
