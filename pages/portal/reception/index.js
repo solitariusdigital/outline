@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import FaceDiagram from "@/components/FaceDiagram";
 import Kavenegar from "kavenegar";
+import secureLocalStorage from "react-secure-storage";
 import {
   getCurrentDateFarsi,
   convertPersianDate,
@@ -30,6 +31,10 @@ import {
   updateVisitApi,
 } from "@/services/api";
 
+const receptionDoctor = JSON.parse(
+  secureLocalStorage.getItem("receptionDoctor")
+);
+
 export default function Reception({ records }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { popupDiagramData, setPopupDiagramData } = useContext(StateContext);
@@ -39,7 +44,9 @@ export default function Reception({ records }) {
   const [expandRecords, setExpandRecords] = useState(null);
   const [messages, setMessages] = useState([]);
   const [recordObject, setRecordObject] = useState(null);
-  const [navigation, setNavigation] = useState("دکتر فراهانی" || "دکتر گنجه");
+  const [navigation, setNavigation] = useState(
+    receptionDoctor || "دکتر فراهانی" || "دکتر گنجه"
+  );
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const router = useRouter();
@@ -96,6 +103,7 @@ export default function Reception({ records }) {
 
   const filterReceptionCards = (doctor) => {
     setNavigation(doctor);
+    secureLocalStorage.setItem("receptionDoctor", JSON.stringify(doctor));
     let filteredRecords = records.filter((record) => {
       const recordsArray = record.records;
       if (recordsArray.length > 0) {
