@@ -155,15 +155,15 @@
     background: config.$white;
     border: 1px solid config.$white;
     @include mixins.border-radius();
+  }
 
-    .row {
-      margin: 4px 0px;
-      @include mixins.row-space-between-center();
+  .row {
+    margin: 4px 0px;
+    @include mixins.row-space-between-center();
 
-      p {
-        color: config.$grey;
-        font-size: 14px;
-      }
+    p {
+      color: config.$grey;
+      font-size: 14px;
     }
   }
 }

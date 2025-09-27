@@ -44,6 +44,8 @@ export default function Manager({ control }) {
   const [displayReception, setDisplayReception] = useState(false);
   const [phone, setPhone] = useState("");
   const [reqNumber, setReqNumber] = useState(52);
+  const [totalHours, setTotalHours] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState("default");
   const router = useRouter();
   const adminsName = {
     "#EAD8B1": "Site",
@@ -202,9 +204,29 @@ export default function Manager({ control }) {
       ...prevData,
       timesheets: filtered,
     }));
+    calculateTotalHours(filtered);
   };
 
+  const calculateTotalHours = (data) => {
+    const totalMinutes = data
+      .filter((item) => item.timesheet.checkOut)
+      .reduce((sum, item) => {
+        const { hours, minutes } = calculateTimeDifference(
+          item.timesheet.checkOut
+        );
+        return sum + hours * 60 + minutes;
+      }, 0);
+    setTotalHours(convertMinutesToHours(totalMinutes));
+  };
+
+  const convertMinutesToHours = (totalMinutes) => ({
+    hours: Math.floor(totalMinutes / 60),
+    minutes: totalMinutes % 60,
+  });
+
   const assignUserData = (index) => {
+    setTotalHours(null);
+    setSelectedMonth("default");
     setAllUserData(userData[index]);
     setDisplaySelectedUser(userData[index]);
   };
@@ -315,8 +337,9 @@ export default function Manager({ control }) {
             {displaySelectedUser && (
               <div className={classes.input}>
                 <select
-                  defaultValue={"default"}
+                  value={selectedMonth}
                   onChange={(e) => {
+                    setSelectedMonth(e.target.value);
                     filterDisplayMonths(e.target.value);
                   }}
                 >
@@ -334,6 +357,42 @@ export default function Manager({ control }) {
               </div>
             )}
           </div>
+          {totalHours && (
+            <div
+              className={classes.row}
+              style={{
+                marginBottom: "12px",
+              }}
+            >
+              <h4
+                style={{
+                  margin: "4px",
+                }}
+              >
+                کل اضافه کار
+              </h4>
+              <h4>
+                {totalHours.hours}
+                <span
+                  style={{
+                    margin: "4px",
+                  }}
+                >
+                  ساعت
+                </span>
+              </h4>
+              <h4>
+                {totalHours.minutes}
+                <span
+                  style={{
+                    margin: "4px",
+                  }}
+                >
+                  دقیقه
+                </span>
+              </h4>
+            </div>
+          )}
           <div className={classes.cards}>
             {displaySelectedUser?.timesheets
               .filter(
