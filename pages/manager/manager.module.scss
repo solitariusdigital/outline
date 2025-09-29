@@ -156,9 +156,11 @@
     border: 1px solid config.$white;
     @include mixins.border-radius();
 
-    p {
-      color: config.$grey;
-      font-size: 14px;
+    .row {
+      p {
+        color: config.$grey;
+        font-size: 14px;
+      }
     }
   }
 }
