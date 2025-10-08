@@ -415,7 +415,13 @@
           margin: 5px 0px;
         }
       }
-
+      .buttonSwitch {
+        @include mixins.button(config.$blue, config.$white, config.$blue);
+        & {
+          width: 100%;
+          margin: 5px 0px;
+        }
+      }
       .buttonCheck {
         @include mixins.button(config.$green, config.$green, config.$white);
         & {

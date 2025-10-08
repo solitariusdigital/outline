@@ -239,6 +239,23 @@ export default function Reception({ records }) {
     router.reload(router.asPath);
   };
 
+  const switchDoctor = async (recordData, lastRecord) => {
+    let changeDoctor =
+      lastRecord.doctor === "دکتر فراهانی" ? "دکتر گنجه" : "دکتر فراهانی";
+    const message = `ارجاع مریض به ${changeDoctor}`;
+    const confirm = window.confirm(message);
+    if (confirm) {
+      const recordsArray = recordData.records;
+      if (recordsArray.length > 0) {
+        const lastRecordIndex = recordsArray.length - 1;
+        const lastRecord = recordsArray[lastRecordIndex];
+        lastRecord.doctor = changeDoctor;
+        await updateRecordApi(recordData);
+      }
+      router.reload(router.asPath);
+    }
+  };
+
   const showAlert = (message) => {
     setAlert(message);
     setTimeout(() => {
@@ -515,17 +532,27 @@ export default function Reception({ records }) {
                         return (
                           <>
                             {!record.completed && (
-                              <button
-                                className={classes.button}
-                                onClick={() =>
-                                  setPopupDiagramData({
-                                    record: record,
-                                    lastRecord: lastRecord,
-                                  })
-                                }
-                              >
-                                تجویز تزریق
-                              </button>
+                              <Fragment>
+                                <button
+                                  className={classes.button}
+                                  onClick={() =>
+                                    setPopupDiagramData({
+                                      record: record,
+                                      lastRecord: lastRecord,
+                                    })
+                                  }
+                                >
+                                  تجویز تزریق
+                                </button>
+                                <button
+                                  className={classes.buttonSwitch}
+                                  onClick={() =>
+                                    switchDoctor(record, lastRecord)
+                                  }
+                                >
+                                  ارجاع مریض
+                                </button>
+                              </Fragment>
                             )}
                             {expandInformation === record["_id"] && (
                               <Fragment>
