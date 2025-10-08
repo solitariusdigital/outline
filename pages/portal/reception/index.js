@@ -242,7 +242,7 @@ export default function Reception({ records }) {
   const switchDoctor = async (recordData, lastRecord) => {
     let changeDoctor =
       lastRecord.doctor === "دکتر فراهانی" ? "دکتر گنجه" : "دکتر فراهانی";
-    const message = `ارجاع مریض به ${changeDoctor}`;
+    const message = `ارجاع بیمار به ${changeDoctor}`;
     const confirm = window.confirm(message);
     if (confirm) {
       const recordsArray = recordData.records;
@@ -550,7 +550,7 @@ export default function Reception({ records }) {
                                     switchDoctor(record, lastRecord)
                                   }
                                 >
-                                  ارجاع مریض
+                                  ارجاع بیمار
                                 </button>
                               </Fragment>
                             )}
