@@ -187,9 +187,8 @@ export default function FaceDiagram() {
       <div
         style={{
           backgroundColor: fillerColor[key],
-          borderRadius: "10px",
-          padding: "5px",
-          margin: "2px",
+          borderRadius: "5px",
+          padding: "4px",
           fontWeight: "bold",
         }}
       >

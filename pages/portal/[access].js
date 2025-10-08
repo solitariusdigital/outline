@@ -72,7 +72,7 @@ export default function Access() {
   };
   const canceleStyle = {
     border: "1px solid #d40d12",
-    borderRadius: "12px",
+    borderRadius: "5px",
   };
 
   useEffect(() => {

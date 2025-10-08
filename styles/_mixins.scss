@@ -66,7 +66,7 @@ $screen-fourK: 6000px;
 }
 
 @mixin border-radius() {
-  border-radius: 12px;
+  border-radius: 5px;
 }
 
 @mixin transparentBackground($alpha, $color) {
