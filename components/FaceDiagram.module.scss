@@ -58,8 +58,8 @@
 
   p {
     background: config.$white;
-    padding: 5px;
-    border-radius: 10px;
+    padding: 4px;
+    border-radius: 5px;
   }
 }
 
@@ -67,8 +67,8 @@
   width: 100%;
   max-width: 400px;
   margin: 8px auto;
-  padding: 4px 8px;
-  border-radius: 10px;
+  padding: 8px;
+  border-radius: 5px;
   user-select: none;
 
   &:hover {
@@ -100,9 +100,11 @@
   max-width: 400px;
   margin: 8px auto;
   padding: 8px;
-  border-radius: 10px;
+  border-radius: 5px;
   border: 1px solid config.$lightgrey;
   user-select: none;
+
+  background: config.$background;
 
   .grid {
     display: grid;
@@ -112,9 +114,9 @@
 
   .row {
     @include mixins.row-space-between-center();
+    padding: 8px;
     border-radius: 5px;
-    border: 1px solid config.$lightgrey;
-    padding: 5px;
+    border: 1px solid config.$blue;
 
     &:hover {
       cursor: pointer;
@@ -123,6 +125,7 @@
 
   p {
     color: config.$grey;
+    margin-bottom: 8px;
   }
 }
 
