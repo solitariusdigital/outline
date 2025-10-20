@@ -212,6 +212,7 @@ export default function Reception() {
       { value: phone, message: "موبایل الزامیست" },
       { value: address, message: "آدرس الزامیست" },
       { value: occupation, message: "شغل الزامیست" },
+      { value: referral, message: "معرف الزامیست" },
       { value: confirmation, message: "صحت اطلاعات الزامیست" },
     ];
     for (const field of fields) {
@@ -267,7 +268,7 @@ export default function Reception() {
       phone: phoneEnglish,
       address: address.trim(),
       occupation: occupation.trim(),
-      referral: referral ? referral.trim() : "-",
+      referral: referral.trim(),
       date: digitalDate,
       visitId: visitId,
       time: time,
@@ -625,7 +626,10 @@ export default function Reception() {
               </div>
               <div className={classes.input}>
                 <div className={classes.bar}>
-                  <p className={classes.label}>معرف</p>
+                  <p className={classes.label}>
+                    معرف
+                    <span>*</span>
+                  </p>
                   <CloseIcon
                     className="icon"
                     onClick={() => setReferral("")}

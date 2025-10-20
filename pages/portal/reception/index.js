@@ -191,6 +191,7 @@ export default function Reception({ records }) {
       { value: phone, message: "موبایل الزامیست" },
       { value: address, message: "آدرس الزامیست" },
       { value: occupation, message: "شغل الزامیست" },
+      { value: referral, message: "معرف الزامیست" },
     ];
     for (const field of fields) {
       if (!field.value) {
@@ -232,7 +233,7 @@ export default function Reception({ records }) {
       phone: phoneEnglish,
       address: address.trim(),
       occupation: occupation.trim(),
-      referral: referral ? referral.trim() : "-",
+      referral: referral.trim(),
     };
     await updateRecordApi(recordData);
     setEditFormData(null);
@@ -931,7 +932,10 @@ export default function Reception({ records }) {
                 </div>
                 <div className={classes.input}>
                   <div className={classes.bar}>
-                    <p className={classes.label}>معرف</p>
+                    <p className={classes.label}>
+                      <span>*</span>
+                      معرف
+                    </p>
                     <CloseIcon
                       className="icon"
                       onClick={() => setReferral("")}
