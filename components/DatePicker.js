@@ -14,6 +14,7 @@ import {
   toEnglishNumber,
   isEnglishNumber,
   ganjeDays,
+  pourgholiDays,
   tehranBranch,
   getCurrentDate,
 } from "@/services/utility";
@@ -66,7 +67,7 @@ export default function DatePicker({ visits }) {
     "18:30": { display: true, active: false, count: 0 },
   };
   let topics = ["بوتاکس", "فیلر", "مشاوره", "ترمیم", "سایر"];
-  const doctors = ["دکتر فراهانی", "دکتر گنجه"];
+  const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر پورقلی"];
   const targetInputBox = useRef(null);
 
   const router = useRouter();
@@ -263,6 +264,7 @@ export default function DatePicker({ visits }) {
       )}`,
       isSelectedDateFriday(day),
       ganjeDays(day),
+      pourgholiDays(day),
       tehranBranch(day),
       day
     );
@@ -312,6 +314,20 @@ export default function DatePicker({ visits }) {
 
   const setOriginalTimes = (doctor, branch) => {
     const times = {
+      "دکتر پورقلی": {
+        "13:00": { display: true, active: false, count: 0 },
+        "13:30": { display: true, active: false, count: 0 },
+        "14:00": { display: true, active: false, count: 0 },
+        "14:30": { display: true, active: false, count: 0 },
+        "15:00": { display: true, active: false, count: 0 },
+        "15:30": { display: true, active: false, count: 0 },
+        "16:00": { display: true, active: false, count: 0 },
+        "16:30": { display: true, active: false, count: 0 },
+        "17:00": { display: true, active: false, count: 0 },
+        "17:30": { display: true, active: false, count: 0 },
+        "18:00": { display: true, active: false, count: 0 },
+        "18:30": { display: true, active: false, count: 0 },
+      },
       "دکتر گنجه": {
         "11:00": { display: false, active: false, count: 0 },
         "11:30": { display: false, active: false, count: 0 },
@@ -351,17 +367,6 @@ export default function DatePicker({ visits }) {
           "18:30": { display: true, active: false, count: 0 },
         },
         kish: {
-          "10:30": { display: false, active: false, count: 0 },
-          "11:00": { display: false, active: false, count: 0 },
-          "11:30": { display: false, active: false, count: 0 },
-          "12:00": { display: false, active: false, count: 0 },
-          "12:30": { display: false, active: false, count: 0 },
-          "13:00": { display: false, active: false, count: 0 },
-          "13:30": { display: false, active: false, count: 0 },
-          "14:00": { display: false, active: false, count: 0 },
-          "14:30": { display: false, active: false, count: 0 },
-          "15:00": { display: false, active: false, count: 0 },
-          "15:30": { display: false, active: false, count: 0 },
           "16:00": { display: true, active: false, count: 0 },
           "16:30": { display: true, active: false, count: 0 },
           "17:00": { display: true, active: false, count: 0 },
@@ -374,22 +379,27 @@ export default function DatePicker({ visits }) {
         },
       },
     };
-    if (doctor === "دکتر گنجه") {
-      return times["دکتر گنجه"];
-    } else if (doctor === "دکتر فراهانی") {
-      return times["دکتر فراهانی"][branch] || {};
+    if (doctor === "دکتر فراهانی") {
+      return times[doctor][branch] || {};
+    } else {
+      return times[doctor];
     }
-    return {};
   };
 
   const updateDisplayTime = (
     selectedDate,
     isSelectedDateFriday,
     ganjeDays,
+    pourgholiDays,
     tehranBranch,
     day
   ) => {
     if (selectDoctor === "دکتر گنجه" && ganjeDays) {
+      setTimes({});
+      setDisplayForm(false);
+      return;
+    }
+    if (selectDoctor === "دکتر پورقلی" && pourgholiDays) {
       setTimes({});
       setDisplayForm(false);
       return;

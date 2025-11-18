@@ -393,6 +393,16 @@ export default function Home({ activeVisits }) {
                 className={classes.fillNav}
                 onClick={() => {
                   Router.push(currentUser ? "/booking" : "/portal");
+                  setSelectDoctor("دکتر پورقلی");
+                  setSelectBranch("tehran");
+                }}
+              >
+                نوبت دکتر پورقلی
+              </div>
+              <div
+                className={classes.fillNav}
+                onClick={() => {
+                  Router.push(currentUser ? "/booking" : "/portal");
                   setSelectDoctor("دکتر فراهانی");
                   setSelectBranch("kish");
                 }}

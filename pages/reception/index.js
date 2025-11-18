@@ -77,7 +77,7 @@ export default function Reception() {
   const [displayMessage, setDisplayMessage] = useState(false);
   const [existingRecord, setExistingRecord] = useState(null);
   const [selectDoctor, setSelectDoctor] = useState("");
-  const doctors = ["دکتر فراهانی", "دکتر گنجه"];
+  const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر پورقلی"];
   const router = useRouter();
 
   const checkConvertNumber = (number) => {

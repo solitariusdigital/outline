@@ -72,6 +72,14 @@ export function ganjeDays(persianDate) {
   return dayOfWeek === 5 || dayOfWeek === 4; // Friday Thur
 }
 
+export function pourgholiDays(persianDate) {
+  const { day, month, year } = persianDate;
+  const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
+    .toDate()
+    .getDay();
+  return dayOfWeek === 5; // Friday
+}
+
 export function tehranBranch(persianDate) {
   const { day, month, year } = persianDate;
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")

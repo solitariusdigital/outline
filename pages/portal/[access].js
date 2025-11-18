@@ -136,6 +136,7 @@ export default function Access() {
       const doctorIdTagName = {
         "66eb1dc863ab34979e6dd0a3": "دکتر فراهانی",
         "66f3129d0207273bf017248d": "دکتر گنجه",
+        "691c9b30943bc9b640a7fa38": "دکتر پورقلی",
       };
 
       switch (currentUser.permission) {
@@ -687,6 +688,16 @@ export default function Access() {
                     className={classes.booking}
                     onClick={() => {
                       Router.push("/booking");
+                      setSelectDoctor("دکتر پورقلی");
+                      setSelectBranch("tehran");
+                    }}
+                  >
+                    دکتر پورقلی
+                  </button>
+                  <button
+                    className={classes.booking}
+                    onClick={() => {
+                      Router.push("/booking");
                       setSelectDoctor("دکتر فراهانی");
                       setSelectBranch("kish");
                     }}
@@ -734,6 +745,14 @@ export default function Access() {
                     }}
                   >
                     لیست گنجه
+                  </button>
+                  <button
+                    onClick={() => {
+                      filterDoctorsVisits("دکتر پورقلی");
+                      scrollToDiv();
+                    }}
+                  >
+                    لیست پورقلی
                   </button>
                 </div>
               )}

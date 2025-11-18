@@ -45,7 +45,7 @@ export default function Reception({ records }) {
   const [messages, setMessages] = useState([]);
   const [recordObject, setRecordObject] = useState(null);
   const [navigation, setNavigation] = useState(
-    receptionDoctor || "دکتر فراهانی" || "دکتر گنجه"
+    receptionDoctor || "دکتر فراهانی" || "دکتر گنجه" || "دکتر پورقلی"
   );
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
@@ -325,6 +325,16 @@ export default function Reception({ records }) {
               }}
             >
               دکتر گنجه
+            </p>
+            <p
+              className={
+                navigation === "دکتر پورقلی" ? classes.activeNav : classes.nav
+              }
+              onClick={() => {
+                filterReceptionCards("دکتر پورقلی");
+              }}
+            >
+              دکتر پورقلی
             </p>
           </div>
         )}
