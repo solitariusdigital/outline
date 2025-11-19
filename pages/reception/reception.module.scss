@@ -24,6 +24,11 @@
   .button {
     @include mixins.button(config.$blue, config.$blue, config.$white);
   }
+
+  .logo {
+    user-select: none;
+  }
+
   .alert {
     color: config.$red;
     margin-top: 20px;

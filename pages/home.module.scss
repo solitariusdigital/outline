@@ -20,6 +20,8 @@
 
   .row {
     @include mixins.row-space-between-center();
+    flex-direction: row-reverse;
+    margin-bottom: 20px;
 
     .nav,
     .fillNav {
@@ -77,6 +79,7 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
+  user-select: none;
 
   h2 {
     color: config.$blue;

@@ -335,6 +335,15 @@ export default function Home({ activeVisits }) {
           {(currentUser?.permission === "admin" ||
             currentUser?.permission === "doctor") && (
             <div className={classes.row}>
+              <div
+                className={classes.nav}
+                style={{
+                  width: "49%",
+                }}
+                onClick={() => Router.push("/portal/reception")}
+              >
+                پورتال پذیرش
+              </div>
               {currentUser?.super ? (
                 <div
                   className={classes.fillNav}
@@ -356,64 +365,68 @@ export default function Home({ activeVisits }) {
                   پرونده بیمار
                 </div>
               )}
-              <div
-                className={classes.nav}
-                style={{
-                  width: "49%",
-                }}
-                onClick={() => Router.push("/portal/reception")}
-              >
-                پورتال پذیرش
-              </div>
             </div>
           )}
           {!hideBooking && (
             <Fragment>
-              <div
-                className={classes.fillNav}
-                onClick={() => {
-                  Router.push(currentUser ? "/booking" : "/portal");
-                  setSelectDoctor("دکتر فراهانی");
-                  setSelectBranch("tehran");
-                }}
-              >
-                نوبت دکتر فراهانی
+              <div className={classes.row}>
+                <div
+                  className={classes.fillNav}
+                  style={{
+                    width: "49%",
+                  }}
+                  onClick={() => {
+                    Router.push(currentUser ? "/booking" : "/portal");
+                    setSelectDoctor("دکتر فراهانی");
+                    setSelectBranch("tehran");
+                  }}
+                >
+                  نوبت دکتر فراهانی
+                </div>
+                <div
+                  className={classes.fillNav}
+                  style={{
+                    width: "49%",
+                  }}
+                  onClick={() => {
+                    Router.push(currentUser ? "/booking" : "/portal");
+                    setSelectDoctor("دکتر گنجه");
+                    setSelectBranch("tehran");
+                  }}
+                >
+                  نوبت دکتر گنجه
+                </div>
               </div>
-              <div
-                className={classes.fillNav}
-                onClick={() => {
-                  Router.push(currentUser ? "/booking" : "/portal");
-                  setSelectDoctor("دکتر گنجه");
-                  setSelectBranch("tehran");
-                }}
-              >
-                نوبت دکتر گنجه
-              </div>
-              <div
-                className={classes.fillNav}
-                onClick={() => {
-                  Router.push(currentUser ? "/booking" : "/portal");
-                  setSelectDoctor("دکتر پورقلی");
-                  setSelectBranch("tehran");
-                }}
-              >
-                نوبت دکتر پورقلی
-              </div>
-              <div
-                className={classes.fillNav}
-                onClick={() => {
-                  Router.push(currentUser ? "/booking" : "/portal");
-                  setSelectDoctor("دکتر فراهانی");
-                  setSelectBranch("kish");
-                }}
-              >
-                نوبت شعبه کیش
+              <div className={classes.row}>
+                <div
+                  className={classes.fillNav}
+                  style={{
+                    width: "49%",
+                  }}
+                  onClick={() => {
+                    Router.push(currentUser ? "/booking" : "/portal");
+                    setSelectDoctor("دکتر پورقلی");
+                    setSelectBranch("tehran");
+                  }}
+                >
+                  نوبت دکتر پورقلی
+                </div>
+                <div
+                  className={classes.fillNav}
+                  style={{
+                    width: "49%",
+                  }}
+                  onClick={() => {
+                    Router.push(currentUser ? "/booking" : "/portal");
+                    setSelectDoctor("دکتر فراهانی");
+                    setSelectBranch("kish");
+                  }}
+                >
+                  نوبت شعبه کیش
+                </div>
               </div>
             </Fragment>
           )}
-          <div className={classes.nav} onClick={() => Router.push("/about")}>
-            فلسفه متد اوت‌لاین
-          </div>
           <div className={classes.row}>
             <div
               className={classes.nav}
@@ -433,6 +446,9 @@ export default function Home({ activeVisits }) {
             >
               آدرس شعبه تهران
             </div>
+          </div>
+          <div className={classes.nav} onClick={() => Router.push("/about")}>
+            فلسفه متد اوت‌لاین
           </div>
           <div
             className={classes.nav}

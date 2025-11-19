@@ -10,6 +10,8 @@
   .diagram {
     position: relative;
     height: 250px;
+    user-select: none;
+
     & {
       margin-top: 12px;
     }

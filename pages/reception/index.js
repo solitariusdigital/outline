@@ -866,7 +866,7 @@ export default function Reception() {
             </div>
           </Fragment>
         )}
-        <div>
+        <div className={classes.logo}>
           <Image width={200} height={140} src={logo} alt="logo" priority />
         </div>
       </div>
