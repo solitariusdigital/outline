@@ -433,18 +433,18 @@ export default function Home({ activeVisits }) {
               style={{
                 width: "49%",
               }}
-              onClick={() => window.open(kishLocation)}
+              onClick={() => window.open(tehranLocation)}
             >
-              آدرس شعبه کیش
+              آدرس شعبه تهران
             </div>
             <div
               className={classes.nav}
               style={{
                 width: "49%",
               }}
-              onClick={() => window.open(tehranLocation)}
+              onClick={() => window.open(kishLocation)}
             >
-              آدرس شعبه تهران
+              آدرس شعبه کیش
             </div>
           </div>
           <div className={classes.nav} onClick={() => Router.push("/about")}>

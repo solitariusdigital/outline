@@ -59,8 +59,8 @@
   }
 
   p {
-    background: config.$white;
     padding: 4px;
+    background: config.$white;
     @include mixins.border-radius();
   }
 }

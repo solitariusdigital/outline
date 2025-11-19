@@ -67,21 +67,21 @@ export default function Register() {
       const api = Kavenegar.KavenegarApi({
         apikey: kavenegarKey,
       });
-      api.VerifyLookup(
-        {
-          receptor: phoneEnglish,
-          token: tokenId.toString(),
-          template: "registerOutline",
-        },
-        function (response, status) {
-          if (status === 200) {
-            showAlert("کد تایید ارسال شد");
-          } else {
-            showAlert("خطا در سامانه ارسال کد تایید");
-          }
-          startCounter();
-        }
-      );
+      // api.VerifyLookup(
+      //   {
+      //     receptor: phoneEnglish,
+      //     token: tokenId.toString(),
+      //     template: "registerOutline",
+      //   },
+      //   function (response, status) {
+      //     if (status === 200) {
+      //       showAlert("کد تایید ارسال شد");
+      //     } else {
+      //       showAlert("خطا در سامانه ارسال کد تایید");
+      //     }
+      //     startCounter();
+      //   }
+      // );
     } else {
       showAlert("موبایل اشتباه");
     }
@@ -214,6 +214,7 @@ export default function Register() {
           />
         </div>
         <p className="alert">{alert}</p>
+        <p className="alert">{token}</p>
       </div>
       <div className={classes.logo} onClick={() => Router.push("/")}>
         <Image width={200} height={140} src={logo} alt="logo" priority />

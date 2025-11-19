@@ -47,6 +47,7 @@ export default function Reception({ records }) {
   const [navigation, setNavigation] = useState(
     receptionDoctor || "دکتر فراهانی" || "دکتر گنجه" || "دکتر پورقلی"
   );
+  const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر پورقلی"];
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const router = useRouter();
@@ -160,7 +161,7 @@ export default function Reception({ records }) {
     const api = Kavenegar.KavenegarApi({
       apikey: kavenegarKey,
     });
-    await api.VerifyLookup({
+    api.VerifyLookup({
       receptor: recordData.phone,
       token: getCurrentDateFarsi(),
       template: "completeOutline",
@@ -172,7 +173,7 @@ export default function Reception({ records }) {
     }
     setTimeout(() => {
       router.reload(router.asPath);
-    }, 500);
+    }, 700);
   };
 
   const checkConvertNumber = (number) => {
@@ -240,9 +241,7 @@ export default function Reception({ records }) {
     router.reload(router.asPath);
   };
 
-  const switchDoctor = async (recordData, lastRecord) => {
-    let changeDoctor =
-      lastRecord.doctor === "دکتر فراهانی" ? "دکتر گنجه" : "دکتر فراهانی";
+  const switchDoctor = async (recordData, changeDoctor) => {
     const message = `ارجاع بیمار به ${changeDoctor}`;
     const confirm = window.confirm(message);
     if (confirm) {
@@ -555,14 +554,29 @@ export default function Reception({ records }) {
                                 >
                                   تجویز تزریق
                                 </button>
-                                <button
-                                  className={classes.buttonSwitch}
-                                  onClick={() =>
-                                    switchDoctor(record, lastRecord)
-                                  }
-                                >
-                                  ارجاع بیمار
-                                </button>
+                                <div className={classes.input}>
+                                  <select
+                                    defaultValue={"default"}
+                                    onChange={(e) => {
+                                      switchDoctor(record, e.target.value);
+                                    }}
+                                  >
+                                    <option value="default" disabled>
+                                      ارجاع بیمار
+                                    </option>
+                                    {doctors
+                                      .filter(
+                                        (doctor) => currentUser.name !== doctor
+                                      )
+                                      .map((doctor, index) => {
+                                        return (
+                                          <option key={index} value={doctor}>
+                                            {doctor}
+                                          </option>
+                                        );
+                                      })}
+                                  </select>
+                                </div>
                               </Fragment>
                             )}
                             {expandInformation === record["_id"] && (

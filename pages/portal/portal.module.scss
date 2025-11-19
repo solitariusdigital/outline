@@ -406,17 +406,16 @@
           height: 100px;
           @include mixins.border-radius();
         }
+
+        select {
+          @include mixins.input();
+          width: 100%;
+          margin-top: 8px;
+        }
       }
 
       .button {
         @include mixins.button(config.$blue, config.$blue, config.$white);
-        & {
-          width: 100%;
-          margin: 5px 0px;
-        }
-      }
-      .buttonSwitch {
-        @include mixins.button(config.$blue, config.$white, config.$blue);
         & {
           width: 100%;
           margin: 5px 0px;

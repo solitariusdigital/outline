@@ -17,6 +17,8 @@ const defaultInjections = {
   "پی آر پی": [],
   آنزیم: [],
   سونوگرافی: [],
+  "لیزر سرجیکال": [],
+  "لیزر فانکشنال": [],
 };
 const categories = {
   فیلر: [
@@ -62,6 +64,25 @@ const categories = {
   "پی آر پی": ["مو", "صورت"],
   آنزیم: ["آنزیم"],
   سونوگرافی: ["سونوگرافی"],
+  "لیزر سرجیکال": [
+    "پیشانی",
+    "زیرچشم",
+    "میدفیس",
+    "بینی",
+    "ساب مالار",
+    "پری اورال",
+    "چانه",
+  ],
+  "لیزر فانکشنال": [
+    "پیشانی",
+    "زیرچشم",
+    "میدفیس",
+    "بینی",
+    "ساب مالار",
+    "پری اورال",
+    "چانه",
+    "گردن",
+  ],
 };
 const fillerColor = {
   پیشانی: "#FFE7D0",
@@ -101,7 +122,9 @@ export default function FaceDiagram() {
       "جوانساز" ||
       "پی آر پی" ||
       "آنزیم" ||
-      "سونوگرافی"
+      "سونوگرافی" ||
+      "لیزر سرجیکال" ||
+      "لیزر فانکشنال"
   );
   const router = useRouter();
 
@@ -266,7 +289,6 @@ export default function FaceDiagram() {
                     className={classes.nav}
                     style={{
                       fontWeight: "bold",
-                      color: "#1b1b1b",
                       background: fillerColor[item],
                       border: `1px solid ${
                         !fillerColor[item] ? "#2d2b7f" : "none"

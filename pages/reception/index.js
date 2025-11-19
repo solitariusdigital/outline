@@ -295,6 +295,8 @@ export default function Reception() {
         "پی آر پی": [],
         آنزیم: [],
         سونوگرافی: [],
+        "لیزر سرجیکال": [],
+        "لیزر فانکشنال": [],
       },
       comment: "",
       message: "",
