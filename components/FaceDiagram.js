@@ -261,23 +261,21 @@ export default function FaceDiagram() {
           </div>
         ))}
         {navigation !== "فیلر" && activeFunctionality && (
-          <Fragment>
-            <div className={classes.navigationTypes}>
-              {categories[navigation].map((item, index) => (
-                <p
-                  className={classes.nav}
-                  style={{
-                    fontWeight: "bold",
-                    border: "1px solid #2d2b7f",
-                  }}
-                  onClick={() => handleSubcategoryToggle(item)}
-                  key={index}
-                >
-                  {item}
-                </p>
-              ))}
-            </div>
-          </Fragment>
+          <div className={classes.navigationTypes}>
+            {categories[navigation].map((item, index) => (
+              <p
+                key={index}
+                className={classes.nav}
+                style={{
+                  fontWeight: "bold",
+                  border: "1px solid #2d2b7f",
+                }}
+                onClick={() => handleSubcategoryToggle(item)}
+              >
+                {item}
+              </p>
+            ))}
+          </div>
         )}
         {navigation === "فیلر" && (
           <Fragment>
