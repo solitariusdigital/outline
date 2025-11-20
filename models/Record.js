@@ -27,6 +27,7 @@ const RecordSchema = new Schema(
     records: [],
     checkup: Boolean,
     completed: Boolean,
+    status: String,
   },
   { timestamps: true }
 );

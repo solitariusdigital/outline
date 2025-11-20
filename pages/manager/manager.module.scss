@@ -44,6 +44,10 @@
     }
   }
 
+  .button {
+    margin-top: 12px;
+    @include mixins.button(config.$blue, config.$blue, config.$white);
+  }
   .activeButton {
     margin-top: 12px;
     @include mixins.button(config.$red, config.$red, config.$white);

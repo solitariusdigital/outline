@@ -11,6 +11,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import StarIcon from "@mui/icons-material/Star";
 import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
 import EditIcon from "@mui/icons-material/Edit";
@@ -256,6 +257,20 @@ export default function Reception({ records }) {
     }
   };
 
+  const makeVIP = async (id) => {
+    const message = "Make VIP?";
+    const confirm = window.confirm(message);
+    if (confirm) {
+      const recordData = await getSingleRecordApi(id);
+      const record = {
+        ...recordData,
+        status: "vip",
+      };
+      await updateRecordApi(record);
+      router.reload(router.asPath);
+    }
+  };
+
   const showAlert = (message) => {
     setAlert(message);
     setTimeout(() => {
@@ -382,11 +397,21 @@ export default function Reception({ records }) {
                     style={{ cursor: "pointer" }}
                     onClick={() => expandInformationAction(record["_id"])}
                   >
-                    <h4
-                      onClick={() => navigator.clipboard.writeText(record.name)}
-                    >
-                      {record.name}
-                    </h4>
+                    <div className={classes.row}>
+                      {record?.status === "vip" && (
+                        <StarIcon sx={{ fontSize: 16 }} />
+                      )}
+                      <h4
+                        onClick={() =>
+                          navigator.clipboard.writeText(record.name)
+                        }
+                        style={{
+                          marginRight: "4px",
+                        }}
+                      >
+                        {record.name}
+                      </h4>
+                    </div>
                     {expandInformation === record["_id"] ? (
                       <ExpandLessIcon className="icon" />
                     ) : (
@@ -634,6 +659,14 @@ export default function Reception({ records }) {
                         );
                       })()}
                     </Fragment>
+                  )}
+                  {record.status !== "vip" && (
+                    <button
+                      className={classes.buttonVip}
+                      onClick={() => makeVIP(record["_id"])}
+                    >
+                      Make VIP
+                    </button>
                   )}
                 </div>
               ))}

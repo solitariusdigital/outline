@@ -9,6 +9,7 @@ import Router from "next/router";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import StarIcon from "@mui/icons-material/Star";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   getSingleUserApi,
@@ -275,6 +276,12 @@ export default function Manager({ control }) {
         displayRecords.filter((record) => record?.phone === phoneEnglish)
       );
     }
+  };
+
+  const getVIP = () => {
+    setFilterRecords(
+      displayRecords.filter((record) => record?.status === "vip")
+    );
   };
 
   return (
@@ -559,6 +566,9 @@ export default function Manager({ control }) {
                   پذیرش غیرفعال
                 </button>
               )}
+              <button className={classes.button} onClick={() => getVIP()}>
+                Get VIP
+              </button>
             </Fragment>
           )}
           <div className={classes.input}>
@@ -596,13 +606,22 @@ export default function Manager({ control }) {
                         style={{ cursor: "pointer" }}
                         onClick={() => expandInformationAction(record["_id"])}
                       >
-                        <h4
-                          onClick={() =>
-                            navigator.clipboard.writeText(record.name)
-                          }
-                        >
-                          {record.name}
-                        </h4>
+                        <div className={classes.row}>
+                          {record?.status === "vip" && (
+                            <StarIcon sx={{ fontSize: 16 }} />
+                          )}
+                          <h4
+                            style={{
+                              marginRight: "4px",
+                            }}
+                            onClick={() =>
+                              navigator.clipboard.writeText(record.name)
+                            }
+                          >
+                            {record.name}
+                          </h4>
+                        </div>
+
                         {expandInformation === record["_id"] ? (
                           <ExpandLessIcon
                             className="icon"

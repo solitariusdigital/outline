@@ -276,6 +276,7 @@ export default function Reception() {
       records: [],
       checkup: false,
       completed: false,
+      status: "regular",
     };
     const recordData = {
       doctor: selectDoctor,
