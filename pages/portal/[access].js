@@ -550,7 +550,7 @@ export default function Access() {
                 {(currentUser.permission === "admin" ||
                   currentUser.permission === "doctor") &&
                   visitTypes !== "all" && (
-                    <div>
+                    <>
                       <div className={classes.row}>
                         <p>
                           {filterVisitsByDate(cachedVisitsData.visits).length}
@@ -608,50 +608,50 @@ export default function Access() {
                           پس‌فردا
                         </p>
                       </div>
-                    </div>
+                      <div className={classes.row}>
+                        <p>
+                          {
+                            cachedVisitsData.visitsData.filter(
+                              (visit) => visit.completed
+                            ).length
+                          }
+                        </p>
+                        <p
+                          className={
+                            visitTypes === "complete"
+                              ? classes.itemActive
+                              : classes.item
+                          }
+                          onClick={() => {
+                            filterDisplayVisits("complete");
+                          }}
+                        >
+                          تکمیل شده
+                        </p>
+                      </div>
+                      <div className={classes.row}>
+                        <p>
+                          {
+                            cachedVisitsData.visitsData.filter(
+                              (visit) => visit.canceled
+                            ).length
+                          }
+                        </p>
+                        <p
+                          className={
+                            visitTypes === "cancel"
+                              ? classes.itemActive
+                              : classes.item
+                          }
+                          onClick={() => {
+                            filterDisplayVisits("cancel");
+                          }}
+                        >
+                          لغو شده
+                        </p>
+                      </div>
+                    </>
                   )}
-                <div className={classes.row}>
-                  <p>
-                    {
-                      cachedVisitsData.visitsData.filter(
-                        (visit) => visit.completed
-                      ).length
-                    }
-                  </p>
-                  <p
-                    className={
-                      visitTypes === "complete"
-                        ? classes.itemActive
-                        : classes.item
-                    }
-                    onClick={() => {
-                      filterDisplayVisits("complete");
-                    }}
-                  >
-                    تکمیل شده
-                  </p>
-                </div>
-                <div className={classes.row}>
-                  <p>
-                    {
-                      cachedVisitsData.visitsData.filter(
-                        (visit) => visit.canceled
-                      ).length
-                    }
-                  </p>
-                  <p
-                    className={
-                      visitTypes === "cancel"
-                        ? classes.itemActive
-                        : classes.item
-                    }
-                    onClick={() => {
-                      filterDisplayVisits("cancel");
-                    }}
-                  >
-                    لغو شده
-                  </p>
-                </div>
                 <div className={classes.logout} onClick={() => logOut()}>
                   <p>خروج از پورتال</p>
                 </div>
