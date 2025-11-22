@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import classes from "./FaceDiagram.module.scss";
 import Image from "next/legacy/image";
 import faceDiagram from "@/assets/faceDiagram.png";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import Tooltip from "@mui/material/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
@@ -111,6 +113,9 @@ export default function FaceDiagram() {
   const [selectedInjections, setSelectedInjections] = useState(
     popupDiagramData.lastRecord?.injectHistory ?? defaultInjections
   );
+  const [extraFiller, setExtraFiller] = useState(
+    popupDiagramData.lastRecord.extraFiller || []
+  );
   const [comment, setComment] = useState(popupDiagramData.lastRecord?.comment);
   const activeFunctionality =
     currentUser?.permission === "doctor" ? true : false;
@@ -191,6 +196,7 @@ export default function FaceDiagram() {
     let currentRecord = popupDiagramData.lastRecord;
     currentRecord.visitHistory = selectedSubcategories;
     currentRecord.injectHistory = selectedInjections;
+    currentRecord.extraFiller = extraFiller;
     currentRecord.comment = comment;
     let updatedRecords = [...allRecords];
     if (updatedRecords.length > 0) {
@@ -205,19 +211,38 @@ export default function FaceDiagram() {
     router.reload(router.asPath);
   };
 
-  const getFillerColor = (key) => {
+  const getFillerColor = (value) => {
     return (
       <div
+        className={classes.row}
         style={{
-          backgroundColor: fillerColor[key],
+          backgroundColor: fillerColor[value],
           borderRadius: "5px",
           padding: "4px",
-          fontWeight: "bold",
+          justifyContent: "space-around",
         }}
       >
-        {key}
+        <Tooltip title="Extra">
+          <AddCircleOutlineIcon
+            className="icon"
+            onClick={() => {
+              addExtraFiller(value);
+            }}
+            sx={{ fontSize: 20 }}
+          />
+        </Tooltip>
+        <h4>{value}</h4>
       </div>
     );
+  };
+
+  const addExtraFiller = (value) => {
+    setExtraFiller((prevState) => {
+      if (prevState.includes(value)) {
+        return prevState.filter((item) => item !== value);
+      }
+      return [...prevState, value];
+    });
   };
 
   return (
@@ -376,6 +401,14 @@ export default function FaceDiagram() {
                       className={classes.row}
                       onClick={() => handleChangeInjections(key, value)}
                     >
+                      {key === "فیلر" && extraFiller.includes(value) && (
+                        <Tooltip title="Extra">
+                          <AddCircleOutlineIcon
+                            className="icon"
+                            sx={{ fontSize: 20 }}
+                          />
+                        </Tooltip>
+                      )}
                       <h4>{value}</h4>
                       {!!selectedInjections[key].find(
                         (item) => item.name === value

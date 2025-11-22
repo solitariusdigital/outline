@@ -365,10 +365,11 @@
       .historyItem {
         .historyRow {
           @include mixins.row-space-between-center();
+          width: fit-content;
           justify-content: right;
           flex-wrap: wrap;
 
-          h5 {
+          .row {
             margin: 0px 8px;
           }
         }
@@ -409,10 +410,9 @@
 
         select {
           @include mixins.input();
-          width: 100%;
-          margin: 8px 0px;
+          width: 50%;
+          margin-top: 8px;
           background: config.$white;
-          @include mixins.border-radius();
         }
       }
 

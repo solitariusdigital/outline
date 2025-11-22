@@ -10,6 +10,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import StarIcon from "@mui/icons-material/Star";
+import Tooltip from "@mui/material/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   getSingleUserApi,
@@ -608,7 +609,9 @@ export default function Manager({ control }) {
                       >
                         <div className={classes.row}>
                           {record?.status === "vip" && (
-                            <StarIcon sx={{ fontSize: 16 }} />
+                            <Tooltip title="VIP">
+                              <StarIcon sx={{ fontSize: 16 }} />
+                            </Tooltip>
                           )}
                           <h4
                             style={{
@@ -772,7 +775,12 @@ export default function Manager({ control }) {
                             <div key={key} className={classes.historyRow}>
                               <span>{key}</span>
                               {items.map((item, index) => (
-                                <h5 key={index}>{item}</h5>
+                                <div key={index} className={classes.row}>
+                                  <h5>{item}</h5>
+                                  {recordObject.extraFiller?.includes(item) && (
+                                    <p>+</p>
+                                  )}
+                                </div>
                               ))}
                             </div>
                           );
@@ -796,7 +804,9 @@ export default function Manager({ control }) {
                                 <div key={key} className={classes.historyRow}>
                                   <span>{key}</span>
                                   {activeItems.map((item, index) => (
-                                    <h5 key={index}>{item.name}</h5>
+                                    <div key={index} className={classes.row}>
+                                      <h5>{item.name}</h5>
+                                    </div>
                                   ))}
                                 </div>
                               );

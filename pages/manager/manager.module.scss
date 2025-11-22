@@ -238,10 +238,11 @@
     .historyItem {
       .historyRow {
         @include mixins.row-space-between-center();
+        width: fit-content;
         justify-content: right;
         flex-wrap: wrap;
 
-        h5 {
+        .row {
           margin: 0px 8px;
         }
       }
