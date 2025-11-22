@@ -582,28 +582,49 @@ export default function Reception({ records }) {
                                 >
                                   تجویز تزریق
                                 </button>
-                                <div className={classes.input}>
-                                  <select
-                                    defaultValue={"default"}
-                                    onChange={(e) => {
-                                      switchDoctor(record, e.target.value);
+                                <div
+                                  className={classes.row}
+                                  style={{
+                                    marginTop: "4px",
+                                  }}
+                                >
+                                  <div
+                                    className={classes.input}
+                                    style={{
+                                      width: "50%",
                                     }}
                                   >
-                                    <option value="default" disabled>
-                                      ارجاع بیمار
-                                    </option>
-                                    {doctors
-                                      .filter(
-                                        (doctor) => currentUser.name !== doctor
-                                      )
-                                      .map((doctor, index) => {
-                                        return (
-                                          <option key={index} value={doctor}>
-                                            {doctor}
-                                          </option>
-                                        );
-                                      })}
-                                  </select>
+                                    <select
+                                      defaultValue={"default"}
+                                      onChange={(e) => {
+                                        switchDoctor(record, e.target.value);
+                                      }}
+                                    >
+                                      <option value="default" disabled>
+                                        ارجاع بیمار
+                                      </option>
+                                      {doctors
+                                        .filter(
+                                          (doctor) =>
+                                            currentUser.name !== doctor
+                                        )
+                                        .map((doctor, index) => {
+                                          return (
+                                            <option key={index} value={doctor}>
+                                              {doctor}
+                                            </option>
+                                          );
+                                        })}
+                                    </select>
+                                  </div>
+                                  {record.status !== "vip" && (
+                                    <button
+                                      className={classes.buttonVip}
+                                      onClick={() => makeVIP(record["_id"])}
+                                    >
+                                      Make VIP
+                                    </button>
+                                  )}
                                 </div>
                               </Fragment>
                             )}
@@ -663,14 +684,15 @@ export default function Reception({ records }) {
                       })()}
                     </Fragment>
                   )}
-                  {record.status !== "vip" && (
-                    <button
-                      className={classes.buttonVip}
-                      onClick={() => makeVIP(record["_id"])}
-                    >
-                      Make VIP
-                    </button>
-                  )}
+                  {currentUser?.permission === "admin" &&
+                    record.status !== "vip" && (
+                      <button
+                        className={classes.buttonVip}
+                        onClick={() => makeVIP(record["_id"])}
+                      >
+                        Make VIP
+                      </button>
+                    )}
                 </div>
               ))}
             </Fragment>
