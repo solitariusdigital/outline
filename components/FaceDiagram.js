@@ -222,17 +222,15 @@ export default function FaceDiagram() {
           justifyContent: "space-around",
         }}
       >
-        {currentUser?.permission === "doctor" && (
-          <Tooltip title="Extra">
-            <AddCircleOutlineIcon
-              className="icon"
-              onClick={() => {
-                addExtraFiller(value);
-              }}
-              sx={{ fontSize: 20 }}
-            />
-          </Tooltip>
-        )}
+        <Tooltip title="Extra">
+          <AddCircleOutlineIcon
+            className="icon"
+            onClick={() => {
+              addExtraFiller(value);
+            }}
+            sx={{ fontSize: 20 }}
+          />
+        </Tooltip>
         <h4>{value}</h4>
       </div>
     );
