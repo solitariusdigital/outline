@@ -39,6 +39,8 @@ export default function Reception() {
   const [occupation, setOccupation] = useState("");
   const [referral, setReferral] = useState("");
   const [sharePermission, setSharePermission] = useState(true);
+  const [pregnant, setPregnant] = useState(false);
+  const [breastfeeding, setBreastfeeding] = useState(false);
   const [confirmation, setConfirmation] = useState(false);
   const [medical, setMedical] = useState([
     { active: false, label: "جراحی" },
@@ -288,6 +290,8 @@ export default function Reception() {
       medicalFamily: medicalFamily,
       habits: habits,
       sharePermission: sharePermission,
+      pregnant: pregnant,
+      breastfeeding: breastfeeding,
       visitHistory: {
         فیلر: [],
         بوتاکس: [],
@@ -650,13 +654,87 @@ export default function Reception() {
                 />
               </div>
               <div>
-                <p
+                <div
                   style={{
-                    marginBottom: "12px",
+                    marginBottom: "8px",
                   }}
                 >
-                  عکس قبل و بعد برای تکمیل پرونده شما گرفته میشود
-                </p>
+                  <p>آیا در حال حاضر باردار هستید؟</p>
+                  <div className={classes.row}>
+                    <div className={classes.row}>
+                      <p>بله</p>
+                      {pregnant ? (
+                        <RadioButtonCheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                          onClick={() => setPregnant(false)}
+                        />
+                      ) : (
+                        <RadioButtonUncheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                          onClick={() => setPregnant(true)}
+                        />
+                      )}
+                    </div>
+                    <div className={classes.row}>
+                      <p>خیر</p>
+                      {!pregnant ? (
+                        <RadioButtonCheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                          onClick={() => setPregnant(true)}
+                        />
+                      ) : (
+                        <RadioButtonUncheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                          onClick={() => setPregnant(false)}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p>آیا در دوران شیردهی هستید؟</p>
+                  <div className={classes.row}>
+                    <div className={classes.row}>
+                      <p>بله</p>
+                      {breastfeeding ? (
+                        <RadioButtonCheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                          onClick={() => setBreastfeeding(false)}
+                        />
+                      ) : (
+                        <RadioButtonUncheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                          onClick={() => setBreastfeeding(true)}
+                        />
+                      )}
+                    </div>
+                    <div className={classes.row}>
+                      <p>خیر</p>
+                      {!breastfeeding ? (
+                        <RadioButtonCheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                          onClick={() => setBreastfeeding(true)}
+                        />
+                      ) : (
+                        <RadioButtonUncheckedIcon
+                          sx={{ fontSize: 28 }}
+                          className="icon"
+                          onClick={() => setBreastfeeding(false)}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p>عکس قبل و بعد برای تکمیل پرونده شما گرفته میشود</p>
                 <p>
                   اینجانب رضایت دارم تا عکس من قبل و بعد از درمان در صورت لزوم
                   در مقالات پزشکی و شبکه اجتماعی به صورت ناشناس قرار گیرد

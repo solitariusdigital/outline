@@ -24,6 +24,8 @@ const RecordSchema = new Schema(
     time: String,
     confirmation: Boolean,
     sharePermission: Boolean,
+    pregnant: Boolean,
+    breastfeeding: Boolean,
     records: [],
     checkup: Boolean,
     completed: Boolean,

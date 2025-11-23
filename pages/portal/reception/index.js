@@ -792,6 +792,16 @@ export default function Reception({ records }) {
                     )}
                   </div>
                 )}
+                <div className={classes.info}>
+                  <p>{recordObject.pregnant ? "باردار است" : "باردار نیست"}</p>
+                </div>
+                <div className={classes.info}>
+                  <p>
+                    {recordObject.breastfeeding
+                      ? "دوران شیردهی است"
+                      : "دوران شیردهی نیست"}
+                  </p>
+                </div>
                 {recordObject.comment && (
                   <div className={classes.info}>
                     <span>نظر پزشک</span>
