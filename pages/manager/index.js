@@ -816,18 +816,6 @@ export default function Manager({ control }) {
                       )}
                     </div>
                   )}
-                  <div className={classes.info}>
-                    <p>
-                      {recordObject.pregnant ? "باردار است" : "باردار نیست"}
-                    </p>
-                  </div>
-                  <div className={classes.info}>
-                    <p>
-                      {recordObject.breastfeeding
-                        ? "دوران شیردهی است"
-                        : "دوران شیردهی نیست"}
-                    </p>
-                  </div>
                   {recordObject.comment && (
                     <div className={classes.info}>
                       <span>نظر پزشک</span>
@@ -840,6 +828,30 @@ export default function Manager({ control }) {
                       <p>{recordObject.message}</p>
                     </div>
                   )}
+                  <div className={classes.info}>
+                    <p
+                      style={{
+                        fontSize: "small",
+                        color: recordObject.pregnant ? "#d40d12" : "#15b392",
+                      }}
+                    >
+                      {recordObject.pregnant ? "باردار است" : "باردار نیست"}
+                    </p>
+                  </div>
+                  <div className={classes.info}>
+                    <p
+                      style={{
+                        fontSize: "small",
+                        color: recordObject.breastfeeding
+                          ? "#d40d12"
+                          : "#15b392",
+                      }}
+                    >
+                      {recordObject.breastfeeding
+                        ? "دوران شیردهی است"
+                        : "دوران شیردهی نیست"}
+                    </p>
+                  </div>
                   <div className={classes.info}>
                     <p
                       style={{
