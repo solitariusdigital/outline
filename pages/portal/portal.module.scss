@@ -424,7 +424,6 @@
       .buttonVip {
         @include mixins.button(config.$blue, config.$white, config.$blue);
         & {
-          height: 40px;
           width: 50%;
           margin: 5px 0px;
         }

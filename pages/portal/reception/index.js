@@ -258,14 +258,14 @@ export default function Reception({ records }) {
     }
   };
 
-  const makeVIP = async (id) => {
-    const message = "Make VIP?";
+  const manageVIP = async (id, status) => {
+    const message = status === "vip" ? "Make VIP?" : "Remove VIP?";
     const confirm = window.confirm(message);
     if (confirm) {
       const recordData = await getSingleRecordApi(id);
       const record = {
         ...recordData,
-        status: "vip",
+        status: status,
       };
       await updateRecordApi(record);
       router.reload(router.asPath);
@@ -617,12 +617,23 @@ export default function Reception({ records }) {
                                         })}
                                     </select>
                                   </div>
-                                  {record.status !== "vip" && (
+                                  {record.status !== "vip" ? (
                                     <button
                                       className={classes.buttonVip}
-                                      onClick={() => makeVIP(record["_id"])}
+                                      onClick={() =>
+                                        manageVIP(record["_id"], "vip")
+                                      }
                                     >
                                       Make VIP
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className={classes.buttonVip}
+                                      onClick={() =>
+                                        manageVIP(record["_id"], "regular")
+                                      }
+                                    >
+                                      Remove VIP
                                     </button>
                                   )}
                                 </div>
@@ -685,14 +696,21 @@ export default function Reception({ records }) {
                     </Fragment>
                   )}
                   {currentUser?.permission === "admin" &&
-                    record.status !== "vip" && (
-                      <button
-                        className={classes.buttonVip}
-                        onClick={() => makeVIP(record["_id"])}
-                      >
-                        Make VIP
-                      </button>
-                    )}
+                  record.status !== "vip" ? (
+                    <button
+                      className={classes.buttonVip}
+                      onClick={() => manageVIP(record["_id"], "vip")}
+                    >
+                      Make VIP
+                    </button>
+                  ) : (
+                    <button
+                      className={classes.buttonVip}
+                      onClick={() => manageVIP(record["_id"], "regular")}
+                    >
+                      Remove VIP
+                    </button>
+                  )}
                 </div>
               ))}
             </Fragment>
