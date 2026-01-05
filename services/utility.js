@@ -80,12 +80,15 @@ export function pourgholiDays(persianDate) {
   return dayOfWeek === 5; // Friday
 }
 
-export function tehranBranch(persianDate) {
-  const { day, month, year } = persianDate;
-  const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
-    .toDate()
-    .getDay();
-  return dayOfWeek === 5 || dayOfWeek === 4; // Friday Thur
+export function tehranBranch({ year, month, day }) {
+  const HOLIDAYS_BAHMAN = new Set([2, 3, 16, 17, 23, 24]);
+  if (month === 11 && HOLIDAYS_BAHMAN.has(day)) {
+    return false;
+  }
+
+  const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
+
+  return dayOfWeek === 4 || dayOfWeek === 5; // Thu / Fri
 }
 
 export function getCurrentDate() {
