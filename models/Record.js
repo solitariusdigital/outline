@@ -22,6 +22,7 @@ const RecordSchema = new Schema(
     date: String,
     visitId: String,
     time: String,
+    entryTime: String,
     confirmation: Boolean,
     sharePermission: Boolean,
     pregnant: Boolean,

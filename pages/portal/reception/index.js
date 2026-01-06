@@ -360,20 +360,40 @@ export default function Reception({ records }) {
                 <div key={index} className={classes.card}>
                   {!record.completed ? (
                     <div className={classes.row}>
-                      <p
-                        style={{
-                          color: record.checkup ? "#15b392" : "#999999",
-                        }}
-                      >
-                        {record.checkup ? "انجام مشاوره" : "در انتظار"}
-                      </p>
-                      <p
-                        style={{
-                          color: "#999999",
-                        }}
-                      >
-                        {record.time}
-                      </p>
+                      <div className={classes.row}>
+                        <p
+                          style={{
+                            color: record.checkup ? "#15b392" : "#999999",
+                            marginLeft: "4px",
+                          }}
+                        >
+                          {record.checkup ? "انجام مشاوره" : "انتظار"}
+                        </p>
+                        <p
+                          style={{
+                            color: "#999999",
+                          }}
+                        >
+                          {record.time}
+                        </p>
+                      </div>
+                      <div className={classes.row}>
+                        <p
+                          style={{
+                            color: "#999999",
+                            marginLeft: "4px",
+                          }}
+                        >
+                          ثبت
+                        </p>
+                        <p
+                          style={{
+                            color: "#999999",
+                          }}
+                        >
+                          {record.entryTime.split(":").slice(0, 2).join(":")}
+                        </p>
+                      </div>
                       {currentUser?.permission === "admin" && (
                         <EditIcon
                           className="icon"

@@ -14,6 +14,7 @@ import {
   toEnglishNumber,
   isEnglishNumber,
   getCurrentDateFarsi,
+  getCurrentTimeFarsi,
   convertPersianDate,
   fourGenerator,
 } from "@/services/utility";
@@ -274,6 +275,7 @@ export default function Reception() {
       date: digitalDate,
       visitId: visitId,
       time: time,
+      entryTime: getCurrentTimeFarsi(),
       confirmation: confirmation,
       records: [],
       checkup: false,
