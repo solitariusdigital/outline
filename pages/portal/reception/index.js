@@ -391,7 +391,7 @@ export default function Reception({ records }) {
                             color: "#999999",
                           }}
                         >
-                          {record.entryTime.split(":").slice(0, 2).join(":")}
+                          {record.entryTime?.split(":").slice(0, 2).join(":")}
                         </p>
                       </div>
                       {currentUser?.permission === "admin" && (
