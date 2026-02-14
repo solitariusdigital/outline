@@ -52,7 +52,7 @@ export function convertPersianToGregorian(persianDate, time) {
   const { day, month, year } = persianDate;
   return moment(
     `${year}/${month}/${day} ${time}`,
-    "jYYYY/jM/jD HH:mm"
+    "jYYYY/jM/jD HH:mm",
   ).toISOString();
 }
 
@@ -81,8 +81,9 @@ export function pourgholiDays(persianDate) {
 }
 
 export function tehranBranch({ year, month, day }) {
-  const days = new Set([2, 3, 16, 17, 23, 24]);
-  if (month === 11 && days.has(day)) {
+  const months = new Set([11, 12]);
+  const days = new Set([7, 14, 21, 28, 30]);
+  if (months.has(month) && days.has(day)) {
     return false;
   }
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
@@ -134,7 +135,7 @@ export function convertPersianDate(persianDate) {
   // Convert the Persian date to English numerals
   let englishDate = persianDate.replace(
     /[۰-۹]/g,
-    (match) => persianToEnglishNumbers[match]
+    (match) => persianToEnglishNumbers[match],
   );
   // Remove the slashes
   return englishDate.replace(/\//g, "");
@@ -157,7 +158,7 @@ function parsePersianTime(timeString) {
   // Replace Persian numerals with English numerals
   const englishTimeString = timeString.replace(
     /[۰-۹]/g,
-    (match) => persianToEnglish[match]
+    (match) => persianToEnglish[match],
   );
   // Split the time string into hours, minutes, and seconds
   const [hours, minutes, seconds] = englishTimeString.split(":").map(Number);
