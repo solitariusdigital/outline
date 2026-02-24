@@ -41,7 +41,7 @@ export default function Manager({ control }) {
   const [displayRecords, setDisplayRecords] = useState([]);
   const [filterRecords, setFilterRecords] = useState([]);
   const [navigation, setNavigation] = useState(
-    "time" || "reminder" || "count" || "reception"
+    "time" || "reminder" || "count" || "reception",
   );
   const [displayReception, setDisplayReception] = useState(false);
   const [phone, setPhone] = useState("");
@@ -127,7 +127,7 @@ export default function Manager({ control }) {
               userData,
               timesheets: controlData.timesheets[userId],
             };
-          })
+          }),
         );
         const filteredData = data.filter((user) => !user.userData.super);
         setUsersData(filteredData);
@@ -153,7 +153,7 @@ export default function Manager({ control }) {
       const sortedColorValues = countColorOccurrences(
         visits,
         currentYear,
-        currentMonth
+        currentMonth,
       );
       setCount(sortedColorValues);
     };
@@ -191,16 +191,19 @@ export default function Manager({ control }) {
     delete colorCounts["#257180"];
     return Object.fromEntries(
       Object.entries(colorCounts).sort(
-        ([, valueA], [, valueB]) => valueB - valueA
-      )
+        ([, valueA], [, valueB]) => valueB - valueA,
+      ),
     );
   };
 
   const filterDisplayMonths = (monthNumber) => {
+    const currentYear = getCurrentDateFarsi().split("/")[0];
     setAllUserData(allUserData);
     let filtered = allUserData.timesheets.filter((data) => {
-      const parts = data.date.split("/");
-      return parts[1] === monthNumber;
+      if (data.date.split("/")[0] === currentYear) {
+        const parts = data.date.split("/");
+        return parts[1] === monthNumber;
+      }
     });
     setDisplaySelectedUser((prevData) => ({
       ...prevData,
@@ -214,7 +217,7 @@ export default function Manager({ control }) {
       .filter((item) => item.timesheet.checkOut)
       .reduce((sum, item) => {
         const { hours, minutes } = calculateTimeDifference(
-          item.timesheet.checkOut
+          item.timesheet.checkOut,
         );
         return sum + hours * 60 + minutes;
       }, 0);
@@ -274,14 +277,14 @@ export default function Manager({ control }) {
         ? phone
         : toEnglishNumber(phone);
       setFilterRecords(
-        displayRecords.filter((record) => record?.phone === phoneEnglish)
+        displayRecords.filter((record) => record?.phone === phoneEnglish),
       );
     }
   };
 
   const getVIP = () => {
     setFilterRecords(
-      displayRecords.filter((record) => record?.status === "vip")
+      displayRecords.filter((record) => record?.status === "vip"),
     );
   };
 
@@ -404,7 +407,7 @@ export default function Manager({ control }) {
           <div className={classes.cards}>
             {displaySelectedUser?.timesheets
               .filter(
-                (sheet) => toEnglishNumber(sheet.date.split("/")[0]) > 1403
+                (sheet) => toEnglishNumber(sheet.date.split("/")[0]) > 1403,
               )
               .map((sheet, index) => (
                 <div
@@ -785,7 +788,7 @@ export default function Manager({ control }) {
                             </div>
                           );
                         }
-                      }
+                      },
                     )}
                   </div>
                   {recordObject.injectHistory && (
@@ -796,7 +799,7 @@ export default function Manager({ control }) {
                           if (items.length > 0) {
                             // Filter the items to only include those that are active
                             const activeItems = items.filter(
-                              (item) => item.active
+                              (item) => item.active,
                             );
                             // Check if there are any active items to render
                             if (activeItems.length > 0) {
@@ -812,7 +815,7 @@ export default function Manager({ control }) {
                               );
                             }
                           }
-                        }
+                        },
                       )}
                     </div>
                   )}
