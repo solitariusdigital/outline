@@ -12,16 +12,12 @@ export default class MyDocument extends Document {
           />
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/icon.png"></link>
+          <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
           <meta name="theme-color" content="#2d2b7f" />
         </Head>
         <body>
           <Main />
           <NextScript />
-          <script
-            defer
-            src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon='{"token": "f24f50e736dc4b68a56cece8a640a02f"}'
-          ></script>
         </body>
       </Html>
     );
