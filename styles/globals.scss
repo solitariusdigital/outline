@@ -1,6 +1,11 @@
 @use "config" as config;
 @use "mixins" as mixins;
 
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../assets/Vazirmatn-Medium.ttf") format("truetype");
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
