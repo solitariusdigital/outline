@@ -77,7 +77,7 @@ export function pourgholiDays(persianDate) {
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
-  return dayOfWeek === 5; // Friday
+  return dayOfWeek === 4 || dayOfWeek === 5; // Thu / Fri
 }
 
 export function tehranBranch({ year, month, day }) {
@@ -87,7 +87,7 @@ export function tehranBranch({ year, month, day }) {
     return false;
   }
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
-  return dayOfWeek === 4 || dayOfWeek === 5; // Thu / Fri
+  return dayOfWeek === 5; //   Fri
 }
 
 export function getCurrentDate() {
