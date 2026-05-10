@@ -89,12 +89,12 @@ export default function Register() {
 
   const handleRegister = async (receivedToken) => {
     setCheckToken(receivedToken);
+    if (receivedToken.length !== 4) {
+      return;
+    }
     let tokenEnglish = isEnglishNumber(receivedToken)
       ? receivedToken
       : toEnglishNumber(receivedToken);
-    if (tokenEnglish.length !== 4) {
-      return;
-    }
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
     if (token === Number(tokenEnglish)) {
       // Check if user already exists in the database
