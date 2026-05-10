@@ -88,10 +88,10 @@ export default function Register() {
   };
 
   const handleRegister = async (receivedToken) => {
+    setCheckToken(receivedToken);
     let tokenEnglish = isEnglishNumber(receivedToken)
       ? receivedToken
       : toEnglishNumber(receivedToken);
-    setCheckToken(tokenEnglish);
     if (tokenEnglish.length !== 4) {
       return;
     }
