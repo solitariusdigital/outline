@@ -27,6 +27,17 @@ export default function Home({ activeVisits }) {
     "https://www.google.com/maps/place/%D8%AF%DA%A9%D8%AA%D8%B1+%D9%81%D8%B1%D8%A7%D9%87%D8%A7%D9%86%DB%8C+%D8%A7%D9%88%D8%AA+%D9%84%D8%A7%DB%8C%D9%86%E2%80%AD/@35.7966147,51.425542,20.39z/data=!4m6!3m5!1s0x3f8e070074e7f933:0x1b60689649d061a8!8m2!3d35.7966208!4d51.4254661!16s%2Fg%2F11wv3h85d_?entry=ttu&g_ep=EgoyMDI1MDgwNi4wIKXMDSoASAFQAw%3D%3D";
   const kishLocation =
     "https://www.google.com/maps/place/%D8%A7%D9%88%D8%AA%E2%80%8C%D9%84%D8%A7%DB%8C%D9%86+%DA%A9%DB%8C%D8%B4%E2%80%AD/@26.5527385,54.0211711,17z/data=!4m14!1m7!3m6!1s0x3e50ab003291c53d:0x81c83549d1a6e13!2z2KfZiNiq4oCM2YTYp9uM2YYg2qnbjNi0!8m2!3d26.5527385!4d54.0211711!16s%2Fg%2F11yhhlzkdn!3m5!1s0x3e50ab003291c53d:0x81c83549d1a6e13!8m2!3d26.5527385!4d54.0211711!16s%2Fg%2F11yhhlzkdn?entry=ttu&g_ep=EgoyMDI1MDgwNi4wIKXMDSoASAFQAw%3D%3D";
+  const pourGholiText = ["نوبت دکتر پورقلی", "متخصص پوست"];
+  const kishText = ["نوبت شعبه کیش", "به زودی برمیگردیم"];
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % pourGholiText.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleUserVisits = async () => {
@@ -41,7 +52,8 @@ export default function Home({ activeVisits }) {
       }
       if (permission === "patient" || permission === "staff") {
         const hasActiveVisit = activeVisits.some(
-          (visit) => visit.userId === _id && !visit.completed && !visit.canceled
+          (visit) =>
+            visit.userId === _id && !visit.completed && !visit.canceled,
         );
         setHideBooking(hasActiveVisit);
       } else {
@@ -63,18 +75,18 @@ export default function Home({ activeVisits }) {
       const userTimesheets = getTimesheets(controlData, currentUserId);
       // Check if check-in and check-out for today are complete
       const todayTimesheet = userTimesheets[currentUserId]?.find(
-        (entry) => entry.date === currentDate
+        (entry) => entry.date === currentDate,
       );
       if (todayTimesheet) {
         const isCheckDatesComplete = Object.values(
-          todayTimesheet.timesheet
+          todayTimesheet.timesheet,
         ).every((value) => value !== null);
         setCheckDatesComplete(isCheckDatesComplete);
       }
       // Determine if there's an existing entry for the current user
       const existingEntryIndex = findExistingEntry(
         userTimesheets,
-        currentUserId
+        currentUserId,
       );
       const checkType = existingEntryIndex === -1 ? "checkin" : "checkout";
       setCheckType(checkType);
@@ -97,7 +109,7 @@ export default function Home({ activeVisits }) {
 
   const findExistingEntry = (timesheets, userId) => {
     return timesheets[userId].findIndex(
-      (entry) => entry.date === getCurrentDateFarsi()
+      (entry) => entry.date === getCurrentDateFarsi(),
     );
   };
 
@@ -117,7 +129,7 @@ export default function Home({ activeVisits }) {
         currentTime,
         timesheets,
         currentUserId,
-        existingEntryIndex
+        existingEntryIndex,
       );
     }
 
@@ -129,7 +141,7 @@ export default function Home({ activeVisits }) {
     currentDate,
     currentTime,
     timesheets,
-    userId
+    userId,
   ) => {
     const confirm = window.confirm("ثبت ساعت ورود؟");
     if (!confirm) {
@@ -149,7 +161,7 @@ export default function Home({ activeVisits }) {
     currentTime,
     timesheets,
     userId,
-    entryIndex
+    entryIndex,
   ) => {
     const confirm = window.confirm("ثبت ساعت اضافه کار؟");
     if (!confirm) {
@@ -163,7 +175,7 @@ export default function Home({ activeVisits }) {
       userId,
       entryIndex,
       currentTime,
-      address
+      address,
     );
     setCheckDatesComplete(true);
     window.alert("ساعت اضافه کار ثبت شد");
@@ -193,7 +205,7 @@ export default function Home({ activeVisits }) {
     userId,
     entryIndex,
     currentTime,
-    address
+    address,
   ) => {
     timesheets[userId][entryIndex].timesheet.checkOut = currentTime;
     timesheets[userId][entryIndex].address.checkOut = address;
@@ -234,7 +246,7 @@ export default function Home({ activeVisits }) {
           errorHandler(err);
           resolve(null);
         },
-        navigatorOptions
+        navigatorOptions,
       );
     });
   };
@@ -316,10 +328,10 @@ export default function Home({ activeVisits }) {
       <section className={classes.container}>
         <div className={classes.logo}>
           <Image width={200} height={140} src={logo} alt="logo" priority />
-          <h2>طراحی چهره</h2>
+          <h3>طراحی چهره</h3>
         </div>
         <section className={classes.navigation}>
-          {currentUser && (
+          {currentUser && currentUser?.permission !== "reception" && (
             <div
               className={classes.nav}
               onClick={() =>
@@ -367,7 +379,7 @@ export default function Home({ activeVisits }) {
               )}
             </div>
           )}
-          {!hideBooking && (
+          {!hideBooking && currentUser?.permission !== "reception" && (
             <Fragment>
               <div className={classes.row}>
                 <div
@@ -409,23 +421,31 @@ export default function Home({ activeVisits }) {
                     setSelectBranch("tehran");
                   }}
                 >
-                  نوبت دکتر پورقلی
+                  {pourGholiText[index]}
                 </div>
                 <div
-                  className={classes.fillNav}
+                  className={classes.nav}
                   style={{
                     width: "49%",
                   }}
-                  onClick={() => {
-                    Router.push(currentUser ? "/booking" : "/portal");
-                    setSelectDoctor("دکتر فراهانی");
-                    setSelectBranch("kish");
-                  }}
+                  // onClick={() => {
+                  //   Router.push(currentUser ? "/booking" : "/portal");
+                  //   setSelectDoctor("دکتر فراهانی");
+                  //   setSelectBranch("kish");
+                  // }}
                 >
-                  نوبت شعبه کیش
+                  {kishText[index]}
                 </div>
               </div>
             </Fragment>
+          )}
+          {(displayReception || currentUser?.permission === "reception") && (
+            <div
+              className={classes.fillNav}
+              onClick={() => Router.push("/reception")}
+            >
+              پذیرش
+            </div>
           )}
           <div className={classes.row}>
             <div
@@ -458,14 +478,6 @@ export default function Home({ activeVisits }) {
           >
             تماس با ما
           </div>
-          {(displayReception || currentUser?.permission === "reception") && (
-            <div
-              className={classes.nav}
-              onClick={() => Router.push("/reception")}
-            >
-              پذیرش
-            </div>
-          )}
           {!checkDatesComplete && !currentUser?.super && isUserAuthorized && (
             <div
               className={classes.checkType}
@@ -481,11 +493,11 @@ export default function Home({ activeVisits }) {
         <div>
           <InstagramIcon
             className="icon"
-            sx={{ color: "#2d2b7f" }}
+            sx={{ color: "#2d2b7f", fontSize: 28 }}
             onClick={() =>
               window.open(
                 "https://www.instagram.com/dr.farahani.outline",
-                "_ self"
+                "_ self",
               )
             }
           />
@@ -501,7 +513,7 @@ export async function getServerSideProps(context) {
 
     let visits = await visitModel.find();
     let activeVisits = visits.filter(
-      (visit) => !visit.completed && !visit.canceled
+      (visit) => !visit.completed && !visit.canceled,
     );
 
     return {

@@ -98,11 +98,12 @@
     }
 
     .nav {
+      cursor: pointer;
+
       @include mixins.desktop {
         &:hover {
           color: config.$blue;
           font-weight: bold;
-          cursor: pointer;
         }
       }
     }

@@ -98,7 +98,7 @@ export default function Reception() {
     const getRecordData = await getRecordsApi();
     if (verificationEnglish.length <= 10) {
       const userRecord = getRecordData.find(
-        (user) => user.idMeli === verificationEnglish
+        (user) => user.idMeli === verificationEnglish,
       );
       if (userRecord) {
         assignUserRecord(userRecord);
@@ -152,7 +152,7 @@ export default function Reception() {
     let userId = null;
     const appUsers = await getUsersApi();
     const userData = appUsers.find(
-      (user) => user.phone === verificationEnglish
+      (user) => user.phone === verificationEnglish,
     );
     if (userData) {
       userId = userData["_id"];
@@ -177,7 +177,7 @@ export default function Reception() {
       if (userVisit) {
         const incompleteVisits = visits.filter(
           (visit) =>
-            visit.userId === userId && !visit.completed && !visit.canceled
+            visit.userId === userId && !visit.completed && !visit.canceled,
         );
         if (incompleteVisits.length > 0) {
           return {
@@ -262,7 +262,7 @@ export default function Reception() {
     const recordObject = {
       name: name.trim(),
       birthDate: `${birthYear}/${checkConvertNumber(
-        birthDate.month
+        birthDate.month,
       )}/${checkConvertNumber(birthDate.day)}`,
       age: toEnglishNumber(currentYear) - birthYear,
       idMeli: idEnglish,
@@ -330,22 +330,22 @@ export default function Reception() {
   const handleMedicalHistoryChange = (index, isActive) => {
     setMedical((prevState) =>
       prevState.map((item, i) =>
-        i === index ? { ...item, active: isActive } : item
-      )
+        i === index ? { ...item, active: isActive } : item,
+      ),
     );
   };
   const handleHabitsChange = (index, isActive) => {
     setHabits((prevState) =>
       prevState.map((item, i) =>
-        i === index ? { ...item, active: isActive } : item
-      )
+        i === index ? { ...item, active: isActive } : item,
+      ),
     );
   };
   const handleMedicalHistoryFamilyChange = (index, isActive) => {
     setMedicalFamily((prevState) =>
       prevState.map((item, i) =>
-        i === index ? { ...item, active: isActive } : item
-      )
+        i === index ? { ...item, active: isActive } : item,
+      ),
     );
   };
 
@@ -950,7 +950,14 @@ export default function Reception() {
           </Fragment>
         )}
         <div className={classes.logo}>
-          <Image width={200} height={140} src={logo} alt="logo" priority />
+          <Image
+            width={200}
+            height={140}
+            src={logo}
+            alt="logo"
+            onClick={() => router.reload(router.asPath)}
+            priority
+          />
         </div>
       </div>
     </Fragment>

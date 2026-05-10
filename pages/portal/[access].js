@@ -60,7 +60,7 @@ export default function Access() {
       "tomorrow" ||
       "afterTomorrow" ||
       "complete" ||
-      "cancel"
+      "cancel",
   );
 
   const targetDivRef = useRef(null);
@@ -98,8 +98,8 @@ export default function Access() {
       setDisplayVisits(cachedVisitsData.visitsData);
       setFilterVisits(
         cachedVisitsData.visitsData.filter(
-          (visit) => !visit.completed && !visit.canceled
-        )
+          (visit) => !visit.completed && !visit.canceled,
+        ),
       );
     }
   }, [loadPage, cachedVisitsData]);
@@ -146,18 +146,18 @@ export default function Access() {
           break;
         case "patient":
           visits = visitsFetchData.filter(
-            (visit) => visit.userId === currentUser["_id"]
+            (visit) => visit.userId === currentUser["_id"],
           );
           break;
         case "staff":
           visits = visitsFetchData.filter(
-            (visit) => visit.userId === currentUser["_id"]
+            (visit) => visit.userId === currentUser["_id"],
           );
           break;
         case "doctor":
           const doctorName = doctorIdTagName[currentUser["_id"]];
           visits = visitsFetchData.filter(
-            (visit) => visit.doctor === doctorName
+            (visit) => visit.doctor === doctorName,
           );
           break;
       }
@@ -165,7 +165,7 @@ export default function Access() {
       visits = sortVisits(visits);
       const visitsData = await enrichVisitsWithUserData(visits, users);
       const activeVisits = visitsData.filter(
-        (visit) => !visit.completed && !visit.canceled
+        (visit) => !visit.completed && !visit.canceled,
       );
 
       setCachedVisitsData({
@@ -189,7 +189,7 @@ export default function Access() {
           ...visit,
           user: userData,
         };
-      })
+      }),
     );
   };
 
@@ -239,7 +239,7 @@ export default function Access() {
       let users = await getUsersApi();
       visits = sortVisits(visits);
       const activeVisits = visits.filter(
-        (visit) => !visit.completed && !visit.canceled
+        (visit) => !visit.completed && !visit.canceled,
       );
       const visitsData = await enrichVisitsWithUserData(visits, users);
 
@@ -260,7 +260,7 @@ export default function Access() {
         ? phone
         : toEnglishNumber(phone);
       setFilterVisits(
-        displayVisits.filter((visit) => visit.user?.phone === phoneEnglish)
+        displayVisits.filter((visit) => visit.user?.phone === phoneEnglish),
       );
     }
   };
@@ -307,7 +307,7 @@ export default function Access() {
                 window.alert("خطا در ارسال پیامک");
               }
             }
-          }
+          },
         );
       });
     }
@@ -326,29 +326,29 @@ export default function Access() {
         setFilterVisits(
           displayVisits.filter(
             (visit) =>
-              visit.doctor === doctor && !visit.completed && !visit.canceled
-          )
+              visit.doctor === doctor && !visit.completed && !visit.canceled,
+          ),
         );
         break;
       case "today":
         setFilterVisits(
           filterVisitsByDate(displayVisits).filter(
-            (visit) => visit.doctor === doctor
-          )
+            (visit) => visit.doctor === doctor,
+          ),
         );
         break;
       case "tomorrow":
         setFilterVisits(
           filterVisitsByDate(displayVisits, 1).filter(
-            (visit) => visit.doctor === doctor
-          )
+            (visit) => visit.doctor === doctor,
+          ),
         );
         break;
       case "afterTomorrow":
         setFilterVisits(
           filterVisitsByDate(displayVisits, 2).filter(
-            (visit) => visit.doctor === doctor
-          )
+            (visit) => visit.doctor === doctor,
+          ),
         );
         break;
     }
@@ -363,7 +363,7 @@ export default function Access() {
         break;
       case "active":
         setFilterVisits(
-          displayVisits.filter((visit) => !visit.completed && !visit.canceled)
+          displayVisits.filter((visit) => !visit.completed && !visit.canceled),
         );
         break;
       case "today":
@@ -507,7 +507,7 @@ export default function Access() {
                   router.reload(router.asPath);
                 }}
               >
-                <RefreshIcon />
+                <RefreshIcon sx={{ color: "#2d2b7f" }} />
                 <h4>بروزرسانی نوبت‌</h4>
               </div>
               {currentUser.permission === "admin" && (
@@ -515,7 +515,7 @@ export default function Access() {
                   <p>
                     {
                       cachedVisitsData.users.filter(
-                        (user) => user.permission === "patient"
+                        (user) => user.permission === "patient",
                       ).length
                     }
                   </p>
@@ -612,7 +612,7 @@ export default function Access() {
                         <p>
                           {
                             cachedVisitsData.visitsData.filter(
-                              (visit) => visit.completed
+                              (visit) => visit.completed,
                             ).length
                           }
                         </p>
@@ -633,7 +633,7 @@ export default function Access() {
                         <p>
                           {
                             cachedVisitsData.visitsData.filter(
-                              (visit) => visit.canceled
+                              (visit) => visit.canceled,
                             ).length
                           }
                         </p>
@@ -659,7 +659,7 @@ export default function Access() {
             </div>
             {(currentUser.permission === "admin" ||
               displayVisits.filter(
-                (visit) => !visit.completed && !visit.canceled
+                (visit) => !visit.completed && !visit.canceled,
               ).length === 0) &&
               visitTypes !== "afterTomorrow" &&
               visitTypes !== "all" && (
@@ -694,7 +694,7 @@ export default function Access() {
                   >
                     دکتر پورقلی
                   </button>
-                  <button
+                  {/* <button
                     className={classes.booking}
                     onClick={() => {
                       Router.push("/booking");
@@ -703,13 +703,13 @@ export default function Access() {
                     }}
                   >
                     شعبه کیش
-                  </button>
+                  </button> */}
                 </div>
               )}
             {(currentUser.permission === "patient" ||
               currentUser.permission === "staff") &&
               displayVisits.filter(
-                (visit) => !visit.completed && !visit.canceled
+                (visit) => !visit.completed && !visit.canceled,
               ).length > 0 && (
                 <div className={classes.message}>
                   <p className={classes.text}>شما یک نوبت فعال دارید</p>
@@ -830,7 +830,7 @@ export default function Access() {
                             onClick={() =>
                               window.open(
                                 `tel:+98${item.user?.phone.substring(1)}`,
-                                "_self"
+                                "_self",
                               )
                             }
                           >
@@ -939,7 +939,7 @@ export default function Access() {
                                   sx={{ fontSize: 20, color: "#2d2b7f" }}
                                   onClick={() =>
                                     navigator.clipboard.writeText(
-                                      item.user?.phone
+                                      item.user?.phone,
                                     )
                                   }
                                 />
@@ -951,7 +951,7 @@ export default function Access() {
                                       item["_id"],
                                       item.user?.phone,
                                       item.time,
-                                      "complete"
+                                      "complete",
                                     )
                                   }
                                 >
@@ -968,7 +968,7 @@ export default function Access() {
                                       item["_id"],
                                       item.user?.phone,
                                       item.time,
-                                      "cancel"
+                                      "cancel",
                                     )
                                   }
                                   className={classes.row}

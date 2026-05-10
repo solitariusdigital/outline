@@ -36,11 +36,11 @@ $screen-fourK: 6000px;
     color: $subColor;
     box-shadow: config.$button-shadow;
     background: $color2;
+    cursor: pointer;
   }
 
   @include desktop {
     &:hover {
-      cursor: pointer;
       background: $subColor;
       color: $color2;
     }
@@ -66,10 +66,6 @@ $screen-fourK: 6000px;
 
 @mixin border-radius() {
   border-radius: 5px;
-}
-
-@mixin transparentBackground($alpha, $color) {
-  background-color: rgba(red($color), green($color), blue($color), $alpha);
 }
 
 @mixin row-space-between-center() {

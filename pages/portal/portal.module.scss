@@ -140,11 +140,11 @@
 
       .title {
         font-weight: bold;
+        cursor: pointer;
 
         @include mixins.desktop {
           &:hover {
             color: config.$blue;
-            cursor: pointer;
             text-decoration: underline;
           }
         }
@@ -215,11 +215,11 @@
 
       .title {
         font-weight: bold;
+        cursor: pointer;
 
         @include mixins.desktop {
           &:hover {
             color: config.$blue;
-            cursor: pointer;
           }
         }
       }
@@ -305,10 +305,10 @@
       font-size: small;
       color: config.$grey;
       font-weight: 300;
+      cursor: pointer;
 
       @include mixins.desktop {
         &:hover {
-          cursor: pointer;
           color: config.$blue;
         }
       }
@@ -545,11 +545,12 @@
   }
 
   .nav {
+    cursor: pointer;
+
     @include mixins.desktop {
       &:hover {
         color: config.$blue;
         font-weight: bold;
-        cursor: pointer;
       }
     }
   }
@@ -592,10 +593,10 @@
   .item {
     color: config.$grey;
     font-weight: 300;
+    cursor: pointer;
 
     @include mixins.desktop {
       &:hover {
-        cursor: pointer;
         color: config.$blue;
       }
     }
