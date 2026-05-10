@@ -80,7 +80,7 @@ export default function Register() {
             showAlert("خطا در سامانه ارسال کد تایید");
           }
           startCounter();
-        }
+        },
       );
     } else {
       showAlert("موبایل اشتباه");
@@ -88,12 +88,15 @@ export default function Register() {
   };
 
   const handleRegister = async (receivedToken) => {
-    setCheckToken(receivedToken);
-    if (receivedToken.length !== 4) {
+    let tokenEnglish = isEnglishNumber(receivedToken)
+      ? receivedToken
+      : toEnglishNumber(receivedToken);
+    setCheckToken(tokenEnglish);
+    if (tokenEnglish.length !== 4) {
       return;
     }
     let phoneEnglish = isEnglishNumber(phone) ? phone : toEnglishNumber(phone);
-    if (token === Number(receivedToken)) {
+    if (token === Number(tokenEnglish)) {
       // Check if user already exists in the database
       const userData = appUsers.find((user) => user.phone === phoneEnglish);
       if (userData) {
