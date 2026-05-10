@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import classes from "./reception.module.scss";
 import { NextSeo } from "next-seo";
 import Image from "next/legacy/image";
@@ -82,6 +82,16 @@ export default function Reception() {
   const [selectDoctor, setSelectDoctor] = useState("");
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر پورقلی"];
   const router = useRouter();
+
+  const [index, setIndex] = useState(0);
+  const loadingText = ["لطفا صبر کنید", "درحال بارگذاری"];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % loadingText.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const checkConvertNumber = (number) => {
     return isEnglishNumber(number) ? number : toEnglishNumber(number);
@@ -422,7 +432,8 @@ export default function Reception() {
               بعدی
             </button>
             {disableButton && (
-              <div className={classes.loader}>
+              <div className={classes.loaderMessage}>
+                <h3>{loadingText[index]}</h3>
                 <Image
                   width={50}
                   height={50}

@@ -140,4 +140,14 @@
   @include mixins.mobile {
     width: calc(100% - 24px);
   }
+
+  .loaderMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+      margin: 0px;
+    }
+  }
 }
