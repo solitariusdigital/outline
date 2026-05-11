@@ -123,16 +123,18 @@
     gap: 5px;
   }
 
-  .row {
-    @include mixins.row-space-between-center();
-    padding: 8px;
+  .items {
+    padding: 4px;
     @include mixins.border-radius();
-
     border: 1px solid config.$blue;
 
     &:hover {
       cursor: pointer;
     }
+  }
+
+  .row {
+    @include mixins.row-space-between-center();
   }
 
   p {

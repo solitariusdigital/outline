@@ -781,7 +781,13 @@ export default function Manager({ control }) {
                               <span>{key}</span>
                               {items.map((item, index) => (
                                 <div key={index} className={classes.row}>
-                                  <h5>{item}</h5>
+                                  <h5
+                                    style={{
+                                      margin: "0px 4px",
+                                    }}
+                                  >
+                                    {item}
+                                  </h5>
                                   {recordObject.extraFiller?.includes(item) && (
                                     <p>+</p>
                                   )}
@@ -811,6 +817,17 @@ export default function Manager({ control }) {
                                   {activeItems.map((item, index) => (
                                     <div key={index} className={classes.row}>
                                       <h5>{item.name}</h5>
+                                      <h5
+                                        style={{
+                                          margin: "0px 4px",
+                                        }}
+                                      >
+                                        {
+                                          recordObject.amountFiller[key]?.[
+                                            item.name
+                                          ]
+                                        }
+                                      </h5>
                                     </div>
                                   ))}
                                 </div>
@@ -825,6 +842,12 @@ export default function Manager({ control }) {
                     <div className={classes.info}>
                       <span>نظر پزشک</span>
                       <p>{recordObject.comment}</p>
+                    </div>
+                  )}
+                  {recordObject.priceNote && (
+                    <div className={classes.info}>
+                      <span>یادداشت قیمت</span>
+                      <p>{recordObject.priceNote}</p>
                     </div>
                   )}
                   {recordObject.message && (

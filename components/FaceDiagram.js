@@ -204,7 +204,7 @@ export default function FaceDiagram() {
           ...prevState,
           [key]: [
             ...currentCategory,
-            { name: value, amount: "", active: true },
+            { name: value, amount: amountFiller[key]?.[value], active: true },
           ],
         };
       }
@@ -217,6 +217,7 @@ export default function FaceDiagram() {
     currentRecord.visitHistory = selectedSubcategories;
     currentRecord.injectHistory = selectedInjections;
     currentRecord.extraFiller = extraFiller;
+    currentRecord.amountFiller = amountFiller;
     currentRecord.comment = comment;
     currentRecord.priceNote = priceNote;
     let updatedRecords = [...allRecords];
@@ -245,7 +246,7 @@ export default function FaceDiagram() {
             border: "1px solid #999999",
           }}
         >
-          {currentUser?.permission === "doctor" && (
+          {key === "فیلر" && currentUser?.permission === "doctor" && (
             <Tooltip title="Extra">
               <AddCircleOutlineIcon
                 className="icon"
@@ -258,31 +259,37 @@ export default function FaceDiagram() {
           )}
           <h4>{value}</h4>
         </div>
-        {/* <input
-          placeholder="1.1"
-          type="text"
-          id="name"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          autoComplete="off"
-          dir="ltr"
-        /> */}
+        {["فیلر", "آنزیم"].some((item) => key.includes(item)) &&
+          currentUser?.permission === "doctor" && (
+            <input
+              placeholder="1.2"
+              type="text"
+              id={`filler-${value}`}
+              name={`filler-${value}`}
+              onChange={(e) =>
+                handleAmountFillerChange(key, value, e.target.value)
+              }
+              value={amountFiller?.key?.value}
+              autoComplete="off"
+              dir="ltr"
+            />
+          )}
       </div>
     );
   };
 
-  const addExtraFiller = (value) => {
-    setExtraFiller((prevState) => {
-      if (prevState.includes(value)) {
-        return prevState.filter((item) => item !== value);
-      }
-      return [...prevState, value];
-    });
+  const handleAmountFillerChange = (key, value, target) => {
+    setAmountFiller((prev) => ({
+      ...prev,
+      [key]: {
+        ...(prev[key] || {}),
+        [value]: target,
+      },
+    }));
   };
 
-  const addAmountFiller = (value) => {
-    setAmountFiller((prevState) => {
+  const addExtraFiller = (value) => {
+    setExtraFiller((prevState) => {
       if (prevState.includes(value)) {
         return prevState.filter((item) => item !== value);
       }
@@ -469,21 +476,43 @@ export default function FaceDiagram() {
                   {values.map((value, index) => (
                     <div
                       key={`${key}-${value}-${index}`}
-                      className={classes.row}
+                      className={classes.items}
                       onClick={() => handleChangeInjections(key, value)}
                     >
-                      {key === "فیلر" && extraFiller.includes(value) && (
-                        <Tooltip title="Extra">
-                          <AddCircleOutlineIcon className="icon" />
-                        </Tooltip>
-                      )}
-                      <h4>{value}</h4>
-                      {!!selectedInjections[key].find(
-                        (item) => item.name === value,
-                      )?.active ? (
-                        <RadioButtonCheckedIcon className="icon" />
-                      ) : (
-                        <RadioButtonUncheckedIcon className="icon" />
+                      <div className={classes.row}>
+                        {key === "فیلر" && extraFiller.includes(value) && (
+                          <Tooltip title="Extra">
+                            <AddCircleOutlineIcon
+                              className="icon"
+                              sx={{ fontSize: 20 }}
+                            />
+                          </Tooltip>
+                        )}
+                        <h4>{value}</h4>
+                        {!!selectedInjections[key].find(
+                          (item) => item.name === value,
+                        )?.active ? (
+                          <RadioButtonCheckedIcon
+                            className="icon"
+                            sx={{ fontSize: 20 }}
+                          />
+                        ) : (
+                          <RadioButtonUncheckedIcon
+                            className="icon"
+                            sx={{ fontSize: 20 }}
+                          />
+                        )}
+                      </div>
+                      {amountFiller[key]?.[value] && (
+                        <div
+                          className={classes.row}
+                          style={{
+                            width: "40%",
+                          }}
+                        >
+                          <span>cc</span>
+                          <h4>{amountFiller[key][value]}</h4>
+                        </div>
                       )}
                     </div>
                   ))}
