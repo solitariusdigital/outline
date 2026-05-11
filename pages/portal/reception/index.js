@@ -34,7 +34,7 @@ import {
 } from "@/services/api";
 
 const receptionDoctor = JSON.parse(
-  secureLocalStorage.getItem("receptionDoctor")
+  secureLocalStorage.getItem("receptionDoctor"),
 );
 
 export default function Reception({ records }) {
@@ -47,7 +47,7 @@ export default function Reception({ records }) {
   const [messages, setMessages] = useState([]);
   const [recordObject, setRecordObject] = useState(null);
   const [navigation, setNavigation] = useState(
-    receptionDoctor || "دکتر فراهانی" || "دکتر گنجه" || "دکتر پورقلی"
+    receptionDoctor || "دکتر فراهانی" || "دکتر گنجه" || "دکتر پورقلی",
   );
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر پورقلی"];
   const [alert, setAlert] = useState("");
@@ -229,7 +229,7 @@ export default function Reception({ records }) {
       ...editFormData,
       name: name.trim(),
       birthDate: `${birthYear}/${checkConvertNumber(
-        birthDate.month
+        birthDate.month,
       )}/${checkConvertNumber(birthDate.day)}`,
       age: toEnglishNumber(currentYear) - birthYear,
       idMeli: idEnglish,
@@ -421,7 +421,7 @@ export default function Reception({ records }) {
                     <div className={classes.row}>
                       {record?.status === "vip" && (
                         <Tooltip title="VIP">
-                          <StarIcon sx={{ fontSize: 16 }} />
+                          <StarIcon sx={{ fontSize: 20, color: "#2d2b7f" }} />
                         </Tooltip>
                       )}
                       <h4
@@ -532,7 +532,7 @@ export default function Reception({ records }) {
                                       handleMessageChange(
                                         record["_id"],
                                         index,
-                                        ""
+                                        "",
                                       )
                                     }
                                     sx={{ fontSize: 16 }}
@@ -547,7 +547,7 @@ export default function Reception({ records }) {
                                     handleMessageChange(
                                       record["_id"],
                                       index,
-                                      e.target.value
+                                      e.target.value,
                                     )
                                   }
                                   value={messages[index]}
@@ -580,6 +580,21 @@ export default function Reception({ records }) {
                           </>
                         );
                       })()}
+                      {record.status !== "vip" ? (
+                        <button
+                          className={classes.buttonVip}
+                          onClick={() => manageVIP(record["_id"], "vip")}
+                        >
+                          Make VIP
+                        </button>
+                      ) : (
+                        <button
+                          className={classes.buttonVip}
+                          onClick={() => manageVIP(record["_id"], "regular")}
+                        >
+                          Remove VIP
+                        </button>
+                      )}
                     </Fragment>
                   )}
                   {currentUser?.permission === "doctor" && (
@@ -626,7 +641,7 @@ export default function Reception({ records }) {
                                       {doctors
                                         .filter(
                                           (doctor) =>
-                                            currentUser.name !== doctor
+                                            currentUser.name !== doctor,
                                         )
                                         .map((doctor, index) => {
                                           return (
@@ -715,22 +730,6 @@ export default function Reception({ records }) {
                       })()}
                     </Fragment>
                   )}
-                  {currentUser?.permission === "admin" &&
-                  record.status !== "vip" ? (
-                    <button
-                      className={classes.buttonVip}
-                      onClick={() => manageVIP(record["_id"], "vip")}
-                    >
-                      Make VIP
-                    </button>
-                  ) : (
-                    <button
-                      className={classes.buttonVip}
-                      onClick={() => manageVIP(record["_id"], "regular")}
-                    >
-                      Remove VIP
-                    </button>
-                  )}
                 </div>
               ))}
             </Fragment>
@@ -799,7 +798,7 @@ export default function Reception({ records }) {
                           </div>
                         );
                       }
-                    }
+                    },
                   )}
                 </div>
                 {recordObject.injectHistory && (
@@ -810,7 +809,7 @@ export default function Reception({ records }) {
                         if (items.length > 0) {
                           // Filter the items to only include those that are active
                           const activeItems = items.filter(
-                            (item) => item.active
+                            (item) => item.active,
                           );
                           // Check if there are any active items to render
                           if (activeItems.length > 0) {
@@ -826,7 +825,7 @@ export default function Reception({ records }) {
                             );
                           }
                         }
-                      }
+                      },
                     )}
                   </div>
                 )}

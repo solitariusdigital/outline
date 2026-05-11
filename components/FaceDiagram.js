@@ -64,7 +64,21 @@ const categories = {
     "Sline فیس",
   ],
   "پی آر پی": ["مو", "صورت"],
-  آنزیم: ["آنزیم"],
+  آنزیم: [
+    "پیشانی",
+    "شقیقه",
+    "زیرچشم",
+    "میدفیس",
+    "بینی",
+    "خط خنده",
+    "ساب مالار",
+    "زاویه فک",
+    "میکرو",
+    "لب",
+    "چانه",
+    "خط غم",
+    "قاب صورت",
+  ],
   سونوگرافی: ["سونوگرافی"],
   "لیزر سرجیکال": [
     "پیشانی",
@@ -108,15 +122,21 @@ export default function FaceDiagram() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { popupDiagramData, setPopupDiagramData } = useContext(StateContext);
   const [selectedSubcategories, setSelectedSubcategories] = useState(
-    popupDiagramData.lastRecord?.visitHistory
+    popupDiagramData.lastRecord?.visitHistory,
   );
   const [selectedInjections, setSelectedInjections] = useState(
-    popupDiagramData.lastRecord?.injectHistory ?? defaultInjections
+    popupDiagramData.lastRecord?.injectHistory ?? defaultInjections,
   );
   const [extraFiller, setExtraFiller] = useState(
-    popupDiagramData.lastRecord.extraFiller || []
+    popupDiagramData.lastRecord.extraFiller || [],
+  );
+  const [amountFiller, setAmountFiller] = useState(
+    popupDiagramData.lastRecord.amountFiller || [],
   );
   const [comment, setComment] = useState(popupDiagramData.lastRecord?.comment);
+  const [priceNote, setPriceNote] = useState(
+    popupDiagramData.lastRecord?.priceNote,
+  );
   const activeFunctionality =
     currentUser?.permission === "doctor" ? true : false;
   const [displayGuide, setDisplayGuide] = useState(false);
@@ -129,7 +149,7 @@ export default function FaceDiagram() {
       "آنزیم" ||
       "سونوگرافی" ||
       "لیزر سرجیکال" ||
-      "لیزر فرکشنال"
+      "لیزر فرکشنال",
   );
   const router = useRouter();
 
@@ -140,7 +160,7 @@ export default function FaceDiagram() {
         return {
           ...prevSelected,
           [navigation]: currentSubcategories.filter(
-            (item) => item !== subcategory
+            (item) => item !== subcategory,
           ),
         };
       } else {
@@ -154,7 +174,7 @@ export default function FaceDiagram() {
       return {
         ...prevState,
         [navigation]: prevState[navigation].map((item) =>
-          item.name === subcategory ? { ...item, active: false } : item
+          item.name === subcategory ? { ...item, active: false } : item,
         ),
       };
     });
@@ -198,6 +218,7 @@ export default function FaceDiagram() {
     currentRecord.injectHistory = selectedInjections;
     currentRecord.extraFiller = extraFiller;
     currentRecord.comment = comment;
+    currentRecord.priceNote = priceNote;
     let updatedRecords = [...allRecords];
     if (updatedRecords.length > 0) {
       updatedRecords[updatedRecords.length - 1] = currentRecord;
@@ -211,35 +232,57 @@ export default function FaceDiagram() {
     router.reload(router.asPath);
   };
 
-  const getFillerColor = (value) => {
+  const renderInjectionBox = (value, key) => {
     return (
-      <div
-        className={classes.row}
-        style={{
-          backgroundColor: fillerColor[value],
-          borderRadius: "5px",
-          padding: "4px",
-          justifyContent: "space-around",
-        }}
-      >
-        {currentUser?.permission === "doctor" && (
-          <Tooltip title="Extra">
-            <AddCircleOutlineIcon
-              className="icon"
-              onClick={() => {
-                addExtraFiller(value);
-              }}
-              sx={{ fontSize: 20 }}
-            />
-          </Tooltip>
-        )}
-        <h4>{value}</h4>
+      <div className={classes.injectionBox}>
+        <div
+          className={classes.row}
+          style={{
+            backgroundColor: key === "فیلر" ? fillerColor[value] : "",
+            borderRadius: "5px",
+            padding: "4px",
+            justifyContent: "space-around",
+            border: "1px solid #999999",
+          }}
+        >
+          {currentUser?.permission === "doctor" && (
+            <Tooltip title="Extra">
+              <AddCircleOutlineIcon
+                className="icon"
+                onClick={() => {
+                  addExtraFiller(value);
+                }}
+                sx={{ fontSize: 20 }}
+              />
+            </Tooltip>
+          )}
+          <h4>{value}</h4>
+        </div>
+        {/* <input
+          placeholder="1.1"
+          type="text"
+          id="name"
+          name="name"
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+          autoComplete="off"
+          dir="ltr"
+        /> */}
       </div>
     );
   };
 
   const addExtraFiller = (value) => {
     setExtraFiller((prevState) => {
+      if (prevState.includes(value)) {
+        return prevState.filter((item) => item !== value);
+      }
+      return [...prevState, value];
+    });
+  };
+
+  const addAmountFiller = (value) => {
+    setAmountFiller((prevState) => {
       if (prevState.includes(value)) {
         return prevState.filter((item) => item !== value);
       }
@@ -281,7 +324,7 @@ export default function FaceDiagram() {
             <div className={classes.grid}>
               {values.map((value, index) => (
                 <Fragment key={index}>
-                  {key === "فیلر" ? getFillerColor(value) : <h4>{value}</h4>}
+                  {renderInjectionBox(value, key)}
                 </Fragment>
               ))}
             </div>
@@ -327,10 +370,16 @@ export default function FaceDiagram() {
               </div>
             )}
             {!activeFunctionality && (
-              <div className={classes.comment}>
-                <span>نظر پزشک</span>
-                <h4>{comment ? comment : "-"}</h4>
-              </div>
+              <>
+                <div className={classes.comment}>
+                  <span>نظر پزشک</span>
+                  <h4>{comment ? comment : "-"}</h4>
+                </div>
+                <div className={classes.comment}>
+                  <span>یادداشت قیمت</span>
+                  <h4>{priceNote ? priceNote : "-"}</h4>
+                </div>
+              </>
             )}
             <button
               className={classes.buttonGuide}
@@ -363,27 +412,47 @@ export default function FaceDiagram() {
           </Fragment>
         )}
         {currentUser?.permission === "doctor" && (
-          <div className={classes.textarea}>
-            <div className={classes.bar}>
-              <CloseIcon
-                className="icon"
-                onClick={() => setComment("")}
-                sx={{ fontSize: 16 }}
+          <>
+            <div className={classes.textarea}>
+              <div className={classes.bar}>
+                <CloseIcon
+                  className="icon"
+                  onClick={() => setComment("")}
+                  sx={{ fontSize: 16 }}
+                />
+              </div>
+              <textarea
+                placeholder="نظر پزشک"
+                type="text"
+                name="comment"
+                onChange={(e) => setComment(e.target.value)}
+                value={comment}
+                autoComplete="off"
+                dir="rtl"
               />
             </div>
-            <textarea
-              placeholder="نظر پزشک"
-              type="text"
-              name="comment"
-              onChange={(e) => setComment(e.target.value)}
-              value={comment}
-              autoComplete="off"
-              dir="rtl"
-            />
+            <div className={classes.textarea}>
+              <div className={classes.bar}>
+                <CloseIcon
+                  className="icon"
+                  onClick={() => setPriceNote("")}
+                  sx={{ fontSize: 16 }}
+                />
+              </div>
+              <textarea
+                placeholder="یادداشت قیمت"
+                type="text"
+                name="priceNote"
+                onChange={(e) => setPriceNote(e.target.value)}
+                value={priceNote}
+                autoComplete="off"
+                dir="rtl"
+              />
+            </div>
             <button className={classes.button} onClick={() => handleSaveData()}>
               تکمیل مشاوره
             </button>
-          </div>
+          </>
         )}
       </div>
       <div>
@@ -405,25 +474,16 @@ export default function FaceDiagram() {
                     >
                       {key === "فیلر" && extraFiller.includes(value) && (
                         <Tooltip title="Extra">
-                          <AddCircleOutlineIcon
-                            className="icon"
-                            sx={{ fontSize: 20 }}
-                          />
+                          <AddCircleOutlineIcon className="icon" />
                         </Tooltip>
                       )}
                       <h4>{value}</h4>
                       {!!selectedInjections[key].find(
-                        (item) => item.name === value
+                        (item) => item.name === value,
                       )?.active ? (
-                        <RadioButtonCheckedIcon
-                          sx={{ fontSize: 28 }}
-                          className="icon"
-                        />
+                        <RadioButtonCheckedIcon className="icon" />
                       ) : (
-                        <RadioButtonUncheckedIcon
-                          sx={{ fontSize: 28 }}
-                          className="icon"
-                        />
+                        <RadioButtonUncheckedIcon className="icon" />
                       )}
                     </div>
                   ))}

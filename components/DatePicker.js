@@ -35,11 +35,11 @@ export default function DatePicker({ visits }) {
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const { adminColorCode, setAdminColorCode } = useContext(StateContext);
   const [name, setName] = useState(
-    currentUser.permission === "admin" ? "" : currentUser.name
+    currentUser.permission === "admin" ? "" : currentUser.name,
   );
   const [title, setTitle] = useState("");
   const [phone, setPhone] = useState(
-    currentUser.permission === "admin" ? "" : currentUser.phone
+    currentUser.permission === "admin" ? "" : currentUser.phone,
   );
   const [day, setDay] = useState(null);
   const [time, setTime] = useState("");
@@ -78,7 +78,7 @@ export default function DatePicker({ visits }) {
       try {
         let controls = await getControlsApi();
         const disableDatesArray = Object.keys(
-          controls[0].disableDates[selectDoctor]
+          controls[0].disableDates[selectDoctor],
         ).map((dateString) => {
           const [year, month, day] = dateString.split("-").map(Number);
           return { day, month, year };
@@ -206,7 +206,7 @@ export default function DatePicker({ visits }) {
   const checkActiveBooking = async (phoneEnglish) => {
     const visitData = await getUserVisits(phoneEnglish);
     const conflictingVisit = visitData.find(
-      (visit) => !visit.canceled && !visit.completed
+      (visit) => !visit.canceled && !visit.completed,
     );
     const hasConflict = !!conflictingVisit; // Convert to boolean
     return {
@@ -260,13 +260,13 @@ export default function DatePicker({ visits }) {
 
     updateDisplayTime(
       `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
-        day.day
+        day.day,
       )}`,
       isSelectedDateFriday(day),
       ganjeDays(day),
       pourgholiDays(day),
       tehranBranch(day),
-      day
+      day,
     );
   };
 
@@ -282,10 +282,10 @@ export default function DatePicker({ visits }) {
     setTime(time);
     setSelectedDate(
       `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
-        day.day
+        day.day,
       )} - ${
         toFarsiNumber(time).slice(0, 2) + ":" + toFarsiNumber(time).slice(2)
-      }`
+      }`,
     );
   };
 
@@ -325,8 +325,16 @@ export default function DatePicker({ visits }) {
         "16:30": { display: true, active: false, count: 0 },
         "17:00": { display: true, active: false, count: 0 },
         "17:30": { display: true, active: false, count: 0 },
-        "18:00": { display: true, active: false, count: 0 },
-        "18:30": { display: true, active: false, count: 0 },
+        "18:00": {
+          display: currentUser.permission === "admin",
+          active: false,
+          count: 0,
+        },
+        "18:30": {
+          display: currentUser.permission === "admin",
+          active: false,
+          count: 0,
+        },
       },
       "دکتر گنجه": {
         "11:00": { display: false, active: false, count: 0 },
@@ -343,8 +351,16 @@ export default function DatePicker({ visits }) {
         "16:30": { display: true, active: false, count: 0 },
         "17:00": { display: true, active: false, count: 0 },
         "17:30": { display: true, active: false, count: 0 },
-        "18:00": { display: true, active: false, count: 0 },
-        "18:30": { display: true, active: false, count: 0 },
+        "18:00": {
+          display: currentUser.permission === "admin",
+          active: false,
+          count: 0,
+        },
+        "18:30": {
+          display: currentUser.permission === "admin",
+          active: false,
+          count: 0,
+        },
       },
       "دکتر فراهانی": {
         tehran: {
@@ -363,8 +379,16 @@ export default function DatePicker({ visits }) {
           "16:30": { display: true, active: false, count: 0 },
           "17:00": { display: true, active: false, count: 0 },
           "17:30": { display: true, active: false, count: 0 },
-          "18:00": { display: true, active: false, count: 0 },
-          "18:30": { display: true, active: false, count: 0 },
+          "18:00": {
+            display: currentUser.permission === "admin",
+            active: false,
+            count: 0,
+          },
+          "18:30": {
+            display: currentUser.permission === "admin",
+            active: false,
+            count: 0,
+          },
         },
         kish: {
           "16:00": { display: true, active: false, count: 0 },
@@ -392,7 +416,7 @@ export default function DatePicker({ visits }) {
     ganjeDays,
     pourgholiDays,
     tehranBranch,
-    day
+    day,
   ) => {
     if (selectDoctor === "دکتر گنجه" && ganjeDays) {
       setTimes({});
@@ -429,7 +453,7 @@ export default function DatePicker({ visits }) {
     if (isSelectedDateFriday) {
       const numberSlice = 9;
       timeToUse = Object.fromEntries(
-        Object.entries(originalTimes).slice(numberSlice)
+        Object.entries(originalTimes).slice(numberSlice),
       );
     } else {
       timeToUse = originalTimes;

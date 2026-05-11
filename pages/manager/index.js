@@ -613,7 +613,9 @@ export default function Manager({ control }) {
                         <div className={classes.row}>
                           {record?.status === "vip" && (
                             <Tooltip title="VIP">
-                              <StarIcon sx={{ fontSize: 16 }} />
+                              <StarIcon
+                                sx={{ fontSize: 20, color: "#2d2b7f" }}
+                              />
                             </Tooltip>
                           )}
                           <h4
