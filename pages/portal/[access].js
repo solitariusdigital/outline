@@ -780,7 +780,7 @@ export default function Access() {
             {visitTypes === "all" && (
               <div className={classes.input}>
                 <div className={classes.bar}>
-                  <p className={classes.label}>جستجو</p>
+                  <p className={classes.label}>جستجو موبایل</p>
                   <CloseIcon
                     className="icon"
                     onClick={() => {

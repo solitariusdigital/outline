@@ -12,6 +12,8 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import StarIcon from "@mui/icons-material/Star";
 import Tooltip from "@mui/material/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
+import loaderImage from "@/assets/loader.png";
+import Image from "next/legacy/image";
 import {
   getSingleUserApi,
   updateControlApi,
@@ -577,7 +579,7 @@ export default function Manager({ control }) {
           )}
           <div className={classes.input}>
             <div className={classes.bar}>
-              <p className={classes.label}>جستجو</p>
+              <p className={classes.label}>جستجو موبایل</p>
               <CloseIcon
                 className="icon"
                 onClick={() => {
@@ -599,6 +601,17 @@ export default function Manager({ control }) {
               dir="rtl"
             />
           </div>
+          {filterRecords.length === 0 && (
+            <div className={classes.loader}>
+              <Image
+                width={50}
+                height={50}
+                src={loaderImage}
+                alt="isLoading"
+                unoptimized
+              />
+            </div>
+          )}
           <div className={classes.records}>
             {!recordObject && (
               <Fragment>
