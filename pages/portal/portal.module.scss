@@ -348,8 +348,8 @@
 
       .info,
       .historyItem {
-        margin-bottom: 4px;
         border-bottom: 1px solid config.$lightgrey;
+        padding: 2px 0px;
 
         span {
           color: config.$grey;

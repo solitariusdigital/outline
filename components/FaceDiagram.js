@@ -304,119 +304,123 @@ export default function FaceDiagram() {
           <h4>جدول مشاوره</h4>
         </div>
         {Object.entries(selectedSubcategories).map(([key, values]) => (
-          <div
-            key={key}
-            className={classes.selectedSubcategories}
-            style={{
-              background:
-                key === navigation && activeFunctionality ? "#ffffff" : "",
-              border:
-                key === navigation && activeFunctionality
-                  ? "1px solid #2d2b7f"
-                  : "1px solid #d6d6d6",
-              pointerEvents: activeFunctionality ? "auto" : "none",
-            }}
-            onClick={() => {
-              activeFunctionality ? setNavigation(key) : null;
-            }}
-          >
-            <p
+          <Fragment key={key}>
+            <div
+              className={classes.selectedSubcategories}
               style={{
-                color:
-                  key === navigation && activeFunctionality ? " #2d2b7f" : "",
+                background:
+                  key === navigation && activeFunctionality ? "#ffffff" : "",
+                border:
+                  key === navigation && activeFunctionality
+                    ? "1px solid #2d2b7f"
+                    : "1px solid #d6d6d6",
+                pointerEvents: activeFunctionality ? "auto" : "none",
+              }}
+              onClick={() => {
+                activeFunctionality ? setNavigation(key) : null;
               }}
             >
-              {key}
-            </p>
-            <div className={classes.grid}>
-              {values.map((value, index) => (
-                <Fragment key={index}>
-                  {renderInjectionBox(value, key)}
-                </Fragment>
-              ))}
-            </div>
-          </div>
-        ))}
-        {navigation !== "فیلر" && activeFunctionality && (
-          <div className={classes.navigationTypes}>
-            {categories[navigation].map((item, index) => (
               <p
-                key={index}
-                className={classes.nav}
                 style={{
-                  fontWeight: "bold",
-                  border: "1px solid #2d2b7f",
+                  color:
+                    key === navigation && activeFunctionality ? " #2d2b7f" : "",
                 }}
-                onClick={() => handleSubcategoryToggle(item)}
               >
-                {item}
+                {key}
               </p>
-            ))}
-          </div>
-        )}
-        {navigation === "فیلر" && (
-          <Fragment>
-            {activeFunctionality && (
-              <div className={classes.navigationTypes}>
-                {categories[navigation].map((item, index) => (
-                  <p
-                    key={index}
-                    className={classes.nav}
-                    style={{
-                      fontWeight: "bold",
-                      background: fillerColor[item],
-                      border: `1px solid ${
-                        !fillerColor[item] ? "#2d2b7f" : "none"
-                      }`,
-                    }}
-                    onClick={() => handleSubcategoryToggle(item)}
-                  >
-                    {item}
-                  </p>
+              <div className={classes.grid}>
+                {values.map((value, index) => (
+                  <Fragment key={index}>
+                    {renderInjectionBox(value, key)}
+                  </Fragment>
                 ))}
               </div>
-            )}
-            {!activeFunctionality && (
-              <>
-                <div className={classes.comment}>
-                  <span>نظر پزشک</span>
-                  <h4>{comment ? comment : "-"}</h4>
+            </div>
+            {key === navigation &&
+              navigation !== "فیلر" &&
+              activeFunctionality && (
+                <div className={classes.navigationTypes}>
+                  {categories[navigation].map((item, index) => (
+                    <p
+                      key={index}
+                      className={classes.nav}
+                      style={{
+                        fontWeight: "bold",
+                        border: "1px solid #2d2b7f",
+                      }}
+                      onClick={() => handleSubcategoryToggle(item)}
+                    >
+                      {item}
+                    </p>
+                  ))}
                 </div>
-                <div className={classes.comment}>
-                  <span>یادداشت قیمت</span>
-                  <h4>{priceNote ? priceNote : "-"}</h4>
-                </div>
-              </>
-            )}
-            <button
-              className={classes.buttonGuide}
-              onClick={() => setDisplayGuide(!displayGuide)}
-            >
-              راهنما فیلر
-            </button>
-            {displayGuide && (
-              <div className={classes.text}>
-                {!activeFunctionality && (
-                  <p>
-                    برای اعمال تزریق روی صورت بیمار به جدول مشاوره مراجعه کنید
-                  </p>
+              )}
+            {key === navigation && navigation === "فیلر" && (
+              <Fragment>
+                {activeFunctionality && (
+                  <div className={classes.navigationTypes}>
+                    {categories[navigation].map((item, index) => (
+                      <p
+                        key={index}
+                        className={classes.nav}
+                        style={{
+                          fontWeight: "bold",
+                          background: fillerColor[item],
+                          border: `1px solid ${
+                            !fillerColor[item] ? "#2d2b7f" : "none"
+                          }`,
+                        }}
+                        onClick={() => handleSubcategoryToggle(item)}
+                      >
+                        {item}
+                      </p>
+                    ))}
+                  </div>
                 )}
-                <p>مناطق روی صورت جهت راهنما فیلر نشان داده شده</p>
-                <div className={classes.diagram}>
-                  <Image
-                    src={faceDiagram}
-                    blurDataURL={faceDiagram}
-                    alt="faceDiagram"
-                    placeholder="blur"
-                    layout="fill"
-                    objectFit="contain"
-                    as="image"
-                    unoptimized
-                  />
-                </div>
-              </div>
+                <button
+                  className={classes.buttonGuide}
+                  onClick={() => setDisplayGuide(!displayGuide)}
+                >
+                  راهنما فیلر
+                </button>
+                {displayGuide && (
+                  <div className={classes.text}>
+                    {!activeFunctionality && (
+                      <p>
+                        برای اعمال تزریق روی صورت بیمار به جدول مشاوره مراجعه
+                        کنید
+                      </p>
+                    )}
+                    <p>مناطق روی صورت جهت راهنما فیلر نشان داده شده</p>
+                    <div className={classes.diagram}>
+                      <Image
+                        src={faceDiagram}
+                        blurDataURL={faceDiagram}
+                        alt="faceDiagram"
+                        placeholder="blur"
+                        layout="fill"
+                        objectFit="contain"
+                        as="image"
+                        unoptimized
+                      />
+                    </div>
+                  </div>
+                )}
+              </Fragment>
             )}
           </Fragment>
+        ))}
+        {!activeFunctionality && (
+          <>
+            <div className={classes.comment}>
+              <span>نظر پزشک</span>
+              <h4>{comment ? comment : "-"}</h4>
+            </div>
+            <div className={classes.comment}>
+              <span>یادداشت قیمت</span>
+              <h4>{priceNote ? priceNote : "-"}</h4>
+            </div>
+          </>
         )}
         {currentUser?.permission === "doctor" && (
           <>

@@ -831,7 +831,7 @@ export default function Reception({ records }) {
                                       }}
                                     >
                                       {
-                                        recordObject.amountFiller[key]?.[
+                                        recordObject.amountFiller?.[key]?.[
                                           item.name
                                         ]
                                       }

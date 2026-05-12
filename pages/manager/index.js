@@ -823,7 +823,7 @@ export default function Manager({ control }) {
                                         }}
                                       >
                                         {
-                                          recordObject.amountFiller[key]?.[
+                                          recordObject.amountFiller?.[key]?.[
                                             item.name
                                           ]
                                         }

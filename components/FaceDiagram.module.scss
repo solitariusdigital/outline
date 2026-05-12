@@ -163,7 +163,7 @@
 
 .button-base {
   width: 150px !important;
-  margin: 32px 0px;
+  margin: 12px 0px;
 }
 .button {
   @include mixins.button(config.$blue, config.$blue, config.$white);
