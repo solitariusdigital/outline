@@ -7,9 +7,13 @@ import faceDiagram from "@/assets/faceDiagram.png";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Tooltip from "@mui/material/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import { updateRecordApi } from "@/services/api";
+import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
+import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
+import { toFarsiNumber, convertPersianToGregorian } from "@/services/utility";
+import { updateRecordApi, createFollowApi } from "@/services/api";
 
 const defaultInjections = {
   فیلر: [],
@@ -151,6 +155,15 @@ export default function FaceDiagram() {
       "لیزر سرجیکال" ||
       "لیزر فرکشنال",
   );
+  // follow up items
+  const [title, setTitle] = useState("");
+  const [day, setDay] = useState(null);
+  const [date, setDate] = useState("");
+  const [dateObject, setDateObject] = useState("");
+  const [disableButton, setDisableButton] = useState(false);
+  const [followUp, setFollowUp] = useState(true);
+  const [alert, setAlert] = useState("");
+
   const router = useRouter();
 
   const handleSubcategoryToggle = (subcategory) => {
@@ -295,6 +308,62 @@ export default function FaceDiagram() {
       }
       return [...prevState, value];
     });
+  };
+
+  const assingDay = (day) => {
+    setDay(day);
+    let gregorian = convertPersianToGregorian(day);
+    setDateObject(gregorian);
+    setDate(
+      `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
+        day.day,
+      )}`,
+    );
+  };
+
+  const createFollowUpVisit = async () => {
+    setDisableButton(true);
+
+    if (!title) {
+      showAlert("موضوع الزامیست");
+      setDisableButton(false);
+      return;
+    }
+    if (!day) {
+      showAlert("روز الزامیست");
+      setDisableButton(false);
+      return;
+    }
+
+    let visitObject = {
+      name: popupDiagramData.record.name,
+      phone: popupDiagramData.record.phone,
+      title: title ? title.trim() : "-",
+      userId: popupDiagramData.record.userId,
+      doctor: currentUser?.name,
+      time: date,
+      date: dateObject,
+      branch: "tehran",
+      completed: false,
+      canceled: false,
+    };
+
+    await createFollowApi(visitObject);
+    setDate("");
+    setTitle("");
+    setDay(null);
+    setDisableButton(false);
+    setFollowUp(false);
+    setTimeout(() => {
+      setFollowUp(true);
+    }, 3000);
+  };
+
+  const showAlert = (message) => {
+    setAlert(message);
+    setTimeout(() => {
+      setAlert("");
+    }, 3000);
   };
 
   return (
@@ -528,6 +597,71 @@ export default function FaceDiagram() {
         <button className={classes.button} onClick={() => handleSaveData()}>
           تکمیل تزریق
         </button>
+        {currentUser?.name === "دکتر فراهانی" && (
+          <>
+            {followUp ? (
+              <div className={classes.followUp}>
+                <h4>نوبت Follow Up</h4>
+                <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      موضوع
+                      <span>*</span>
+                    </p>
+                    <CloseIcon
+                      className="icon"
+                      onClick={() => setTitle("")}
+                      sx={{ fontSize: 16 }}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    onChange={(e) => setTitle(e.target.value)}
+                    value={title}
+                    autoComplete="off"
+                    dir="rtl"
+                  />
+                </div>
+                <Calendar
+                  value={day}
+                  onChange={(day) => assingDay(day)}
+                  shouldHighlightWeekends
+                  minimumDate={utils("fa").getToday()}
+                  locale="fa"
+                />
+                <p
+                  style={{
+                    marginTop: "24px",
+                  }}
+                >
+                  {date}
+                </p>
+                <button
+                  className={classes.button}
+                  style={{
+                    marginTop: "24px",
+                  }}
+                  disabled={disableButton}
+                  onClick={() => createFollowUpVisit()}
+                >
+                  ثبت نوبت
+                </button>
+                {alert && <p className="alert">{alert}</p>}
+              </div>
+            ) : (
+              <div
+                style={{
+                  marginTop: "24px",
+                }}
+              >
+                <CheckIcon sx={{ fontSize: 60, color: "#2d2b7f" }} />
+                <h4>نوبت ثبت شد</h4>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

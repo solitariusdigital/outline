@@ -331,7 +331,7 @@ export default function Home({ activeVisits }) {
           <h3>طراحی چهره</h3>
         </div>
         <section className={classes.navigation}>
-          {currentUser && currentUser?.permission !== "reception" && (
+          {currentUser?.permission !== "reception" && (
             <div
               className={classes.nav}
               onClick={() =>
@@ -377,6 +377,22 @@ export default function Home({ activeVisits }) {
                   پرونده بیمار
                 </div>
               )}
+            </div>
+          )}
+          {currentUser?.permission === "admin" && (
+            <div
+              className={classes.nav}
+              onClick={() =>
+                Router.push({
+                  pathname: `/portal/${currentUser.permission}`,
+                  query: {
+                    id: currentUser["_id"],
+                    p: currentUser.permission,
+                  },
+                })
+              }
+            >
+              Follow Up نوبت
             </div>
           )}
           {!hideBooking && currentUser?.permission !== "reception" && (

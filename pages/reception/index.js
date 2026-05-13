@@ -395,8 +395,8 @@ export default function Reception() {
       <div className={classes.container}>
         {displayMessage && (
           <div className={classes.message}>
-            <h3>پرونده شما ثبت شد. لطفا به پذیرش مراجعه کنید</h3>
             <CheckIcon sx={{ fontSize: 60, color: "#2d2b7f" }} />
+            <h3>پرونده شما ثبت شد. لطفا به پذیرش مراجعه کنید</h3>
           </div>
         )}
         {!displayForm && !displayMessage && (

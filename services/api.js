@@ -118,6 +118,46 @@ export const getRecordsApi = async () => {
   return await response.json();
 };
 
+// follows api
+export const updateFollowApi = async (data) => {
+  const response = await fetch("/api/follows", {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const createFollowApi = async (data) => {
+  const response = await fetch("/api/follows", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getSingleFollowApi = async (id) => {
+  const response = await fetch(`/api/follows?id=${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getFollowsApi = async () => {
+  const response = await fetch("/api/follows", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+
 // controls api
 export const updateControlApi = async (data) => {
   const response = await fetch("/api/controls", {

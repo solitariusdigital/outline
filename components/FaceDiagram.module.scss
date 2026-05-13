@@ -173,3 +173,47 @@
   @include mixins.button(config.$blue, config.$white, config.$blue);
   @extend .button-base;
 }
+
+.followUp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  max-width: 450px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid config.$grey;
+
+  .input {
+    width: 100%;
+    margin-bottom: 24px;
+
+    .bar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0px;
+    }
+
+    .label {
+      color: config.$grey;
+      font-size: config.$small-font;
+      margin-bottom: 4px;
+
+      span {
+        color: config.$red;
+        font-size: config.$tiny-font;
+      }
+    }
+
+    input {
+      @include mixins.input();
+      width: 100%;
+    }
+  }
+
+  h4 {
+    color: config.$grey;
+  }
+}
