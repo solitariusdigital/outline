@@ -1,0 +1,62 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  direction: rtl;
+  max-width: config.$max-widthHeigh;
+  width: config.$content-width;
+  font-weight: 300;
+  margin: 20px auto;
+
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    gap: 12px;
+    margin: auto;
+    width: 100%;
+    direction: rtl;
+    margin-top: 24px;
+
+    @include mixins.tablet {
+      grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    }
+    @include mixins.mobile {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px;
+      margin: 0px auto;
+      box-shadow: config.$card-shadow;
+      background: config.$white;
+      border: 1px solid config.$white;
+      text-align: right;
+      @include mixins.border-radius();
+
+      .row {
+        @include mixins.row-space-between-center();
+
+        h4 {
+          &:hover {
+            cursor: pointer;
+            color: config.$blue;
+          }
+        }
+      }
+    }
+  }
+}

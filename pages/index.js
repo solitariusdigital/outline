@@ -382,15 +382,7 @@ export default function Home({ activeVisits }) {
           {currentUser?.permission === "admin" && (
             <div
               className={classes.nav}
-              onClick={() =>
-                Router.push({
-                  pathname: `/portal/${currentUser.permission}`,
-                  query: {
-                    id: currentUser["_id"],
-                    p: currentUser.permission,
-                  },
-                })
-              }
+              onClick={() => Router.push("/followup")}
             >
               Follow Up نوبت
             </div>
