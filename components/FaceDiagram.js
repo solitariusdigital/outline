@@ -382,7 +382,7 @@ export default function FaceDiagram() {
                 border:
                   key === navigation && activeFunctionality
                     ? "1px solid #2d2b7f"
-                    : "1px solid #d6d6d6",
+                    : "1px solid #999999",
                 pointerEvents: activeFunctionality ? "auto" : "none",
               }}
               onClick={() => {
