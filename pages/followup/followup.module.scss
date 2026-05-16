@@ -16,9 +16,13 @@
     width: calc(100% - 24px);
   }
 
+  .row {
+    @include mixins.row-space-between-center();
+  }
+
   .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
     gap: 12px;
     margin: auto;
     width: 100%;
@@ -26,7 +30,7 @@
     margin-top: 24px;
 
     @include mixins.tablet {
-      grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
     }
     @include mixins.mobile {
       display: flex;
@@ -47,14 +51,10 @@
       text-align: right;
       @include mixins.border-radius();
 
-      .row {
-        @include mixins.row-space-between-center();
-
-        h4 {
-          &:hover {
-            cursor: pointer;
-            color: config.$blue;
-          }
+      .phone {
+        &:hover {
+          cursor: pointer;
+          color: config.$blue;
         }
       }
     }

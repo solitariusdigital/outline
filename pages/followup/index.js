@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/stateContext";
+import { useRouter } from "next/router";
+import Router from "next/router";
 import classes from "./followup.module.scss";
 import HomeIcon from "@mui/icons-material/Home";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import Router from "next/router";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   getFollowsApi,
@@ -15,6 +17,7 @@ export default function Followup() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const [displayFollows, setDisplayFollows] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const handleFollows = async () => {
@@ -52,7 +55,22 @@ export default function Followup() {
 
   return (
     <section className={classes.container}>
-      <HomeIcon onClick={() => Router.push("/")} className="icon" />
+      <div className={classes.row}>
+        <HomeIcon onClick={() => Router.push("/")} className="icon" />
+        <h4
+          style={{
+            margin: "0px 8px",
+          }}
+        >
+          {displayFollows.length}
+        </h4>
+        <RefreshIcon
+          className="icon"
+          onClick={() => {
+            router.reload(router.asPath);
+          }}
+        />
+      </div>
       <h3
         style={{
           marginTop: "12px",
@@ -72,6 +90,7 @@ export default function Followup() {
               >
                 <h4>{item.name}</h4>
                 <h4
+                  className={classes.phone}
                   onClick={() =>
                     window.open(`tel:+98${item.phone.substring(1)}`, "_self")
                   }
@@ -85,18 +104,17 @@ export default function Followup() {
                   margin: "2px 0px",
                 }}
               >
-                <p>{item.title}</p>
+                <p>{item.doctor}</p>
+                {/* <p>{item.branch === "tehran" ? "شعبه تهران" : "شعبه کیش"}</p> */}
                 <p>{item.time}</p>
               </div>
               <div
                 className={classes.row}
                 style={{
                   margin: "2px 0px",
-                  color: "#999999",
                 }}
               >
-                <p>{item.doctor}</p>
-                <p>{item.branch === "tehran" ? "شعبه تهران" : "شعبه کیش"}</p>
+                <p>{item.title}</p>
               </div>
               <div
                 className={classes.row}
@@ -106,9 +124,12 @@ export default function Followup() {
               >
                 <div
                   className={classes.row}
+                  style={{
+                    cursor: "pointer",
+                  }}
                   onClick={() => actionFollow(item["_id"], "complete")}
                 >
-                  <TaskAltIcon className="icon" sx={{ color: "#57a361" }} />
+                  <TaskAltIcon sx={{ color: "#57a361" }} />
                   <p
                     style={{
                       marginRight: "2px",
@@ -120,9 +141,12 @@ export default function Followup() {
                 </div>
                 <div
                   className={classes.row}
+                  style={{
+                    cursor: "pointer",
+                  }}
                   onClick={() => actionFollow(item["_id"], "cancel")}
                 >
-                  <CloseIcon className="icon" sx={{ color: "#d40d12" }} />
+                  <CloseIcon sx={{ color: "#d40d12" }} />
                   <p
                     style={{
                       marginRight: "2px",
