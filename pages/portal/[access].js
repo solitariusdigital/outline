@@ -653,7 +653,7 @@ export default function Access() {
                     </>
                   )}
                 <div className={classes.logout} onClick={() => logOut()}>
-                  <p>خروج از پورتال</p>
+                  <p>خروج پورتال</p>
                 </div>
               </Fragment>
             </div>
