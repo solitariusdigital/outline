@@ -82,12 +82,7 @@ export default function Followup() {
         <>
           {displayFollows?.map((item, index) => (
             <div className={classes.item} key={index}>
-              <div
-                className={classes.row}
-                style={{
-                  margin: "2px 0px",
-                }}
-              >
+              <div className={classes.row}>
                 <h4>{item.name}</h4>
                 <h4
                   className={classes.phone}
@@ -98,30 +93,21 @@ export default function Followup() {
                   {item.phone}
                 </h4>
               </div>
-              <div
-                className={classes.row}
-                style={{
-                  margin: "2px 0px",
-                }}
-              >
+              <div className={classes.row}>
                 <p>{item.doctor}</p>
                 {/* <p>{item.branch === "tehran" ? "شعبه تهران" : "شعبه کیش"}</p> */}
                 <p>{item.time}</p>
               </div>
-              <div
-                className={classes.row}
-                style={{
-                  margin: "2px 0px",
-                }}
-              >
-                <p>{item.title}</p>
+              <div className={classes.row}>
+                <p
+                  style={{
+                    fontSize: "14px",
+                  }}
+                >
+                  {item.title}
+                </p>
               </div>
-              <div
-                className={classes.row}
-                style={{
-                  margin: "2px 0px",
-                }}
-              >
+              <div className={classes.row}>
                 <div
                   className={classes.row}
                   style={{

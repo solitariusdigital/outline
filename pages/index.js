@@ -331,7 +331,7 @@ export default function Home({ activeVisits }) {
           <h3>طراحی چهره</h3>
         </div>
         <section className={classes.navigation}>
-          {currentUser?.permission !== "reception" && (
+          {currentUser && currentUser?.permission !== "reception" && (
             <div
               className={classes.nav}
               onClick={() =>
