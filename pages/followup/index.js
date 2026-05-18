@@ -25,9 +25,9 @@ export default function Followup() {
         return;
       }
       const followsData = await getFollowsApi();
-      let activeFollows = followsData
-        .filter((visit) => !visit.completed && !visit.canceled)
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
+      let activeFollows = followsData.sort(
+        (a, b) => new Date(a.date) - new Date(b.date),
+      );
       setDisplayFollows(activeFollows);
     };
     handleFollows();
@@ -62,7 +62,11 @@ export default function Followup() {
             margin: "0px 8px",
           }}
         >
-          {displayFollows.length}
+          {
+            displayFollows?.filter(
+              (visit) => !visit.completed && !visit.canceled,
+            ).length
+          }
         </h4>
         <RefreshIcon
           className="icon"
@@ -73,78 +77,98 @@ export default function Followup() {
       </div>
       <h3
         style={{
-          marginTop: "12px",
+          margin: "8px",
         }}
       >
         نوبت Follow Up
       </h3>
+      <div className={classes.row}>
+        <h4
+          style={{
+            margin: "0px 8px",
+            color: "#57a361",
+          }}
+        >
+          تکمیل {displayFollows?.filter((visit) => visit.completed).length}
+        </h4>
+        <h4
+          style={{
+            margin: "0px 8px",
+            color: "#d40d12",
+          }}
+        >
+          لغو {displayFollows?.filter((visit) => visit.canceled).length}
+        </h4>
+      </div>
       <div className={classes.cards}>
         <>
-          {displayFollows?.map((item, index) => (
-            <div className={classes.item} key={index}>
-              <div className={classes.row}>
-                <h4>{item.name}</h4>
-                <h4
-                  className={classes.phone}
-                  onClick={() =>
-                    window.open(`tel:+98${item.phone.substring(1)}`, "_self")
-                  }
-                >
-                  {item.phone}
-                </h4>
-              </div>
-              <div className={classes.row}>
-                <p>{item.doctor}</p>
-                {/* <p>{item.branch === "tehran" ? "شعبه تهران" : "شعبه کیش"}</p> */}
-                <p>{item.time}</p>
-              </div>
-              <div className={classes.row}>
-                <p
-                  style={{
-                    fontSize: "14px",
-                  }}
-                >
-                  {item.title}
-                </p>
-              </div>
-              <div className={classes.row}>
-                <div
-                  className={classes.row}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => actionFollow(item["_id"], "complete")}
-                >
-                  <TaskAltIcon sx={{ color: "#57a361" }} />
+          {displayFollows
+            ?.filter((visit) => !visit.completed && !visit.canceled)
+            .map((item, index) => (
+              <div className={classes.item} key={index}>
+                <div className={classes.row}>
+                  <h4>{item.name}</h4>
+                  <h4
+                    className={classes.phone}
+                    onClick={() =>
+                      window.open(`tel:+98${item.phone.substring(1)}`, "_self")
+                    }
+                  >
+                    {item.phone}
+                  </h4>
+                </div>
+                <div className={classes.row}>
+                  <p>{item.doctor}</p>
+                  {/* <p>{item.branch === "tehran" ? "شعبه تهران" : "شعبه کیش"}</p> */}
+                  <p>{item.time}</p>
+                </div>
+                <div className={classes.row}>
                   <p
                     style={{
-                      marginRight: "2px",
-                      color: "#57a361",
+                      fontSize: "14px",
                     }}
                   >
-                    تکمیل
+                    {item.title}
                   </p>
                 </div>
-                <div
-                  className={classes.row}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => actionFollow(item["_id"], "cancel")}
-                >
-                  <CloseIcon sx={{ color: "#d40d12" }} />
-                  <p
+                <div className={classes.row}>
+                  <div
+                    className={classes.row}
                     style={{
-                      marginRight: "2px",
-                      color: "#d40d12",
+                      cursor: "pointer",
                     }}
+                    onClick={() => actionFollow(item["_id"], "complete")}
                   >
-                    لغو
-                  </p>
+                    <TaskAltIcon sx={{ color: "#57a361" }} />
+                    <p
+                      style={{
+                        marginRight: "2px",
+                        color: "#57a361",
+                      }}
+                    >
+                      تکمیل
+                    </p>
+                  </div>
+                  <div
+                    className={classes.row}
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    onClick={() => actionFollow(item["_id"], "cancel")}
+                  >
+                    <CloseIcon sx={{ color: "#d40d12" }} />
+                    <p
+                      style={{
+                        marginRight: "2px",
+                        color: "#d40d12",
+                      }}
+                    >
+                      لغو
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </>
       </div>
     </section>

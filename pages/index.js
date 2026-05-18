@@ -28,7 +28,7 @@ export default function Home({ activeVisits }) {
   const kishLocation =
     "https://www.google.com/maps/place/%D8%A7%D9%88%D8%AA%E2%80%8C%D9%84%D8%A7%DB%8C%D9%86+%DA%A9%DB%8C%D8%B4%E2%80%AD/@26.5527385,54.0211711,17z/data=!4m14!1m7!3m6!1s0x3e50ab003291c53d:0x81c83549d1a6e13!2z2KfZiNiq4oCM2YTYp9uM2YYg2qnbjNi0!8m2!3d26.5527385!4d54.0211711!16s%2Fg%2F11yhhlzkdn!3m5!1s0x3e50ab003291c53d:0x81c83549d1a6e13!8m2!3d26.5527385!4d54.0211711!16s%2Fg%2F11yhhlzkdn?entry=ttu&g_ep=EgoyMDI1MDgwNi4wIKXMDSoASAFQAw%3D%3D";
   const pourGholiText = ["نوبت دکتر پورقلی", "متخصص پوست"];
-  const kishText = ["نوبت شعبه کیش", "به زودی برمیگردیم"];
+  const kishText = ["شعبه کیش", "به‌زودی برمیگردیم"];
 
   const [index, setIndex] = useState(0);
 
