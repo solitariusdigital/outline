@@ -135,6 +135,7 @@ export default function Access() {
       let users = [];
       const doctorIdTagName = {
         "66eb1dc863ab34979e6dd0a3": "دکتر فراهانی",
+        "691c9b30943bc9b640a7fa38": "دکتر فراهانی",
         "66f3129d0207273bf017248d": "دکتر گنجه",
         "691c9b30943bc9b640a7fa38": "دکتر پورقلی",
       };
