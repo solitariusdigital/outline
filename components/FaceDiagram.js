@@ -580,7 +580,7 @@ export default function FaceDiagram() {
                         <div
                           className={classes.row}
                           style={{
-                            width: "40%",
+                            width: "50%",
                           }}
                         >
                           <span>cc</span>

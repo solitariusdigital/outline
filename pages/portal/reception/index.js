@@ -360,7 +360,12 @@ export default function Reception({ records }) {
                 <div key={index} className={classes.card}>
                   {!record.completed ? (
                     <div className={classes.row}>
-                      <div className={classes.row}>
+                      <div
+                        className={classes.row}
+                        style={{
+                          marginBottom: "4px",
+                        }}
+                      >
                         <p
                           style={{
                             color: record.checkup ? "#15b392" : "#999999",
