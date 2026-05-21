@@ -1,7 +1,4 @@
 {
-  "next": {
-    "mirror": false
-  },
   "disks": [
     {
       "name": "disk",
