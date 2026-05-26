@@ -13,7 +13,11 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import { toFarsiNumber, convertPersianToGregorian } from "@/services/utility";
-import { updateRecordApi, createFollowApi } from "@/services/api";
+import {
+  updateRecordApi,
+  createFollowApi,
+  createReminderApi,
+} from "@/services/api";
 
 const defaultInjections = {
   فیلر: [],
@@ -245,7 +249,31 @@ export default function FaceDiagram() {
       records: updatedRecords,
     };
     await updateRecordApi(updateRecordObject);
+    await createReminderInjections();
     router.reload(router.asPath);
+  };
+
+  const createReminderInjections = async () => {
+    const hasActive = selectedInjections["بوتاکس"].some((item) => item.active);
+    if (!hasActive) {
+      return;
+    }
+
+    const sixMonthsLater = new Date();
+    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+
+    const reminderObject = {
+      name: popupDiagramData.record.name,
+      userId: popupDiagramData.record.userId,
+      recordId: popupDiagramData.record._id,
+      phone: popupDiagramData.record.phone,
+      category: "بوتاکس",
+      injection: "بوتاکس",
+      originalDate: popupDiagramData.lastRecord.date,
+      reminderDate: sixMonthsLater,
+      reminderSent: false,
+    };
+    await createReminderApi(reminderObject);
   };
 
   const renderInjectionBox = (value, key) => {

@@ -1,7 +1,7 @@
-import Record from "@/models/Record";
+import Reminder from "@/models/Reminder";
 import dbConnect from "@/services/dbConnect";
 
-export default async function recordsHandler(req, res) {
+export default async function remindersHandler(req, res) {
   res.setHeader("Cache-Control", "s-maxage=10");
   const { method, body } = req;
 
@@ -10,26 +10,26 @@ export default async function recordsHandler(req, res) {
   switch (method) {
     case "POST":
       try {
-        const newRecord = await Record.create(body);
-        return res.status(200).json(newRecord);
+        const newReminder = await Reminder.create(body);
+        return res.status(200).json(newReminder);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
     case "GET":
       try {
-        let records = null;
+        let reminders = null;
         if (req.query.id) {
-          records = await Record.findById(req.query.id);
+          reminders = await Reminder.findById(req.query.id);
         } else {
-          records = await Record.find();
+          reminders = await Reminder.find();
         }
-        return res.status(200).json(records);
+        return res.status(200).json(reminders);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
     case "PUT":
       try {
-        const updateRecord = await Record.findByIdAndUpdate(
+        const updateReminder = await Reminder.findByIdAndUpdate(
           body.id || body["_id"],
           body,
           {
@@ -37,10 +37,10 @@ export default async function recordsHandler(req, res) {
             runValidators: true,
           },
         );
-        if (!updateRecord) {
+        if (!updateReminder) {
           return res.status(400).json({ msg: err.message });
         }
-        return res.status(200).json(updateRecord);
+        return res.status(200).json(updateReminder);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }

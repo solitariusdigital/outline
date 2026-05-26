@@ -118,6 +118,46 @@ export const getRecordsApi = async () => {
   return await response.json();
 };
 
+// reminders api
+export const updateReminderApi = async (data) => {
+  const response = await fetch("/api/reminders", {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const createReminderApi = async (data) => {
+  const response = await fetch("/api/reminders", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getSingleReminderApi = async (id) => {
+  const response = await fetch(`/api/reminders?id=${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getRemindersApi = async () => {
+  const response = await fetch("/api/reminders", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+
 // follows api
 export const updateFollowApi = async (data) => {
   const response = await fetch("/api/follows", {
