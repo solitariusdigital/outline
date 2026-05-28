@@ -28,28 +28,31 @@ export default async function handler(req, res) {
     });
 
     for (const item of dueReminders) {
+      const payload = {
+        receptor: item.phone,
+        token: item.category,
+        token2: convertDate(item.reminderDate),
+        template: "reminderOutline",
+      };
+
       try {
+        console.log("Sending SMS to:", payload.receptor);
+
         await new Promise((resolve, reject) => {
-          api.VerifyLookup(
-            {
-              receptor: item.phone,
-              token: item.category,
-              token2: convertDate(item.reminderDate),
-              template: "reminderOutline",
-            },
-            (response, status) => {
-              if (status === 200) resolve(response);
-              else reject(response);
-            },
-          );
+          api.VerifyLookup(payload, (response, status) => {
+            console.log("Response:", payload.receptor, status);
+
+            if (status === 200) resolve(response);
+            else reject(response);
+          });
         });
 
         await Reminder.updateOne(
           { _id: item._id },
-          { $set: { reminderSent: true } },
+          { $set: { reminderSent: false } },
         );
       } catch (err) {
-        console.error(err);
+        console.error("Failed for:", item.phone, err);
       }
     }
 
