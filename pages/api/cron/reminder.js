@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 
         await Reminder.updateOne(
           { _id: item._id },
-          { $set: { reminderSent: false } },
+          { $set: { reminderSent: true } },
         );
       } catch (err) {
         console.error("Failed for:", item.phone, err);
