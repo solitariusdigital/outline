@@ -81,8 +81,8 @@ export function pourgholiDays(persianDate) {
 }
 
 export function tehranBranch({ year, month, day }) {
-  const months = new Set([11, 12]);
-  const days = new Set([7, 14, 21, 28, 30]);
+  const months = new Set([3]);
+  const days = new Set([22]);
   if (months.has(month) && days.has(day)) {
     return false;
   }

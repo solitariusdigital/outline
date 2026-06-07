@@ -451,7 +451,7 @@ export default function DatePicker({ visits }) {
 
     let timeToUse;
     if (isSelectedDateFriday) {
-      const numberSlice = 9;
+      const numberSlice = 5;
       timeToUse = Object.fromEntries(
         Object.entries(originalTimes).slice(numberSlice),
       );
