@@ -178,7 +178,7 @@ export default function Reception() {
     return userId;
   };
 
-  const getUserTime = async (verificationEnglish) => {
+  const getUserData = async (verificationEnglish) => {
     try {
       const userId = await getUserId(verificationEnglish);
       const visits = await getVisitsApi();
@@ -191,17 +191,20 @@ export default function Reception() {
         );
         if (incompleteVisits.length > 0) {
           return {
+            title: incompleteVisits[0].title,
             time: incompleteVisits[0].time.split(" - ")[1],
             id: incompleteVisits[0]["_id"],
           };
         } else {
           return {
+            title: "بدون موضوع",
             time: "بدون نوبت",
             id: null,
           };
         }
       } else {
         return {
+          title: "بدون موضوع",
           time: "بدون نوبت",
           id: null,
         };
@@ -242,7 +245,7 @@ export default function Reception() {
     let birthYear = checkConvertNumber(birthDate.year);
     let digitalDate = convertPersianDate(getCurrentDateFarsi());
     let recordId = digitalDate + fourGenerator();
-    let { time, id: visitId } = await getUserTime(phoneEnglish);
+    let { title, time, id: visitId } = await getUserData(phoneEnglish);
 
     if (birthYear.length !== 4 || !birthYear.startsWith("13")) {
       showAlert("سال تولد اشتباه");
@@ -285,6 +288,7 @@ export default function Reception() {
       date: digitalDate,
       visitId: visitId,
       time: time,
+      title: title,
       entryTime: getCurrentTimeFarsi(),
       confirmation: confirmation,
       records: [],
