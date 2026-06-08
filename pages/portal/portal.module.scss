@@ -21,7 +21,7 @@
   .header {
     @include mixins.row-space-between-center();
     width: 100%;
-    max-width: 350px;
+    max-width: 400px;
     margin: auto;
     height: 30px;
     color: config.$blue;
@@ -60,7 +60,7 @@
     flex-wrap: wrap;
     margin: auto;
     width: 100%;
-    max-width: 350px;
+    max-width: 400px;
 
     @include mixins.mobile {
       width: 100%;
@@ -511,7 +511,7 @@
   }
 
   .dataRefresh {
-    max-width: 350px;
+    max-width: 400px;
     margin: auto;
   }
 
@@ -532,7 +532,7 @@
 .navigation {
   margin: 8px auto;
   width: 100%;
-  max-width: 350px;
+  max-width: 400px;
   @include mixins.row-space-between-center();
   flex-direction: row-reverse;
   justify-content: space-around;
@@ -570,7 +570,7 @@
 
 .analytics {
   position: relative;
-  width: 350px;
+  width: 400px;
   margin: 20px auto;
   box-shadow: config.$card-shadow;
   background: config.$white;

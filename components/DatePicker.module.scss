@@ -52,10 +52,14 @@
   .timeContainer {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-    gap: 8px;
+    gap: 12px;
     text-align: center;
     margin: 24px 0px;
-    width: 330px;
+    width: 400px;
+
+    @include mixins.mobile {
+      width: 100%;
+    }
 
     .timeBox {
       display: flex;
@@ -81,7 +85,7 @@
     box-shadow: config.$card-shadow;
     color: config.$black;
     cursor: pointer;
-    @include mixins.border-radius();
+    border-radius: 50px;
 
     @include mixins.desktop {
       &:hover {
@@ -94,6 +98,7 @@
   .activeTime {
     background: config.$blue;
     color: config.$white;
+    border-radius: 50px;
   }
 
   .button {
