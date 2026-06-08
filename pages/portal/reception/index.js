@@ -450,6 +450,10 @@ export default function Reception({ records }) {
                     <p>{record.birthDate}</p>
                     <p>{record.age}</p>
                   </div>
+                  <div className={classes.row}>
+                    <span>موضوع</span>
+                    <p>{record.title}</p>
+                  </div>
                   <div
                     className={classes.row}
                     style={{ cursor: "pointer" }}

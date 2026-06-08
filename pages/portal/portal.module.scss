@@ -411,6 +411,7 @@
         select {
           @include mixins.input();
           background: config.$white;
+          direction: rtl;
         }
       }
 

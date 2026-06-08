@@ -3,6 +3,7 @@ import { Schema, model, models } from "mongoose";
 const VisitSchema = new Schema(
   {
     title: String,
+    category: String,
     userId: String,
     doctor: String,
     time: String,
@@ -13,7 +14,7 @@ const VisitSchema = new Schema(
     completed: Boolean,
     canceled: Boolean,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Visit = models.Visit || model("Visit", VisitSchema);

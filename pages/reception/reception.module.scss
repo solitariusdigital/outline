@@ -109,6 +109,10 @@
       @include mixins.input();
       width: 100%;
     }
+
+    select {
+      direction: rtl;
+    }
   }
 
   .inputBirth {

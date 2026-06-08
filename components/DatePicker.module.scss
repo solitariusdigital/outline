@@ -7,7 +7,7 @@
   align-items: center;
   margin: auto;
   font-weight: 300;
-  margin-top: 20px;
+  margin-top: 24px;
 
   h5 {
     color: config.$blue;
@@ -15,24 +15,21 @@
 
   .input {
     width: 100%;
-    margin: 12px 0px;
 
     .bar {
       display: flex;
       flex-direction: row-reverse;
       justify-content: space-between;
       align-items: center;
-      margin: 12px 0px;
+      margin: 16px 0px;
+      margin-bottom: 4px;
     }
 
     .label {
       color: config.$grey;
-      font-size: config.$small-font;
-      margin-bottom: 4px;
 
       span {
         color: config.$red;
-        font-size: config.$tiny-font;
       }
     }
 
@@ -40,6 +37,10 @@
     select {
       @include mixins.input();
       width: 100%;
+    }
+
+    select {
+      direction: rtl;
     }
 
     p {
@@ -51,9 +52,9 @@
   .timeContainer {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-    gap: 12px;
+    gap: 8px;
     text-align: center;
-    margin-top: 20px;
+    margin: 24px 0px;
     width: 330px;
 
     .timeBox {
@@ -70,7 +71,7 @@
 
   .totalCount {
     color: config.$blue;
-    margin-top: 20px;
+    margin-top: 24px;
   }
 
   .time,
@@ -98,7 +99,7 @@
   .button {
     @include mixins.button(config.$blue, config.$blue, config.$white);
     & {
-      margin-top: 20px;
+      margin-top: 24px;
     }
   }
 
@@ -109,19 +110,20 @@
   .message {
     color: config.$blue;
     font-weight: bold;
+    margin-top: 24px;
   }
 }
 
 .activeButton {
   & {
-    margin-top: 20px;
+    margin-top: 24px;
   }
   @include mixins.button(config.$red, config.$red, config.$white);
 }
 
 .disableButton {
   & {
-    margin-top: 20px;
+    margin-top: 24px;
   }
   @include mixins.button(config.$green, config.$green, config.$white);
 }

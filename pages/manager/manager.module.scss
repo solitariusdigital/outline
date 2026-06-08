@@ -73,6 +73,7 @@
       select {
         @include mixins.input();
         width: 100%;
+        direction: rtl;
       }
     }
 

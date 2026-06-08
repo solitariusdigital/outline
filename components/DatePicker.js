@@ -38,6 +38,7 @@ export default function DatePicker({ visits }) {
     currentUser.permission === "admin" ? "" : currentUser.name,
   );
   const [title, setTitle] = useState("");
+  const [selectCategory, setSelectCategory] = useState("");
   const [phone, setPhone] = useState(
     currentUser.permission === "admin" ? "" : currentUser.phone,
   );
@@ -49,7 +50,7 @@ export default function DatePicker({ visits }) {
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectDate, setSelectDate] = useState("");
   const [times, setTimes] = useState({});
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
   let originalTimes = {
@@ -66,9 +67,19 @@ export default function DatePicker({ visits }) {
     "18:00": { display: true, active: false, count: 0 },
     "18:30": { display: true, active: false, count: 0 },
   };
-  let topics = ["بوتاکس", "فیلر", "مشاوره", "ترمیم", "سایر"];
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر پورقلی"];
   const targetInputBox = useRef(null);
+
+  const titleCategories = {
+    one: ["تزریق بوتاکس"],
+    two: [
+      "مشاوره یا تزریق فیلر",
+      "مشاوره یا تزریق جوانساز",
+      "طراحی چهره فول فیس",
+      "مزوتراپی",
+    ],
+    three: ["لیزر"],
+  };
 
   const router = useRouter();
 
@@ -125,7 +136,7 @@ export default function DatePicker({ visits }) {
       setDisableButton(false);
       return;
     }
-    if (currentUser.permission === "patient" && !title) {
+    if (!title) {
       showAlert("موضوع الزامیست");
       setDisableButton(false);
       return;
@@ -152,14 +163,22 @@ export default function DatePicker({ visits }) {
         return;
       }
     }
+    if (!checkCategoryLimit()) {
+      window.alert(
+        "ظرفیت نوبت‌دهی برای موضوع انتخاب‌ شده در این زمان تکمیل است",
+      );
+      setDisableButton(false);
+      return;
+    }
 
     let colorCode = adminColorCode[currentUser["_id"]]?.color ?? "#EAD8B1";
     let userId = await setUserId(phoneEnglish);
     let visit = {
-      title: title ? title.trim() : "-",
+      title: title,
+      category: selectCategory,
       userId: userId,
       doctor: selectDoctor,
-      time: selectedDate,
+      time: selectDate,
       date: dateObject,
       adminId: currentUser["_id"],
       adminColor: colorCode,
@@ -174,8 +193,8 @@ export default function DatePicker({ visits }) {
     });
     api.VerifyLookup({
       receptor: phoneEnglish,
-      token: selectedDate.split(" - ")[0].trim(),
-      token2: selectedDate.split(" - ")[1].trim(),
+      token: selectDate.split(" - ")[0].trim(),
+      token2: selectDate.split(" - ")[1].trim(),
       template: "confirmationOutline",
     });
     if (currentUser.permission === "admin") {
@@ -186,6 +205,35 @@ export default function DatePicker({ visits }) {
         query: { id: currentUser["_id"], p: currentUser.permission },
       });
     }
+  };
+
+  const checkCategoryLimit = () => {
+    const limits = {
+      one: 3,
+      two: 4,
+      three: 3,
+    };
+
+    if (!selectCategory || !limits[selectCategory]) return true;
+
+    const targetKey = normalizeToHour(selectDate);
+
+    const count = visits.filter(
+      (visit) =>
+        visit.doctor === selectDoctor &&
+        normalizeToHour(visit.time) === targetKey &&
+        visit.category === selectCategory,
+    ).length;
+
+    return count < limits[selectCategory];
+  };
+
+  const normalizeToHour = (value) => {
+    if (!value) return "";
+    const [datePart, timePart] = value.split(" - ");
+    if (!timePart) return datePart;
+    const hour = timePart.split(":")[0];
+    return `${datePart} - ${hour}`;
   };
 
   // Helper function to get visit data for a user
@@ -255,7 +303,7 @@ export default function DatePicker({ visits }) {
   const assingDay = (day) => {
     setDay(day);
     resetTime();
-    setSelectedDate("");
+    setSelectDate("");
     setTime("");
 
     updateDisplayTime(
@@ -280,7 +328,7 @@ export default function DatePicker({ visits }) {
     });
     setTimes(updatedTime);
     setTime(time);
-    setSelectedDate(
+    setSelectDate(
       `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
         day.day,
       )} - ${
@@ -411,7 +459,7 @@ export default function DatePicker({ visits }) {
   };
 
   const updateDisplayTime = (
-    selectedDate,
+    selectDate,
     isSelectedDateFriday,
     ganjeDays,
     pourgholiDays,
@@ -460,7 +508,7 @@ export default function DatePicker({ visits }) {
     }
     let updatedTimes = { ...timeToUse };
     Object.keys(timeCountPerDate).forEach((date) => {
-      if (date === selectedDate) {
+      if (date === selectDate) {
         Object.keys(timeCountPerDate[date]).forEach((time) => {
           const limitCount = selectBranch === "tehran" ? 3 : 4;
           const timeCount = timeCountPerDate[date][time];
@@ -575,7 +623,13 @@ export default function DatePicker({ visits }) {
       {selectBranch === "kish" && (
         <h5>پنجشنبه و جمعه نوبت‌دهی شعبه کیش فعال است</h5>
       )}
-      <div className={classes.input}>
+      <div
+        className={classes.input}
+        style={{
+          marginBottom: "24px",
+          marginTop: "8px",
+        }}
+      >
         {selectBranch === "tehran" && (
           <select
             defaultValue={"default"}
@@ -583,7 +637,7 @@ export default function DatePicker({ visits }) {
               setSelectDoctor(e.target.value);
               countFullDateTime(e.target.value);
               setDisplayForm(false);
-              setSelectedDate("");
+              setSelectDate("");
               setDay(null);
               setTimes({});
             }}
@@ -672,6 +726,7 @@ export default function DatePicker({ visits }) {
               />
             </div>
             <input
+              placeholder="فارسی وارد کنید"
               type="text"
               id="name"
               name="name"
@@ -705,55 +760,44 @@ export default function DatePicker({ visits }) {
                   dir="rtl"
                 />
                 <div className={classes.input}>
+                  <div className={classes.bar}>
+                    <p className={classes.label}>
+                      موضوع مراجعه الزامی
+                      <span>*</span>
+                    </p>
+                  </div>
                   <select
                     defaultValue={"default"}
                     onChange={(e) => {
-                      setTitle(e.target.value);
+                      const group =
+                        e.target.options[e.target.selectedIndex].dataset.group;
+                      const topic = e.target.value;
+                      setTitle(topic);
+                      setSelectCategory(group);
                     }}
                   >
                     <option value="default" disabled>
-                      موضوع
+                      انتخاب
                     </option>
-                    {topics.map((topic, index) => {
-                      return (
-                        <option key={index} value={topic}>
-                          {topic}
-                        </option>
-                      );
-                    })}
+                    {Object.entries(titleCategories)
+                      .slice(0, selectDoctor !== "دکتر پورقلی" ? -1 : undefined)
+                      .map(([group, topics]) =>
+                        topics.map((topic) => (
+                          <option
+                            key={`${group}-${topic}`}
+                            value={topic}
+                            data-group={group}
+                          >
+                            {topic}
+                          </option>
+                        )),
+                      )}
                   </select>
                 </div>
               </Fragment>
             )}
-            {currentUser.permission === "patient" && (
-              <Fragment>
-                <div className={classes.bar}>
-                  <p className={classes.label}>
-                    موضوع الزامی
-                    <span>*</span>
-                  </p>
-                  <CloseIcon
-                    className="icon"
-                    onClick={() => setTitle("")}
-                    sx={{ fontSize: 16 }}
-                  />
-                </div>
-                <input
-                  placeholder="بوتاکس"
-                  type="text"
-                  id="title"
-                  name="title"
-                  onChange={(e) => setTitle(e.target.value)}
-                  value={title}
-                  autoComplete="off"
-                  dir="rtl"
-                />
-              </Fragment>
-            )}
           </div>
-          {selectedDate && (
-            <p className={classes.message}>{selectedDate} ساعت</p>
-          )}
+          {selectDate && <p className={classes.message}>{selectDate} ساعت</p>}
           <button
             className={classes.button}
             disabled={disableButton}
