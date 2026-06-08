@@ -798,6 +798,16 @@ export default function DatePicker({ visits }) {
             )}
           </div>
           {selectDate && <p className={classes.message}>{selectDate} ساعت</p>}
+          {selectDate && (
+            <p
+              style={{
+                fontSize: "small",
+                color: "#2d2b7f",
+              }}
+            >
+              نوبت شما فقط برای موضوع مراجعه انتخاب‌ شده معتبر است
+            </p>
+          )}
           <button
             className={classes.button}
             disabled={disableButton}
