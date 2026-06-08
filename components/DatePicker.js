@@ -5,6 +5,8 @@ import classes from "./DatePicker.module.scss";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import CloseIcon from "@mui/icons-material/Close";
+import loaderImage from "@/assets/loader.png";
+import Image from "next/legacy/image";
 import Router from "next/router";
 import Kavenegar from "kavenegar";
 import {
@@ -815,6 +817,15 @@ export default function DatePicker({ visits }) {
           >
             ثبت نوبت
           </button>
+          {disableButton && (
+            <Image
+              width={50}
+              height={50}
+              src={loaderImage}
+              alt="isLoading"
+              unoptimized
+            />
+          )}
           {alert && <p className="alert">{alert}</p>}
         </Fragment>
       )}
