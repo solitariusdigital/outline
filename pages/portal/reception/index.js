@@ -452,7 +452,7 @@ export default function Reception({ records }) {
                   </div>
                   <div className={classes.row}>
                     <span>موضوع</span>
-                    <p>{record.title}</p>
+                    <p>{record?.title}</p>
                   </div>
                   <div
                     className={classes.row}
