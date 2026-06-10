@@ -213,7 +213,7 @@ export default function DatePicker({ visits }) {
     const limits = {
       one: 3,
       two: 4,
-      three: 3,
+      three: 6,
     };
 
     if (!selectCategory || !limits[selectCategory]) return true;
