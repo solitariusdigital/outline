@@ -22,6 +22,7 @@ const RecordSchema = new Schema(
     date: String,
     visitId: String,
     time: String,
+    title: String,
     entryTime: String,
     confirmation: Boolean,
     sharePermission: Boolean,
@@ -32,7 +33,7 @@ const RecordSchema = new Schema(
     completed: Boolean,
     status: String,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Record = models.Record || model("Record", RecordSchema);
