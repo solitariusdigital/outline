@@ -73,7 +73,7 @@ export default function DatePicker({ visits }) {
   const targetInputBox = useRef(null);
 
   const titleCategories = {
-    one: ["تزریق بوتاکس"],
+    one: ["تزریق بوتاکس", "آنزیم یا سونوگرافی"],
     two: [
       "مشاوره یا تزریق فیلر",
       "مشاوره یا تزریق جوانساز",
