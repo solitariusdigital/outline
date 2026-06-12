@@ -5,9 +5,10 @@ const ControlSchema = new Schema(
     disableDates: {},
     timesheets: {},
     reminder: {},
+    reminderFuture: {},
     reception: Boolean,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Control = models.Control || model("Control", ControlSchema);

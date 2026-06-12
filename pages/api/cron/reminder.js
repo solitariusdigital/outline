@@ -9,17 +9,11 @@ export default async function handler(req, res) {
 
     const now = new Date();
 
-    const startOfDay = new Date(now);
-    startOfDay.setUTCHours(0, 0, 0, 0);
-
     const endOfDay = new Date(now);
     endOfDay.setUTCHours(23, 59, 59, 999);
 
     const dueReminders = await Reminder.find({
-      reminderDate: {
-        $gte: startOfDay,
-        $lte: endOfDay,
-      },
+      reminderDate: { $lte: endOfDay },
       reminderSent: false,
     });
 

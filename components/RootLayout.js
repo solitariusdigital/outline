@@ -1,9 +1,14 @@
 import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import secureLocalStorage from "react-secure-storage";
-import { getSingleUserApi } from "@/services/api";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
+import {
+  getSingleUserApi,
+  getControlsApi,
+  updateControlApi,
+} from "@/services/api";
+import { getCurrentDateFarsi } from "@/services/utility";
 
 export default function RootLayout({ children }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
@@ -31,6 +36,39 @@ export default function RootLayout({ children }) {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (await checkReminderFutureSent()) {
+        return;
+      }
+
+      const now = new Date();
+      if (now.getUTCHours() >= 8) {
+        const res = await fetch("/api/cron/reminder");
+
+        if (res.ok) {
+          const controlData = await getControlsApi();
+          const currentDate = getCurrentDateFarsi();
+          const controlObject = {
+            ...controlData[0],
+            reminderFuture: {
+              ...controlData[0].reminderFuture,
+              [currentDate]: true,
+            },
+          };
+          await updateControlApi(controlObject);
+        }
+      }
+    };
+    fetchData();
+  }, []);
+
+  const checkReminderFutureSent = async () => {
+    const controlData = await getControlsApi();
+    const currentDate = getCurrentDateFarsi();
+    return controlData[0]?.reminderFuture?.[currentDate] === true;
+  };
+
+  useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,7 +79,7 @@ export default function RootLayout({ children }) {
     const fetchData = async () => {
       try {
         const currentUser = JSON.parse(
-          secureLocalStorage.getItem("currentUser")
+          secureLocalStorage.getItem("currentUser"),
         );
         if (currentUser) {
           const userData = await getSingleUserApi(currentUser["_id"]);
