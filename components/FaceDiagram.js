@@ -254,26 +254,34 @@ export default function FaceDiagram() {
   };
 
   const createReminderInjections = async () => {
-    const hasActive = selectedInjections["بوتاکس"].some((item) => item.active);
-    if (!hasActive) {
+    const items = new Set(["بوتاکس", "جوانساز"]);
+
+    const activeCategories = [...items].filter((key) =>
+      selectedInjections[key]?.some((item) => item.active),
+    );
+
+    if (activeCategories.length === 0) {
       return;
     }
 
     const sixMonthsLater = new Date();
     sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
 
-    const reminderObject = {
+    const reminderObjects = activeCategories.map((category) => ({
       name: popupDiagramData.record.name,
       userId: popupDiagramData.record.userId,
       recordId: popupDiagramData.record._id,
       phone: popupDiagramData.record.phone,
-      category: "بوتاکس",
-      injection: "بوتاکس",
+      category: category,
+      injection: category,
       originalDate: popupDiagramData.lastRecord.date,
       reminderDate: sixMonthsLater,
       reminderSent: false,
-    };
-    await createReminderApi(reminderObject);
+    }));
+
+    await Promise.all(
+      reminderObjects.map((reminder) => createReminderApi(reminder)),
+    );
   };
 
   const renderInjectionBox = (value, key) => {
