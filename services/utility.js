@@ -81,11 +81,11 @@ export function pourgholiDays(persianDate) {
 }
 
 export function tehranBranch({ year, month, day }) {
-  const months = new Set([3]);
-  const days = new Set([22]);
-  if (months.has(month) && days.has(day)) {
-    return false;
-  }
+  // const months = new Set([3]);
+  // const days = new Set([22]);
+  // if (months.has(month) && days.has(day)) {
+  //   return false;
+  // }
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
   return dayOfWeek === 5; //   Fri
 }
