@@ -230,7 +230,7 @@ export default function FaceDiagram() {
     });
   };
 
-  const handleSaveData = async () => {
+  const handleSaveData = async (type) => {
     let allRecords = popupDiagramData.record.records;
     let currentRecord = popupDiagramData.lastRecord;
     currentRecord.visitHistory = selectedSubcategories;
@@ -249,39 +249,47 @@ export default function FaceDiagram() {
       records: updatedRecords,
     };
     await updateRecordApi(updateRecordObject);
-    await createReminderInjections();
+    if (type === "done") {
+      await createReminderInjections();
+    }
     router.reload(router.asPath);
   };
 
   const createReminderInjections = async () => {
-    const items = new Set(["بوتاکس", "جوانساز"]);
-
-    const activeCategories = [...items].filter((key) =>
-      selectedInjections[key]?.some((item) => item.active),
-    );
-
-    if (activeCategories.length === 0) {
-      return;
-    }
+    const items = ["بوتاکس", "جوانساز"];
 
     const sixMonthsLater = new Date();
     sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
 
-    const reminderObjects = activeCategories.map((category) => ({
-      name: popupDiagramData.record.name,
-      userId: popupDiagramData.record.userId,
-      recordId: popupDiagramData.record._id,
-      phone: popupDiagramData.record.phone,
-      category: category,
-      injection: category,
-      originalDate: popupDiagramData.lastRecord.date,
-      reminderDate: sixMonthsLater,
-      reminderSent: false,
-    }));
+    const reminders = items
+      .map((category) => {
+        const firstActiveItem = selectedInjections[category]?.find(
+          (item) => item.active,
+        );
 
-    await Promise.all(
-      reminderObjects.map((reminder) => createReminderApi(reminder)),
-    );
+        if (!firstActiveItem) return null;
+
+        return {
+          name: popupDiagramData.record.name,
+          userId: popupDiagramData.record.userId,
+          recordId: popupDiagramData.record._id,
+          phone: popupDiagramData.record.phone,
+          category: category,
+          injection: category,
+          originalDate: popupDiagramData.lastRecord.date,
+          reminderDate: sixMonthsLater,
+          reminderSent: false,
+
+          item: firstActiveItem,
+        };
+      })
+      .filter(Boolean);
+
+    if (reminders.length === 0) {
+      return;
+    }
+
+    await Promise.all(reminders.map((r) => createReminderApi(r)));
   };
 
   const renderInjectionBox = (value, key) => {
@@ -567,7 +575,10 @@ export default function FaceDiagram() {
                 dir="rtl"
               />
             </div>
-            <button className={classes.button} onClick={() => handleSaveData()}>
+            <button
+              className={classes.button}
+              onClick={() => handleSaveData("visit")}
+            >
               تکمیل مشاوره
             </button>
           </>
@@ -632,7 +643,10 @@ export default function FaceDiagram() {
             )}
           </Fragment>
         ))}
-        <button className={classes.button} onClick={() => handleSaveData()}>
+        <button
+          className={classes.button}
+          onClick={() => handleSaveData("done")}
+        >
           تکمیل تزریق
         </button>
         {currentUser?.name === "دکتر فراهانی" && (
