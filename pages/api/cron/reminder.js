@@ -12,10 +12,28 @@ export default async function handler(req, res) {
     const endOfDay = new Date(now);
     endOfDay.setUTCHours(23, 59, 59, 999);
 
-    const dueReminders = await Reminder.find({
-      reminderDate: { $lte: endOfDay },
-      reminderSent: false,
-    });
+    const dueReminders = await Reminder.aggregate([
+      {
+        $match: {
+          reminderDate: { $lte: endOfDay },
+          reminderSent: false,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            userId: "$userId",
+            category: "$category",
+          },
+          reminder: { $first: "$$ROOT" },
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$reminder",
+        },
+      },
+    ]);
 
     const api = Kavenegar.KavenegarApi({
       apikey: process.env.NEXT_PUBLIC_KAVENEGAR_KEY,
@@ -26,7 +44,7 @@ export default async function handler(req, res) {
         receptor: item.phone,
         token: item.category,
         token2: convertDate(item.reminderDate),
-        template: "reminderOutline",
+        template: "futureOutline",
       };
 
       try {
