@@ -737,67 +737,67 @@ export default function DatePicker({ visits }) {
               autoComplete="off"
               dir="rtl"
             />
-            {currentUser.permission === "admin" && (
-              <div className={classes.input}>
-                <div className={classes.bar}>
-                  <p className={classes.label}>
-                    موبایل
-                    <span>*</span>
-                  </p>
-                  <CloseIcon
-                    className="icon"
-                    onClick={() => setPhone("")}
-                    sx={{ fontSize: 16 }}
-                  />
-                </div>
-                <input
-                  placeholder="09123456789"
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  onChange={(e) => setPhone(e.target.value)}
-                  maxLength={11}
-                  value={phone}
-                  autoComplete="off"
-                  dir="rtl"
-                />
-              </div>
-            )}
+          </div>
+          {currentUser.permission === "admin" && (
             <div className={classes.input}>
               <div className={classes.bar}>
                 <p className={classes.label}>
-                  موضوع مراجعه الزامی
+                  موبایل
                   <span>*</span>
                 </p>
+                <CloseIcon
+                  className="icon"
+                  onClick={() => setPhone("")}
+                  sx={{ fontSize: 16 }}
+                />
               </div>
-              <select
-                defaultValue={"default"}
-                onChange={(e) => {
-                  const group =
-                    e.target.options[e.target.selectedIndex].dataset.group;
-                  const topic = e.target.value;
-                  setTitle(topic);
-                  setSelectCategory(group);
-                }}
-              >
-                <option value="default" disabled>
-                  انتخاب
-                </option>
-                {Object.entries(titleCategories)
-                  .slice(0, selectDoctor !== "دکتر پورقلی" ? -1 : undefined)
-                  .map(([group, topics]) =>
-                    topics.map((topic) => (
-                      <option
-                        key={`${group}-${topic}`}
-                        value={topic}
-                        data-group={group}
-                      >
-                        {topic}
-                      </option>
-                    )),
-                  )}
-              </select>
+              <input
+                placeholder="09123456789"
+                type="tel"
+                id="phone"
+                name="phone"
+                onChange={(e) => setPhone(e.target.value)}
+                maxLength={11}
+                value={phone}
+                autoComplete="off"
+                dir="rtl"
+              />
             </div>
+          )}
+          <div className={classes.input}>
+            <div className={classes.bar}>
+              <p className={classes.label}>
+                موضوع مراجعه الزامی
+                <span>*</span>
+              </p>
+            </div>
+            <select
+              defaultValue={"default"}
+              onChange={(e) => {
+                const group =
+                  e.target.options[e.target.selectedIndex].dataset.group;
+                const topic = e.target.value;
+                setTitle(topic);
+                setSelectCategory(group);
+              }}
+            >
+              <option value="default" disabled>
+                انتخاب
+              </option>
+              {Object.entries(titleCategories)
+                .slice(0, selectDoctor !== "دکتر پورقلی" ? -1 : undefined)
+                .map(([group, topics]) =>
+                  topics.map((topic) => (
+                    <option
+                      key={`${group}-${topic}`}
+                      value={topic}
+                      data-group={group}
+                    >
+                      {topic}
+                    </option>
+                  )),
+                )}
+            </select>
           </div>
           {selectDate && <p className={classes.message}>{selectDate} ساعت</p>}
           {selectDate && (
