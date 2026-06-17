@@ -738,7 +738,7 @@ export default function DatePicker({ visits }) {
               dir="rtl"
             />
             {currentUser.permission === "admin" && (
-              <Fragment>
+              <div className={classes.input}>
                 <div className={classes.bar}>
                   <p className={classes.label}>
                     موبایل
@@ -761,43 +761,43 @@ export default function DatePicker({ visits }) {
                   autoComplete="off"
                   dir="rtl"
                 />
-                <div className={classes.input}>
-                  <div className={classes.bar}>
-                    <p className={classes.label}>
-                      موضوع مراجعه الزامی
-                      <span>*</span>
-                    </p>
-                  </div>
-                  <select
-                    defaultValue={"default"}
-                    onChange={(e) => {
-                      const group =
-                        e.target.options[e.target.selectedIndex].dataset.group;
-                      const topic = e.target.value;
-                      setTitle(topic);
-                      setSelectCategory(group);
-                    }}
-                  >
-                    <option value="default" disabled>
-                      انتخاب
-                    </option>
-                    {Object.entries(titleCategories)
-                      .slice(0, selectDoctor !== "دکتر پورقلی" ? -1 : undefined)
-                      .map(([group, topics]) =>
-                        topics.map((topic) => (
-                          <option
-                            key={`${group}-${topic}`}
-                            value={topic}
-                            data-group={group}
-                          >
-                            {topic}
-                          </option>
-                        )),
-                      )}
-                  </select>
-                </div>
-              </Fragment>
+              </div>
             )}
+            <div className={classes.input}>
+              <div className={classes.bar}>
+                <p className={classes.label}>
+                  موضوع مراجعه الزامی
+                  <span>*</span>
+                </p>
+              </div>
+              <select
+                defaultValue={"default"}
+                onChange={(e) => {
+                  const group =
+                    e.target.options[e.target.selectedIndex].dataset.group;
+                  const topic = e.target.value;
+                  setTitle(topic);
+                  setSelectCategory(group);
+                }}
+              >
+                <option value="default" disabled>
+                  انتخاب
+                </option>
+                {Object.entries(titleCategories)
+                  .slice(0, selectDoctor !== "دکتر پورقلی" ? -1 : undefined)
+                  .map(([group, topics]) =>
+                    topics.map((topic) => (
+                      <option
+                        key={`${group}-${topic}`}
+                        value={topic}
+                        data-group={group}
+                      >
+                        {topic}
+                      </option>
+                    )),
+                  )}
+              </select>
+            </div>
           </div>
           {selectDate && <p className={classes.message}>{selectDate} ساعت</p>}
           {selectDate && (
