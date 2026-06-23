@@ -1,11 +1,11 @@
 import { useContext, Fragment, useEffect, useState } from "react";
 import { StateContext } from "@/context/stateContext";
-import { useRouter } from "next/router";
+import Router from "next/router";
+import { NextSeo } from "next-seo";
 import classes from "./home.module.scss";
 import Image from "next/legacy/image";
-import { NextSeo } from "next-seo";
 import logo from "@/assets/logo.png";
-import Router from "next/router";
+import { RevealText } from "@/components/RevealText";
 
 export default function Home() {
   return (
@@ -36,6 +36,15 @@ export default function Home() {
       />
       <section className={classes.container}>
         <h1>HOME PAGE</h1>
+        <RevealText direction="up">
+          <h2>This heading fades in from below</h2>
+        </RevealText>
+        <RevealText direction="up" delay={150}>
+          <p>This paragraph follows 150ms later.</p>
+        </RevealText>
+        <RevealText direction="up" delay={300}>
+          <p>This one slides in from the right.</p>
+        </RevealText>
       </section>
     </Fragment>
   );
