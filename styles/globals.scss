@@ -33,30 +33,6 @@ abbr[title] {
   text-decoration: none;
 }
 
-html {
-  font-size: clamp(15px, 0.5vw + 0.75rem, 18px);
-}
-h1 {
-  font-size: 2em;
-}
-h2 {
-  font-size: 1.6em;
-}
-h3 {
-  font-size: 1.2em;
-  line-height: 1.5em;
-}
-h4 {
-  font-size: 1.05em;
-}
-p {
-  font-size: 1em;
-  line-height: 1.5em;
-}
-small {
-  font-size: 0.75em;
-}
-
 .main {
   min-height: 100dvh;
 }

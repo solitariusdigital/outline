@@ -14,7 +14,10 @@
   @include mixins.mobile {
     width: calc(100% - 24px);
   }
-  @include mixins.tablet {
+  @include mixins.tabletLandscape {
+    width: calc(100% - 24px);
+  }
+  @include mixins.tabletPortrait {
     width: calc(100% - 24px);
   }
 
@@ -108,7 +111,10 @@
     margin: auto;
     direction: rtl;
 
-    @include mixins.tablet {
+    @include mixins.tabletPortrait {
+      grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    }
+    @include mixins.tabletLandscape {
       grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
     }
     @include mixins.mobile {
@@ -196,13 +202,21 @@
       margin: auto;
       direction: rtl;
     }
-    @include mixins.tablet {
+    @include mixins.tabletLandscape {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
       gap: 12px;
       margin: auto;
       direction: rtl;
     }
+    @include mixins.tabletPortrait {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+      gap: 12px;
+      margin: auto;
+      direction: rtl;
+    }
+
     .row {
       @include mixins.row-space-between-center();
       @include mixins.mobile {
@@ -327,8 +341,11 @@
       display: flex;
       flex-direction: column;
     }
-    @include mixins.tablet {
+    @include mixins.tabletLandscape {
       grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    }
+    @include mixins.tabletPortrait {
+      grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
     }
 
     .card {
@@ -465,7 +482,10 @@
         width: 60%;
         margin: auto;
 
-        @include mixins.tablet {
+        @include mixins.tabletPortrait {
+          width: 100%;
+        }
+        @include mixins.tabletLandscape {
           width: 100%;
         }
         @include mixins.mobile {

@@ -1,0 +1,88 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  position: relative;
+  width: config.$content-width;
+  max-width: config.$max-widthHeigh;
+  @include mixins.row-space-between-center();
+  user-select: none;
+  text-transform: uppercase;
+
+  @include mixins.tabletPortrait {
+    width: config.$content-widthTablet;
+  }
+  @include mixins.tabletLandscape {
+    width: config.$content-widthTablet;
+  }
+
+  .fullSizeNavigation {
+    width: 30%;
+    @include mixins.row-space-between-center();
+
+    @include mixins.tabletPortrait {
+      width: 40%;
+    }
+    @include mixins.tabletLandscape {
+      width: 40%;
+    }
+  }
+
+  .mobileNavigation {
+    position: absolute;
+    left: -12px;
+    top: 100px;
+    width: 100%;
+    padding: 12px 0px;
+    display: flex;
+    flex-direction: column;
+    @include mixins.transparentBackground(0.1, config.$darkblue);
+    width: calc(100% + 24px);
+
+    .nav {
+      color: config.$white;
+    }
+
+    .nav,
+    .navActive {
+      margin: 12px;
+    }
+  }
+
+  .nav {
+    font-size: small;
+    cursor: pointer;
+    &:hover {
+      color: config.$blue;
+    }
+  }
+
+  .navActive {
+    font-size: small;
+    color: config.$blue;
+    cursor: pointer;
+  }
+
+  .logo {
+    position: relative;
+    width: 150px;
+    height: 100px;
+    cursor: pointer;
+  }
+
+  .portal {
+    position: absolute;
+    left: 15%;
+
+    @include mixins.mobile {
+      left: auto;
+      right: 10%;
+    }
+    @include mixins.tabletPortrait {
+      left: 25%;
+    }
+    @include mixins.tabletLandscape {
+      left: 20%;
+    }
+  }
+}

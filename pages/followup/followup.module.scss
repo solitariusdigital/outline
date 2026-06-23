@@ -29,7 +29,10 @@
     direction: rtl;
     margin-top: 24px;
 
-    @include mixins.tablet {
+    @include mixins.tabletPortrait {
+      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    }
+    @include mixins.tabletLandscape {
       grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
     }
     @include mixins.mobile {

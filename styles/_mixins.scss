@@ -1,4 +1,5 @@
 @use "config" as config;
+@use "sass:color";
 
 $screen-mobile: 700px;
 $screen-tablet: 1400px;
@@ -10,8 +11,13 @@ $screen-fourK: 6000px;
     @content;
   }
 }
-@mixin tablet {
-  @media (min-width: #{$screen-mobile} ) and (max-width: #{$screen-tablet}) {
+@mixin tabletPortrait {
+  @media (min-width: #{$screen-mobile}) and (max-width: #{$screen-tablet}) and (orientation: portrait) {
+    @content;
+  }
+}
+@mixin tabletLandscape {
+  @media (min-width: #{$screen-mobile}) and (max-width: #{$screen-tablet}) and (orientation: landscape) {
     @content;
   }
 }
@@ -22,6 +28,11 @@ $screen-fourK: 6000px;
 }
 @mixin fourK {
   @media (min-width: #{$screen-large} ) and (max-width: #{$screen-fourK}) {
+    @content;
+  }
+}
+@mixin allDesktop {
+  @media (min-width: #{$screen-tablet} ) {
     @content;
   }
 }
@@ -73,4 +84,8 @@ $screen-fourK: 6000px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+@mixin transparentBackground($alpha, $color) {
+  background: color.adjust($color, $alpha: -$alpha);
 }

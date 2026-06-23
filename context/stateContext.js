@@ -5,10 +5,10 @@ export const StateProvider = (props) => {
   const [appUsers, setAppUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [kavenegarKey, setKavenegarKey] = useState(
-    "684E475442526B426237454A7836434D42394F3368324463527569754F4453616B386B2F573756303439413D"
+    "684E475442526B426237454A7836434D42394F3368324463527569754F4453616B386B2F573756303439413D",
   );
   const [screenSize, setScreenSize] = useState(
-    "desktop" || "tablet-landscape" || "tablet-portrait" || "mobile"
+    "desktop" || "tablet-landscape" || "tablet-portrait" || "mobile",
   );
   const [selectDoctor, setSelectDoctor] = useState("");
   const [selectBranch, setSelectBranch] = useState("tehran" || "kish");
@@ -23,9 +23,33 @@ export const StateProvider = (props) => {
     "67bc30fe0753de6301fd6a41": { name: "Niloufar", color: "#B771E5" },
     "66f80a002772d93db43ee424": { name: "Outline", color: "#2d2b7f" },
   });
+  const [navigationTopBar, setNavigationTopBar] = useState([
+    {
+      title: "Work",
+      link: "/work",
+      active: false,
+    },
+    {
+      title: "About",
+      link: "/about",
+      active: false,
+    },
+    {
+      title: "News",
+      link: "/news",
+      active: false,
+    },
+    {
+      title: "Contact",
+      link: "/contact",
+      active: false,
+    },
+  ]);
   const stateContext = {
     currentUser,
     setCurrentUser,
+    navigationTopBar,
+    setNavigationTopBar,
     appUsers,
     setAppUsers,
     kavenegarKey,

@@ -6,6 +6,8 @@ import classes from "./home.module.scss";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import { RevealText } from "@/components/RevealText";
+import Menu from "@/components/Menu";
+// import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -35,6 +37,8 @@ export default function Home() {
         }}
       />
       <section className={classes.container}>
+        <Menu />
+
         <h1>HOME PAGE</h1>
         <RevealText direction="up">
           <h2>This heading fades in from below</h2>
