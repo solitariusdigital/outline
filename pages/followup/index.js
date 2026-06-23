@@ -56,7 +56,10 @@ export default function Followup() {
   return (
     <section className={classes.container}>
       <div className={classes.row}>
-        <HomeIcon onClick={() => Router.push("/")} className="icon" />
+        <HomeIcon
+          onClick={() => Router.push("/reservation")}
+          className="icon"
+        />
         <h4
           style={{
             margin: "0px 8px",

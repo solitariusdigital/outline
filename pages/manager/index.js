@@ -145,7 +145,7 @@ export default function Manager({ control }) {
     ) {
       setNavigation("reception");
     } else {
-      Router.push("/");
+      Router.push("/reservation");
     }
   }, [controlData]);
 
@@ -292,7 +292,7 @@ export default function Manager({ control }) {
 
   return (
     <div className={classes.container}>
-      <HomeIcon onClick={() => Router.push("/")} className="icon" />
+      <HomeIcon onClick={() => Router.push("/reservation")} className="icon" />
       {currentUser?.super && (
         <div className={classes.navigation}>
           <p

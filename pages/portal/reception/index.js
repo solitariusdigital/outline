@@ -91,7 +91,7 @@ export default function Reception({ records }) {
     } else if (currentUser?.permission === "doctor") {
       filterReceptionCards(currentUser?.name);
     } else {
-      Router.push("/");
+      Router.push("/reservation");
     }
   }, []);
 
@@ -316,7 +316,10 @@ export default function Reception({ records }) {
               }}
             />
             <h4>{receptionCards.length}</h4>
-            <HomeIcon onClick={() => Router.push("/")} className="icon" />
+            <HomeIcon
+              onClick={() => Router.push("/reservation")}
+              className="icon"
+            />
           </div>
         </div>
         {currentUser?.permission === "admin" && (

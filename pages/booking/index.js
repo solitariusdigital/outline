@@ -21,15 +21,16 @@ export default function Booking({ visits }) {
       if (!currentUser) return;
       const { permission, _id } = currentUser;
       if (permission === "doctor") {
-        Router.push("/");
+        Router.push("/reservation");
         return;
       }
       if (permission === "patient" || permission === "staff") {
         const hasActiveVisit = visits.some(
-          (visit) => visit.userId === _id && !visit.completed && !visit.canceled
+          (visit) =>
+            visit.userId === _id && !visit.completed && !visit.canceled,
         );
         if (hasActiveVisit) {
-          Router.push("/");
+          Router.push("/reservation");
         }
       }
     };
@@ -67,7 +68,7 @@ export default function Booking({ visits }) {
           <div className={classes.header}>
             <HomeIcon
               className="icon"
-              onClick={() => Router.push("/")}
+              onClick={() => Router.push("/reservation")}
               sx={{ color: "#2d2b7f" }}
             />
             {selectDoctor && <h3>{selectDoctor}</h3>}
@@ -99,7 +100,7 @@ export async function getServerSideProps(context) {
     const [year] = getCurrentDateFarsi().split("/");
     let visits = await visitModel.find({ time: { $regex: `^${year}` } });
     let activeVisits = visits.filter(
-      (visit) => !visit.completed && !visit.canceled
+      (visit) => !visit.completed && !visit.canceled,
     );
 
     return {

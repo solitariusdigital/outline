@@ -24,7 +24,7 @@ export default function Patient({ user, visits }) {
   const [filterVisits, setFilterVisits] = useState([]);
 
   const [visitTypes, setVisitTypes] = useState(
-    "active" || "tomorrow" || "afterTomorrow" || "complete" || "cancel"
+    "active" || "tomorrow" || "afterTomorrow" || "complete" || "cancel",
   );
 
   const router = useRouter();
@@ -37,11 +37,11 @@ export default function Patient({ user, visits }) {
     if (currentUser && currentUser.permission === "admin") {
       setDisplayVisits(visits);
       setFilterVisits(
-        visits.filter((visit) => !visit.completed && !visit.canceled)
+        visits.filter((visit) => !visit.completed && !visit.canceled),
       );
       setVisitTypes("active");
     } else {
-      Router.push("/");
+      Router.push("/reservation");
     }
   }, [visits]);
 
@@ -138,7 +138,7 @@ export default function Patient({ user, visits }) {
                   <p>
                     {
                       displayVisits.filter(
-                        (visit) => !visit.completed && !visit.canceled
+                        (visit) => !visit.completed && !visit.canceled,
                       ).length
                     }
                   </p>
@@ -151,8 +151,8 @@ export default function Patient({ user, visits }) {
                     onClick={() => {
                       setFilterVisits(
                         displayVisits.filter(
-                          (visit) => !visit.completed && !visit.canceled
-                        )
+                          (visit) => !visit.completed && !visit.canceled,
+                        ),
                       );
                       setVisitTypes("active");
                     }}
@@ -218,7 +218,7 @@ export default function Patient({ user, visits }) {
                     }
                     onClick={() => {
                       setFilterVisits(
-                        displayVisits.filter((visit) => visit.completed)
+                        displayVisits.filter((visit) => visit.completed),
                       );
                       setVisitTypes("complete");
                     }}
@@ -238,7 +238,7 @@ export default function Patient({ user, visits }) {
                     }
                     onClick={() => {
                       setFilterVisits(
-                        displayVisits.filter((visit) => visit.canceled)
+                        displayVisits.filter((visit) => visit.canceled),
                       );
                       setVisitTypes("cancel");
                     }}
@@ -318,7 +318,7 @@ export default function Patient({ user, visits }) {
                                 item["_id"],
                                 user.phone,
                                 item.time,
-                                "complete"
+                                "complete",
                               )
                             }
                           >
@@ -336,7 +336,7 @@ export default function Patient({ user, visits }) {
                                 item["_id"],
                                 user.phone,
                                 item.time,
-                                "cancel"
+                                "cancel",
                               )
                             }
                           >

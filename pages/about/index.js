@@ -34,7 +34,10 @@ export default function About() {
         }}
       />
       <div className={classes.container}>
-        <HomeIcon onClick={() => Router.push("/")} className="icon" />
+        <HomeIcon
+          onClick={() => Router.push("/reservation")}
+          className="icon"
+        />
         <p className={classes.text}>
           در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه
           می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن ایجاد

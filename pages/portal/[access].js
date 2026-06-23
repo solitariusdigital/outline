@@ -77,7 +77,7 @@ export default function Access() {
 
   useEffect(() => {
     if (!currentUser) {
-      Router.push("/");
+      Router.push("/reservation");
     } else {
       if (!cachedVisitsData) {
         fetchRefreshData();
@@ -488,7 +488,10 @@ export default function Access() {
             </div>
           )}
           <div className={classes.header}>
-            <HomeIcon onClick={() => Router.push("/")} className="icon" />
+            <HomeIcon
+              onClick={() => Router.push("/reservation")}
+              className="icon"
+            />
             <h3>{currentUser.name ? currentUser.name : currentUser.phone}</h3>
             {currentUser.permission === "patient" && <Person4Icon />}
             {currentUser.permission === "staff" && <Person4Icon />}

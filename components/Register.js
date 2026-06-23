@@ -218,7 +218,7 @@ export default function Register() {
         </div>
         <p className="alert">{alert}</p>
       </div>
-      <div className={classes.logo} onClick={() => Router.push("/")}>
+      <div className={classes.logo} onClick={() => Router.push("/reservation")}>
         <Image width={200} height={140} src={logo} alt="logo" priority />
         <HomeIcon sx={{ color: "#2d2b7f" }} />
       </div>
