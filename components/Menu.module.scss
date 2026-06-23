@@ -7,7 +7,6 @@
   max-width: config.$max-widthHeigh;
   @include mixins.row-space-between-center();
   user-select: none;
-  text-transform: uppercase;
 
   @include mixins.tabletPortrait {
     width: config.$content-widthTablet;
@@ -17,48 +16,67 @@
   }
 
   .fullSizeNavigation {
-    width: 30%;
+    width: 50%;
     @include mixins.row-space-between-center();
 
-    @include mixins.tabletPortrait {
-      width: 40%;
-    }
-    @include mixins.tabletLandscape {
-      width: 40%;
+    .bar {
+      @include mixins.row-space-between-center();
     }
   }
 
   .mobileNavigation {
     position: absolute;
-    left: -12px;
+    z-index: 1;
+    left: 0px;
     top: 100px;
     width: 100%;
-    padding: 12px 0px;
     display: flex;
     flex-direction: column;
-    @include mixins.transparentBackground(0.1, config.$darkblue);
-    width: calc(100% + 24px);
+    justify-content: center;
+    align-items: center;
+    background: config.$darkblue;
+    height: calc(100dvh - 100px);
 
     .nav {
+      font-size: config.$large-font;
       color: config.$white;
+    }
+
+    .mobileNavigation {
+      overflow: hidden;
     }
 
     .nav,
     .navActive {
-      margin: 12px;
+      opacity: 0;
+      transform: translateY(80px) scale(0.95);
+      animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      will-change: transform, opacity;
+      margin: 24px;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(80px) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
   }
 
   .nav {
-    font-size: small;
     cursor: pointer;
+
     &:hover {
       color: config.$blue;
     }
   }
 
   .navActive {
-    font-size: small;
     color: config.$blue;
     cursor: pointer;
   }
@@ -68,21 +86,5 @@
     width: 150px;
     height: 100px;
     cursor: pointer;
-  }
-
-  .portal {
-    position: absolute;
-    left: 15%;
-
-    @include mixins.mobile {
-      left: auto;
-      right: 10%;
-    }
-    @include mixins.tabletPortrait {
-      left: 25%;
-    }
-    @include mixins.tabletLandscape {
-      left: 20%;
-    }
   }
 }

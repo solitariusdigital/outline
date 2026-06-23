@@ -25,23 +25,28 @@ export const StateProvider = (props) => {
   });
   const [navigationTopBar, setNavigationTopBar] = useState([
     {
-      title: "Work",
-      link: "/work",
+      title: "تماس با ما",
+      link: "/contact",
       active: false,
     },
     {
-      title: "About",
+      title: "درباره ما",
       link: "/about",
       active: false,
     },
     {
-      title: "News",
-      link: "/news",
+      title: "پورتال نوبت",
+      link: "/reservation",
       active: false,
     },
     {
-      title: "Contact",
-      link: "/contact",
+      title: "مراقبت پزشکی",
+      link: "/work",
+      active: false,
+    },
+    {
+      title: "متد اوت‌لاین",
+      link: "/work",
       active: false,
     },
   ]);

@@ -10,19 +10,17 @@
   color: config.$white;
 }
 
-.notFound {
-  margin: auto;
+.content {
   width: config.$content-width;
-  margin-top: 150px;
-  text-align: center;
+  max-width: config.$max-widthHeigh;
+  direction: rtl;
+}
 
-  @include mixins.tabletPortrait {
-    width: config.$content-widthTablet;
-  }
-  @include mixins.tabletLandscape {
-    width: config.$content-widthTablet;
-  }
-  @include mixins.mobile {
-    width: calc(100% - 24px);
-  }
+.notFound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: config.$content-width;
+  text-align: center;
+  height: 100dvh;
 }

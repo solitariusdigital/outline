@@ -36,20 +36,24 @@ export default function Home() {
           maxVideoPreview: -1,
         }}
       />
-      <section className={classes.container}>
+      <div className={classes.container}>
         <Menu />
-
-        <h1>HOME PAGE</h1>
-        <RevealText direction="up">
-          <h2>This heading fades in from below</h2>
-        </RevealText>
-        <RevealText direction="up" delay={150}>
-          <p>This paragraph follows 150ms later.</p>
-        </RevealText>
-        <RevealText direction="up" delay={300}>
-          <p>This one slides in from the right.</p>
-        </RevealText>
-      </section>
+        <section className={classes.content}>
+          <RevealText direction="up" delay={100}>
+            <h1>هنر خلق زیبایی</h1>
+          </RevealText>
+          <RevealText direction="up" delay={150}>
+            <h2>
+              در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه
+              می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن
+              ایجاد تعادل و هماهنگی طبیعی در صورت است.
+            </h2>
+          </RevealText>
+          <RevealText direction="up" delay={300}>
+            <h1>هنر خلق زیبایی</h1>
+          </RevealText>
+        </section>
+      </div>
     </Fragment>
   );
 }
