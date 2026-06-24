@@ -41,12 +41,12 @@ export const StateProvider = (props) => {
     },
     {
       title: "مراقبت پزشکی",
-      link: "/work",
+      link: "/care",
       active: false,
     },
     {
       title: "متد اوت‌لاین",
-      link: "/work",
+      link: "/method",
       active: false,
     },
   ]);

@@ -19,8 +19,22 @@
     width: 50%;
     @include mixins.row-space-between-center();
 
-    .bar {
+    .barRight {
+      width: 60%;
       @include mixins.row-space-between-center();
+
+      @include mixins.tabletLandscape {
+        width: 80%;
+      }
+    }
+
+    .barLeft {
+      width: 30%;
+      @include mixins.row-space-between-center();
+
+      @include mixins.tabletLandscape {
+        width: 40%;
+      }
     }
   }
 

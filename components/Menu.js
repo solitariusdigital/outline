@@ -14,7 +14,12 @@ export default function Menu() {
   const { screenSize, setScreenSize } = useContext(StateContext);
   const [menuMobile, setMenuMobile] = useState(false);
 
-  const fullSizeScreen = screenSize !== "mobile";
+  const fullSizeScreen =
+    screenSize !== "mobile" && screenSize !== "tablet-portrait";
+
+  const displayNav = fullSizeScreen
+    ? navigationTopBar
+    : [...navigationTopBar].reverse();
 
   const activateNav = (link, index) => {
     setMenuMobile(false);
@@ -33,13 +38,8 @@ export default function Menu() {
     <div className={classes.container}>
       {fullSizeScreen && (
         <nav className={classes.fullSizeNavigation}>
-          <div
-            className={classes.bar}
-            style={{
-              width: "30%",
-            }}
-          >
-            {navigationTopBar
+          <div className={classes.barLeft}>
+            {displayNav
               .map((nav, index) => (
                 <Fragment key={index}>
                   <Link
@@ -75,13 +75,8 @@ export default function Menu() {
             flexDirection: "row-reverse",
           }}
         >
-          <div
-            className={classes.bar}
-            style={{
-              width: "60%",
-            }}
-          >
-            {navigationTopBar
+          <div className={classes.barRight}>
+            {displayNav
               .map((nav, index) => (
                 <Fragment key={index}>
                   <Link
@@ -115,7 +110,7 @@ export default function Menu() {
           )}
           {menuMobile && (
             <nav className={classes.mobileNavigation}>
-              {navigationTopBar.map((nav, index) => (
+              {displayNav.map((nav, index) => (
                 <Link
                   key={nav.link}
                   href={nav.link}
