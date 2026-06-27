@@ -14,10 +14,10 @@
     width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
-    width: config.$content-widthTablet;
+    width: config.$content-width;
   }
   @include mixins.tabletLandscape {
-    width: config.$content-widthTablet;
+    width: config.$content-width;
   }
 
   .icon {

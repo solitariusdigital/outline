@@ -7,7 +7,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "outline.storage.iran.liara.space",
+        hostname: "bucket.eshareh.com",
         port: "",
         pathname: "/**",
       },

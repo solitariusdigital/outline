@@ -7,11 +7,84 @@
   user-select: none;
   height: 100dvh;
   width: 100%;
-  @include mixins.row-space-between-center();
+
+  @include mixins.desktop {
+    @include mixins.row-space-between-center();
+  }
+  @include mixins.tabletLandscape {
+    @include mixins.row-space-between-center();
+  }
 
   .infoBox,
   .imageBox {
     height: 100%;
-    width: 50%;
+
+    @include mixins.desktop {
+      width: 50%;
+    }
+    @include mixins.tabletLandscape {
+      width: 50%;
+    }
+  }
+
+  .infoBox {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    direction: rtl;
+
+    @include mixins.mobile {
+      @include mixins.transparentBackground(0.7, config.$white);
+    }
+    @include mixins.tabletPortrait {
+      @include mixins.transparentBackground(0.7, config.$white);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 0px auto;
+      margin-bottom: 24px;
+      color: config.$gold;
+
+      @include mixins.mobile {
+        width: calc(100% - 24px);
+      }
+      @include mixins.tabletPortrait {
+        width: config.$content-width;
+      }
+    }
+    h2 {
+      width: config.$content-widthText;
+      margin: 0px auto;
+
+      @include mixins.mobile {
+        width: calc(100% - 24px);
+      }
+      @include mixins.tabletPortrait {
+        width: config.$content-width;
+      }
+    }
+  }
+
+  .imageBox {
+    @include mixins.mobile {
+      position: absolute;
+      z-index: 2;
+      top: 0px;
+      left: 0px;
+      height: 100dvh;
+      width: 100%;
+    }
+    @include mixins.tabletPortrait {
+      position: absolute;
+      z-index: 2;
+      top: 0px;
+      left: 0px;
+      height: 100dvh;
+      width: 100%;
+    }
   }
 }

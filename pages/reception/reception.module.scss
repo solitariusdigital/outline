@@ -65,7 +65,7 @@
   grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
   gap: 24px;
   direction: rtl;
-  width: config.$content-widthTablet;
+  width: config.$content-width;
   border-bottom: 1px solid config.$grey;
   padding-bottom: 50px;
 

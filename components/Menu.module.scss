@@ -3,16 +3,19 @@
 
 .container {
   position: relative;
+  user-select: none;
   width: config.$content-width;
   max-width: config.$max-widthHeigh;
   @include mixins.row-space-between-center();
-  user-select: none;
 
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
   @include mixins.tabletPortrait {
-    width: config.$content-widthTablet;
+    width: config.$content-width;
   }
   @include mixins.tabletLandscape {
-    width: config.$content-widthTablet;
+    width: config.$content-width;
   }
 
   .fullSizeNavigation {
