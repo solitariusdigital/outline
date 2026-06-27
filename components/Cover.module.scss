@@ -1,0 +1,13 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  position: relative;
+  margin: auto;
+  user-select: none;
+  height: 100dvh;
+  width: 100%;
+
+  .content {
+  }
+}

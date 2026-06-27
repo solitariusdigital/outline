@@ -7,6 +7,7 @@ import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import { RevealText } from "@/components/RevealText";
 import Menu from "@/components/Menu";
+import Cover from "@/components/Cover";
 // import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -37,21 +38,25 @@ export default function Home() {
         }}
       />
       <div className={classes.container}>
-        <Menu />
-        <section className={classes.content}>
-          <RevealText direction="up" delay={100}>
-            <h1>هنر خلق زیبایی</h1>
-          </RevealText>
-          <RevealText direction="up" delay={150}>
-            <h2>
-              در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه
-              می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن
-              ایجاد تعادل و هماهنگی طبیعی در صورت است.
-            </h2>
-          </RevealText>
-          <RevealText direction="up" delay={300}>
-            <h1>هنر خلق زیبایی</h1>
-          </RevealText>
+        <section className={classes.menu}>
+          <Menu />
+        </section>
+        <section>
+          <Cover />
+        </section>
+        <section className={classes.contentBox}>
+          <div className={classes.content}>
+            <RevealText direction="up" delay={300}>
+              <h1>مسیر شما به سوی تعالی زیبایی‌شناسی</h1>
+            </RevealText>
+            <RevealText direction="up" delay={500}>
+              <h2>
+                در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت
+                نگاه می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف
+                آن ایجاد تعادل و هماهنگی طبیعی در صورت است.
+              </h2>
+            </RevealText>
+          </div>
         </section>
       </div>
     </Fragment>

@@ -41,15 +41,17 @@
   .mobileNavigation {
     position: absolute;
     z-index: 1;
-    left: 0px;
-    top: 100px;
+    left: -12px;
+    top: 0px;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background: config.$darkblue;
-    height: calc(100dvh - 100px);
+    height: 100dvh;
+    z-index: -1;
+    width: calc(100% + 24px);
 
     .nav {
       font-size: config.$large-font;
@@ -86,12 +88,12 @@
     cursor: pointer;
 
     &:hover {
-      color: config.$blue;
+      color: config.$gold;
     }
   }
 
   .navActive {
-    color: config.$blue;
+    color: config.$gold;
     cursor: pointer;
   }
 
