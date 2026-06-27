@@ -1,0 +1,32 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  width: config.$content-width;
+  max-width: config.$max-widthHeigh;
+  margin: auto;
+  padding: 24px 0px;
+  user-select: none;
+  direction: rtl;
+  border-top: 1px solid config.$lightgrey;
+
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
+  @include mixins.tabletPortrait {
+    width: config.$content-widthTablet;
+  }
+  @include mixins.tabletLandscape {
+    width: config.$content-widthTablet;
+  }
+
+  .icon {
+    display: flex;
+    margin-top: 12px;
+
+    &:hover {
+      color: config.$gold;
+      cursor: pointer;
+    }
+  }
+}

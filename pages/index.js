@@ -7,8 +7,8 @@ import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import { RevealText } from "@/components/RevealText";
 import Menu from "@/components/Menu";
+import Footer from "@/components/Footer";
 import Cover from "@/components/Cover";
-// import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -57,6 +57,9 @@ export default function Home() {
               </h2>
             </RevealText>
           </div>
+        </section>
+        <section className={classes.footer}>
+          <Footer />
         </section>
       </div>
     </Fragment>

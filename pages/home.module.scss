@@ -17,6 +17,10 @@
   height: 100px;
 }
 
+.footer {
+  background: config.$darkblue;
+}
+
 .contentBox {
   display: flex;
   flex-direction: column;
