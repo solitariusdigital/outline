@@ -11,6 +11,8 @@ import Footer from "@/components/Footer";
 import Cover from "@/components/Cover";
 
 export default function Home() {
+  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+
   return (
     <Fragment>
       <NextSeo
@@ -38,9 +40,13 @@ export default function Home() {
         }}
       />
       <div className={classes.container}>
-        <section className={classes.menu}>
-          <Menu />
-        </section>
+        {menuDisplay && (
+          <section
+            className={`${classes.menu} animate__animated animate__slideInDown`}
+          >
+            <Menu />
+          </section>
+        )}
         <section>
           <Cover />
         </section>

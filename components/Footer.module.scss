@@ -5,12 +5,14 @@
   width: config.$content-width;
   max-width: config.$max-widthHeigh;
   margin: auto;
-  padding: 24px 0px;
+  padding: 50px 0px;
   user-select: none;
-  direction: rtl;
-  border-top: 1px solid config.$lightgrey;
+  @include mixins.row-space-between-center();
 
   @include mixins.mobile {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
     width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
@@ -20,13 +22,36 @@
     width: config.$content-width;
   }
 
-  .icon {
-    display: flex;
-    margin-top: 12px;
+  .booking {
+    direction: rtl;
 
-    &:hover {
-      color: config.$gold;
+    .link {
       cursor: pointer;
+      margin: 12px 0px;
+
+      &:hover {
+        color: config.$gold;
+      }
+    }
+  }
+
+  .social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include mixins.mobile {
+      margin-top: 24px;
+    }
+
+    .icon {
+      display: flex;
+      margin-top: 12px;
+
+      &:hover {
+        color: config.$gold;
+        cursor: pointer;
+      }
     }
   }
 }

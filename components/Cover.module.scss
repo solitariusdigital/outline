@@ -8,7 +8,7 @@
   height: 100dvh;
   width: 100%;
 
-  @include mixins.desktop {
+  @include mixins.allDesktop {
     @include mixins.row-space-between-center();
   }
   @include mixins.tabletLandscape {
@@ -19,7 +19,7 @@
   .imageBox {
     height: 100%;
 
-    @include mixins.desktop {
+    @include mixins.allDesktop {
       width: 50%;
     }
     @include mixins.tabletLandscape {

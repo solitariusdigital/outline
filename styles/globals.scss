@@ -2,15 +2,18 @@
 @use "mixins" as mixins;
 
 @font-face {
-  font-family: "Vazirmatn";
+  font-family: "Regular";
   src: url("../assets/Vazirmatn-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Light";
+  src: url("../assets/Vazirmatn-ExtraLight.ttf") format("truetype");
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: config.$font;
 }
 
 html {

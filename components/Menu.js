@@ -35,7 +35,12 @@ export default function Menu() {
   };
 
   return (
-    <div className={classes.container}>
+    <div
+      className={classes.container}
+      style={{
+        fontFamily: "Light",
+      }}
+    >
       {fullSizeScreen && (
         <nav className={classes.fullSizeNavigation}>
           <div className={classes.barLeft}>

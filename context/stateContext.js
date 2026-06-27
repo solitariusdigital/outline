@@ -13,6 +13,7 @@ export const StateProvider = (props) => {
   const [selectDoctor, setSelectDoctor] = useState("");
   const [selectBranch, setSelectBranch] = useState("tehran" || "kish");
   const [notification, setNotification] = useState(false);
+  const [menuDisplay, setMenuDisplay] = useState(true);
   const [cachedVisitsData, setCachedVisitsData] = useState(null);
   const [popupDiagramData, setPopupDiagramData] = useState(null);
   const [adminColorCode, setAdminColorCode] = useState({
@@ -73,6 +74,8 @@ export const StateProvider = (props) => {
     setPopupDiagramData,
     selectBranch,
     setSelectBranch,
+    menuDisplay,
+    setMenuDisplay,
   };
   return (
     <StateContext.Provider value={stateContext}>

@@ -13,6 +13,7 @@ import { getCurrentDateFarsi } from "@/services/utility";
 export default function RootLayout({ children }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
+  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const [appLoader, setAppLoader] = useState(false);
 
   const handleResize = () => {
@@ -34,6 +35,23 @@ export default function RootLayout({ children }) {
     }
     setScreenSize(screenSize);
   };
+
+  useEffect(() => {
+    let prevScrollY = window.scrollY;
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY <= 0) {
+        setMenuDisplay(true);
+      } else if (currentScrollY > prevScrollY) {
+        setMenuDisplay(false);
+      }
+      prevScrollY = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,7 +118,12 @@ export default function RootLayout({ children }) {
     <Fragment>
       {appLoader ? (
         <Fragment>
-          <div className="main">
+          <div
+            className="main"
+            style={{
+              fontFamily: "Regular",
+            }}
+          >
             <main>{children}</main>
           </div>
         </Fragment>
