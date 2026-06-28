@@ -2,12 +2,12 @@
 @use "mixins" as mixins;
 
 @font-face {
-  font-family: "Regular";
-  src: url("../assets/Vazirmatn-Regular.ttf") format("truetype");
+  font-family: "Vazir-Light";
+  src: url("../assets/Vazirmatn-ExtraLight.ttf") format("truetype");
 }
 @font-face {
-  font-family: "Light";
-  src: url("../assets/Vazirmatn-ExtraLight.ttf") format("truetype");
+  font-family: "Vazir-Regular";
+  src: url("../assets/Vazirmatn-Regular.ttf") format("truetype");
 }
 
 * {

@@ -37,10 +37,10 @@
     direction: rtl;
 
     @include mixins.mobile {
-      @include mixins.transparentBackground(0.7, config.$white);
+      @include mixins.transparentBackground(0.8, config.$gold);
     }
     @include mixins.tabletPortrait {
-      @include mixins.transparentBackground(0.7, config.$white);
+      @include mixins.transparentBackground(0.8, config.$gold);
     }
 
     h1 {

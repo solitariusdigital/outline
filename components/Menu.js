@@ -38,7 +38,7 @@ export default function Menu() {
     <div
       className={classes.container}
       style={{
-        fontFamily: "Light",
+        fontFamily: "Vazir-Light",
       }}
     >
       {fullSizeScreen && (
@@ -114,7 +114,12 @@ export default function Menu() {
             />
           )}
           {menuMobile && (
-            <nav className={classes.mobileNavigation}>
+            <nav
+              className={classes.mobileNavigation}
+              style={{
+                fontFamily: "Vazir-Light",
+              }}
+            >
               {displayNav.map((nav, index) => (
                 <Link
                   key={nav.link}

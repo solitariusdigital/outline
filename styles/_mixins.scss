@@ -48,6 +48,7 @@ $screen-fourK: 6000px;
     box-shadow: config.$button-shadow;
     background: $color2;
     cursor: pointer;
+    font-family: "Vazir-Regular";
   }
 
   @include desktop {

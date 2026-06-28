@@ -14,7 +14,7 @@ export default function Footer() {
     <div
       className={classes.container}
       style={{
-        fontFamily: "Light",
+        fontFamily: "Vazir-Light",
       }}
     >
       <div className={classes.social}>

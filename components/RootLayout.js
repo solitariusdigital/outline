@@ -121,7 +121,7 @@ export default function RootLayout({ children }) {
           <div
             className="main"
             style={{
-              fontFamily: "Regular",
+              fontFamily: "Vazir-Regular",
             }}
           >
             <main>{children}</main>
