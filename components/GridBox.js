@@ -143,6 +143,7 @@ const styles = {
     overflow: "hidden",
     display: "flex",
     flexDirection: "column",
+    borderRadius: "5px",
   },
   imgPlaceholder: {
     flex: 1,

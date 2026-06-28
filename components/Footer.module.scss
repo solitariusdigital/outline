@@ -2,6 +2,7 @@
 @use "styles/_mixins.scss" as mixins;
 
 .container {
+  position: relative;
   width: config.$content-width;
   max-width: config.$max-widthHeigh;
   margin: auto;
@@ -25,9 +26,14 @@
   .booking {
     direction: rtl;
 
+    @include mixins.mobile {
+      width: 100%;
+    }
+
     .link {
       cursor: pointer;
       margin: 12px 0px;
+      width: fit-content;
 
       &:hover {
         color: config.$gold;
@@ -53,5 +59,16 @@
         cursor: pointer;
       }
     }
+  }
+
+  .logo {
+    position: relative;
+    @include mixins.mobile {
+      position: absolute;
+      bottom: 50%;
+    }
+    width: 150px;
+    height: 100px;
+    cursor: pointer;
   }
 }

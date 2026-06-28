@@ -1,4 +1,4 @@
-import { useState, useContext, Fragment } from "react";
+import { useEffect, useContext, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
 import Link from "next/link";
 import Router from "next/router";
@@ -12,7 +12,7 @@ export default function Menu() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
-  const [menuMobile, setMenuMobile] = useState(false);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
 
   const fullSizeScreen =
     screenSize !== "mobile" && screenSize !== "tablet-portrait";
@@ -20,6 +20,17 @@ export default function Menu() {
   const displayNav = fullSizeScreen
     ? navigationTopBar
     : [...navigationTopBar].reverse();
+
+  useEffect(() => {
+    if (menuMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuMobile]);
 
   const activateNav = (link, index) => {
     setMenuMobile(false);
@@ -38,7 +49,7 @@ export default function Menu() {
     <div
       className={classes.container}
       style={{
-        fontFamily: "Vazir-Light",
+        fontFamily: "Yekan-Regular",
       }}
     >
       {fullSizeScreen && (

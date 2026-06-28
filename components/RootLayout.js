@@ -14,6 +14,7 @@ export default function RootLayout({ children }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const [appLoader, setAppLoader] = useState(false);
 
   const handleResize = () => {
@@ -39,6 +40,8 @@ export default function RootLayout({ children }) {
   useEffect(() => {
     let prevScrollY = window.scrollY;
     const handleScroll = () => {
+      if (menuMobile) return;
+
       const currentScrollY = window.scrollY;
       if (currentScrollY <= 0) {
         setMenuDisplay(true);
@@ -48,21 +51,17 @@ export default function RootLayout({ children }) {
       prevScrollY = currentScrollY;
     };
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [menuMobile]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (await checkReminderFutureSent()) {
         return;
       }
-
       const now = new Date();
       if (now.getUTCHours() >= 8) {
         const res = await fetch("/api/cron/reminder");
-
         if (res.ok) {
           const controlData = await getControlsApi();
           const currentDate = getCurrentDateFarsi();

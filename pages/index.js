@@ -39,7 +39,12 @@ export default function Home() {
           maxVideoPreview: -1,
         }}
       />
-      <div className={classes.container}>
+      <div
+        className={classes.container}
+        style={{
+          fontFamily: "Yekan-Regular",
+        }}
+      >
         {menuDisplay && (
           <section
             className={`${classes.menu} animate__animated animate__slideInDown`}

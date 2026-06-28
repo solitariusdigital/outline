@@ -4,17 +4,36 @@ import classes from "./Footer.module.scss";
 import Link from "next/link";
 import Router from "next/router";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import logo from "@/assets/logo.png";
+import Image from "next/legacy/image";
 
 export default function Footer() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { selectBranch, setSelectBranch } = useContext(StateContext);
+  const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
+  const { screenSize, setScreenSize } = useContext(StateContext);
+
+  const fullSizeScreen = screenSize !== "mobile";
+
+  const activateNav = (link, index) => {
+    setMenuMobile(false);
+    navigationTopBar.map((nav, i) => {
+      if (i === index) {
+        Router.push(link);
+        nav.active = true;
+      } else {
+        nav.active = false;
+      }
+    });
+    setNavigationTopBar([...navigationTopBar]);
+  };
 
   return (
     <div
       className={classes.container}
       style={{
-        fontFamily: "Vazir-Light",
+        fontFamily: "Yekan-Regular",
       }}
     >
       <div className={classes.social}>
@@ -30,7 +49,19 @@ export default function Footer() {
           }
         />
       </div>
-      <div className={classes.booking}>
+      <div className={classes.logo}>
+        <Link href="/" passHref>
+          <Image
+            src={logo}
+            layout="fill"
+            objectFit="contain"
+            alt="logo"
+            as="image"
+            priority
+          />
+        </Link>
+      </div>
+      <nav className={classes.booking}>
         <div className={classes.link}>
           <Link
             href={currentUser ? "/booking" : "/portal"}
@@ -65,79 +96,41 @@ export default function Footer() {
             نوبت دکتر پورقلی
           </Link>
         </div>
-      </div>
-      <div className={classes.booking}>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            onClick={() => {
-              setSelectDoctor("دکتر فراهانی");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر فراهانی
-          </Link>
-        </div>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            passHref
-            onClick={() => {
-              setSelectDoctor("دکتر گنجه");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر گنجه
-          </Link>
-        </div>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            onClick={() => {
-              setSelectDoctor("دکتر پورقلی");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر پورقلی
-          </Link>
-        </div>
-      </div>
-      <div className={classes.booking}>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            onClick={() => {
-              setSelectDoctor("دکتر فراهانی");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر فراهانی
-          </Link>
-        </div>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            passHref
-            onClick={() => {
-              setSelectDoctor("دکتر گنجه");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر گنجه
-          </Link>
-        </div>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            onClick={() => {
-              setSelectDoctor("دکتر پورقلی");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر پورقلی
-          </Link>
-        </div>
-      </div>
+      </nav>
+      <nav className={classes.booking}>
+        {navigationTopBar
+          .map((nav, index) => (
+            <div key={index} className={classes.link}>
+              <Link
+                className={!nav.active ? classes.nav : classes.navActive}
+                onClick={() => activateNav(nav.link, index)}
+                href={nav.link}
+                passHref
+              >
+                {nav.title}
+              </Link>
+            </div>
+          ))
+          .slice(0, 2)
+          .reverse()}
+      </nav>
+      <nav className={classes.booking}>
+        {navigationTopBar
+          .map((nav, index) => (
+            <div key={index} className={classes.link}>
+              <Link
+                className={!nav.active ? classes.nav : classes.navActive}
+                onClick={() => activateNav(nav.link, index)}
+                href={nav.link}
+                passHref
+              >
+                {nav.title}
+              </Link>
+            </div>
+          ))
+          .slice(2, 5)
+          .reverse()}
+      </nav>
     </div>
   );
 }
