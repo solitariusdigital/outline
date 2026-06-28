@@ -36,6 +36,18 @@ export default function Footer() {
         fontFamily: "Yekan-Regular",
       }}
     >
+      <div className={classes.logo}>
+        <Link href="/" passHref>
+          <Image
+            src={logo}
+            layout="fill"
+            objectFit="contain"
+            alt="logo"
+            as="image"
+            priority
+          />
+        </Link>
+      </div>
       <div className={classes.social}>
         <h4>ما را در شبکه‌های اجتماعی دنبال کنید</h4>
         <InstagramIcon
@@ -48,18 +60,6 @@ export default function Footer() {
             )
           }
         />
-      </div>
-      <div className={classes.logo}>
-        <Link href="/" passHref>
-          <Image
-            src={logo}
-            layout="fill"
-            objectFit="contain"
-            alt="logo"
-            as="image"
-            priority
-          />
-        </Link>
       </div>
       <nav className={classes.booking}>
         <div className={classes.link}>
