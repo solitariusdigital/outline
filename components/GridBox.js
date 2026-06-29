@@ -109,14 +109,14 @@ export default function ScatteredGrid({ images = [] }) {
         style={{
           ...styles.fade,
           top: 0,
-          background: "linear-gradient(to bottom, #000819 10%, transparent)",
+          background: "linear-gradient(to bottom, #000b1f 10%, transparent)",
         }}
       />
       <div
         style={{
           ...styles.fade,
           bottom: 0,
-          background: "linear-gradient(to top, #000819 10%, transparent)",
+          background: "linear-gradient(to top, #000b1f 10%, transparent)",
         }}
       />
     </div>
