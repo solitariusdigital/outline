@@ -439,6 +439,7 @@ export default function Reception() {
                 maxLength={11}
               />
             </div>
+            <p className={classes.alert}>{alert}</p>
             <button
               className={classes.button}
               disabled={disableButton}
@@ -458,7 +459,6 @@ export default function Reception() {
                 />
               </div>
             )}
-            <p className={classes.alert}>{alert}</p>
           </section>
         )}
         {displayForm && (
