@@ -61,76 +61,78 @@ export default function Footer() {
           }
         />
       </div>
-      <nav className={classes.booking}>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            onClick={() => {
-              setSelectDoctor("دکتر فراهانی");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر فراهانی
-          </Link>
-        </div>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            passHref
-            onClick={() => {
-              setSelectDoctor("دکتر گنجه");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر گنجه
-          </Link>
-        </div>
-        <div className={classes.link}>
-          <Link
-            href={currentUser ? "/booking" : "/portal"}
-            onClick={() => {
-              setSelectDoctor("دکتر پورقلی");
-              setSelectBranch("tehran");
-            }}
-          >
-            نوبت دکتر پورقلی
-          </Link>
-        </div>
-      </nav>
-      <nav className={classes.booking}>
-        {navigationTopBar
-          .map((nav, index) => (
-            <div key={index} className={classes.link}>
-              <Link
-                className={!nav.active ? classes.nav : classes.navActive}
-                onClick={() => activateNav(nav.link, index)}
-                href={nav.link}
-                passHref
-              >
-                {nav.title}
-              </Link>
-            </div>
-          ))
-          .slice(0, 2)
-          .reverse()}
-      </nav>
-      <nav className={classes.booking}>
-        {navigationTopBar
-          .map((nav, index) => (
-            <div key={index} className={classes.link}>
-              <Link
-                className={!nav.active ? classes.nav : classes.navActive}
-                onClick={() => activateNav(nav.link, index)}
-                href={nav.link}
-                passHref
-              >
-                {nav.title}
-              </Link>
-            </div>
-          ))
-          .slice(2, 5)
-          .reverse()}
-      </nav>
+      <div className={classes.bookingContainer}>
+        <nav className={classes.booking}>
+          <div className={classes.link}>
+            <Link
+              href={currentUser ? "/booking" : "/portal"}
+              onClick={() => {
+                setSelectDoctor("دکتر فراهانی");
+                setSelectBranch("tehran");
+              }}
+            >
+              نوبت دکتر فراهانی
+            </Link>
+          </div>
+          <div className={classes.link}>
+            <Link
+              href={currentUser ? "/booking" : "/portal"}
+              passHref
+              onClick={() => {
+                setSelectDoctor("دکتر گنجه");
+                setSelectBranch("tehran");
+              }}
+            >
+              نوبت دکتر گنجه
+            </Link>
+          </div>
+          <div className={classes.link}>
+            <Link
+              href={currentUser ? "/booking" : "/portal"}
+              onClick={() => {
+                setSelectDoctor("دکتر پورقلی");
+                setSelectBranch("tehran");
+              }}
+            >
+              نوبت دکتر پورقلی
+            </Link>
+          </div>
+        </nav>
+        <nav className={classes.booking}>
+          {navigationTopBar
+            .map((nav, index) => (
+              <div key={index} className={classes.link}>
+                <Link
+                  className={!nav.active ? classes.nav : classes.navActive}
+                  onClick={() => activateNav(nav.link, index)}
+                  href={nav.link}
+                  passHref
+                >
+                  {nav.title}
+                </Link>
+              </div>
+            ))
+            .slice(0, 2)
+            .reverse()}
+        </nav>
+        <nav className={classes.booking}>
+          {navigationTopBar
+            .map((nav, index) => (
+              <div key={index} className={classes.link}>
+                <Link
+                  className={!nav.active ? classes.nav : classes.navActive}
+                  onClick={() => activateNav(nav.link, index)}
+                  href={nav.link}
+                  passHref
+                >
+                  {nav.title}
+                </Link>
+              </div>
+            ))
+            .slice(2, 5)
+            .reverse()}
+        </nav>
+      </div>
     </div>
   );
 }
