@@ -12,7 +12,6 @@ import Router from "next/router";
 import { createUserApi, getUsersApi } from "@/services/api";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
-import HomeIcon from "@mui/icons-material/Home";
 import Progress from "./Progress";
 import Kavenegar from "kavenegar";
 
@@ -218,9 +217,8 @@ export default function Register() {
         </div>
         <p className="alert">{alert}</p>
       </div>
-      <div className={classes.logo} onClick={() => Router.push("/reservation")}>
+      <div className={classes.logo} onClick={() => Router.push("/")}>
         <Image width={200} height={140} src={logo} alt="logo" priority />
-        <HomeIcon sx={{ color: "#2d2b7f" }} />
       </div>
     </Fragment>
   );

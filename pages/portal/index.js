@@ -1,4 +1,4 @@
-import { useContext, Fragment } from "react";
+import { useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import Register from "@/components/Register";
 import { NextSeo } from "next-seo";
