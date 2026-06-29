@@ -76,6 +76,20 @@ export default function Home() {
             </RevealText>
           </div>
         </section>
+        <section>
+          <div className={classes.imageBox}>
+            <Image
+              src="https://bucket.eshareh.com/team/usr452668/img2814.jpg"
+              blurDataURL="https://bucket.eshareh.com/team/usr452668/img2814.jpg"
+              placeholder="blur"
+              alt="image"
+              layout="fill"
+              objectFit="cover"
+              as="image"
+              priority
+            />
+          </div>
+        </section>
       </div>
     </Fragment>
   );

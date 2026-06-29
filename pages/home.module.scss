@@ -16,7 +16,7 @@
   .content {
     width: config.$content-width;
     max-width: config.$max-widthHeigh;
-    margin: 120px auto;
+    margin: 150px auto;
   }
 
   h1 {
@@ -32,6 +32,11 @@
       width: 100%;
     }
   }
+}
+
+.imageBox {
+  position: relative;
+  height: 100dvh;
 }
 
 .notFound {
