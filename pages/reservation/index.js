@@ -1,12 +1,12 @@
 import { useContext, Fragment, useEffect, useState } from "react";
 import { StateContext } from "@/context/stateContext";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import classes from "./reservation.module.scss";
 import Image from "next/legacy/image";
 import { NextSeo } from "next-seo";
 import logo from "@/assets/logo.png";
 import Router from "next/router";
-import InstagramIcon from "@mui/icons-material/Instagram";
 import dbConnect from "@/services/dbConnect";
 import visitModel from "@/models/Visit";
 import { updateControlApi, getControlsApi } from "@/services/api";
@@ -16,6 +16,10 @@ export default function Reservation({ activeVisits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { selectBranch, setSelectBranch } = useContext(StateContext);
+  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
+
   const [hideBooking, setHideBooking] = useState(true);
   const [checkType, setCheckType] = useState("checkin" || "checkout");
   const [checkDatesComplete, setCheckDatesComplete] = useState(false);
@@ -31,6 +35,12 @@ export default function Reservation({ activeVisits }) {
   const kishText = ["شعبه کیش", "به‌زودی برمیگردیم"];
 
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    setMenuDisplay(false);
+    setFooterDisplay(false);
+    setMenuMobile(true);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -327,10 +337,11 @@ export default function Reservation({ activeVisits }) {
       />
       <section className={classes.container}>
         <div className={classes.logo}>
-          <Image width={200} height={140} src={logo} alt="logo" priority />
-          <h3>طراحی چهره</h3>
+          <Link href="/" passHref>
+            <Image width={200} height={140} src={logo} alt="logo" priority />
+          </Link>
         </div>
-        <section className={classes.navigation}>
+        <div className={classes.navigation}>
           {currentUser && currentUser?.permission !== "reception" && (
             <div
               className={classes.nav}
@@ -475,9 +486,6 @@ export default function Reservation({ activeVisits }) {
               آدرس شعبه کیش
             </div>
           </div>
-          <div className={classes.nav} onClick={() => Router.push("/about")}>
-            فلسفه متد اوت‌لاین
-          </div>
           <div
             className={classes.nav}
             onClick={() =>
@@ -497,18 +505,6 @@ export default function Reservation({ activeVisits }) {
               {checkType === "checkin" ? "ثبت ساعت ورود" : "ثبت ساعت اضافه کار"}
             </div>
           )}
-        </section>
-        <div>
-          <InstagramIcon
-            className="icon"
-            sx={{ color: "#2d2b7f", fontSize: 28 }}
-            onClick={() =>
-              window.open(
-                "https://www.instagram.com/dr.farahani.outline",
-                "_ self",
-              )
-            }
-          />
         </div>
       </section>
     </Fragment>

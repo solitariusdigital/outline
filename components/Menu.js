@@ -1,7 +1,7 @@
 import { useEffect, useContext, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
-import Link from "next/link";
 import Router from "next/router";
+import Link from "next/link";
 import classes from "./Menu.module.scss";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";

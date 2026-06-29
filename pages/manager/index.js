@@ -30,6 +30,10 @@ import {
 
 export default function Manager({ control }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
+
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
   const [allUserData, setAllUserData] = useState(null);
@@ -83,6 +87,12 @@ export default function Manager({ control }) {
     "۱۴۰۹",
     "۱۴۱۰",
   ];
+
+  useEffect(() => {
+    setMenuDisplay(false);
+    setFooterDisplay(false);
+    setMenuMobile(true);
+  }, []);
 
   useEffect(() => {
     const loadMore = () => {

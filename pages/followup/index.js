@@ -15,9 +15,18 @@ import {
 
 export default function Followup() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
+  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const [displayFollows, setDisplayFollows] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const router = useRouter();
+
+  useEffect(() => {
+    setMenuDisplay(false);
+    setFooterDisplay(false);
+    setMenuMobile(true);
+  }, []);
 
   useEffect(() => {
     const handleFollows = async () => {

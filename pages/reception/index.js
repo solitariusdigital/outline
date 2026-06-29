@@ -1,4 +1,5 @@
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment, useEffect, useContext } from "react";
+import { StateContext } from "@/context/stateContext";
 import classes from "./reception.module.scss";
 import { NextSeo } from "next-seo";
 import Image from "next/legacy/image";
@@ -28,6 +29,10 @@ import {
 } from "@/services/api";
 
 export default function Reception() {
+  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
+
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState({
     day: "",
@@ -85,6 +90,12 @@ export default function Reception() {
 
   const [index, setIndex] = useState(0);
   const loadingText = ["لطفا صبر کنید", "درحال بارگذاری"];
+
+  useEffect(() => {
+    setMenuDisplay(false);
+    setFooterDisplay(false);
+    setMenuMobile(true);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -964,15 +975,11 @@ export default function Reception() {
             </div>
           </Fragment>
         )}
-        <div className={classes.logo}>
-          <Image
-            width={200}
-            height={140}
-            src={logo}
-            alt="logo"
-            onClick={() => router.reload(router.asPath)}
-            priority
-          />
+        <div
+          className={classes.logo}
+          onClick={() => router.reload(router.asPath)}
+        >
+          <Image width={200} height={140} src={logo} alt="logo" priority />
         </div>
       </div>
     </Fragment>

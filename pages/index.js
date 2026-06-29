@@ -6,12 +6,26 @@ import classes from "./home.module.scss";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import { RevealText } from "@/components/RevealText";
-import Menu from "@/components/Menu";
-import Footer from "@/components/Footer";
 import Cover from "@/components/Cover";
 
 export default function Home() {
+  const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
+
+  useEffect(() => {
+    setMenuDisplay(true);
+    setFooterDisplay(true);
+    setMenuMobile(false);
+  }, []);
+
+  useEffect(() => {
+    navigationTopBar.map((nav) => {
+      nav.active = false;
+    });
+    setNavigationTopBar([...navigationTopBar]);
+  }, []);
 
   return (
     <Fragment>
@@ -45,13 +59,6 @@ export default function Home() {
           fontFamily: "Yekan-Regular",
         }}
       >
-        {menuDisplay && (
-          <section
-            className={`${classes.menu} animate__animated animate__slideInDown`}
-          >
-            <Menu />
-          </section>
-        )}
         <section>
           <Cover />
         </section>
@@ -68,9 +75,6 @@ export default function Home() {
               </h2>
             </RevealText>
           </div>
-        </section>
-        <section className={classes.footer}>
-          <Footer />
         </section>
       </div>
     </Fragment>

@@ -14,6 +14,7 @@ export const StateProvider = (props) => {
   const [selectBranch, setSelectBranch] = useState("tehran" || "kish");
   const [notification, setNotification] = useState(false);
   const [menuDisplay, setMenuDisplay] = useState(true);
+  const [footerDisplay, setFooterDisplay] = useState(true);
   const [menuMobile, setMenuMobile] = useState(false);
   const [cachedVisitsData, setCachedVisitsData] = useState(null);
   const [popupDiagramData, setPopupDiagramData] = useState(null);
@@ -57,6 +58,8 @@ export const StateProvider = (props) => {
     setCurrentUser,
     navigationTopBar,
     setNavigationTopBar,
+    footerDisplay,
+    setFooterDisplay,
     appUsers,
     setAppUsers,
     menuMobile,

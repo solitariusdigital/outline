@@ -3,6 +3,8 @@ import { StateContext } from "@/context/stateContext";
 import secureLocalStorage from "react-secure-storage";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
+import Menu from "@/components/Menu";
+import Footer from "@/components/Footer";
 import {
   getSingleUserApi,
   getControlsApi,
@@ -14,6 +16,7 @@ export default function RootLayout({ children }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
   const [appLoader, setAppLoader] = useState(false);
 
@@ -117,14 +120,24 @@ export default function RootLayout({ children }) {
     <Fragment>
       {appLoader ? (
         <Fragment>
-          <div
+          {menuDisplay && (
+            <section className="menu animate__animated animate__slideInDown">
+              <Menu />
+            </section>
+          )}
+          <section
             className="main"
             style={{
               fontFamily: "Vazir-Regular",
             }}
           >
             <main>{children}</main>
-          </div>
+          </section>
+          {footerDisplay && (
+            <section className="footer">
+              <Footer />
+            </section>
+          )}
         </Fragment>
       ) : (
         <div className="appload">

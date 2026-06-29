@@ -41,6 +41,9 @@ export default function Reception({ records }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { popupDiagramData, setPopupDiagramData } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
+  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
+  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const [receptionCards, setReceptionCards] = useState([]);
   const [expandInformation, setExpandInformation] = useState(null);
   const [expandRecords, setExpandRecords] = useState(null);
@@ -67,6 +70,12 @@ export default function Reception({ records }) {
     month: "",
     year: "",
   });
+
+  useEffect(() => {
+    setMenuDisplay(false);
+    setFooterDisplay(false);
+    setMenuMobile(true);
+  }, []);
 
   useEffect(() => {
     if (editFormData) {
