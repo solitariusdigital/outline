@@ -121,7 +121,7 @@ export default function RootLayout({ children }) {
       {appLoader ? (
         <Fragment>
           {menuDisplay && (
-            <section className="menu animate__animated animate__slideInDown">
+            <section className="menu">
               <Menu />
             </section>
           )}
