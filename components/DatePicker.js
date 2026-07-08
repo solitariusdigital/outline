@@ -495,7 +495,8 @@ export default function DatePicker({ visits }) {
     setDisplayForm(true);
 
     let timeToUse;
-    if (!isSunday) {
+
+    if (!isSunday || day.day === 21) {
       const numberSlice = 6;
       timeToUse = Object.fromEntries(
         Object.entries(originalTime).slice(numberSlice),
@@ -503,7 +504,6 @@ export default function DatePicker({ visits }) {
     } else {
       timeToUse = originalTime;
     }
-
     let updatedTimes = { ...timeToUse };
     Object.keys(timeCountPerDate).forEach((date) => {
       if (date === selectDate) {
