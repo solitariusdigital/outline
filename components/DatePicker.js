@@ -12,7 +12,7 @@ import Kavenegar from "kavenegar";
 import {
   toFarsiNumber,
   convertPersianToGregorian,
-  isSelectedDateFriday,
+  isSunday,
   toEnglishNumber,
   isEnglishNumber,
   ganjeDays,
@@ -56,6 +56,12 @@ export default function DatePicker({ visits }) {
   const [times, setTimes] = useState({});
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
   let originalTimes = {
+    "10:00": { display: true, active: false, count: 0 },
+    "10:30": { display: true, active: false, count: 0 },
+    "11:00": { display: true, active: false, count: 0 },
+    "11:30": { display: true, active: false, count: 0 },
+    "12:00": { display: true, active: false, count: 0 },
+    "12:30": { display: true, active: false, count: 0 },
     "13:00": { display: true, active: false, count: 0 },
     "13:30": { display: true, active: false, count: 0 },
     "14:00": { display: true, active: false, count: 0 },
@@ -312,7 +318,7 @@ export default function DatePicker({ visits }) {
       `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
         day.day,
       )}`,
-      isSelectedDateFriday(day),
+      isSunday(day),
       ganjeDays(day),
       pourgholiDays(day),
       tehranBranch(day),
@@ -365,6 +371,12 @@ export default function DatePicker({ visits }) {
   const setOriginalTimes = (doctor, branch) => {
     const times = {
       "دکتر پورقلی": {
+        "10:00": { display: true, active: false, count: 0 },
+        "10:30": { display: true, active: false, count: 0 },
+        "11:00": { display: true, active: false, count: 0 },
+        "11:30": { display: true, active: false, count: 0 },
+        "12:00": { display: true, active: false, count: 0 },
+        "12:30": { display: true, active: false, count: 0 },
         "13:00": { display: true, active: false, count: 0 },
         "13:30": { display: true, active: false, count: 0 },
         "14:00": { display: true, active: false, count: 0 },
@@ -387,10 +399,12 @@ export default function DatePicker({ visits }) {
         },
       },
       "دکتر گنجه": {
-        "11:00": { display: false, active: false, count: 0 },
-        "11:30": { display: false, active: false, count: 0 },
-        "12:00": { display: false, active: false, count: 0 },
-        "12:30": { display: false, active: false, count: 0 },
+        "10:00": { display: true, active: false, count: 0 },
+        "10:30": { display: true, active: false, count: 0 },
+        "11:00": { display: true, active: false, count: 0 },
+        "11:30": { display: true, active: false, count: 0 },
+        "12:00": { display: true, active: false, count: 0 },
+        "12:30": { display: true, active: false, count: 0 },
         "13:00": { display: true, active: false, count: 0 },
         "13:30": { display: true, active: false, count: 0 },
         "14:00": { display: true, active: false, count: 0 },
@@ -414,11 +428,12 @@ export default function DatePicker({ visits }) {
       },
       "دکتر فراهانی": {
         tehran: {
-          "10:30": { display: false, active: false, count: 0 },
-          "11:00": { display: false, active: false, count: 0 },
-          "11:30": { display: false, active: false, count: 0 },
-          "12:00": { display: false, active: false, count: 0 },
-          "12:30": { display: false, active: false, count: 0 },
+          "10:00": { display: true, active: false, count: 0 },
+          "10:30": { display: true, active: false, count: 0 },
+          "11:00": { display: true, active: false, count: 0 },
+          "11:30": { display: true, active: false, count: 0 },
+          "12:00": { display: true, active: false, count: 0 },
+          "12:30": { display: true, active: false, count: 0 },
           "13:00": { display: true, active: false, count: 0 },
           "13:30": { display: true, active: false, count: 0 },
           "14:00": { display: true, active: false, count: 0 },
@@ -462,7 +477,7 @@ export default function DatePicker({ visits }) {
 
   const updateDisplayTime = (
     selectDate,
-    isSelectedDateFriday,
+    isSunday,
     ganjeDays,
     pourgholiDays,
     tehranBranch,
@@ -500,8 +515,8 @@ export default function DatePicker({ visits }) {
     setDisplayForm(true);
 
     let timeToUse;
-    if (isSelectedDateFriday) {
-      const numberSlice = 5;
+    if (!isSunday) {
+      const numberSlice = 6;
       timeToUse = Object.fromEntries(
         Object.entries(originalTimes).slice(numberSlice),
       );
