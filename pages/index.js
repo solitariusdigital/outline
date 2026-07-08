@@ -10,7 +10,6 @@ import Cover from "@/components/Cover";
 
 export default function Home() {
   const { language, setLanguage } = useContext(StateContext);
-  const { languageType, setLanguageType } = useContext(StateContext);
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
@@ -32,21 +31,27 @@ export default function Home() {
   return (
     <Fragment>
       <NextSeo
-        title="اوت‌لاین"
-        description="کلینیک زیبایی"
+        title={language ? "اوت‌لاین" : "Outline"}
+        description={
+          language
+            ? "به سوی تعالی زیبایی‌شناسی"
+            : "Towards Aesthetic Transcendence"
+        }
         canonical="https://outlinecommunity.com"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com",
-          title: "اوت‌لاین",
-          description: "کلینیک زیبایی",
+          title: language ? "تماس با ما" : "Contact",
+          description: language
+            ? "به سوی تعالی زیبایی‌شناسی"
+            : "Towards Aesthetic Transcendence",
           siteName: "Outline Community",
           images: {
             url: logo,
             width: 1200,
             height: 630,
-            alt: "اوت‌لاین",
+            alt: language ? "اوت‌لاین" : "Outline",
           },
         }}
         robotsProps={{

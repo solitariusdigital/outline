@@ -1,0 +1,32 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.container {
+  color: config.$white;
+  background: config.$darkblue;
+  height: 100dvh;
+
+  .info {
+    width: config.$content-width;
+    max-width: config.$max-widthHeigh;
+    width: 50%;
+    margin: auto;
+    padding-top: 150px;
+
+    @include mixins.mobile {
+      width: calc(100% - 24px);
+    }
+    @include mixins.tabletPortrait {
+      width: config.$content-width;
+    }
+    @include mixins.tabletLandscape {
+      width: config.$content-width;
+    }
+
+    .row {
+      padding: 32px 0px;
+      border-bottom: 1px solid config.$grey;
+      @include mixins.row-space-between-center();
+    }
+  }
+}

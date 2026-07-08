@@ -6,6 +6,7 @@ export default function NotFoundPage() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
 
   useEffect(() => {
     setMenuDisplay(false);
