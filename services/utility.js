@@ -69,7 +69,7 @@ export function ganjeDays(persianDate) {
     .toDate()
     .getDay();
 
-  const isSpecialException = month === 4 && (day === 20 || day === 27);
+  const isSpecialException = month === 4 && day === 20;
 
   if (isSpecialException) {
     return dayOfWeek === 5;
@@ -96,7 +96,7 @@ export function tehranBranch(persianDate) {
   const { day, month, year } = persianDate;
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
 
-  const isSpecialException = month === 4 && (day === 20 || day === 27);
+  const isSpecialException = month === 4 && day === 20;
 
   if (isSpecialException) {
     return dayOfWeek === 5;
