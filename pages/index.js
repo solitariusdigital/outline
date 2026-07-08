@@ -95,16 +95,18 @@ export default function Home() {
         </section>
         <section>
           <div className={classes.imageBox}>
+            <div className="fadeOverlayTop"></div>
             <Image
-              src="https://bucket.eshareh.com/team/usr452668/img2814.jpg"
-              blurDataURL="https://bucket.eshareh.com/team/usr452668/img2814.jpg"
+              src="https://bucket.outlinecommunity.com/resources/magnetic.jpg"
+              blurDataURL="https://bucket.outlinecommunity.com/resources/magnetic.jpg"
               placeholder="blur"
-              alt="image"
+              alt="Home"
               layout="fill"
               objectFit="cover"
               as="image"
               priority
             />
+            <div className="fadeOverlayBottom"></div>
           </div>
         </section>
       </div>

@@ -11,6 +11,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "bucket.outlinecommunity.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

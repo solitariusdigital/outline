@@ -5,6 +5,7 @@ import Router from "next/router";
 import Link from "next/link";
 import classes from "./contact.module.scss";
 import logo from "@/assets/logo.png";
+import Image from "next/legacy/image";
 
 export default function Contact() {
   const { language, setLanguage } = useContext(StateContext);
@@ -53,33 +54,55 @@ export default function Contact() {
           direction: language ? "rtl" : "ltr",
         }}
       >
+        <div className={classes.imageBox}>
+          <div className="fadeOverlayTop"></div>
+          <Image
+            src="https://bucket.outlinecommunity.com/resources/stone.jpg"
+            blurDataURL="https://bucket.outlinecommunity.com/resources/stone.jpg"
+            placeholder="blur"
+            alt="Contact"
+            layout="fill"
+            objectFit="cover"
+            as="image"
+            priority
+          />
+          <h1>{language ? "تماس بگیرید" : "GET IN TOUCH"}</h1>
+          <div className="fadeOverlayBottom"></div>
+        </div>
         <div className={classes.info}>
           <div className={classes.row}>
-            <h2>{language ? "شعبه تهران" : "Tehran Branch"}</h2>
-            <h4 onClick={() => window.open(tehranLocation)}>
-              {language ? "دریافت مسیر" : "Get direction"}
-            </h4>
-          </div>
-          <div className={classes.row}>
-            <h2>{language ? "شعبه کیش" : "Kish Branch"}</h2>
-            <h4 onClick={() => window.open(kishLocation)}>
-              {language ? "دریافت مسیر" : "Get direction"}
-            </h4>
-          </div>
-          <div className={classes.row}>
-            <h2>{language ? "تماس" : "Phone"}</h2>
+            <h3>{language ? "شعبه تهران" : "Tehran Branch"}</h3>
             <h4
-              onClick={() => window.open(`tel:++989333363411`, "_self")}
+              className={classes.action}
+              onClick={() => window.open(tehranLocation)}
+            >
+              {language ? "دریافت مسیر" : "Get direction"}
+            </h4>
+          </div>
+          <div className={classes.row}>
+            <h3>{language ? "شعبه کیش" : "Kish Branch"}</h3>
+            <h4
+              className={classes.action}
+              onClick={() => window.open(kishLocation)}
+            >
+              {language ? "دریافت مسیر" : "Get direction"}
+            </h4>
+          </div>
+          <div className={classes.row}>
+            <h3>{language ? "تماس" : "Phone"}</h3>
+            <h4
+              className={classes.action}
               style={{
                 fontFamily: "Titillium-Regular",
                 direction: "ltr",
               }}
+              onClick={() => window.open(`tel:++989333363411`, "_self")}
             >
               +98 933 336 3411
             </h4>
           </div>
           <div className={classes.row}>
-            <h2>{language ? "ایمیل" : "Email"}</h2>
+            <h3>{language ? "ایمیل" : "Email"}</h3>
             <h4
               style={{
                 fontFamily: "Titillium-Regular",

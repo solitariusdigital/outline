@@ -4,14 +4,28 @@
 .container {
   color: config.$white;
   background: config.$darkblue;
-  height: 100dvh;
+
+  .imageBox {
+    position: relative;
+    height: 100dvh;
+    width: 100%;
+  }
+
+  h1 {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform: translateX(-50%);
+    font-size: config.$large-font;
+    text-align: center;
+  }
 
   .info {
     width: config.$content-width;
     max-width: config.$max-widthHeigh;
     width: 50%;
     margin: auto;
-    padding-top: 150px;
+    padding: 100px 0px;
 
     @include mixins.mobile {
       width: calc(100% - 24px);
@@ -27,6 +41,14 @@
       padding: 32px 0px;
       border-bottom: 1px solid config.$grey;
       @include mixins.row-space-between-center();
+
+      .action {
+        cursor: pointer;
+
+        &:hover {
+          color: config.$gold;
+        }
+      }
     }
   }
 }

@@ -105,20 +105,6 @@ export default function ScatteredGrid({ images = [] }) {
           {renderCards("b")}
         </div>
       </div>
-      <div
-        style={{
-          ...styles.fade,
-          top: 0,
-          background: "linear-gradient(to bottom, #000b1f 10%, transparent)",
-        }}
-      />
-      <div
-        style={{
-          ...styles.fade,
-          bottom: 0,
-          background: "linear-gradient(to top, #000b1f 10%, transparent)",
-        }}
-      />
     </div>
   );
 }
@@ -151,13 +137,5 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-  },
-  fade: {
-    position: "absolute",
-    left: 0,
-    width: "100%",
-    height: 120,
-    pointerEvents: "none",
-    zIndex: 10,
   },
 };

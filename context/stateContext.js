@@ -32,7 +32,7 @@ export const StateProvider = (props) => {
     {
       title: {
         fa: "تماس با ما",
-        en: "Contact",
+        en: "CONTACT US",
       },
       link: "/contact",
       active: false,
@@ -40,7 +40,7 @@ export const StateProvider = (props) => {
     {
       title: {
         fa: "درباره ما",
-        en: "About",
+        en: "ABOUT US",
       },
       link: "/about",
       active: false,
@@ -48,7 +48,7 @@ export const StateProvider = (props) => {
     {
       title: {
         fa: "پورتال نوبت",
-        en: "Portal",
+        en: "PORTAL",
       },
       link: "/reservation",
       active: false,
@@ -56,7 +56,7 @@ export const StateProvider = (props) => {
     {
       title: {
         fa: "مراقبت پزشکی",
-        en: "Medical Care",
+        en: "MEDICAL CARE",
       },
       link: "/care",
       active: false,
@@ -64,7 +64,7 @@ export const StateProvider = (props) => {
     {
       title: {
         fa: "متد اوت‌لاین",
-        en: "Outline Method",
+        en: "OUTLINE METHOD",
       },
       link: "/method",
       active: false,

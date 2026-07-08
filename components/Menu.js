@@ -4,7 +4,7 @@ import Router from "next/router";
 import Link from "next/link";
 import classes from "./Menu.module.scss";
 import Image from "next/legacy/image";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logoWhite.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";

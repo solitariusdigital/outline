@@ -61,7 +61,9 @@ export default function Cover() {
   return (
     <div className={language ? classes.container : classes.containerReverse}>
       <div className={classes.imageBox}>
+        <div className="fadeOverlayTop"></div>
         <GridBox images={images} />
+        <div className="fadeOverlayBottom"></div>
       </div>
       <div
         className={classes.infoBox}

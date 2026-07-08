@@ -4,7 +4,7 @@ import classes from "./Footer.module.scss";
 import Link from "next/link";
 import Router from "next/router";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logoWhite.png";
 import Image from "next/legacy/image";
 
 export default function Footer() {

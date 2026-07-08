@@ -8,6 +8,7 @@
   user-select: none;
   height: 100dvh;
   width: 100%;
+  background: config.$purple;
 
   @include mixins.allDesktop {
     @include mixins.row-space-between-center();
@@ -19,6 +20,10 @@
   .infoBox,
   .imageBox {
     height: 100%;
+
+    h1 {
+      text-transform: uppercase;
+    }
 
     @include mixins.allDesktop {
       width: 50%;
@@ -37,14 +42,14 @@
     text-align: center;
 
     @include mixins.mobile {
-      @include mixins.transparentBackground(0.8, config.$gold);
+      @include mixins.transparentBackground(0.8, config.$purple);
     }
     @include mixins.tabletPortrait {
-      @include mixins.transparentBackground(0.8, config.$gold);
+      @include mixins.transparentBackground(0.8, config.$purple);
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: config.$large-font;
       margin: 0px auto;
       margin-bottom: 24px;
       color: config.$gold;
