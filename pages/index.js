@@ -72,7 +72,7 @@ export default function Home() {
         <section
           className={classes.contentBox}
           style={{
-            fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
+            fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
             direction: language ? "rtl" : "ltr",
           }}
         >

@@ -16,8 +16,6 @@ export default function Footer() {
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
 
-  const fullSizeScreen = screenSize !== "mobile";
-
   const activateNav = (link, index) => {
     setMenuMobile(false);
     navigationTopBar.map((nav, i) => {
@@ -35,37 +33,39 @@ export default function Footer() {
     <div
       className={classes.container}
       style={{
-        fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
+        fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
       }}
     >
-      <div className={classes.logo}>
-        <Link href="/" passHref>
-          <Image
-            src={logo}
-            layout="fill"
-            objectFit="contain"
-            alt="logo"
-            as="image"
-            priority
+      <div className={classes.logoContainer}>
+        <div className={classes.logo}>
+          <Link href="/" passHref>
+            <Image
+              src={logo}
+              layout="fill"
+              objectFit="contain"
+              alt="logo"
+              as="image"
+              priority
+            />
+          </Link>
+        </div>
+        <div className={classes.social}>
+          <InstagramIcon
+            className={classes.icon}
+            sx={{ fontSize: 32 }}
+            onClick={() =>
+              window.open(
+                "https://www.instagram.com/dr.farahani.outline",
+                "_ self",
+              )
+            }
           />
-        </Link>
-      </div>
-      <div className={classes.social}>
-        <h4>
-          {language
-            ? "ما را در شبکه‌های اجتماعی دنبال کنید"
-            : "Follow us on social media"}
-        </h4>
-        <InstagramIcon
-          className={classes.icon}
-          sx={{ fontSize: 32 }}
-          onClick={() =>
-            window.open(
-              "https://www.instagram.com/dr.farahani.outline",
-              "_ self",
-            )
-          }
-        />
+          <h4>
+            {language
+              ? "ما را در شبکه‌های اجتماعی دنبال کنید"
+              : "Follow us on social media"}
+          </h4>
+        </div>
       </div>
       <div className={classes.bookingContainer}>
         <nav

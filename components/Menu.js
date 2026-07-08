@@ -58,7 +58,7 @@ export default function Menu() {
     <div
       className={classes.container}
       style={{
-        fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
+        fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
       }}
     >
       {fullSizeScreen && (
@@ -68,7 +68,7 @@ export default function Menu() {
               className={classes.toggleLanguage}
               onClick={() => toggleLanguage()}
               style={{
-                fontFamily: !language ? "Yekan-Regular" : "Titillium-Regular",
+                fontFamily: !language ? "Yekan-Regular" : "Titillium-Light",
               }}
             >
               {!language ? "فارسی" : "English"}
@@ -146,7 +146,7 @@ export default function Menu() {
             <nav
               className={classes.mobileNavigation}
               style={{
-                fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
+                fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
               }}
             >
               {displayNav.map((nav, index) => (
@@ -166,7 +166,7 @@ export default function Menu() {
                 className={classes.nav}
                 style={{
                   animationDelay: `${displayNav.length * 180}ms`,
-                  fontFamily: !language ? "Yekan-Regular" : "Titillium-Regular",
+                  fontFamily: !language ? "Yekan-Regular" : "Titillium-Light",
                   fontSize: "large",
                 }}
                 onClick={() => toggleLanguage()}

@@ -68,7 +68,7 @@ export default function Cover() {
       <div
         className={classes.infoBox}
         style={{
-          fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
+          fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
           direction: language ? "rtl" : "ltr",
         }}
       >

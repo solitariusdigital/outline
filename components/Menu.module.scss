@@ -28,7 +28,7 @@
       @include mixins.row-space-between-center();
 
       @include mixins.tabletLandscape {
-        width: 80%;
+        width: 100%;
       }
     }
   }

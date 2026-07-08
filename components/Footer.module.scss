@@ -24,6 +24,29 @@
     width: config.$content-width;
   }
 
+  .logoContainer {
+    width: 40%;
+    @include mixins.row-space-between-center();
+
+    @include mixins.mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 24px;
+    }
+    @include mixins.tabletPortrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 40%;
+    }
+    @include mixins.tabletLandscape {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
   .bookingContainer {
     width: 40%;
     display: flex;
@@ -35,6 +58,12 @@
       flex-direction: column-reverse;
       align-items: center;
       width: 100%;
+    }
+    @include mixins.tabletPortrait {
+      width: 80%;
+    }
+    @include mixins.tabletLandscape {
+      width: 80%;
     }
 
     .booking {
@@ -59,13 +88,9 @@
     flex-direction: column;
     align-items: center;
 
-    @include mixins.mobile {
-      margin-top: 24px;
-    }
-
     .icon {
       display: flex;
-      margin-top: 12px;
+      margin-bottom: 12px;
 
       &:hover {
         color: config.$gold;
@@ -76,10 +101,6 @@
 
   .logo {
     position: relative;
-    @include mixins.mobile {
-      position: absolute;
-      bottom: 50%;
-    }
     width: 150px;
     height: 100px;
     cursor: pointer;
