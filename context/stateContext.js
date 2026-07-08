@@ -2,6 +2,8 @@ import { useState, createContext } from "react";
 export const StateContext = createContext();
 
 export const StateProvider = (props) => {
+  const [language, setLanguage] = useState(null);
+  const [languageType, setLanguageType] = useState(null);
   const [appUsers, setAppUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [kavenegarKey, setKavenegarKey] = useState(
@@ -28,32 +30,51 @@ export const StateProvider = (props) => {
   });
   const [navigationTopBar, setNavigationTopBar] = useState([
     {
-      title: "تماس با ما",
+      title: {
+        fa: "تماس با ما",
+        en: "Contact",
+      },
       link: "/contact",
       active: false,
     },
     {
-      title: "درباره ما",
+      title: {
+        fa: "درباره ما",
+        en: "About",
+      },
       link: "/about",
       active: false,
     },
     {
-      title: "پورتال نوبت",
+      title: {
+        fa: "پورتال نوبت",
+        en: "Portal",
+      },
       link: "/reservation",
       active: false,
     },
     {
-      title: "مراقبت پزشکی",
+      title: {
+        fa: "مراقبت پزشکی",
+        en: "Medical Care",
+      },
       link: "/care",
       active: false,
     },
     {
-      title: "متد اوت‌لاین",
+      title: {
+        fa: "متد اوت‌لاین",
+        en: "Outline Method",
+      },
       link: "/method",
       active: false,
     },
   ]);
   const stateContext = {
+    language,
+    setLanguage,
+    languageType,
+    setLanguageType,
     currentUser,
     setCurrentUser,
     navigationTopBar,

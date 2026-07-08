@@ -13,6 +13,8 @@ import {
 import { getCurrentDateFarsi } from "@/services/utility";
 
 export default function RootLayout({ children }) {
+  const { language, setLanguage } = useContext(StateContext);
+  const { languageType, setLanguageType } = useContext(StateContext);
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
@@ -39,6 +41,16 @@ export default function RootLayout({ children }) {
     }
     setScreenSize(screenSize);
   };
+
+  useEffect(() => {
+    if (secureLocalStorage.getItem("languageBrowser")) {
+      setLanguageType("en");
+      setLanguage(false);
+    } else {
+      setLanguageType("fa");
+      setLanguage(true);
+    }
+  }, [setLanguage, setLanguageType]);
 
   useEffect(() => {
     let prevScrollY = window.scrollY;

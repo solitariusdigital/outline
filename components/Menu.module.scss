@@ -23,7 +23,7 @@
     width: 50%;
     @include mixins.row-space-between-center();
 
-    .barRight {
+    .bar {
       width: 60%;
       @include mixins.row-space-between-center();
 
@@ -31,14 +31,12 @@
         width: 80%;
       }
     }
+  }
 
-    .barLeft {
-      width: 30%;
-      @include mixins.row-space-between-center();
-
-      @include mixins.tabletLandscape {
-        width: 40%;
-      }
+  .toggleLanguage {
+    &:hover {
+      cursor: pointer;
+      color: config.$gold;
     }
   }
 

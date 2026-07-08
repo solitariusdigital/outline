@@ -8,6 +8,8 @@ import logo from "@/assets/logo.png";
 import Image from "next/legacy/image";
 
 export default function Footer() {
+  const { language, setLanguage } = useContext(StateContext);
+  const { languageType, setLanguageType } = useContext(StateContext);
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { selectBranch, setSelectBranch } = useContext(StateContext);
@@ -33,7 +35,7 @@ export default function Footer() {
     <div
       className={classes.container}
       style={{
-        fontFamily: "Yekan-Regular",
+        fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
       }}
     >
       <div className={classes.logo}>
@@ -49,7 +51,11 @@ export default function Footer() {
         </Link>
       </div>
       <div className={classes.social}>
-        <h4>ما را در شبکه‌های اجتماعی دنبال کنید</h4>
+        <h4>
+          {language
+            ? "ما را در شبکه‌های اجتماعی دنبال کنید"
+            : "Follow us on social media"}
+        </h4>
         <InstagramIcon
           className={classes.icon}
           sx={{ fontSize: 32 }}
@@ -62,7 +68,12 @@ export default function Footer() {
         />
       </div>
       <div className={classes.bookingContainer}>
-        <nav className={classes.booking}>
+        <nav
+          className={classes.booking}
+          style={{
+            direction: language ? "rtl" : "ltr",
+          }}
+        >
           <div className={classes.link}>
             <Link
               href={currentUser ? "/booking" : "/portal"}
@@ -71,7 +82,7 @@ export default function Footer() {
                 setSelectBranch("tehran");
               }}
             >
-              نوبت دکتر فراهانی
+              {language ? "نوبت دکتر فراهانی" : "Dr. Farahani's Appointment"}
             </Link>
           </div>
           <div className={classes.link}>
@@ -83,7 +94,7 @@ export default function Footer() {
                 setSelectBranch("tehran");
               }}
             >
-              نوبت دکتر گنجه
+              {language ? "نوبت دکتر گنجه" : "Dr. Ganjeh's Appointment"}
             </Link>
           </div>
           <div className={classes.link}>
@@ -94,11 +105,16 @@ export default function Footer() {
                 setSelectBranch("tehran");
               }}
             >
-              نوبت دکتر پورقلی
+              {language ? "نوبت دکتر پورقلی" : "Dr. Pourgholi's Appointment"}
             </Link>
           </div>
         </nav>
-        <nav className={classes.booking}>
+        <nav
+          className={classes.booking}
+          style={{
+            direction: language ? "rtl" : "ltr",
+          }}
+        >
           {navigationTopBar
             .map((nav, index) => (
               <div key={index} className={classes.link}>
@@ -108,14 +124,19 @@ export default function Footer() {
                   href={nav.link}
                   passHref
                 >
-                  {nav.title}
+                  {nav.title[languageType]}
                 </Link>
               </div>
             ))
             .slice(0, 2)
             .reverse()}
         </nav>
-        <nav className={classes.booking}>
+        <nav
+          className={classes.booking}
+          style={{
+            direction: language ? "rtl" : "ltr",
+          }}
+        >
           {navigationTopBar
             .map((nav, index) => (
               <div key={index} className={classes.link}>
@@ -125,7 +146,7 @@ export default function Footer() {
                   href={nav.link}
                   passHref
                 >
-                  {nav.title}
+                  {nav.title[languageType]}
                 </Link>
               </div>
             ))

@@ -38,8 +38,6 @@
     }
 
     .booking {
-      direction: rtl;
-
       @include mixins.mobile {
         width: 100%;
       }

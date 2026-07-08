@@ -7,8 +7,11 @@ import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import secureLocalStorage from "react-secure-storage";
 
 export default function Menu() {
+  const { language, setLanguage } = useContext(StateContext);
+  const { languageType, setLanguageType } = useContext(StateContext);
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
@@ -45,16 +48,31 @@ export default function Menu() {
     setNavigationTopBar([...navigationTopBar]);
   };
 
+  const toggleLanguage = () => {
+    setLanguage(!language);
+    setLanguageType(!language ? "fa" : "en");
+    secureLocalStorage.setItem("languageBrowser", language);
+  };
+
   return (
     <div
       className={classes.container}
       style={{
-        fontFamily: "Yekan-Regular",
+        fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
       }}
     >
       {fullSizeScreen && (
         <nav className={classes.fullSizeNavigation}>
-          <div className={classes.barLeft}>
+          <div className={classes.bar}>
+            <p
+              className={classes.toggleLanguage}
+              onClick={() => toggleLanguage()}
+              style={{
+                fontFamily: !language ? "Yekan-Regular" : "Titillium-Regular",
+              }}
+            >
+              {!language ? "فارسی" : "English"}
+            </p>
             {displayNav
               .map((nav, index) => (
                 <Fragment key={index}>
@@ -64,7 +82,7 @@ export default function Menu() {
                     href={nav.link}
                     passHref
                   >
-                    {nav.title}
+                    {nav.title[languageType]}
                   </Link>
                 </Fragment>
               ))
@@ -91,7 +109,7 @@ export default function Menu() {
             flexDirection: "row-reverse",
           }}
         >
-          <div className={classes.barRight}>
+          <div className={classes.bar}>
             {displayNav
               .map((nav, index) => (
                 <Fragment key={index}>
@@ -101,7 +119,7 @@ export default function Menu() {
                     href={nav.link}
                     passHref
                   >
-                    {nav.title}
+                    {nav.title[languageType]}
                   </Link>
                 </Fragment>
               ))
@@ -128,7 +146,7 @@ export default function Menu() {
             <nav
               className={classes.mobileNavigation}
               style={{
-                fontFamily: "Vazir-Light",
+                fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
               }}
             >
               {displayNav.map((nav, index) => (
@@ -141,9 +159,20 @@ export default function Menu() {
                   }}
                   onClick={() => activateNav(nav.link, index)}
                 >
-                  {nav.title}
+                  {nav.title[languageType]}
                 </Link>
               ))}
+              <p
+                className={classes.nav}
+                style={{
+                  animationDelay: `${displayNav.length * 180}ms`,
+                  fontFamily: !language ? "Yekan-Regular" : "Titillium-Regular",
+                  fontSize: "large",
+                }}
+                onClick={() => toggleLanguage()}
+              >
+                {!language ? "فارسی" : "English"}
+              </p>
             </nav>
           )}
         </nav>
