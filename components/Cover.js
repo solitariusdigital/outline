@@ -1,8 +1,12 @@
-import React from "react";
+import { useContext } from "react";
+import { StateContext } from "@/context/stateContext";
 import classes from "./Cover.module.scss";
 import GridBox from "@/components/GridBox";
 
 export default function Cover() {
+  const { language, setLanguage } = useContext(StateContext);
+  const { languageType, setLanguageType } = useContext(StateContext);
+
   const images = [
     {
       src: "https://bucket.eshareh.com/team/usr452668/img2814.jpg",
@@ -55,16 +59,26 @@ export default function Cover() {
   ];
 
   return (
-    <div className={classes.container}>
+    <div className={language ? classes.container : classes.containerReverse}>
       <div className={classes.imageBox}>
         <GridBox images={images} />
       </div>
-      <div className={classes.infoBox}>
-        <h1>به سوی تعالی زیبایی‌شناسی</h1>
+      <div
+        className={classes.infoBox}
+        style={{
+          fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
+          direction: language ? "rtl" : "ltr",
+        }}
+      >
+        <h1>
+          {language
+            ? "به سوی تعالی زیبایی‌شناسی"
+            : "Towards Aesthetic Transcendence"}
+        </h1>
         <h2>
-          در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه
-          می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن ایجاد
-          تعادل و هماهنگی طبیعی در صورت است.
+          {language
+            ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه  می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن ایجاد تعادل و هماهنگی طبیعی در صورت است."
+            : "In the Natural Outline method, we view the creation of beauty with precision and sensitivity. This method combines modern science with classical art, aiming to establish natural balance and harmony in the face."}
         </h2>
       </div>
     </div>

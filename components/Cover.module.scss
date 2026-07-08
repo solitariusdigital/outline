@@ -1,7 +1,8 @@
 @use "styles/_config.scss" as config;
 @use "styles/_mixins.scss" as mixins;
 
-.container {
+.container,
+.containerReverse {
   position: relative;
   margin: auto;
   user-select: none;
@@ -34,7 +35,6 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    direction: rtl;
 
     @include mixins.mobile {
       @include mixins.transparentBackground(0.8, config.$gold);
@@ -48,6 +48,7 @@
       margin: 0px auto;
       margin-bottom: 24px;
       color: config.$gold;
+      width: config.$content-widthText;
 
       @include mixins.mobile {
         width: calc(100% - 24px);
@@ -86,5 +87,16 @@
       height: 100dvh;
       width: 100%;
     }
+  }
+}
+
+.containerReverse {
+  @include mixins.allDesktop {
+    @include mixins.row-space-between-center();
+    flex-direction: row-reverse;
+  }
+  @include mixins.tabletLandscape {
+    @include mixins.row-space-between-center();
+    flex-direction: row-reverse;
   }
 }

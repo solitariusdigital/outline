@@ -34,6 +34,8 @@
   }
 
   .toggleLanguage {
+    font-size: small;
+
     &:hover {
       cursor: pointer;
       color: config.$gold;

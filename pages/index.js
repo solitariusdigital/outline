@@ -9,6 +9,8 @@ import { RevealText } from "@/components/RevealText";
 import Cover from "@/components/Cover";
 
 export default function Home() {
+  const { language, setLanguage } = useContext(StateContext);
+  const { languageType, setLanguageType } = useContext(StateContext);
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
@@ -62,16 +64,26 @@ export default function Home() {
         <section>
           <Cover />
         </section>
-        <section className={classes.contentBox}>
+        <section
+          className={classes.contentBox}
+          style={{
+            fontFamily: language ? "Yekan-Regular" : "Titillium-Regular",
+            direction: language ? "rtl" : "ltr",
+          }}
+        >
           <div className={classes.content}>
             <RevealText direction="up" delay={300}>
-              <h1>مسیر شما به سوی تعالی زیبایی‌شناسی</h1>
+              <h1>
+                {language
+                  ? "به سوی تعالی زیبایی‌شناسی"
+                  : "Towards Aesthetic Transcendence"}
+              </h1>
             </RevealText>
             <RevealText direction="up" delay={500}>
               <h2>
-                در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت
-                نگاه می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف
-                آن ایجاد تعادل و هماهنگی طبیعی در صورت است.
+                {language
+                  ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه  می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن ایجاد تعادل و هماهنگی طبیعی در صورت است."
+                  : "In the Natural Outline method, we view the creation of beauty with precision and sensitivity. This method combines modern science with classical art, aiming to establish natural balance and harmony in the face."}
               </h2>
             </RevealText>
           </div>
