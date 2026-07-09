@@ -2,7 +2,7 @@ import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import secureLocalStorage from "react-secure-storage";
 import Image from "next/legacy/image";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logoWhite.png";
 import Menu from "@/components/Menu";
 import Footer from "@/components/Footer";
 import {
@@ -125,7 +125,7 @@ export default function RootLayout({ children }) {
     fetchData();
     setTimeout(() => {
       setAppLoader(true);
-    }, 500);
+    }, 1000);
   }, [setCurrentUser]);
 
   return (

@@ -45,7 +45,7 @@
   }
 
   .toggleLanguage {
-    font-size: small;
+    font-size: config.$small-font;
 
     &:hover {
       cursor: pointer;

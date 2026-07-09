@@ -1,8 +1,6 @@
-import { useEffect, useContext, Fragment, useRef } from "react";
+import { useContext, Fragment, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import { NextSeo } from "next-seo";
-import Router from "next/router";
-import Link from "next/link";
 import classes from "./contact.module.scss";
 import logo from "@/assets/logo.png";
 import Image from "next/legacy/image";

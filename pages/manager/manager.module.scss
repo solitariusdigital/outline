@@ -219,7 +219,7 @@
 
       span {
         color: config.$grey;
-        font-size: small;
+        font-size: config.$small-font;
       }
 
       .more {
@@ -234,7 +234,7 @@
 
       span {
         color: config.$grey;
-        font-size: small;
+        font-size: config.$small-font;
       }
     }
 
@@ -267,7 +267,7 @@
 
     .recordText {
       color: config.$blue;
-      font-size: small;
+      font-size: config.$small-font;
       font-weight: bold;
     }
   }

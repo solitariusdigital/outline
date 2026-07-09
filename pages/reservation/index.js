@@ -312,14 +312,14 @@ export default function Reservation({ activeVisits }) {
   return (
     <Fragment>
       <NextSeo
-        title={language ? "ثبت نوبت" : "Reservation"}
+        title={language ? "پورتال" : "Portal"}
         description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/reservation"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/reservation",
-          title: language ? "ثبت نوبت" : "Reservation",
+          title: language ? "پورتال" : "Portal",
           description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
