@@ -77,7 +77,7 @@ export default function Contact() {
           </div>
           <div className="fadeOverlayBottom"></div>
         </div>
-        <div className={classes.info} ref={targetBox}>
+        <div className={classes.content} ref={targetBox}>
           <div className={classes.row}>
             <h3>{language ? "شعبه تهران" : "Tehran Branch"}</h3>
             <h4
