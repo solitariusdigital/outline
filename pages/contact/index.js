@@ -50,7 +50,7 @@ export default function Contact() {
           maxVideoPreview: -1,
         }}
       />
-      <div
+      <section
         className={classes.container}
         style={{
           fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
@@ -60,8 +60,8 @@ export default function Contact() {
         <div className={classes.imageBox}>
           <div className="fadeOverlayTop"></div>
           <Image
-            src="https://bucket.outlinecommunity.com/resources/stone.jpg"
-            blurDataURL="https://bucket.outlinecommunity.com/resources/stone.jpg"
+            src="https://bucket.outlinecommunity.com/resources/atom.jpg"
+            blurDataURL="https://bucket.outlinecommunity.com/resources/atom.jpg"
             placeholder="blur"
             alt="Contact"
             layout="fill"
@@ -123,7 +123,7 @@ export default function Contact() {
             </h4>
           </div>
         </div>
-      </div>
+      </section>
     </Fragment>
   );
 }

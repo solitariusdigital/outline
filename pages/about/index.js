@@ -1,11 +1,21 @@
-import { useContext, Fragment, useEffect, useState } from "react";
+import { useContext, Fragment, useEffect, useState, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./about.module.scss";
 import logo from "@/assets/logo.png";
 import { NextSeo } from "next-seo";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Image from "next/legacy/image";
 
 export default function About() {
   const { language, setLanguage } = useContext(StateContext);
+
+  const targetBox = useRef(null);
+
+  const scrollToDivBox = () => {
+    if (targetBox.current) {
+      targetBox.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <Fragment>
@@ -33,8 +43,35 @@ export default function About() {
           maxVideoPreview: -1,
         }}
       />
-      <section className={classes.container}>
-        <div className={classes.content}>
+      <section
+        className={classes.container}
+        style={{
+          fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
+          direction: language ? "rtl" : "ltr",
+        }}
+      >
+        <div className={classes.imageBox}>
+          <div className="fadeOverlayTop"></div>
+          <Image
+            src="https://bucket.outlinecommunity.com/resources/wave.jpg"
+            blurDataURL="https://bucket.outlinecommunity.com/resources/wave.jpg"
+            placeholder="blur"
+            alt="About"
+            layout="fill"
+            objectFit="cover"
+            as="image"
+            priority
+          />
+          <div className={classes.scrollDown}>
+            <KeyboardArrowDownIcon
+              className="iconSite"
+              sx={{ fontSize: 40, color: "white" }}
+              onClick={() => scrollToDivBox()}
+            />
+          </div>
+          <div className="fadeOverlayBottom"></div>
+        </div>
+        <div className={classes.content} ref={targetBox}>
           <p className={classes.text}>
             در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه
             می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن ایجاد
