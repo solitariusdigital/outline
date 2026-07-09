@@ -32,20 +32,14 @@ export default function Home() {
     <Fragment>
       <NextSeo
         title={language ? "اوت‌لاین" : "Outline"}
-        description={
-          language
-            ? "به سوی تعالی زیبایی‌شناسی"
-            : "Towards Aesthetic Transcendence"
-        }
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com",
-          title: language ? "تماس با ما" : "Contact",
-          description: language
-            ? "به سوی تعالی زیبایی‌شناسی"
-            : "Towards Aesthetic Transcendence",
+          title: language ? "اوت‌لاین" : "Outline",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,

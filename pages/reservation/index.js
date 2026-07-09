@@ -19,7 +19,7 @@ export default function Reservation({ activeVisits }) {
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
-
+  const { language, setLanguage } = useContext(StateContext);
   const [hideBooking, setHideBooking] = useState(true);
   const [checkType, setCheckType] = useState("checkin" || "checkout");
   const [checkDatesComplete, setCheckDatesComplete] = useState(false);
@@ -312,15 +312,15 @@ export default function Reservation({ activeVisits }) {
   return (
     <Fragment>
       <NextSeo
-        title="اوت‌لاین"
-        description="کلینیک زیبایی"
+        title={language ? "ثبت نوبت" : "Reservation"}
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/reservation"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/reservation",
-          title: "اوت‌لاین",
-          description: "کلینیک زیبایی",
+          title: language ? "ثبت نوبت" : "Reservation",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,

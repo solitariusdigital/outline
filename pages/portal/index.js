@@ -9,6 +9,7 @@ export default function Index() {
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
+  const { language, setLanguage } = useContext(StateContext);
 
   useEffect(() => {
     setMenuDisplay(false);
@@ -19,15 +20,15 @@ export default function Index() {
   return (
     <Fragment>
       <NextSeo
-        title="اوت‌لاین"
-        description="خدمات آنلاین"
+        title={language ? "پورتال" : "Portal"}
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/portal"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/portal",
-          title: "اوت‌لاین",
-          description: "خدمات آنلاین",
+          title: language ? "پورتال" : "Portal",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,

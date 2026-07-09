@@ -1,21 +1,24 @@
-import { Fragment } from "react";
+import { useContext, Fragment, useEffect, useState } from "react";
+import { StateContext } from "@/context/stateContext";
 import classes from "./about.module.scss";
 import logo from "@/assets/logo.png";
 import { NextSeo } from "next-seo";
 
 export default function About() {
+  const { language, setLanguage } = useContext(StateContext);
+
   return (
     <Fragment>
       <NextSeo
-        title="اوت‌لاین"
-        description="فلسفه متد اوت‌لاین"
+        title={language ? "درباره ما" : "About Us"}
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/about"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/about",
-          title: "اوت‌لاین",
-          description: "فلسفه متد اوت‌لاین",
+          title: language ? "درباره ما" : "About Us",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,

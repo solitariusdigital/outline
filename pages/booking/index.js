@@ -18,6 +18,7 @@ export default function Booking({ visits }) {
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
+  const { language, setLanguage } = useContext(StateContext);
 
   useEffect(() => {
     setMenuDisplay(false);
@@ -49,15 +50,15 @@ export default function Booking({ visits }) {
   return (
     <Fragment>
       <NextSeo
-        title="ثبت نوبت آنلاین"
-        description="ثبت نوبت آنلاین"
+        title={language ? "ثبت نوبت" : "Booking"}
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/booking"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/booking",
-          title: "ثبت نوبت آنلاین",
-          description: "ثبت نوبت آنلاین",
+          title: language ? "ثبت نوبت" : "Booking",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,

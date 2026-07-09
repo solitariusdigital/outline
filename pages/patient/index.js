@@ -23,6 +23,7 @@ export default function Patient({ user, visits }) {
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
+  const { language, setLanguage } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
 
@@ -88,15 +89,15 @@ export default function Patient({ user, visits }) {
   return (
     <Fragment>
       <NextSeo
-        title="پورتال بیمار"
-        description="پورتال بیمار"
+        title={language ? "پورتال" : "Portal"}
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/portal"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/portal",
-          title: "پورتال بیمار",
-          description: "پورتال بیمار",
+          title: language ? "پورتال" : "Portal",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,

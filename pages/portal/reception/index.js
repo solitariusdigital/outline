@@ -44,6 +44,7 @@ export default function Reception({ records }) {
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
+  const { language, setLanguage } = useContext(StateContext);
   const [receptionCards, setReceptionCards] = useState([]);
   const [expandInformation, setExpandInformation] = useState(null);
   const [expandRecords, setExpandRecords] = useState(null);
@@ -291,15 +292,15 @@ export default function Reception({ records }) {
   return (
     <Fragment>
       <NextSeo
-        title="پورتال پذیرش"
-        description="پورتال پذیرش"
+        title={language ? "پذیرش" : "Reception"}
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/portal/reception"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/portal/reception",
-          title: "پورتال پذیرش",
-          description: "پورتال پذیرش",
+          title: language ? "پذیرش" : "Reception",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,

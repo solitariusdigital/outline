@@ -42,10 +42,10 @@
     text-align: center;
 
     @include mixins.mobile {
-      @include mixins.transparentBackground(0.8, config.$purple);
+      @include mixins.transparentBackground(0.5, config.$purple);
     }
     @include mixins.tabletPortrait {
-      @include mixins.transparentBackground(0.8, config.$purple);
+      @include mixins.transparentBackground(0.5, config.$purple);
     }
 
     h1 {

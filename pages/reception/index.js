@@ -32,6 +32,7 @@ export default function Reception() {
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
+  const { language, setLanguage } = useContext(StateContext);
 
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState({
@@ -384,15 +385,15 @@ export default function Reception() {
   return (
     <Fragment>
       <NextSeo
-        title="پذیرش"
-        description="کلینیک زیبایی"
+        title={language ? "پذیرش" : "Reception"}
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/reception"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/reception",
-          title: "پذیرش",
-          description: "کلینیک زیبایی",
+          title: language ? "پذیرش" : "Reception",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,

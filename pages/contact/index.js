@@ -27,21 +27,15 @@ export default function Contact() {
   return (
     <Fragment>
       <NextSeo
-        title={language ? "تماس با ما" : "Contact"}
-        description={
-          language
-            ? "به سوی تعالی زیبایی‌شناسی"
-            : "Towards Aesthetic Transcendence"
-        }
+        title={language ? "تماس با ما" : "Contact Us"}
+        description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/contact"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/contact",
-          title: language ? "تماس با ما" : "Contact",
-          description: language
-            ? "به سوی تعالی زیبایی‌شناسی"
-            : "Towards Aesthetic Transcendence",
+          title: language ? "تماس با ما" : "Contact Us",
+          description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
             url: logo,
