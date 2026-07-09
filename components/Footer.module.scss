@@ -80,6 +80,11 @@
           color: config.$gold;
         }
       }
+
+      .navActive {
+        color: config.$gold;
+        cursor: pointer;
+      }
     }
   }
 

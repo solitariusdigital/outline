@@ -19,6 +19,17 @@
     width: config.$content-width;
   }
 
+  .action {
+    @include mixins.row-space-between-center();
+
+    p {
+      &:hover {
+        color: config.$gold;
+        cursor: pointer;
+      }
+    }
+  }
+
   .fullSizeNavigation {
     width: 50%;
     @include mixins.row-space-between-center();
@@ -57,7 +68,6 @@
     width: calc(100% + 24px);
 
     .nav {
-      font-size: config.$big-font;
       color: config.$white;
     }
 
@@ -72,6 +82,7 @@
       animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       will-change: transform, opacity;
       margin: 24px;
+      font-size: config.$big-font;
     }
 
     @keyframes slideUp {

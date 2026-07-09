@@ -38,7 +38,7 @@ export default function Menu() {
   const activateNav = (link, index) => {
     setMenuMobile(false);
     navigationTopBar.map((nav, i) => {
-      if (i === index) {
+      if (link === nav.link) {
         Router.push(link);
         nav.active = true;
       } else {
@@ -129,19 +129,32 @@ export default function Menu() {
       )}
       {!fullSizeScreen && (
         <nav>
-          {menuMobile ? (
-            <CloseIcon
-              className="iconSite"
-              onClick={() => setMenuMobile(!menuMobile)}
-              sx={{ fontSize: 30 }}
-            />
-          ) : (
-            <MenuIcon
-              className="iconSite"
-              onClick={() => setMenuMobile(!menuMobile)}
-              sx={{ fontSize: 30 }}
-            />
-          )}
+          <div className={classes.action}>
+            {!menuMobile && (
+              <p
+                onClick={() => toggleLanguage()}
+                style={{
+                  fontFamily: "Titillium-Light",
+                  marginRight: "8px",
+                }}
+              >
+                {!language ? "FA" : "EN"}
+              </p>
+            )}
+            {menuMobile ? (
+              <CloseIcon
+                className="iconSite"
+                onClick={() => setMenuMobile(!menuMobile)}
+                sx={{ fontSize: 30 }}
+              />
+            ) : (
+              <MenuIcon
+                className="iconSite"
+                onClick={() => setMenuMobile(!menuMobile)}
+                sx={{ fontSize: 30 }}
+              />
+            )}
+          </div>
           {menuMobile && (
             <nav
               className={classes.mobileNavigation}

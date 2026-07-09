@@ -21,10 +21,6 @@
   .imageBox {
     height: 100%;
 
-    h1 {
-      text-transform: uppercase;
-    }
-
     @include mixins.allDesktop {
       width: 50%;
     }

@@ -14,12 +14,12 @@ export default function Footer() {
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { selectBranch, setSelectBranch } = useContext(StateContext);
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
-  const { screenSize, setScreenSize } = useContext(StateContext);
+  const { menuMobile, setMenuMobile } = useContext(StateContext);
 
   const activateNav = (link, index) => {
     setMenuMobile(false);
     navigationTopBar.map((nav, i) => {
-      if (i === index) {
+      if (link === nav.link) {
         Router.push(link);
         nav.active = true;
       } else {
