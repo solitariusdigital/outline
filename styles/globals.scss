@@ -14,8 +14,16 @@
   src: url("../assets/YekanBakh-Regular.ttf") format("truetype");
 }
 @font-face {
+  font-family: "Yekan-Light";
+  src: url("../assets/YekanBakh-Light.ttf") format("truetype");
+}
+@font-face {
   font-family: "Titillium-Light";
   src: url("../assets/Titillium-Light.otf") format("truetype");
+}
+@font-face {
+  font-family: "Titillium-Thin";
+  src: url("../assets/Titillium-Thin.otf") format("truetype");
 }
 
 * {

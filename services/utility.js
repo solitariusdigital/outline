@@ -202,3 +202,11 @@ export function calculateTimeDifference(time2) {
   const seconds = differenceInSeconds % 60;
   return { hours, minutes, seconds };
 }
+
+export function applyFontToEnglishWords(inputString, fontType, language) {
+  const pattern = language ? /[a-zA-Z0-9۰-۹]+/g : /[0-9]+/g;
+  const outputString = inputString.replace(pattern, function (match) {
+    return `<span style="font-family: ${fontType}; ">${match}</span>`;
+  });
+  return outputString;
+}

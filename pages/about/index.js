@@ -5,9 +5,12 @@ import logo from "@/assets/logo.png";
 import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Image from "next/legacy/image";
+import { applyFontToEnglishWords } from "@/services/utility";
+import { RevealText } from "@/components/RevealText";
 
 export default function About() {
   const { language, setLanguage } = useContext(StateContext);
+  const { languageType, setLanguageType } = useContext(StateContext);
 
   const targetBox = useRef(null);
 
@@ -16,6 +19,45 @@ export default function About() {
       targetBox.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const texts = [
+    {
+      fa: "ما معتقدیم هر چهره، ترکیبی منحصربه‌فرد از آناتومی، نور، سایه، حجم، کیفیت پوست و حالات چهره است. به همین دلیل، هیچ نسخه یکسانی برای همه افراد وجود ندارد. هر صورت، داستان خود را دارد و وظیفه ما، بازطراحی آن بر اساس همان ویژگی‌های منحصربه‌فرد است؛ نه تغییر هویت آن.",
+      en: "We believe that every face is a unique composition of anatomy, light, shadow, volume, skin quality, and facial expression. No two faces age the same way, and no two treatment plans should ever be identical. Every face tells its own story, and our role is not to change that story, but to refine and reveal its most balanced, natural version.",
+    },
+    {
+      fa: "متد Outline حاصل تلفیق علم روز پزشکی زیبایی، شناخت دقیق آناتومی و نگاه هنرمندانه به تناسبات چهره است. این متد به‌طور مداوم بر پایه جدیدترین مقالات علمی، تکنیک‌های نوین و تجربه بالینی به‌روزرسانی می‌شود تا درمان‌ها همواره دقیق‌تر، ایمن‌تر و طبیعی‌تر باشند.",
+      en: "Outline is built on the integration of advanced aesthetic medicine, anatomical precision, and artistic vision. Our approach evolves continuously through the latest scientific research, modern aesthetic techniques, and clinical experience, ensuring that every treatment remains evidence-based, safe, and naturally elegant.",
+    },
+    {
+      fa: "الهام ما از هنر کلاسیک است؛ از هنرمندانی مانند لئوناردو داوینچی، میکل‌آنژ و پیکاسو که زیبایی را در تناسب، هارمونی و جزئیات می‌دیدند. همان‌گونه که یک اثر هنری با اصلاح هوشمندانه جزئیات کامل می‌شود، در Outline نیز تغییرات کوچک اما دقیق، می‌توانند چهره‌ای متعادل‌تر، جوان‌تر و طبیعی‌تر خلق کنند.",
+      en: "Our philosophy is inspired by the timeless principles of classical art. Masters such as Leonardo da Vinci, Michelangelo, and Pablo Picasso understood that true beauty lies in harmony, proportion, and thoughtful attention to detail. In the same way, Outline focuses on subtle, intentional refinements that collectively create a more youthful, balanced, and authentic appearance.",
+    },
+    {
+      fa: "در فلسفه Outline، پیری تنها به معنای از دست رفتن حجم نیست. با افزایش سن، جایگاه بافت‌ها تغییر می‌کند، فت‌پدها تحلیل می‌روند، لیگامان‌ها ضعیف می‌شوند، کیفیت پوست کاهش پیدا می‌کند و الگوی انعکاس نور روی صورت تغییر می‌کند. به همین دلیل، جوانسازی واقعی باید همه این لایه‌ها را در کنار هم درمان کند.",
+      en: "We do not see facial aging as a simple loss of volume. Aging is a dynamic process involving the descent of facial tissues, fat pad atrophy, ligament laxity, declining skin quality, and changes in the way light interacts with the face. For this reason, genuine facial rejuvenation requires a comprehensive understanding of every layer contributing to the aging process.",
+    },
+    {
+      fa: "ما ابتدا ساختار و مسیرهای لیفت را طراحی می‌کنیم، سپس کمبود حجم‌ها را به‌صورت هدفمند اصلاح می‌کنیم و در ادامه، با کمک بایواستیمولاتورها، اسکین‌بوسترها و لیزر، کیفیت پوست را بازسازی می‌کنیم. این رویکرد، همان چیزی است که ما آن را جوانسازی لایه‌لایه می‌نامیم.",
+      en: "Our treatments begin by restoring structural support and redefining facial lifting vectors. Volume is then replaced only where it has been anatomically lost. Finally, regenerative therapies, biostimulators, skin boosters, and advanced laser technologies are used to improve skin quality and complete the rejuvenation process. We refer to this philosophy as layer-by-layer rejuvenation.",
+    },
+    {
+      fa: "یکی از اصول اساسی Outline، مینیمالیسم است. ما باور داریم زیبایی با حجم بیشتر ایجاد نمی‌شود؛ بلکه با شناخت صحیح آناتومی، هدایت نور و سایه، و حفظ هویت چهره شکل می‌گیرد. هدف ما این نیست که دیگران متوجه تزریق شوند؛ هدف این است که بگویند: «چقدر شاداب‌تر و زیباتر شده‌ای.»",
+      en: "Minimalism is one of the defining principles of Outline. We believe beauty is never achieved through excessive volume, but through precise anatomical planning, intelligent facial contouring, and the careful orchestration of light and shadow. The goal is never for people to notice the treatment itself; the goal is for them to notice that you simply look healthier, more refreshed, and naturally beautiful.",
+    },
+    {
+      fa: "در Outline، هر برنامه درمانی کاملاً شخصی‌سازی می‌شود. آنالیز سه‌بعدی چهره، کیفیت پوست، الگوی پیری، نسبت‌های صورت و اهداف هر فرد، مسیر درمان را مشخص می‌کنند. به همین دلیل، هیچ دو طراحی چهره‌ای در Outline شبیه یکدیگر نیست.",
+      en: "Every treatment at Outline is fully personalized. Facial anatomy, aging patterns, skin quality, proportions, and each patient's aesthetic goals are carefully analyzed before a treatment plan is designed. No two faces are alike, and neither are our results.",
+    },
+    {
+      fa: "‏Outline فقط یک تکنیک نیست؛ یک فلسفه است.",
+      en: "Outline is more than a technique, it is a philosophy.",
+    },
+    {
+      fa: "‏فلسفه‌ای که باور دارد زیبایی، حاصل هماهنگی میان آناتومی، ساختار، کیفیت پوست، علم و هنر است؛ و هر انسان، شایسته آن است که بدون از دست دادن هویت خود، بهترین نسخه از چهره‌اش را داشته باشد.‏‏‏‏",
+      en: "A philosophy that believes true beauty is created through the harmony of anatomy, structure, skin quality, science, and art. Every individual deserves to become the finest version of themselves while preserving the unique identity that makes them who they are.",
+    },
+  ];
 
   return (
     <Fragment>
@@ -53,8 +95,8 @@ export default function About() {
         <div className={classes.imageBox}>
           <div className="fadeOverlayTop"></div>
           <Image
-            src="https://bucket.outlinecommunity.com/resources/atom.jpg"
-            blurDataURL="https://bucket.outlinecommunity.com/resources/atom.jpg"
+            src="https://bucket.outlinecommunity.com/resources/earth.jpg"
+            blurDataURL="https://bucket.outlinecommunity.com/resources/earth.jpg"
             placeholder="blur"
             alt="About"
             layout="fill"
@@ -62,9 +104,34 @@ export default function About() {
             as="image"
             priority
           />
-          <h1 onClick={() => scrollToDivBox()}>
-            {language ? "داستان ما" : "WHO WE ARE"}
-          </h1>
+          <div className={classes.title}>
+            <h1>
+              {language ? (
+                <>
+                  فلسفه متد{" "}
+                  <span style={{ fontFamily: "Titillium-Light" }}>Outline</span>
+                </>
+              ) : (
+                "The Philosophy Behind Outline"
+              )}
+            </h1>
+            <h3
+              style={{
+                marginTop: language ? "0px" : "16px",
+              }}
+            >
+              {language ? (
+                <>
+                  در{" "}
+                  <span style={{ fontFamily: "Titillium-Light" }}>Outline</span>
+                  ، زیبایی از طریق تزریق ساخته نمی‌شود بلکه از طریق طراحی خلق
+                  می‌شود.
+                </>
+              ) : (
+                "At Outline, beauty is not created through injections, it is created through design."
+              )}
+            </h3>
+          </div>
           <div className={classes.scrollDown}>
             <KeyboardArrowDownIcon
               className="iconSite"
@@ -74,27 +141,77 @@ export default function About() {
           </div>
           <div className="fadeOverlayBottom"></div>
         </div>
-        <div className={classes.content} ref={targetBox}>
-          <h3 className={classes.text}>
-            {language
-              ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن ایجاد تعادل و هماهنگی طبیعی در صورت است. ما باور داریم که هر چهره داستان خاص خود را دارد و با کمک به روزترین مقالات علمی در زمینه کازمتیک، این داستان را به بهترین شکل روایت می‌کنیم."
-              : "In the Natural Outline Method, we look at the art of creating beauty with precision and sensitivity. This method is a combination of modern science and classical art, aimed at creating natural balance and harmony in the face. We believe that every face has its own unique story, and with the help of the most up-to-date scientific articles in the field of cosmetics, we tell this story in the best possible way."}
-          </h3>
-          <h3 className={classes.text}>
-            {language
-              ? "با الهام از آثار بزرگانی چون داوینچی، پیکاسو و میکل‌آنژ، ما به دنبال خلق زیبایی‌ای هستیم که در آن جزئیات کوچک با دقت و ظرافت اصلاح شوند تا به یک کلیت زیبا و هماهنگ برسیم. این متد، نوعی طراحی مینیمال است که در آن هر نقص صورت به طبیعی‌ترین شکل ممکن اصلاح می‌شود. هدف ما از متد نچرال اوت‌لاین، جوانسازی چهره و به تعویق انداختن پیری است. ما به زیبایی طبیعی و بدون اغراق معتقدیم و به کمک این متد، به دنبال آن هستیم که نه تنها چهره را جوان‌تر کنیم، بلکه آن را به شکلی طبیعی و متعادل‌تر به نمایش بگذاریم."
-              : "Inspired by the works of great masters such as Da Vinci, Picasso, and Michelangelo, we seek to create a beauty in which small details are corrected with precision and delicacy to achieve a beautiful and harmonious whole. This method is a kind of minimal design in which every facial flaw is corrected in the most natural way possible. Our goal with the Natural Outline Method is facial rejuvenation and delaying aging. We believe in natural, non-exaggerated beauty, and through this method, we seek not only to make the face look younger, but also to present it in a more natural and balanced way."}
-          </h3>
-          <h3 className={classes.text}>
-            {language
-              ? "ما به شما این اطمینان را می‌دهیم که در متد نچرال اوت‌لاین، هر قدم از فرآیند با استفاده از بهترین مواد و تجهیزات به‌روز و تحت نظارت متخصصین با تجربه انجام می‌شود. این روش برای کسانی طراحی شده که می‌خواهند به شکلی طبیعی و با کمترین تغییرات ممکن، زیبایی و جوانی خود را بازیابند. ما در متد نچرال اوت‌لاین به هر بیمار به عنوان یک فرد منحصر به فرد نگاه می‌کنیم و معتقدیم که زیبایی هر فرد نیز منحصر به فرد است. به همین دلیل، هر برنامه تزریقی با دقت بر اساس ویژگی‌های چهره‌ی فرد و نیازهای او طراحی می‌شود."
-              : "We assure you that in the Natural Outline Method, every step of the process is carried out using the best and most up-to-date materials and equipment, under the supervision of experienced specialists. This method is designed for those who want to restore their beauty and youth naturally, with the fewest possible changes. In the Natural Outline Method, we view every patient as a unique individual, and we believe that each person's beauty is unique as well. For this reason, every injection plan is carefully designed based on the individual's facial features and needs."}
-          </h3>
-          <h3 className={classes.text}>
-            {language
-              ? "این تجربه‌ی شخصی‌سازی شده، باعث می‌شود هر فرد با اطمینان از اینکه بهترین نسخه از خود را تجربه می‌کند، به ما مراجعه کند. این فلسفه برند، تعهد ما به دقت، ظرافت، هنر و اعتماد را نشان می‌دهد و بیانگر این است که هر فرد شایسته است تا با حفظ شخصیت و ویژگی‌های منحصربه‌فرد خود، زیباترین نسخه از خود را ببیند. ما با افتخار در خدمت شما هستیم تا این زیبایی طبیعی را به شما هدیه دهیم."
-              : "This personalized experience gives each person confidence that they are experiencing the best version of themselves when they come to us. This brand philosophy reflects our commitment to precision, delicacy, art, and trust, and expresses the belief that every person deserves to see the most beautiful version of themselves while preserving their unique personality and features. We are proud to serve you in offering this natural beauty as a gift."}
-          </h3>
+        <div className={classes.box} ref={targetBox}>
+          <div className={classes.content}>
+            {texts
+              .map((text, index) => (
+                <h3
+                  className={classes.text}
+                  key={index}
+                  style={{
+                    fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: applyFontToEnglishWords(
+                      text[languageType],
+                      "Titillium-Thin",
+                      languageType,
+                    ),
+                  }}
+                ></h3>
+              ))
+              .slice(0, 4)}
+          </div>
+          <div className={classes.imageBox}>
+            <div className="fadeOverlayTop"></div>
+            <Image
+              src="https://bucket.outlinecommunity.com/resources/atom.jpg"
+              blurDataURL="https://bucket.outlinecommunity.com/resources/atom.jpg"
+              placeholder="blur"
+              alt="About"
+              layout="fill"
+              objectFit="cover"
+              as="image"
+              priority
+            />
+            <div className="fadeOverlayBottom"></div>
+          </div>
+        </div>
+        <div className={classes.box}>
+          <div className={classes.imageBox}>
+            <div className="fadeOverlayTop"></div>
+            <Image
+              src="https://bucket.outlinecommunity.com/resources/stone.jpg"
+              blurDataURL="https://bucket.outlinecommunity.com/resources/stone.jpg"
+              placeholder="blur"
+              alt="About"
+              layout="fill"
+              objectFit="cover"
+              as="image"
+              priority
+            />
+            <div className="fadeOverlayBottom"></div>
+          </div>
+          <div className={classes.content}>
+            {texts
+              .map((text, index) => (
+                <h3
+                  className={classes.text}
+                  key={index}
+                  style={{
+                    fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: applyFontToEnglishWords(
+                      text[languageType],
+                      "Titillium-Thin",
+                      languageType,
+                    ),
+                  }}
+                ></h3>
+              ))
+              .slice(4, 9)}
+          </div>
         </div>
       </section>
     </Fragment>
