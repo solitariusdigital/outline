@@ -12,7 +12,7 @@ import Kavenegar from "kavenegar";
 import {
   toFarsiNumber,
   convertPersianToGregorian,
-  isSelectedDateFriday,
+  isSunday,
   toEnglishNumber,
   isEnglishNumber,
   ganjeDays,
@@ -55,20 +55,6 @@ export default function DatePicker({ visits }) {
   const [selectDate, setSelectDate] = useState("");
   const [times, setTimes] = useState({});
   const [timeCountPerDate, setTimeCountPerDate] = useState(null);
-  let originalTimes = {
-    "13:00": { display: true, active: false, count: 0 },
-    "13:30": { display: true, active: false, count: 0 },
-    "14:00": { display: true, active: false, count: 0 },
-    "14:30": { display: true, active: false, count: 0 },
-    "15:00": { display: true, active: false, count: 0 },
-    "15:30": { display: true, active: false, count: 0 },
-    "16:00": { display: true, active: false, count: 0 },
-    "16:30": { display: true, active: false, count: 0 },
-    "17:00": { display: true, active: false, count: 0 },
-    "17:30": { display: true, active: false, count: 0 },
-    "18:00": { display: true, active: false, count: 0 },
-    "18:30": { display: true, active: false, count: 0 },
-  };
   const doctors = ["دکتر فراهانی", "دکتر گنجه", "دکتر پورقلی"];
   const targetInputBox = useRef(null);
 
@@ -312,7 +298,7 @@ export default function DatePicker({ visits }) {
       `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
         day.day,
       )}`,
-      isSelectedDateFriday(day),
+      isSunday(day),
       ganjeDays(day),
       pourgholiDays(day),
       tehranBranch(day),
@@ -365,6 +351,12 @@ export default function DatePicker({ visits }) {
   const setOriginalTimes = (doctor, branch) => {
     const times = {
       "دکتر پورقلی": {
+        "10:00": { display: false, active: false, count: 0 },
+        "10:30": { display: false, active: false, count: 0 },
+        "11:00": { display: false, active: false, count: 0 },
+        "11:30": { display: false, active: false, count: 0 },
+        "12:00": { display: false, active: false, count: 0 },
+        "12:30": { display: false, active: false, count: 0 },
         "13:00": { display: true, active: false, count: 0 },
         "13:30": { display: true, active: false, count: 0 },
         "14:00": { display: true, active: false, count: 0 },
@@ -387,6 +379,8 @@ export default function DatePicker({ visits }) {
         },
       },
       "دکتر گنجه": {
+        "10:00": { display: false, active: false, count: 0 },
+        "10:30": { display: false, active: false, count: 0 },
         "11:00": { display: false, active: false, count: 0 },
         "11:30": { display: false, active: false, count: 0 },
         "12:00": { display: false, active: false, count: 0 },
@@ -414,11 +408,12 @@ export default function DatePicker({ visits }) {
       },
       "دکتر فراهانی": {
         tehran: {
-          "10:30": { display: false, active: false, count: 0 },
-          "11:00": { display: false, active: false, count: 0 },
-          "11:30": { display: false, active: false, count: 0 },
-          "12:00": { display: false, active: false, count: 0 },
-          "12:30": { display: false, active: false, count: 0 },
+          "10:00": { display: true, active: false, count: 0 },
+          "10:30": { display: true, active: false, count: 0 },
+          "11:00": { display: true, active: false, count: 0 },
+          "11:30": { display: true, active: false, count: 0 },
+          "12:00": { display: true, active: false, count: 0 },
+          "12:30": { display: true, active: false, count: 0 },
           "13:00": { display: true, active: false, count: 0 },
           "13:30": { display: true, active: false, count: 0 },
           "14:00": { display: true, active: false, count: 0 },
@@ -462,7 +457,7 @@ export default function DatePicker({ visits }) {
 
   const updateDisplayTime = (
     selectDate,
-    isSelectedDateFriday,
+    isSunday,
     ganjeDays,
     pourgholiDays,
     tehranBranch,
@@ -496,18 +491,19 @@ export default function DatePicker({ visits }) {
       setDisplayForm(false);
       return;
     }
-    originalTimes = setOriginalTimes(selectDoctor, selectBranch);
+    let originalTime = setOriginalTimes(selectDoctor, selectBranch);
     setDisplayForm(true);
 
     let timeToUse;
-    if (isSelectedDateFriday) {
-      const numberSlice = 5;
+    if (!isSunday || day.day === 21) {
+      const numberSlice = 6;
       timeToUse = Object.fromEntries(
-        Object.entries(originalTimes).slice(numberSlice),
+        Object.entries(originalTime).slice(numberSlice),
       );
     } else {
-      timeToUse = originalTimes;
+      timeToUse = originalTime;
     }
+
     let updatedTimes = { ...timeToUse };
     Object.keys(timeCountPerDate).forEach((date) => {
       if (date === selectDate) {

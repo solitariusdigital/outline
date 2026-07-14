@@ -56,11 +56,10 @@ export function convertPersianToGregorian(persianDate, time) {
   ).toISOString();
 }
 
-export function isSelectedDateFriday(persianDate) {
+export function isSunday(persianDate) {
   const { day, month, year } = persianDate;
   return (
-    // 0 = Sunday, 1 = Monday, ..., 5 = Friday
-    moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() === 5
+    moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() === 0
   );
 }
 
@@ -69,25 +68,41 @@ export function ganjeDays(persianDate) {
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
-  return dayOfWeek === 5 || dayOfWeek === 4; // Friday Thur
+
+  const isSpecialException = month === 4 && day === 20;
+
+  if (isSpecialException) {
+    return dayOfWeek === 5;
+  }
+
+  return dayOfWeek === 4 || dayOfWeek === 5 || dayOfWeek === 6; // Thu / Fri / Sat
 }
 
 export function pourgholiDays(persianDate) {
   const { day, month, year } = persianDate;
-  const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
-    .toDate()
-    .getDay();
-  return dayOfWeek === 4 || dayOfWeek === 5; // Thu / Fri
-}
-
-export function tehranBranch({ year, month, day }) {
-  // const months = new Set([3]);
-  // const days = new Set([22]);
+  // const months = new Set([4]);
+  // const days = new Set([18]);
   // if (months.has(month) && days.has(day)) {
   //   return false;
   // }
+  const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
+    .toDate()
+    .getDay();
+
+  return dayOfWeek === 4 || dayOfWeek === 5 || dayOfWeek === 6; // Thu / Fri / Sat
+}
+
+export function tehranBranch(persianDate) {
+  const { day, month, year } = persianDate;
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
-  return dayOfWeek === 5; //   Fri
+
+  const isSpecialException = month === 4 && day === 20;
+
+  if (isSpecialException) {
+    return dayOfWeek === 5;
+  }
+
+  return dayOfWeek === 5 || dayOfWeek === 6; // Fri / Sat
 }
 
 export function getCurrentDate() {
