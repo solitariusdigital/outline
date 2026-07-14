@@ -58,8 +58,8 @@ export default function Contact() {
         <div className={classes.imageBox}>
           <div className="fadeOverlayTop"></div>
           <Image
-            src="https://bucket.outlinecommunity.com/resources/atom.jpg"
-            blurDataURL="https://bucket.outlinecommunity.com/resources/atom.jpg"
+            src="https://bucket.outlinecommunity.com/resources/wave.jpg"
+            blurDataURL="https://bucket.outlinecommunity.com/resources/wave.jpg"
             placeholder="blur"
             alt="Contact"
             layout="fill"

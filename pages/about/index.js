@@ -53,8 +53,8 @@ export default function About() {
         <div className={classes.imageBox}>
           <div className="fadeOverlayTop"></div>
           <Image
-            src="https://bucket.outlinecommunity.com/resources/wave.jpg"
-            blurDataURL="https://bucket.outlinecommunity.com/resources/wave.jpg"
+            src="https://bucket.outlinecommunity.com/resources/atom.jpg"
+            blurDataURL="https://bucket.outlinecommunity.com/resources/atom.jpg"
             placeholder="blur"
             alt="About"
             layout="fill"
