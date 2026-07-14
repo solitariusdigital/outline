@@ -67,7 +67,9 @@ export default function Contact() {
             as="image"
             priority
           />
-          <h1>{language ? "تماس بگیرید" : "GET IN TOUCH"}</h1>
+          <h1 onClick={() => scrollToDivBox()}>
+            {language ? "تماس بگیرید" : "GET IN TOUCH"}
+          </h1>
           <div className={classes.scrollDown}>
             <KeyboardArrowDownIcon
               className="iconSite"

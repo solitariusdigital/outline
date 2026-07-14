@@ -53,6 +53,10 @@ abbr[title] {
 }
 .iconSite {
   cursor: pointer;
+
+  &:hover {
+    color: config.$gold;
+  }
 }
 
 .alert {

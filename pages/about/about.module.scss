@@ -26,6 +26,7 @@
     font-size: config.$large-font;
     text-align: center;
     width: 100%;
+    user-select: none;
   }
 
   .content {

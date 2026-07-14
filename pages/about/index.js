@@ -62,8 +62,8 @@ export default function About() {
             as="image"
             priority
           />
-          <h1>
-            {language ? "متد نچرال اوت‌لاین" : "OUTLINE'S NATURAL METHOD"}
+          <h1 onClick={() => scrollToDivBox()}>
+            {language ? "داستان ما" : "WHO WE ARE"}
           </h1>
           <div className={classes.scrollDown}>
             <KeyboardArrowDownIcon

@@ -1,5 +1,6 @@
 import { useEffect, useContext, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
+import { useRouter } from "next/router";
 import Router from "next/router";
 import Link from "next/link";
 import classes from "./Menu.module.scss";
@@ -16,6 +17,9 @@ export default function Menu() {
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
+
+  const router = useRouter();
+  let pathname = router.pathname;
 
   const fullSizeScreen =
     screenSize !== "mobile" && screenSize !== "tablet-portrait";
@@ -47,6 +51,14 @@ export default function Menu() {
     });
     setNavigationTopBar([...navigationTopBar]);
   };
+
+  useEffect(() => {
+    navigationTopBar.map((nav) => {
+      nav.active = nav.link === pathname;
+    });
+    setNavigationTopBar([...navigationTopBar]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const toggleLanguage = () => {
     setLanguage(!language);
