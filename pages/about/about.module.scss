@@ -58,13 +58,29 @@
     }
 
     .content {
+      width: 50%;
+
       @include mixins.mobile {
         order: 1;
         width: calc(100% - 24px);
+        padding: 50px 0px;
       }
       @include mixins.tabletPortrait {
         order: 1;
         width: calc(100% - 24px);
+        padding: 50px 0px;
+      }
+
+      .text {
+        margin: 24px auto;
+        width: config.$content-widthText;
+
+        @include mixins.mobile {
+          width: calc(100% - 24px);
+        }
+        @include mixins.tabletPortrait {
+          width: calc(100% - 24px);
+        }
       }
     }
 
@@ -82,29 +98,6 @@
         order: 2;
         width: 100%;
         height: 600px;
-      }
-    }
-  }
-
-  .content {
-    width: 50%;
-
-    @include mixins.mobile {
-      width: calc(100% - 24px);
-    }
-    @include mixins.tabletPortrait {
-      width: calc(100% - 24px);
-    }
-
-    .text {
-      margin: 24px auto;
-      width: config.$content-widthText;
-
-      @include mixins.mobile {
-        width: calc(100% - 24px);
-      }
-      @include mixins.tabletPortrait {
-        width: calc(100% - 24px);
       }
     }
   }
