@@ -16,7 +16,11 @@
   .content {
     width: config.$content-width;
     max-width: config.$max-widthHeigh;
-    margin: 150px auto;
+    margin: 100px auto;
+
+    @include mixins.mobile {
+      width: calc(100% - 24px);
+    }
   }
 
   h1 {
