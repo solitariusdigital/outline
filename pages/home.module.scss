@@ -37,6 +37,25 @@
 .imageBox {
   position: relative;
   height: 100dvh;
+
+  .text {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    border-bottom: 1px solid config.$white;
+
+    @include mixins.mobile {
+      width: calc(100% - 24px);
+    }
+    &:hover {
+      cursor: pointer;
+      color: config.$gold;
+      border-bottom: 1px solid config.$gold;
+    }
+  }
 }
 
 .notFound {

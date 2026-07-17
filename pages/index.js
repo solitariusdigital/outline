@@ -9,6 +9,7 @@ import { RevealText } from "@/components/RevealText";
 import Cover from "@/components/Cover";
 
 export default function Home() {
+  const { currentUser, setCurrentUser } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
@@ -27,6 +28,13 @@ export default function Home() {
     });
     setNavigationTopBar([...navigationTopBar]);
   }, []);
+
+  const navigatePortal = () => {
+    setMenuDisplay(false);
+    setFooterDisplay(false);
+    setMenuMobile(true);
+    Router.push(currentUser ? "/booking" : "/portal");
+  };
 
   return (
     <Fragment>
@@ -100,6 +108,17 @@ export default function Home() {
               as="image"
               priority
             />
+            <h1
+              className={classes.text}
+              style={{
+                fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
+              }}
+              onClick={() => navigatePortal()}
+            >
+              {language
+                ? "همین امروز نوبت خود را بگیرید"
+                : "Get Your Appointment Today"}
+            </h1>
             <div className="fadeOverlayBottom"></div>
           </div>
         </section>

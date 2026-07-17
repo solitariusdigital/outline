@@ -7,12 +7,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "bucket.eshareh.com",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
         hostname: "bucket.outlinecommunity.com",
         port: "",
         pathname: "/**",

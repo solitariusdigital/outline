@@ -1,21 +1,29 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Image from "next/legacy/image";
 
-const CARD_H = 300;
-const COL_GAP = 24;
-const ROW_GAP = 24;
-const COLS = 3;
-const PADDING_X = 0;
-const COL_OFFSETS = [80, 0, 140];
-const ITEMS_PER_COL = 4;
+const shuffleImages = (array) => {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+};
 
-export default function ScatteredGrid({ images = [] }) {
+export default function GridBox({ images = [], fullSizeScreen }) {
+  const CARD_H = fullSizeScreen ? 300 : 180;
+  const COL_GAP = 24;
+  const ROW_GAP = 24;
+  const COLS = 3;
+  const PADDING_X = 0;
+  const COL_OFFSETS = [80, 0, 140];
+  const ITEMS_PER_COL = 4;
+
   const trackRef = useRef(null);
   const wrapperRef = useRef(null);
   const [cardW, setCardW] = useState(200);
 
-  // Recalculate card width whenever the wrapper resizes
   const recalc = useCallback(() => {
     if (!wrapperRef.current) return;
     const totalW = wrapperRef.current.offsetWidth;
@@ -30,26 +38,34 @@ export default function ScatteredGrid({ images = [] }) {
     return () => ro.disconnect();
   }, [recalc]);
 
-  // Derive layout from current cardW
-  const items = Array.from({ length: COLS }, (_, ci) =>
-    Array.from({ length: ITEMS_PER_COL }, (_, ri) => {
-      const idx = ci * ITEMS_PER_COL + ri;
-      return {
-        id: idx + 1,
-        col: ci,
-        top: COL_OFFSETS[ci] + ri * (CARD_H + ROW_GAP),
-        src: images[idx]?.src ?? null,
-        alt: images[idx]?.alt ?? "",
-      };
-    }),
-  ).flat();
+  const shuffledRef = useRef(null);
+  if (shuffledRef.current === null && images.length > 0) {
+    shuffledRef.current = shuffleImages(images);
+  }
+  const shuffled = shuffledRef.current ?? [];
 
-  const canvasH = Math.max(...items.map((i) => i.top + CARD_H)) + 80;
+  const items = useMemo(
+    () =>
+      Array.from({ length: COLS }, (_, ci) =>
+        Array.from({ length: ITEMS_PER_COL }, (_, ri) => {
+          const idx = ci * ITEMS_PER_COL + ri;
+          return {
+            id: idx + 1,
+            col: ci,
+            top: COL_OFFSETS[ci] + ri * (CARD_H + ROW_GAP),
+            src: shuffled[idx]?.src ?? null,
+            alt: shuffled[idx]?.alt ?? "",
+          };
+        }),
+      ).flat(),
+    [shuffled, CARD_H],
+  );
 
-  // Scroll animation
+  const canvasH = useMemo(() => ITEMS_PER_COL * (CARD_H + ROW_GAP), [CARD_H]);
+
   useEffect(() => {
     const el = trackRef.current;
-    if (!el) return;
+    if (!el || !canvasH) return;
     el.scrollTop = 0;
     let animId;
 
@@ -129,7 +145,7 @@ const styles = {
     overflow: "hidden",
     display: "flex",
     flexDirection: "column",
-    borderRadius: "5px",
+    borderRadius: "0px",
   },
   imgPlaceholder: {
     flex: 1,

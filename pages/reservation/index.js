@@ -29,22 +29,11 @@ export default function Reservation({ activeVisits }) {
 
   const isUserAuthorized =
     currentUser?.permission === "admin" || currentUser?.permission === "staff";
-  const pourGholiText = ["نوبت دکتر پورقلی", "متخصص پوست"];
-  const kishText = ["شعبه کیش", "به‌زودی برمیگردیم"];
-
-  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     setMenuDisplay(false);
     setFooterDisplay(false);
     setMenuMobile(true);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % pourGholiText.length);
-    }, 3000);
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -398,61 +387,35 @@ export default function Reservation({ activeVisits }) {
           )}
           {!hideBooking && currentUser?.permission !== "reception" && (
             <Fragment>
-              <div className={classes.row}>
-                <div
-                  className={classes.fillNav}
-                  style={{
-                    width: "49%",
-                  }}
-                  onClick={() => {
-                    Router.push(currentUser ? "/booking" : "/portal");
-                    setSelectDoctor("دکتر فراهانی");
-                    setSelectBranch("tehran");
-                  }}
-                >
-                  نوبت دکتر فراهانی
-                </div>
-                <div
-                  className={classes.fillNav}
-                  style={{
-                    width: "49%",
-                  }}
-                  onClick={() => {
-                    Router.push(currentUser ? "/booking" : "/portal");
-                    setSelectDoctor("دکتر گنجه");
-                    setSelectBranch("tehran");
-                  }}
-                >
-                  نوبت دکتر گنجه
-                </div>
+              <div
+                className={classes.fillNav}
+                onClick={() => {
+                  Router.push(currentUser ? "/booking" : "/portal");
+                  setSelectDoctor("دکتر فراهانی");
+                  setSelectBranch("tehran");
+                }}
+              >
+                نوبت دکتر فراهانی
               </div>
-              <div className={classes.row}>
-                <div
-                  className={classes.fillNav}
-                  style={{
-                    width: "49%",
-                  }}
-                  onClick={() => {
-                    Router.push(currentUser ? "/booking" : "/portal");
-                    setSelectDoctor("دکتر پورقلی");
-                    setSelectBranch("tehran");
-                  }}
-                >
-                  {pourGholiText[index]}
-                </div>
-                <div
-                  className={classes.nav}
-                  style={{
-                    width: "49%",
-                  }}
-                  // onClick={() => {
-                  //   Router.push(currentUser ? "/booking" : "/portal");
-                  //   setSelectDoctor("دکتر فراهانی");
-                  //   setSelectBranch("kish");
-                  // }}
-                >
-                  {kishText[index]}
-                </div>
+              <div
+                className={classes.fillNav}
+                onClick={() => {
+                  Router.push(currentUser ? "/booking" : "/portal");
+                  setSelectDoctor("دکتر گنجه");
+                  setSelectBranch("tehran");
+                }}
+              >
+                نوبت دکتر گنجه
+              </div>
+              <div
+                className={classes.fillNav}
+                onClick={() => {
+                  Router.push(currentUser ? "/booking" : "/portal");
+                  setSelectDoctor("دکتر پورقلی");
+                  setSelectBranch("tehran");
+                }}
+              >
+                نوبت دکتر پورقلی - متخصص پوست
               </div>
             </Fragment>
           )}
