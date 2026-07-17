@@ -26,7 +26,7 @@
   }
 
   .logoContainer {
-    width: 40%;
+    width: 35%;
     @include mixins.row-space-between-center();
 
     @include mixins.mobile {
@@ -36,20 +36,12 @@
       margin-top: 24px;
     }
     @include mixins.tabletPortrait {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       width: 40%;
-    }
-    @include mixins.tabletLandscape {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
   }
 
   .bookingContainer {
-    width: 40%;
+    width: 50%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -59,12 +51,6 @@
       flex-direction: column-reverse;
       align-items: center;
       width: 100%;
-    }
-    @include mixins.tabletPortrait {
-      width: 80%;
-    }
-    @include mixins.tabletLandscape {
-      width: 80%;
     }
 
     .booking {

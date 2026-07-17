@@ -7,8 +7,6 @@ export default function Cover() {
   const { language, setLanguage } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
 
-  const fullSizeScreen = screenSize === "desktop";
-
   const images = [
     {
       src: "https://bucket.outlinecommunity.com/landing/IMG_01.jpg",
@@ -66,7 +64,7 @@ export default function Cover() {
     <div className={language ? classes.container : classes.containerReverse}>
       <div className={classes.imageBox}>
         <div className="fadeOverlayTop"></div>
-        <GridBox images={images} fullSizeScreen={fullSizeScreen} />
+        <GridBox images={images} screenSize={screenSize} />
         <div className="fadeOverlayBottom"></div>
       </div>
       <div

@@ -11,8 +11,17 @@ const shuffleImages = (array) => {
   return arr;
 };
 
-export default function GridBox({ images = [], fullSizeScreen }) {
-  const CARD_H = fullSizeScreen ? 300 : 180;
+export default function GridBox({ images = [], screenSize }) {
+  let CARD_H = null;
+  if (screenSize === "mobile") {
+    CARD_H = 180;
+  } else if (screenSize === "tablet-portrait") {
+    CARD_H = 350;
+  } else if (screenSize === "tablet-landscape") {
+    CARD_H = 280;
+  } else {
+    CARD_H = 300;
+  }
   const COL_GAP = 24;
   const ROW_GAP = 24;
   const COLS = 3;

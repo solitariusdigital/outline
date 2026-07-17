@@ -83,7 +83,7 @@ export default function Home() {
               <h2>
                 {language
                   ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه  می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن ایجاد تعادل و هماهنگی طبیعی در صورت است."
-                  : "In the Natural Outline method, we view the creation of beauty with precision and sensitivity. This method combines modern science with classical art, aiming to establish natural balance and harmony in the face."}
+                  : "In the natural Outline method, we view the creation of beauty with precision and sensitivity. This method combines modern science with classical art, aiming to establish natural balance and harmony in the face."}
               </h2>
             </RevealText>
           </div>
