@@ -82,7 +82,7 @@ export default function Cover() {
         <h2>
           {language
             ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه  می‌کنیم."
-            : "In the Natural Outline method, we view the creation of beauty with precision and sensitivity."}
+            : "In the natural Outline method, we view the creation of beauty with precision and sensitivity."}
         </h2>
       </div>
     </div>

@@ -68,7 +68,7 @@ export default function Contact() {
             priority
           />
           <h1 onClick={() => scrollToDivBox()}>
-            {language ? "تماس بگیرید" : "GET IN TOUCH"}
+            {language ? "تماس بگیرید" : "Get In Touch"}
           </h1>
           <div className={classes.scrollDown}>
             <KeyboardArrowDownIcon

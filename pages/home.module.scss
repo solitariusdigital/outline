@@ -51,9 +51,6 @@
     text-align: center;
     border-bottom: 1px solid config.$white;
 
-    @include mixins.mobile {
-      width: calc(100% - 24px);
-    }
     &:hover {
       cursor: pointer;
       color: config.$gold;

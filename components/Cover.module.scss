@@ -54,9 +54,6 @@
       @include mixins.mobile {
         width: calc(100% - 24px);
       }
-      @include mixins.tabletPortrait {
-        width: config.$content-width;
-      }
     }
     h2 {
       width: config.$content-widthText;
@@ -64,9 +61,6 @@
 
       @include mixins.mobile {
         width: calc(100% - 24px);
-      }
-      @include mixins.tabletPortrait {
-        width: config.$content-width;
       }
     }
   }

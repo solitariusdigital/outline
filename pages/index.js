@@ -101,7 +101,7 @@ export default function Home() {
               as="image"
               priority
             />
-            <h1
+            <h2
               className={classes.text}
               style={{
                 fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
@@ -109,9 +109,9 @@ export default function Home() {
               onClick={() => Router.push(currentUser ? "/booking" : "/portal")}
             >
               {language
-                ? "همین امروز نوبت خود را بگیرید"
+                ? "امروز نوبت خود را بگیرید"
                 : "Get Your Appointment Today"}
-            </h1>
+            </h2>
             <div className="fadeOverlayBottom"></div>
           </div>
         </section>
