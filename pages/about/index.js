@@ -145,7 +145,7 @@ export default function About() {
           <div className={classes.content}>
             {texts
               .map((text, index) => (
-                <h3
+                <p
                   className={classes.text}
                   key={index}
                   style={{
@@ -158,7 +158,7 @@ export default function About() {
                       languageType,
                     ),
                   }}
-                ></h3>
+                ></p>
               ))
               .slice(0, 4)}
           </div>
@@ -195,7 +195,7 @@ export default function About() {
           <div className={classes.content}>
             {texts
               .map((text, index) => (
-                <h3
+                <p
                   className={classes.text}
                   key={index}
                   style={{
@@ -208,7 +208,7 @@ export default function About() {
                       languageType,
                     ),
                   }}
-                ></h3>
+                ></p>
               ))
               .slice(4, 9)}
           </div>

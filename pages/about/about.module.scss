@@ -22,10 +22,6 @@
       width: 100%;
       user-select: none;
       width: config.$content-widthText;
-
-      h1 {
-        font-size: config.$large-font;
-      }
     }
 
     .scrollDown {
@@ -72,13 +68,10 @@
       }
 
       .text {
-        margin: 24px auto;
+        margin: 12px auto;
         width: config.$content-widthText;
 
         @include mixins.mobile {
-          width: calc(100% - 24px);
-        }
-        @include mixins.tabletPortrait {
           width: calc(100% - 24px);
         }
       }

@@ -24,7 +24,6 @@
   }
 
   h1 {
-    font-size: 3rem;
     margin-bottom: 24px;
     color: config.$gold;
   }
@@ -49,12 +48,11 @@
     bottom: 50%;
     transform: translateX(-50%);
     text-align: center;
-    border-bottom: 1px solid config.$white;
+    width: config.$content-widthText;
 
     &:hover {
       cursor: pointer;
       color: config.$gold;
-      border-bottom: 1px solid config.$gold;
     }
   }
 }

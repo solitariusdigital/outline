@@ -52,7 +52,7 @@ export default function Footer() {
         <div className={classes.social}>
           <InstagramIcon
             className={classes.icon}
-            sx={{ fontSize: 32 }}
+            sx={{ fontSize: 24 }}
             onClick={() =>
               window.open(
                 "https://www.instagram.com/dr.farahani.outline",

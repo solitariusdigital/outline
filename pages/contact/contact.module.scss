@@ -24,27 +24,19 @@
     left: 50%;
     bottom: 50%;
     transform: translateX(-50%);
-    font-size: config.$large-font;
     text-align: center;
     width: 100%;
     user-select: none;
   }
 
   .content {
-    width: config.$content-width;
-    max-width: config.$max-widthHeigh;
-    width: 50%;
     margin: auto;
     padding: 100px 0px;
+    width: 50%;
+    max-width: config.$max-widthHeigh;
 
     @include mixins.mobile {
       width: calc(100% - 24px);
-    }
-    @include mixins.tabletPortrait {
-      width: config.$content-width;
-    }
-    @include mixins.tabletLandscape {
-      width: config.$content-width;
     }
 
     .row {

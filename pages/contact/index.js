@@ -81,7 +81,7 @@ export default function Contact() {
         </div>
         <div className={classes.content} ref={targetBox}>
           <div className={classes.row}>
-            <h3>{language ? "شعبه تهران" : "Tehran Branch"}</h3>
+            <h3>{language ? "شعبه تهران" : "Tehran branch"}</h3>
             <h4
               className={classes.action}
               onClick={() => window.open(tehranLocation)}
@@ -90,7 +90,7 @@ export default function Contact() {
             </h4>
           </div>
           <div className={classes.row}>
-            <h3>{language ? "شعبه کیش" : "Kish Branch"}</h3>
+            <h3>{language ? "شعبه کیش" : "Kish branch"}</h3>
             <h4
               className={classes.action}
               onClick={() => window.open(kishLocation)}
