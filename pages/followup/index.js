@@ -23,9 +23,11 @@ export default function Followup() {
   const router = useRouter();
 
   useEffect(() => {
-    setMenuDisplay(false);
-    setFooterDisplay(false);
     setMenuMobile(true);
+    setTimeout(() => {
+      setMenuDisplay(false);
+      setFooterDisplay(false);
+    }, 100);
   }, []);
 
   useEffect(() => {

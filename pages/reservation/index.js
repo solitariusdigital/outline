@@ -31,9 +31,11 @@ export default function Reservation({ activeVisits }) {
     currentUser?.permission === "admin" || currentUser?.permission === "staff";
 
   useEffect(() => {
-    setMenuDisplay(false);
-    setFooterDisplay(false);
     setMenuMobile(true);
+    setTimeout(() => {
+      setMenuDisplay(false);
+      setFooterDisplay(false);
+    }, 100);
   }, []);
 
   useEffect(() => {

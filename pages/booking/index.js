@@ -21,9 +21,11 @@ export default function Booking({ visits }) {
   const { language, setLanguage } = useContext(StateContext);
 
   useEffect(() => {
-    setMenuDisplay(false);
-    setFooterDisplay(false);
     setMenuMobile(true);
+    setTimeout(() => {
+      setMenuDisplay(false);
+      setFooterDisplay(false);
+    }, 100);
   }, []);
 
   useEffect(() => {

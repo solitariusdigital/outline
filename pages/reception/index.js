@@ -93,9 +93,11 @@ export default function Reception() {
   const loadingText = ["لطفا صبر کنید", "درحال بارگذاری"];
 
   useEffect(() => {
-    setMenuDisplay(false);
-    setFooterDisplay(false);
     setMenuMobile(true);
+    setTimeout(() => {
+      setMenuDisplay(false);
+      setFooterDisplay(false);
+    }, 100);
   }, []);
 
   useEffect(() => {

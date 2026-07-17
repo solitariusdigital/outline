@@ -17,9 +17,9 @@ export default function Home() {
   const { menuMobile, setMenuMobile } = useContext(StateContext);
 
   useEffect(() => {
+    setMenuMobile(false);
     setMenuDisplay(true);
     setFooterDisplay(true);
-    setMenuMobile(false);
   }, []);
 
   useEffect(() => {
@@ -28,13 +28,6 @@ export default function Home() {
     });
     setNavigationTopBar([...navigationTopBar]);
   }, []);
-
-  const navigatePortal = () => {
-    setMenuDisplay(false);
-    setFooterDisplay(false);
-    setMenuMobile(true);
-    Router.push(currentUser ? "/booking" : "/portal");
-  };
 
   return (
     <Fragment>
@@ -113,7 +106,7 @@ export default function Home() {
               style={{
                 fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
               }}
-              onClick={() => navigatePortal()}
+              onClick={() => Router.push(currentUser ? "/booking" : "/portal")}
             >
               {language
                 ? "همین امروز نوبت خود را بگیرید"

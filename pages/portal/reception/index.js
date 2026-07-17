@@ -73,9 +73,11 @@ export default function Reception({ records }) {
   });
 
   useEffect(() => {
-    setMenuDisplay(false);
-    setFooterDisplay(false);
     setMenuMobile(true);
+    setTimeout(() => {
+      setMenuDisplay(false);
+      setFooterDisplay(false);
+    }, 100);
   }, []);
 
   useEffect(() => {

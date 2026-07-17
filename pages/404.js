@@ -10,9 +10,11 @@ export default function NotFoundPage() {
   const { language, setLanguage } = useContext(StateContext);
 
   useEffect(() => {
-    setMenuDisplay(false);
-    setFooterDisplay(false);
     setMenuMobile(true);
+    setTimeout(() => {
+      setMenuDisplay(false);
+      setFooterDisplay(false);
+    }, 100);
   }, []);
 
   return (
