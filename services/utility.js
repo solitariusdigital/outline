@@ -68,13 +68,6 @@ export function ganjeDays(persianDate) {
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
-
-  const isSpecialException = month === 4 && day === 20;
-
-  if (isSpecialException) {
-    return dayOfWeek === 5;
-  }
-
   return dayOfWeek === 4 || dayOfWeek === 5 || dayOfWeek === 6; // Thu / Fri / Sat
 }
 
@@ -88,7 +81,6 @@ export function pourgholiDays(persianDate) {
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
-
   return dayOfWeek === 4 || dayOfWeek === 5 || dayOfWeek === 6; // Thu / Fri / Sat
 }
 
@@ -96,11 +88,10 @@ export function tehranBranch(persianDate) {
   const { day, month, year } = persianDate;
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
 
-  const isSpecialException = month === 4 && day === 20;
-
-  if (isSpecialException) {
-    return dayOfWeek === 5;
-  }
+  // const isSpecialException = month === 4 && day === 20;
+  // if (isSpecialException) {
+  //   return dayOfWeek === 5;
+  // }
 
   return dayOfWeek === 5 || dayOfWeek === 6; // Fri / Sat
 }
