@@ -12,12 +12,9 @@
   @include mixins.mobile {
     width: calc(100% - 24px);
   }
-  @include mixins.tabletPortrait {
-    width: 100%;
-    padding: 0px 12px;
-  }
 
   .action {
+    font-size: config.$small-font;
     @include mixins.row-space-between-center();
 
     p {
@@ -36,18 +33,12 @@
       width: 70%;
       @include mixins.row-space-between-center();
 
+      @include mixins.tabletPortrait {
+        width: config.$content-widthText;
+      }
       @include mixins.tabletLandscape {
         width: config.$content-widthText;
       }
-    }
-  }
-
-  .toggleLanguage {
-    font-size: config.$small-font;
-
-    &:hover {
-      cursor: pointer;
-      color: config.$gold;
     }
   }
 
@@ -97,14 +88,18 @@
   }
 
   .nav {
+    font-size: config.$small-font;
     cursor: pointer;
 
-    &:hover {
-      color: config.$gold;
+    @include mixins.desktop {
+      &:hover {
+        color: config.$gold;
+      }
     }
   }
 
   .navActive {
+    font-size: config.$small-font;
     color: config.$gold;
     cursor: pointer;
   }

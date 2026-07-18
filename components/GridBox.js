@@ -27,7 +27,7 @@ export default function GridBox({ images = [], screenSize }) {
   const COLS = 3;
   const PADDING_X = 0;
   const COL_OFFSETS = [80, 0, 140];
-  const ITEMS_PER_COL = 4;
+  const ITEMS_PER_COL = 6;
 
   const trackRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -154,7 +154,7 @@ const styles = {
     overflow: "hidden",
     display: "flex",
     flexDirection: "column",
-    borderRadius: "0px",
+    borderRadius: "5px",
   },
   imgPlaceholder: {
     flex: 1,

@@ -21,8 +21,7 @@ export default function Menu() {
   const router = useRouter();
   let pathname = router.pathname;
 
-  const fullSizeScreen =
-    screenSize !== "mobile" && screenSize !== "tablet-portrait";
+  const fullSizeScreen = screenSize !== "mobile";
 
   const displayNav = fullSizeScreen
     ? navigationTopBar
@@ -76,15 +75,16 @@ export default function Menu() {
       {fullSizeScreen && (
         <nav className={classes.fullSizeNavigation}>
           <div className={classes.bar}>
-            <p
-              className={classes.toggleLanguage}
-              onClick={() => toggleLanguage()}
-              style={{
-                fontFamily: !language ? "Yekan-Regular" : "Titillium-Light",
-              }}
-            >
-              {!language ? "فارسی" : "English"}
-            </p>
+            <div className={classes.action}>
+              <p
+                onClick={() => toggleLanguage()}
+                style={{
+                  fontFamily: "Titillium-Light",
+                }}
+              >
+                {!language ? "FA" : "EN"}
+              </p>
+            </div>
             {displayNav
               .map((nav, index) => (
                 <Fragment key={index}>

@@ -6,8 +6,7 @@
   width: config.$content-width;
   max-width: config.$max-widthHeigh;
   margin: auto;
-  padding: 50px 0px;
-  padding-top: 100px;
+  padding: 100px 0px;
   user-select: none;
   color: config.$white;
   @include mixins.row-space-between-center();
@@ -19,31 +18,19 @@
     width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
     width: config.$content-width;
   }
   @include mixins.tabletLandscape {
     width: config.$content-width;
   }
 
-  .logoContainer {
-    width: 35%;
-    @include mixins.row-space-between-center();
-
-    @include mixins.mobile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 24px;
-    }
-    @include mixins.tabletPortrait {
-      width: 40%;
-    }
-  }
-
   .bookingContainer {
     width: 50%;
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: space-between;
 
     @include mixins.mobile {
@@ -52,9 +39,15 @@
       align-items: center;
       width: 100%;
     }
+    @include mixins.tabletPortrait {
+      width: 100%;
+    }
 
     .booking {
       @include mixins.mobile {
+        width: 100%;
+      }
+      @include mixins.tabletPortrait {
         width: 100%;
       }
 
@@ -63,8 +56,10 @@
         margin: 12px 0px;
         width: fit-content;
 
-        &:hover {
-          color: config.$gold;
+        @include mixins.desktop {
+          &:hover {
+            color: config.$gold;
+          }
         }
       }
 
@@ -75,31 +70,41 @@
     }
   }
 
-  .social {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .logoContainer {
+    width: 40%;
+    @include mixins.row-space-between-center();
 
     @include mixins.mobile {
+      width: 100%;
+      margin-top: 24px;
+    }
+    @include mixins.tabletPortrait {
+      width: 50%;
       margin-top: 24px;
     }
 
-    .icon {
+    .social {
       display: flex;
-      margin-bottom: 12px;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
 
-      &:hover {
-        color: config.$gold;
-        cursor: pointer;
+      .icon {
+        display: flex;
+        margin-bottom: 12px;
+
+        &:hover {
+          color: config.$gold;
+          cursor: pointer;
+        }
       }
     }
-  }
 
-  .logo {
-    position: relative;
-    width: 150px;
-    height: 100px;
-    cursor: pointer;
+    .logo {
+      position: relative;
+      width: 150px;
+      height: 100px;
+      cursor: pointer;
+    }
   }
 }

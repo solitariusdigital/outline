@@ -13,7 +13,23 @@ export default function Cover() {
       alt: "image",
     },
     {
+      src: "https://bucket.outlinecommunity.com/landing/IMG_02.jpg",
+      alt: "image",
+    },
+    {
+      src: "https://bucket.outlinecommunity.com/landing/IMG_03.jpg",
+      alt: "image",
+    },
+    {
+      src: "https://bucket.outlinecommunity.com/landing/IMG_04.jpg",
+      alt: "image",
+    },
+    {
       src: "https://bucket.outlinecommunity.com/landing/IMG_05.jpg",
+      alt: "image",
+    },
+    {
+      src: "https://bucket.outlinecommunity.com/landing/IMG_06.jpg",
       alt: "image",
     },
     {
@@ -25,7 +41,15 @@ export default function Cover() {
       alt: "image",
     },
     {
+      src: "https://bucket.outlinecommunity.com/landing/IMG_09.jpg",
+      alt: "image",
+    },
+    {
       src: "https://bucket.outlinecommunity.com/landing/IMG_10.jpg",
+      alt: "image",
+    },
+    {
+      src: "https://bucket.outlinecommunity.com/landing/IMG_12.jpg",
       alt: "image",
     },
     {
