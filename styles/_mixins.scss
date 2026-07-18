@@ -59,6 +59,54 @@ $screen-fourK: 6000px;
   }
 }
 
+@mixin buttonAnime($main, $sub) {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $main;
+  overflow: hidden;
+  border: none;
+  user-select: none;
+  height: 50px;
+  border-radius: 50px;
+  cursor: pointer;
+
+  @include mobile {
+    width: 350px;
+  }
+
+  &:after {
+    content: "";
+    width: 0%;
+    height: 100%;
+    background: $sub;
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+  }
+
+  &:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
+  }
+
+  span {
+    z-index: 1;
+    color: $sub;
+    letter-spacing: 0.05rem;
+    padding: 0px 28px;
+    transition: all 0.3s ease-in-out;
+    font-size: config.$med-font;
+  }
+
+  &:hover span {
+    color: $main;
+  }
+}
+
 @mixin input() {
   padding: 12px;
   height: 50px;

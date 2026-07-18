@@ -60,11 +60,7 @@ export default function Footer() {
               )
             }
           />
-          <h4>
-            {language
-              ? "ما را در شبکه‌های اجتماعی دنبال کنید"
-              : "Follow us on social media"}
-          </h4>
+          <h4>{language ? "ما را دنبال کنید" : "Follow us"}</h4>
         </div>
       </div>
       <div className={classes.bookingContainer}>

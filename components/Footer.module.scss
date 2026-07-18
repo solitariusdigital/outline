@@ -10,6 +10,7 @@
   user-select: none;
   color: config.$white;
   @include mixins.row-space-between-center();
+  font-size: config.$small-font;
 
   @include mixins.mobile {
     display: flex;
@@ -71,15 +72,14 @@
   }
 
   .logoContainer {
-    width: 40%;
+    width: 30%;
     @include mixins.row-space-between-center();
 
     @include mixins.mobile {
-      width: 100%;
+      width: config.$content-widthText;
       margin-top: 24px;
     }
     @include mixins.tabletPortrait {
-      width: 50%;
       margin-top: 24px;
     }
 

@@ -41,18 +41,15 @@
   position: relative;
   height: 100dvh;
 
-  .text {
+  .action {
     position: absolute;
     z-index: 2;
     left: 50%;
     bottom: 50%;
     transform: translateX(-50%);
-    text-align: center;
-    width: config.$content-widthText;
 
-    &:hover {
-      cursor: pointer;
-      color: config.$gold;
+    button {
+      @include mixins.buttonAnime(config.$gold, config.$darkblue);
     }
   }
 }
