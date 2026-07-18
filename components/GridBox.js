@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Image from "next/legacy/image";
+import { Opacity } from "@mui/icons-material";
 
 const shuffleImages = (array) => {
   const arr = [...array];
@@ -18,7 +19,7 @@ export default function GridBox({ images = [], screenSize }) {
   } else if (screenSize === "tablet-portrait") {
     CARD_H = 350;
   } else if (screenSize === "tablet-landscape") {
-    CARD_H = 280;
+    CARD_H = 250;
   } else {
     CARD_H = 300;
   }
@@ -105,18 +106,16 @@ export default function GridBox({ images = [], screenSize }) {
           height: CARD_H,
         }}
       >
-        <div style={styles.imgPlaceholder}>
-          <Image
-            src={item.src}
-            blurDataURL={item.src}
-            placeholder="blur"
-            alt={item.alt}
-            layout="fill"
-            objectFit="cover"
-            as="image"
-            priority
-          />
-        </div>
+        <Image
+          src={item.src}
+          blurDataURL={item.src}
+          placeholder="blur"
+          alt={item.alt}
+          layout="fill"
+          objectFit="cover"
+          as="image"
+          priority
+        />
       </div>
     ));
 
@@ -155,12 +154,5 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     borderRadius: "5px",
-  },
-  imgPlaceholder: {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
   },
 };

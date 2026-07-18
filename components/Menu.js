@@ -187,17 +187,6 @@ export default function Menu() {
                   {nav.title[languageType]}
                 </Link>
               ))}
-              <p
-                className={classes.nav}
-                style={{
-                  animationDelay: `${displayNav.length * 180}ms`,
-                  fontFamily: !language ? "Yekan-Regular" : "Titillium-Light",
-                  fontSize: "large",
-                }}
-                onClick={() => toggleLanguage()}
-              >
-                {!language ? "فارسی" : "English"}
-              </p>
             </nav>
           )}
         </nav>
