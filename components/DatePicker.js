@@ -408,9 +408,9 @@ export default function DatePicker({ visits }) {
       },
       "دکتر فراهانی": {
         tehran: {
-          "10:00": { display: true, active: false, count: 0 },
-          "10:30": { display: true, active: false, count: 0 },
-          "11:00": { display: true, active: false, count: 0 },
+          "10:00": { display: false, active: false, count: 0 },
+          "10:30": { display: false, active: false, count: 0 },
+          "11:00": { display: false, active: false, count: 0 },
           "11:30": { display: true, active: false, count: 0 },
           "12:00": { display: true, active: false, count: 0 },
           "12:30": { display: true, active: false, count: 0 },
@@ -495,7 +495,7 @@ export default function DatePicker({ visits }) {
     setDisplayForm(true);
 
     let timeToUse;
-    if (!isSunday || day.day === 21) {
+    if (!isSunday) {
       const numberSlice = 6;
       timeToUse = Object.fromEntries(
         Object.entries(originalTime).slice(numberSlice),
