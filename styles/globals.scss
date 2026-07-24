@@ -63,8 +63,10 @@ abbr[title] {
 .iconSite {
   cursor: pointer;
 
-  &:hover {
-    color: config.$gold;
+  @include mixins.allDesktop {
+    &:hover {
+      color: config.$gold;
+    }
   }
 }
 

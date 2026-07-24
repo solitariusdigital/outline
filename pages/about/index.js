@@ -6,7 +6,6 @@ import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Image from "next/legacy/image";
 import { applyFontToEnglishWords } from "@/services/utility";
-import { RevealText } from "@/components/RevealText";
 
 export default function About() {
   const { language, setLanguage } = useContext(StateContext);
