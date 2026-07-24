@@ -114,7 +114,7 @@ export default function About() {
                 "The Philosophy Behind Outline"
               )}
             </h1>
-            <h3
+            <h2
               style={{
                 marginTop: language ? "0px" : "16px",
               }}
@@ -129,13 +129,12 @@ export default function About() {
               ) : (
                 "At Outline, beauty is not created through injections, it is created through design."
               )}
-            </h3>
+            </h2>
           </div>
-          <div className={classes.scrollDown}>
+          <div className={classes.scrollDown} onClick={() => scrollToDivBox()}>
             <KeyboardArrowDownIcon
               className="iconSite"
               sx={{ fontSize: 40, color: "white" }}
-              onClick={() => scrollToDivBox()}
             />
           </div>
           <div className="fadeOverlayBottom"></div>

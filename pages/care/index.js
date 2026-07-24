@@ -59,38 +59,19 @@ export default function Care() {
             priority
           />
           <div className={classes.title}>
-            <h1>
-              {language ? (
-                <>
-                  فلسفه متد{" "}
-                  <span style={{ fontFamily: "Titillium-Light" }}>Outline</span>
-                </>
-              ) : (
-                "The Philosophy Behind Outline"
-              )}
-            </h1>
-            <h3
+            <h1>{language ? "زیبایی" : "Care"}</h1>
+            <h2
               style={{
                 marginTop: language ? "0px" : "16px",
               }}
             >
-              {language ? (
-                <>
-                  در{" "}
-                  <span style={{ fontFamily: "Titillium-Light" }}>Outline</span>
-                  ، زیبایی از طریق تزریق ساخته نمی‌شود بلکه از طریق طراحی خلق
-                  می‌شود.
-                </>
-              ) : (
-                "At Outline, beauty is not created through injections, it is created through design."
-              )}
-            </h3>
+              {language ? "زیبایی" : "Care"}
+            </h2>
           </div>
-          <div className={classes.scrollDown}>
+          <div className={classes.scrollDown} onClick={() => scrollToDivBox()}>
             <KeyboardArrowDownIcon
               className="iconSite"
               sx={{ fontSize: 40, color: "white" }}
-              onClick={() => scrollToDivBox()}
             />
           </div>
           <div className="fadeOverlayBottom"></div>

@@ -19,14 +19,10 @@ export default function Menu() {
   const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { menuBackground, setMenuBackground } = useContext(StateContext);
 
-  const router = useRouter();
-  let pathname = router.pathname;
-
   const fullSizeScreen = screenSize !== "mobile";
 
-  const displayNav = fullSizeScreen
-    ? navigationTopBar
-    : [...navigationTopBar].reverse();
+  const router = useRouter();
+  let pathname = router.pathname;
 
   useEffect(() => {
     if (menuMobile) {
@@ -75,7 +71,7 @@ export default function Menu() {
                   {!language ? "FA" : "EN"}
                 </p>
               </div>
-              {displayNav
+              {navigationTopBar
                 .map((nav, index) => (
                   <Fragment key={index}>
                     <Link
@@ -112,7 +108,7 @@ export default function Menu() {
             }}
           >
             <div className={classes.bar}>
-              {displayNav
+              {navigationTopBar
                 .map((nav, index) => (
                   <Fragment key={index}>
                     <Link
@@ -164,7 +160,7 @@ export default function Menu() {
                   fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
                 }}
               >
-                {displayNav.map((nav, index) => (
+                {navigationTopBar.map((nav, index) => (
                   <Link
                     key={nav.link}
                     href={nav.link}

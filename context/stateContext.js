@@ -32,26 +32,10 @@ export const StateProvider = (props) => {
   const [navigationTopBar, setNavigationTopBar] = useState([
     {
       title: {
-        fa: "تماس با ما",
-        en: "CONTACT US",
+        fa: "متد اوت‌لاین",
+        en: "METHOD",
       },
-      link: "/contact",
-      active: false,
-    },
-    {
-      title: {
-        fa: "درباره ما",
-        en: "ABOUT US",
-      },
-      link: "/about",
-      active: false,
-    },
-    {
-      title: {
-        fa: "پورتال نوبت",
-        en: "PORTAL",
-      },
-      link: "/reservation",
+      link: "/method",
       active: false,
     },
     {
@@ -64,10 +48,26 @@ export const StateProvider = (props) => {
     },
     {
       title: {
-        fa: "متد اوت‌لاین",
-        en: "METHOD",
+        fa: "درباره ما",
+        en: "ABOUT US",
       },
-      link: "/method",
+      link: "/about",
+      active: false,
+    },
+    {
+      title: {
+        fa: "تماس با ما",
+        en: "CONTACT US",
+      },
+      link: "/contact",
+      active: false,
+    },
+    {
+      title: {
+        fa: "پورتال نوبت",
+        en: "PORTAL",
+      },
+      link: "/reservation",
       active: false,
     },
   ]);

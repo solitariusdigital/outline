@@ -111,8 +111,7 @@ export default function Footer() {
                 </Link>
               </div>
             ))
-            .slice(0, 2)
-            .reverse()}
+            .slice(2, 5)}
         </nav>
         <nav
           className={classes.booking}
@@ -133,8 +132,7 @@ export default function Footer() {
                 </Link>
               </div>
             ))
-            .slice(2, 5)
-            .reverse()}
+            .slice(0, 2)}
         </nav>
       </div>
     </div>
