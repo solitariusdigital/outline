@@ -11,7 +11,6 @@ import Cover from "@/components/Cover";
 export default function Home() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
-  const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
@@ -20,13 +19,6 @@ export default function Home() {
     setMenuMobile(false);
     setMenuDisplay(true);
     setFooterDisplay(true);
-  }, []);
-
-  useEffect(() => {
-    navigationTopBar.map((nav) => {
-      nav.active = false;
-    });
-    setNavigationTopBar([...navigationTopBar]);
   }, []);
 
   return (

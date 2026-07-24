@@ -16,19 +16,6 @@ export default function Footer() {
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
 
-  const activateNav = (link, index) => {
-    setMenuMobile(false);
-    navigationTopBar.map((nav, i) => {
-      if (link === nav.link) {
-        Router.push(link);
-        nav.active = true;
-      } else {
-        nav.active = false;
-      }
-    });
-    setNavigationTopBar([...navigationTopBar]);
-  };
-
   return (
     <div
       className={classes.container}
@@ -116,7 +103,7 @@ export default function Footer() {
               <div key={index} className={classes.link}>
                 <Link
                   className={!nav.active ? classes.nav : classes.navActive}
-                  onClick={() => activateNav(nav.link, index)}
+                  onClick={() => setMenuMobile(false)}
                   href={nav.link}
                   passHref
                 >
@@ -138,7 +125,7 @@ export default function Footer() {
               <div key={index} className={classes.link}>
                 <Link
                   className={!nav.active ? classes.nav : classes.navActive}
-                  onClick={() => activateNav(nav.link, index)}
+                  onClick={() => setMenuMobile(false)}
                   href={nav.link}
                   passHref
                 >

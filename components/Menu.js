@@ -38,19 +38,6 @@ export default function Menu() {
     };
   }, [menuMobile]);
 
-  const activateNav = (link, index) => {
-    setMenuMobile(false);
-    navigationTopBar.map((nav, i) => {
-      if (link === nav.link) {
-        Router.push(link);
-        nav.active = true;
-      } else {
-        nav.active = false;
-      }
-    });
-    setNavigationTopBar([...navigationTopBar]);
-  };
-
   useEffect(() => {
     navigationTopBar.map((nav) => {
       nav.active = nav.link === pathname;
@@ -90,7 +77,7 @@ export default function Menu() {
                 <Fragment key={index}>
                   <Link
                     className={!nav.active ? classes.nav : classes.navActive}
-                    onClick={() => activateNav(nav.link, index)}
+                    onClick={() => setMenuMobile(false)}
                     href={nav.link}
                     passHref
                   >
@@ -127,7 +114,7 @@ export default function Menu() {
                 <Fragment key={index}>
                   <Link
                     className={!nav.active ? classes.nav : classes.navActive}
-                    onClick={() => activateNav(nav.link, index)}
+                    onClick={() => setMenuMobile(false)}
                     href={nav.link}
                     passHref
                   >
@@ -182,7 +169,7 @@ export default function Menu() {
                   style={{
                     animationDelay: `${index * 180}ms`,
                   }}
-                  onClick={() => activateNav(nav.link, index)}
+                  onClick={() => setMenuMobile(false)}
                 >
                   {nav.title[languageType]}
                 </Link>
