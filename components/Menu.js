@@ -17,6 +17,7 @@ export default function Menu() {
   const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
+  const { menuBackground, setMenuBackground } = useContext(StateContext);
 
   const router = useRouter();
   let pathname = router.pathname;
@@ -57,127 +58,130 @@ export default function Menu() {
       className={classes.container}
       style={{
         fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
+        backgroundColor: menuBackground,
       }}
     >
-      {fullSizeScreen && (
-        <nav className={classes.fullSizeNavigation}>
-          <div className={classes.bar}>
-            <div className={classes.action}>
-              <p
-                onClick={() => toggleLanguage()}
-                style={{
-                  fontFamily: "Titillium-Light",
-                }}
-              >
-                {!language ? "FA" : "EN"}
-              </p>
-            </div>
-            {displayNav
-              .map((nav, index) => (
-                <Fragment key={index}>
-                  <Link
-                    className={!nav.active ? classes.nav : classes.navActive}
-                    onClick={() => setMenuMobile(false)}
-                    href={nav.link}
-                    passHref
-                  >
-                    {nav.title[languageType]}
-                  </Link>
-                </Fragment>
-              ))
-              .slice(0, 2)}
-          </div>
-        </nav>
-      )}
-      <div className={classes.logo}>
-        <Link href="/" passHref>
-          <Image
-            src={logo}
-            layout="fill"
-            objectFit="contain"
-            alt="logo"
-            as="image"
-            priority
-          />
-        </Link>
-      </div>
-      {fullSizeScreen && (
-        <nav
-          className={classes.fullSizeNavigation}
-          style={{
-            flexDirection: "row-reverse",
-          }}
-        >
-          <div className={classes.bar}>
-            {displayNav
-              .map((nav, index) => (
-                <Fragment key={index}>
-                  <Link
-                    className={!nav.active ? classes.nav : classes.navActive}
-                    onClick={() => setMenuMobile(false)}
-                    href={nav.link}
-                    passHref
-                  >
-                    {nav.title[languageType]}
-                  </Link>
-                </Fragment>
-              ))
-              .slice(2, 5)}
-          </div>
-        </nav>
-      )}
-      {!fullSizeScreen && (
-        <nav>
-          <div className={classes.action}>
-            {!menuMobile && (
-              <p
-                onClick={() => toggleLanguage()}
-                style={{
-                  fontFamily: "Titillium-Light",
-                  marginRight: "8px",
-                }}
-              >
-                {!language ? "FA" : "EN"}
-              </p>
-            )}
-            {menuMobile ? (
-              <CloseIcon
-                className="iconSite"
-                onClick={() => setMenuMobile(!menuMobile)}
-                sx={{ fontSize: 30 }}
-              />
-            ) : (
-              <MenuIcon
-                className="iconSite"
-                onClick={() => setMenuMobile(!menuMobile)}
-                sx={{ fontSize: 30 }}
-              />
-            )}
-          </div>
-          {menuMobile && (
-            <nav
-              className={classes.mobileNavigation}
-              style={{
-                fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
-              }}
-            >
-              {displayNav.map((nav, index) => (
-                <Link
-                  key={nav.link}
-                  href={nav.link}
-                  className={nav.active ? classes.navActive : classes.nav}
+      <div className={classes.fullMenu}>
+        {fullSizeScreen && (
+          <nav className={classes.fullSizeNavigation}>
+            <div className={classes.bar}>
+              <div className={classes.action}>
+                <p
+                  onClick={() => toggleLanguage()}
                   style={{
-                    animationDelay: `${index * 180}ms`,
+                    fontFamily: "Titillium-Light",
                   }}
-                  onClick={() => setMenuMobile(false)}
                 >
-                  {nav.title[languageType]}
-                </Link>
-              ))}
-            </nav>
-          )}
-        </nav>
-      )}
+                  {!language ? "FA" : "EN"}
+                </p>
+              </div>
+              {displayNav
+                .map((nav, index) => (
+                  <Fragment key={index}>
+                    <Link
+                      className={!nav.active ? classes.nav : classes.navActive}
+                      onClick={() => setMenuMobile(false)}
+                      href={nav.link}
+                      passHref
+                    >
+                      {nav.title[languageType]}
+                    </Link>
+                  </Fragment>
+                ))
+                .slice(0, 2)}
+            </div>
+          </nav>
+        )}
+        <div className={classes.logo}>
+          <Link href="/" passHref>
+            <Image
+              src={logo}
+              layout="fill"
+              objectFit="contain"
+              alt="logo"
+              as="image"
+              priority
+            />
+          </Link>
+        </div>
+        {fullSizeScreen && (
+          <nav
+            className={classes.fullSizeNavigation}
+            style={{
+              flexDirection: "row-reverse",
+            }}
+          >
+            <div className={classes.bar}>
+              {displayNav
+                .map((nav, index) => (
+                  <Fragment key={index}>
+                    <Link
+                      className={!nav.active ? classes.nav : classes.navActive}
+                      onClick={() => setMenuMobile(false)}
+                      href={nav.link}
+                      passHref
+                    >
+                      {nav.title[languageType]}
+                    </Link>
+                  </Fragment>
+                ))
+                .slice(2, 5)}
+            </div>
+          </nav>
+        )}
+        {!fullSizeScreen && (
+          <nav>
+            <div className={classes.action}>
+              {!menuMobile && (
+                <p
+                  onClick={() => toggleLanguage()}
+                  style={{
+                    fontFamily: "Titillium-Light",
+                    marginRight: "8px",
+                  }}
+                >
+                  {!language ? "FA" : "EN"}
+                </p>
+              )}
+              {menuMobile ? (
+                <CloseIcon
+                  className="iconSite"
+                  onClick={() => setMenuMobile(!menuMobile)}
+                  sx={{ fontSize: 30 }}
+                />
+              ) : (
+                <MenuIcon
+                  className="iconSite"
+                  onClick={() => setMenuMobile(!menuMobile)}
+                  sx={{ fontSize: 30 }}
+                />
+              )}
+            </div>
+            {menuMobile && (
+              <nav
+                className={classes.mobileNavigation}
+                style={{
+                  fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
+                }}
+              >
+                {displayNav.map((nav, index) => (
+                  <Link
+                    key={nav.link}
+                    href={nav.link}
+                    className={nav.active ? classes.navActive : classes.nav}
+                    style={{
+                      animationDelay: `${index * 180}ms`,
+                    }}
+                    onClick={() => setMenuMobile(false)}
+                  >
+                    {nav.title[languageType]}
+                  </Link>
+                ))}
+              </nav>
+            )}
+          </nav>
+        )}
+      </div>
     </div>
   );
 }

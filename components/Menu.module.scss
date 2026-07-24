@@ -4,13 +4,18 @@
 .container {
   position: relative;
   user-select: none;
-  width: config.$content-width;
-  max-width: config.$max-widthHeigh;
-  @include mixins.row-space-between-center();
   color: config.$white;
+  width: 100%;
+  max-width: config.$max-widthHeigh;
 
-  @include mixins.mobile {
-    width: calc(100% - 24px);
+  .fullMenu {
+    margin: auto;
+    width: config.$content-width;
+    @include mixins.row-space-between-center();
+
+    @include mixins.mobile {
+      width: calc(100% - 24px);
+    }
   }
 
   .action {
@@ -45,7 +50,7 @@
   .mobileNavigation {
     position: absolute;
     z-index: 1;
-    left: -12px;
+    left: 0px;
     top: 0px;
     display: flex;
     flex-direction: column;
@@ -54,7 +59,7 @@
     background: config.$darkblue;
     height: 100dvh;
     z-index: -1;
-    width: calc(100% + 24px);
+    width: 100%;
 
     .nav {
       color: config.$white;

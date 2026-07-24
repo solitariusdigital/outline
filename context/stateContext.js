@@ -18,6 +18,7 @@ export const StateProvider = (props) => {
   const [menuDisplay, setMenuDisplay] = useState(true);
   const [footerDisplay, setFooterDisplay] = useState(true);
   const [menuMobile, setMenuMobile] = useState(false);
+  const [menuBackground, setMenuBackground] = useState("transparent");
   const [cachedVisitsData, setCachedVisitsData] = useState(null);
   const [popupDiagramData, setPopupDiagramData] = useState(null);
   const [adminColorCode, setAdminColorCode] = useState({
@@ -77,6 +78,8 @@ export const StateProvider = (props) => {
     setLanguageType,
     currentUser,
     setCurrentUser,
+    menuBackground,
+    setMenuBackground,
     navigationTopBar,
     setNavigationTopBar,
     footerDisplay,

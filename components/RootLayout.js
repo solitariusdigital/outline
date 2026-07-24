@@ -19,6 +19,7 @@ export default function RootLayout({ children }) {
   const { screenSize, setScreenSize } = useContext(StateContext);
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
+  const { menuBackground, setMenuBackground } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
   const [appLoader, setAppLoader] = useState(false);
 
@@ -56,12 +57,15 @@ export default function RootLayout({ children }) {
     let prevScrollY = window.scrollY;
     const handleScroll = () => {
       if (menuMobile) return;
-
       const currentScrollY = window.scrollY;
       if (currentScrollY <= 0) {
         setMenuDisplay(true);
+        setMenuBackground("transparent");
       } else if (currentScrollY > prevScrollY) {
         setMenuDisplay(false);
+      } else if (currentScrollY < prevScrollY) {
+        setMenuDisplay(true);
+        setMenuBackground("#000b1f");
       }
       prevScrollY = currentScrollY;
     };
