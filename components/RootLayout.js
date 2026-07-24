@@ -5,12 +5,7 @@ import Image from "next/legacy/image";
 import logo from "@/assets/logoWhite.png";
 import Menu from "@/components/Menu";
 import Footer from "@/components/Footer";
-import {
-  getSingleUserApi,
-  getControlsApi,
-  updateControlApi,
-} from "@/services/api";
-import { getCurrentDateFarsi } from "@/services/utility";
+import { getSingleUserApi } from "@/services/api";
 
 export default function RootLayout({ children }) {
   const { language, setLanguage } = useContext(StateContext);
@@ -72,37 +67,6 @@ export default function RootLayout({ children }) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [menuMobile]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (await checkReminderFutureSent()) {
-        return;
-      }
-      const now = new Date();
-      if (now.getUTCHours() >= 8) {
-        const res = await fetch("/api/cron/reminder");
-        if (res.ok) {
-          const controlData = await getControlsApi();
-          const currentDate = getCurrentDateFarsi();
-          const controlObject = {
-            ...controlData[0],
-            reminderFuture: {
-              ...controlData[0].reminderFuture,
-              [currentDate]: true,
-            },
-          };
-          await updateControlApi(controlObject);
-        }
-      }
-    };
-    fetchData();
-  }, []);
-
-  const checkReminderFutureSent = async () => {
-    const controlData = await getControlsApi();
-    const currentDate = getCurrentDateFarsi();
-    return controlData[0]?.reminderFuture?.[currentDate] === true;
-  };
 
   useEffect(() => {
     handleResize();

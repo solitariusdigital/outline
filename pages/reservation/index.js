@@ -38,6 +38,50 @@ export default function Reservation({ activeVisits }) {
     }, 100);
   }, []);
 
+  // useEffect(() => {
+  //   const handleCronReminder = async () => {
+  //     try {
+  //       const now = new Date();
+  //       if (now.getUTCHours() < 8) return;
+
+  //       const alreadySent = await checkReminderFutureSent();
+  //       if (alreadySent) return;
+
+  //       const res = await fetch("/api/cron/reminder");
+  //       if (res.ok) {
+  //         const controlData = await getControlsApi();
+  //         const currentDate = getCurrentDateFarsi();
+  //         const controlObject = {
+  //           ...controlData[0],
+  //           reminderFuture: {
+  //             ...controlData[0].reminderFuture,
+  //             [currentDate]: true,
+  //           },
+  //         };
+  //         await updateControlApi(controlObject);
+  //       } else {
+  //         console.error("Cron reminder endpoint failed:", res.status);
+  //       }
+  //     } catch (err) {
+  //       console.error("handleCronReminder failed:", err);
+  //     }
+  //   };
+  //   if (isUserAuthorized) {
+  //     handleCronReminder();
+  //   }
+  // }, []);
+
+  // const checkReminderFutureSent = async () => {
+  //   try {
+  //     const controlData = await getControlsApi();
+  //     const currentDate = getCurrentDateFarsi();
+  //     return controlData?.[0]?.reminderFuture?.[currentDate] === true;
+  //   } catch (err) {
+  //     console.error("checkReminderFutureSent failed:", err);
+  //     return true;
+  //   }
+  // };
+
   useEffect(() => {
     const handleUserVisits = async () => {
       if (!currentUser) {
@@ -90,10 +134,7 @@ export default function Reservation({ activeVisits }) {
       const checkType = existingEntryIndex === -1 ? "checkin" : "checkout";
       setCheckType(checkType);
     };
-    if (
-      currentUser.permission === "admin" ||
-      currentUser.permission === "staff"
-    ) {
+    if (isUserAuthorized) {
       handleUserVisits();
     }
   }, []);

@@ -8,7 +8,6 @@ export default async function handler(req, res) {
     await dbConnect();
 
     const now = new Date();
-
     const endOfDay = new Date(now);
     endOfDay.setUTCHours(23, 59, 59, 999);
 
