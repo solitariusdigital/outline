@@ -73,11 +73,6 @@ export function ganjeDays(persianDate) {
 
 export function pourgholiDays(persianDate) {
   const { day, month, year } = persianDate;
-  // const months = new Set([4]);
-  // const days = new Set([18]);
-  // if (months.has(month) && days.has(day)) {
-  //   return false;
-  // }
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
