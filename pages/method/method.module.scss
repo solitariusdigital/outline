@@ -41,17 +41,20 @@
   gap: 12px;
   padding: 12px 0px;
   margin: auto;
-  width: 60%;
+  width: 50%;
   max-width: config.$max-widthHeigh;
+  text-transform: capitalize;
 
   @include mixins.mobile {
     width: calc(100% - 24px);
+    gap: 24px;
+    justify-content: flex-start;
   }
   @include mixins.tabletPortrait {
     width: config.$content-width;
   }
   @include mixins.tabletLandscape {
-    width: config.$content-width;
+    width: config.$content-width - 20%;
   }
 
   .item {
@@ -67,7 +70,7 @@
 }
 
 .categorySecond {
-  width: 50%;
+  width: 40%;
 
   @include mixins.mobile {
     width: calc(100% - 24px);
@@ -76,6 +79,43 @@
     width: config.$content-width - 20%;
   }
   @include mixins.tabletLandscape {
-    width: config.$content-width - 20%;
+    width: config.$content-width - 30%;
+  }
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  gap: 24px;
+  margin: auto;
+  padding: 24px 0px;
+  width: config.$content-width;
+  max-width: config.$max-widthHeigh;
+
+  @include mixins.mobile {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 24px);
+  }
+  @include mixins.tabletPortrait {
+    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    gap: 12px;
+  }
+
+  .imageBox {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 50dvh;
+    border-radius: 8px;
+
+    @include mixins.mobile {
+      height: 40dvh;
+    }
   }
 }

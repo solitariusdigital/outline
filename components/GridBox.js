@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Image from "next/legacy/image";
-import { Opacity } from "@mui/icons-material";
 
 const shuffleImages = (array) => {
   const arr = [...array];
@@ -153,6 +152,6 @@ const styles = {
     overflow: "hidden",
     display: "flex",
     flexDirection: "column",
-    borderRadius: "5px",
+    borderRadius: "8px",
   },
 };

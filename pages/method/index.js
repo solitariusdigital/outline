@@ -1,88 +1,71 @@
 import { useContext, Fragment, useEffect, useRef, useState } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./method.module.scss";
+import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import Image from "next/legacy/image";
 
 const defaultInjections = [
   {
     item: {
       fa: "همه",
-      en: "All",
+      en: "all",
     },
-    active: false,
   },
   {
     item: {
       fa: "فیلر",
-      en: "Fillers",
+      en: "fillers",
     },
-    active: false,
   },
   {
     item: {
       fa: "بوتاکس",
-      en: "Botox",
+      en: "botox",
     },
-    active: false,
   },
   {
     item: {
       fa: "مزوتراپی",
-      en: "Mesotherapy",
+      en: "mesotherapy",
     },
-    active: false,
   },
   {
     item: {
       fa: "جوانساز",
-      en: "Skin Rejuvenation",
+      en: "skin rejuvenation",
     },
-    active: false,
-  },
-  {
-    item: {
-      fa: "فیلر",
-      en: "filler",
-    },
-    active: false,
   },
   {
     item: {
       fa: "پی آر پی",
       en: "PRP",
     },
-    active: false,
   },
   {
     item: {
       fa: "آنزیم",
-      en: "Enzyme",
+      en: "enzyme",
     },
-    active: false,
   },
   {
     item: {
       fa: "سونوگرافی",
-      en: "Ultrasound",
+      en: "ultrasound",
     },
-    active: false,
   },
   {
     item: {
       fa: "لیزر سرجیکال",
-      en: "Surgical Laser",
+      en: "surgical laser",
     },
-    active: false,
   },
   {
     item: {
       fa: "لیزر فرکشنال",
-      en: "Fractional Laser",
+      en: "fractional laser",
     },
-    active: false,
   },
 ];
 
@@ -91,9 +74,56 @@ export default function Method() {
   const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
   const { languageType, setLanguageType } = useContext(StateContext);
-  const [injections, setInjections] = useState(defaultInjections);
+  const [displayType, setDisplayType] = useState("all");
 
   const targetBox = useRef(null);
+
+  const imagePairs = [
+    {
+      before: {
+        src: "https://bucket.outlinecommunity.com/landing/IMG_01.jpg",
+        alt: "image",
+      },
+      after: {
+        src: "https://bucket.outlinecommunity.com/landing/IMG_02.jpg",
+        alt: "image",
+      },
+      type: "botox",
+    },
+    {
+      before: {
+        src: "https://bucket.outlinecommunity.com/landing/IMG_03.jpg",
+        alt: "image",
+      },
+      after: {
+        src: "https://bucket.outlinecommunity.com/landing/IMG_04.jpg",
+        alt: "image",
+      },
+      type: "fillers",
+    },
+    {
+      before: {
+        src: "https://bucket.outlinecommunity.com/landing/IMG_01.jpg",
+        alt: "image",
+      },
+      after: {
+        src: "https://bucket.outlinecommunity.com/landing/IMG_02.jpg",
+        alt: "image",
+      },
+      type: "enzyme",
+    },
+    {
+      before: {
+        src: "https://bucket.outlinecommunity.com/landing/IMG_03.jpg",
+        alt: "image",
+      },
+      after: {
+        src: "https://bucket.outlinecommunity.com/landing/IMG_04.jpg",
+        alt: "image",
+      },
+      type: "PRP",
+    },
+  ];
 
   const scrollToDivBox = () => {
     if (targetBox.current) {
@@ -102,12 +132,7 @@ export default function Method() {
   };
 
   const toggleType = (index) => {
-    setInjections((prev) =>
-      prev.map((item, i) => ({
-        ...item,
-        active: i === index,
-      })),
-    );
+    setDisplayType(defaultInjections[index].item.en);
   };
 
   return (
@@ -174,11 +199,15 @@ export default function Method() {
           <div className="fadeOverlayBottom"></div>
         </div>
         <div className={classes.category} ref={targetBox}>
-          {injections
+          {defaultInjections
             .map((item, index) => (
               <div
                 key={index}
-                className={item.active ? classes.itemActive : classes.item}
+                className={
+                  item.item.en === displayType
+                    ? classes.itemActive
+                    : classes.item
+                }
                 onClick={() => toggleType(index)}
               >
                 <h3>{item.item[languageType]}</h3>
@@ -187,17 +216,53 @@ export default function Method() {
             .slice(0, 6)}
         </div>
         <div className={classes.categorySecond} ref={targetBox}>
-          {injections
+          {defaultInjections
             .map((item, index) => (
               <div
                 key={index}
-                className={item.active ? classes.itemActive : classes.item}
+                className={
+                  item.item.en === displayType
+                    ? classes.itemActive
+                    : classes.item
+                }
                 onClick={() => toggleType(index)}
               >
                 <h3>{item.item[languageType]}</h3>
               </div>
             ))
             .slice(6, 11)}
+        </div>
+        <div className={classes.gallery}>
+          {imagePairs
+            .filter(
+              (pair) => displayType === "all" || pair.type === displayType,
+            )
+            .map((pair, index) => (
+              <div key={index} className={classes.pair}>
+                <div className={classes.imageBox}>
+                  <Image
+                    src={pair.before.src}
+                    blurDataURL={pair.before.src}
+                    placeholder="blur"
+                    alt={pair.before.alt}
+                    layout="fill"
+                    objectFit="cover"
+                    as="image"
+                  />
+                </div>
+                <div className={classes.imageBox}>
+                  <Image
+                    src={pair.after.src}
+                    blurDataURL={pair.after.src}
+                    placeholder="blur"
+                    alt={pair.after.alt}
+                    layout="fill"
+                    objectFit="cover"
+                    as="image"
+                  />
+                </div>
+              </div>
+            ))}
         </div>
       </section>
     </Fragment>
