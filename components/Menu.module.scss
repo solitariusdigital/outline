@@ -39,7 +39,7 @@
       @include mixins.row-space-between-center();
 
       @include mixins.tabletPortrait {
-        width: config.$content-widthText;
+        width: config.$content-widthText + 20%;
       }
       @include mixins.tabletLandscape {
         width: config.$content-widthText;

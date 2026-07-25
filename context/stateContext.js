@@ -33,7 +33,7 @@ export const StateProvider = (props) => {
     {
       title: {
         fa: "متد اوت‌لاین",
-        en: "METHOD",
+        en: "OUTLINE METHOD",
       },
       link: "/method",
       active: false,
@@ -41,7 +41,7 @@ export const StateProvider = (props) => {
     {
       title: {
         fa: "مراقبت پزشکی",
-        en: "CARE",
+        en: "MEDICAL CARE",
       },
       link: "/care",
       active: false,

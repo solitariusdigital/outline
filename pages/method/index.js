@@ -210,7 +210,7 @@ export default function Method() {
                 }
                 onClick={() => toggleType(index)}
               >
-                <h3>{item.item[languageType]}</h3>
+                <h4>{item.item[languageType]}</h4>
               </div>
             ))
             .slice(0, 6)}
@@ -227,7 +227,7 @@ export default function Method() {
                 }
                 onClick={() => toggleType(index)}
               >
-                <h3>{item.item[languageType]}</h3>
+                <h4>{item.item[languageType]}</h4>
               </div>
             ))
             .slice(6, 11)}
