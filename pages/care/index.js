@@ -1,4 +1,4 @@
-import { useContext, Fragment, useEffect } from "react";
+import { useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./care.module.scss";
 import logo from "@/assets/logo.png";
@@ -12,6 +12,14 @@ export default function Care() {
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
+
+  const targetBox = useRef(null);
+
+  const scrollToDivBox = () => {
+    if (targetBox.current) {
+      targetBox.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <Fragment>
@@ -76,6 +84,7 @@ export default function Care() {
           </div>
           <div className="fadeOverlayBottom"></div>
         </div>
+        <div ref={targetBox}></div>
       </section>
     </Fragment>
   );
