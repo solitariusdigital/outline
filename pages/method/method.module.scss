@@ -87,7 +87,7 @@
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-  gap: 24px;
+  gap: 36px;
   margin: auto;
   padding: 50px 0px;
   width: config.$content-width;
@@ -105,7 +105,7 @@
   .pair {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-    gap: 12px;
+    gap: 16px;
   }
 
   .imageBox {
