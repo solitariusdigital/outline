@@ -1,4 +1,4 @@
-import { useContext, Fragment, useEffect, useState, useRef } from "react";
+import { useContext, Fragment, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./about.module.scss";
 import logo from "@/assets/logo.png";

@@ -264,7 +264,7 @@ export default function Reservation({ activeVisits }) {
           >
             تماس
           </div>
-          {!currentUser?.super && isUserAuthorized && <Timesheet />}
+          {/* {!currentUser?.super && isUserAuthorized && <Timesheet />} */}
         </div>
       </section>
     </Fragment>
