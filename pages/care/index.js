@@ -16,14 +16,14 @@ export default function Care() {
   return (
     <Fragment>
       <NextSeo
-        title={language ? "مراقبت پزشکی" : "Care"}
+        title={language ? "مراقبت پزشکی" : "Medical Care"}
         description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/care"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/care",
-          title: language ? "مراقبت پزشکی" : "Care",
+          title: language ? "مراقبت پزشکی" : "Medical Care",
           description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {

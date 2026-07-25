@@ -138,14 +138,14 @@ export default function Method() {
   return (
     <Fragment>
       <NextSeo
-        title={language ? "متد اوت‌لاین" : "Method"}
+        title={language ? "متد اوت‌لاین" : "Outline Method"}
         description={language ? "کلینیک پزشکی" : "Medical Clinic"}
         canonical="https://outlinecommunity.com/method"
         openGraph={{
           type: "website",
           locale: "fa_IR",
           url: "https://outlinecommunity.com/method",
-          title: language ? "متد اوت‌لاین" : "Method",
+          title: language ? "متد اوت‌لاین" : "Outline Method",
           description: language ? "کلینیک پزشکی" : "Medical Clinic",
           siteName: "Outline Community",
           images: {
