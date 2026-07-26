@@ -47,9 +47,20 @@
     left: 50%;
     bottom: 50%;
     transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    min-width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+    @include mixins.glass-effect();
 
-    button {
-      @include mixins.buttonAnime(config.$gold, config.$darkblue);
+    &:hover {
+      cursor: pointer;
+      color: config.$gold;
+    }
+
+    @include mixins.mobile {
+      width: calc(100% - 24px);
     }
   }
 }

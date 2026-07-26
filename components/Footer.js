@@ -23,7 +23,18 @@ export default function Footer() {
         fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
       }}
     >
-      <div className={classes.logoContainer}>
+      <div className={classes.social}>
+        <InstagramIcon
+          className={classes.icon}
+          sx={{ fontSize: 24 }}
+          onClick={() =>
+            window.open(
+              "https://www.instagram.com/dr.farahani.outline",
+              "_ self",
+            )
+          }
+        />
+        <h4>{language ? "ما را دنبال کنید" : "Follow us"}</h4>
         <div className={classes.logo}>
           <Link href="/" passHref>
             <Image
@@ -36,105 +47,90 @@ export default function Footer() {
             />
           </Link>
         </div>
-        <div className={classes.social}>
-          <InstagramIcon
-            className={classes.icon}
-            sx={{ fontSize: 24 }}
-            onClick={() =>
-              window.open(
-                "https://www.instagram.com/dr.farahani.outline",
-                "_ self",
-              )
-            }
-          />
-          <h4>{language ? "ما را دنبال کنید" : "Follow us"}</h4>
+      </div>
+      <nav
+        className={classes.booking}
+        style={{
+          direction: language ? "rtl" : "ltr",
+        }}
+      >
+        <div className={classes.link}>
+          <Link
+            href={currentUser ? "/booking" : "/portal"}
+            onClick={() => {
+              setSelectDoctor("دکتر فراهانی");
+              setSelectBranch("tehran");
+            }}
+          >
+            {language ? "نوبت دکتر فراهانی" : "Dr. Farahani's Appointment"}
+          </Link>
         </div>
-      </div>
-      <div className={classes.bookingContainer}>
-        <nav
-          className={classes.booking}
-          style={{
-            direction: language ? "rtl" : "ltr",
-          }}
-        >
-          <div className={classes.link}>
-            <Link
-              href={currentUser ? "/booking" : "/portal"}
-              onClick={() => {
-                setSelectDoctor("دکتر فراهانی");
-                setSelectBranch("tehran");
-              }}
-            >
-              {language ? "نوبت دکتر فراهانی" : "Dr. Farahani's Appointment"}
-            </Link>
-          </div>
-          <div className={classes.link}>
-            <Link
-              href={currentUser ? "/booking" : "/portal"}
-              passHref
-              onClick={() => {
-                setSelectDoctor("دکتر گنجه");
-                setSelectBranch("tehran");
-              }}
-            >
-              {language ? "نوبت دکتر گنجه" : "Dr. Ganjeh's Appointment"}
-            </Link>
-          </div>
-          <div className={classes.link}>
-            <Link
-              href={currentUser ? "/booking" : "/portal"}
-              onClick={() => {
-                setSelectDoctor("دکتر پورقلی");
-                setSelectBranch("tehran");
-              }}
-            >
-              {language ? "نوبت دکتر پورقلی" : "Dr. Pourgholi's Appointment"}
-            </Link>
-          </div>
-        </nav>
-        <nav
-          className={classes.booking}
-          style={{
-            direction: language ? "rtl" : "ltr",
-          }}
-        >
-          {navigationTopBar
-            .map((nav, index) => (
-              <div key={index} className={classes.link}>
-                <Link
-                  className={!nav.active ? classes.nav : classes.navActive}
-                  onClick={() => setMenuMobile(false)}
-                  href={nav.link}
-                  passHref
-                >
-                  {nav.title[languageType]}
-                </Link>
-              </div>
-            ))
-            .slice(2, 5)}
-        </nav>
-        <nav
-          className={classes.booking}
-          style={{
-            direction: language ? "rtl" : "ltr",
-          }}
-        >
-          {navigationTopBar
-            .map((nav, index) => (
-              <div key={index} className={classes.link}>
-                <Link
-                  className={!nav.active ? classes.nav : classes.navActive}
-                  onClick={() => setMenuMobile(false)}
-                  href={nav.link}
-                  passHref
-                >
-                  {nav.title[languageType]}
-                </Link>
-              </div>
-            ))
-            .slice(0, 2)}
-        </nav>
-      </div>
+        <div className={classes.link}>
+          <Link
+            href={currentUser ? "/booking" : "/portal"}
+            passHref
+            onClick={() => {
+              setSelectDoctor("دکتر گنجه");
+              setSelectBranch("tehran");
+            }}
+          >
+            {language ? "نوبت دکتر گنجه" : "Dr. Ganjeh's Appointment"}
+          </Link>
+        </div>
+        <div className={classes.link}>
+          <Link
+            href={currentUser ? "/booking" : "/portal"}
+            onClick={() => {
+              setSelectDoctor("دکتر پورقلی");
+              setSelectBranch("tehran");
+            }}
+          >
+            {language ? "نوبت دکتر پورقلی" : "Dr. Pourgholi's Appointment"}
+          </Link>
+        </div>
+      </nav>
+      <nav
+        className={classes.booking}
+        style={{
+          direction: language ? "rtl" : "ltr",
+        }}
+      >
+        {navigationTopBar
+          .map((nav, index) => (
+            <div key={index} className={classes.link}>
+              <Link
+                className={!nav.active ? classes.nav : classes.navActive}
+                onClick={() => setMenuMobile(false)}
+                href={nav.link}
+                passHref
+              >
+                {nav.title[languageType]}
+              </Link>
+            </div>
+          ))
+          .slice(2, 5)}
+      </nav>
+      <nav
+        className={classes.booking}
+        style={{
+          direction: language ? "rtl" : "ltr",
+        }}
+      >
+        {navigationTopBar
+          .map((nav, index) => (
+            <div key={index} className={classes.link}>
+              <Link
+                className={!nav.active ? classes.nav : classes.navActive}
+                onClick={() => setMenuMobile(false)}
+                href={nav.link}
+                passHref
+              >
+                {nav.title[languageType]}
+              </Link>
+            </div>
+          ))
+          .slice(0, 2)}
+      </nav>
     </div>
   );
 }

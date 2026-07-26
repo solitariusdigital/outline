@@ -6,11 +6,12 @@
   width: config.$content-width;
   max-width: config.$max-widthHeigh;
   margin: auto;
-  padding: 100px 0px;
+  padding: 50px 0px;
   user-select: none;
   color: config.$white;
-  @include mixins.row-space-between-center();
   font-size: config.$small-font;
+  @include mixins.row-space-between-center();
+  align-items: flex-start;
 
   @include mixins.mobile {
     display: flex;
@@ -19,92 +20,60 @@
     width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
     width: config.$content-width;
   }
   @include mixins.tabletLandscape {
     width: config.$content-width;
   }
 
-  .bookingContainer {
-    width: 50%;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-
+  .booking {
     @include mixins.mobile {
-      display: flex;
-      flex-direction: column-reverse;
-      align-items: center;
-      width: 100%;
-    }
-    @include mixins.tabletPortrait {
       width: 100%;
     }
 
-    .booking {
-      @include mixins.mobile {
-        width: 100%;
-      }
-      @include mixins.tabletPortrait {
-        width: 100%;
-      }
+    .link {
+      cursor: pointer;
+      margin-bottom: 12px;
+      width: fit-content;
 
-      .link {
-        cursor: pointer;
-        margin: 12px 0px;
-        width: fit-content;
-
-        @include mixins.desktop {
-          &:hover {
-            color: config.$gold;
-          }
+      @include mixins.desktop {
+        &:hover {
+          color: config.$gold;
         }
       }
+    }
 
-      .navActive {
+    .navActive {
+      color: config.$gold;
+      cursor: pointer;
+    }
+  }
+
+  .social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include mixins.mobile {
+      margin-top: 24px;
+    }
+
+    .icon {
+      display: flex;
+      margin-bottom: 12px;
+
+      &:hover {
         color: config.$gold;
         cursor: pointer;
       }
     }
   }
 
-  .logoContainer {
-    width: 30%;
-    @include mixins.row-space-between-center();
-
-    @include mixins.mobile {
-      width: config.$content-widthText;
-      margin-top: 24px;
-    }
-    @include mixins.tabletPortrait {
-      margin-top: 24px;
-    }
-
-    .social {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-
-      .icon {
-        display: flex;
-        margin-bottom: 12px;
-
-        &:hover {
-          color: config.$gold;
-          cursor: pointer;
-        }
-      }
-    }
-
-    .logo {
-      position: relative;
-      width: 150px;
-      height: 100px;
-      cursor: pointer;
-    }
+  .logo {
+    position: relative;
+    width: 100px;
+    height: 50px;
+    margin-top: 24px;
+    cursor: pointer;
   }
 }

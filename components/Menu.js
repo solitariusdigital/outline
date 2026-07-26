@@ -51,10 +51,9 @@ export default function Menu() {
 
   return (
     <div
-      className={classes.container}
+      className={menuBackground ? classes.glassEffect : classes.container}
       style={{
         fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
-        backgroundColor: menuBackground,
       }}
     >
       <div className={classes.fullMenu}>

@@ -55,12 +55,12 @@ export default function RootLayout({ children }) {
       const currentScrollY = window.scrollY;
       if (currentScrollY <= 0) {
         setMenuDisplay(true);
-        setMenuBackground("transparent");
+        setMenuBackground(false);
       } else if (currentScrollY > prevScrollY) {
         setMenuDisplay(false);
       } else if (currentScrollY < prevScrollY) {
         setMenuDisplay(true);
-        setMenuBackground("#000b1f");
+        setMenuBackground(true);
       }
       prevScrollY = currentScrollY;
     };

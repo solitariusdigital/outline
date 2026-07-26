@@ -1,7 +1,12 @@
 @use "styles/_config.scss" as config;
 @use "styles/_mixins.scss" as mixins;
 
-.container {
+.glassEffect {
+  @include mixins.glass-effect();
+}
+
+.container,
+.glassEffect {
   position: relative;
   user-select: none;
   color: config.$white;
@@ -11,6 +16,7 @@
   .fullMenu {
     margin: auto;
     width: config.$content-width;
+    height: 100px;
     @include mixins.row-space-between-center();
 
     @include mixins.mobile {
@@ -111,8 +117,8 @@
 
   .logo {
     position: relative;
-    width: 150px;
-    height: 100px;
+    width: 100px;
+    height: 50px;
     cursor: pointer;
   }
 }

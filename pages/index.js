@@ -93,22 +93,17 @@ export default function Home() {
               as="image"
               priority
             />
-            <div className={classes.action}>
-              <button
-                style={{
-                  fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
-                }}
-                onClick={() =>
-                  Router.push(currentUser ? "/booking" : "/portal")
-                }
-              >
-                <span>
-                  {language
-                    ? "امروز نوبت خود را بگیرید"
-                    : "Get Your Appointment Today"}
-                </span>
-              </button>
-            </div>
+            <h2
+              className={classes.action}
+              style={{
+                fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
+              }}
+              onClick={() => Router.push(currentUser ? "/booking" : "/portal")}
+            >
+              {language
+                ? "امروز نوبت خود را بگیرید"
+                : "Get Your Appointment Today"}
+            </h2>
             <div className="fadeOverlayBottom"></div>
           </div>
         </section>
