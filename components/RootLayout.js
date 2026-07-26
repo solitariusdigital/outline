@@ -121,7 +121,16 @@ export default function RootLayout({ children }) {
         </Fragment>
       ) : (
         <div className="appload">
-          <Image width={200} height={140} src={logo} alt="logo" priority />
+          <div className="logo">
+            <Image
+              src={logo}
+              layout="fill"
+              objectFit="contain"
+              alt="logo"
+              as="image"
+              priority
+            />
+          </div>
         </div>
       )}
     </Fragment>

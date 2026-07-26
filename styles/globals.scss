@@ -110,6 +110,12 @@ abbr[title] {
   height: 100dvh;
   user-select: none;
   background: config.$darkblue;
+
+  .logo {
+    position: relative;
+    width: 100px;
+    height: 50px;
+  }
 }
 
 %fadeOverlay {
