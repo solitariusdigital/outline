@@ -92,6 +92,7 @@
     border: 1px solid config.$grey;
     border-radius: 50px;
     padding: 8px;
+    user-select: none;
 
     @include mixins.mobile {
       width: 100%;
@@ -131,6 +132,7 @@
     width: 100%;
     direction: rtl;
     text-align: center;
+    user-select: none;
 
     @include mixins.mobile {
       grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
