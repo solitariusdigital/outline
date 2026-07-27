@@ -11,15 +11,6 @@ import Cover from "@/components/Cover";
 export default function Home() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
-
-  useEffect(() => {
-    setMenuMobile(false);
-    setMenuDisplay(true);
-    setFooterDisplay(true);
-  }, []);
 
   return (
     <Fragment>
@@ -93,17 +84,22 @@ export default function Home() {
               as="image"
               priority
             />
-            <h2
+            <div
               className={classes.action}
               style={{
                 fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
               }}
               onClick={() => Router.push(currentUser ? "/booking" : "/portal")}
             >
-              {language
-                ? "امروز نوبت خود را بگیرید"
-                : "Get Your Appointment Today"}
-            </h2>
+              <RevealText direction="up" delay={300}>
+                <h2>
+                  {language
+                    ? "امروز نوبت خود را بگیرید"
+                    : "Get Your Appointment Today"}
+                </h2>
+              </RevealText>
+            </div>
+
             <div className="fadeOverlayBottom"></div>
           </div>
         </section>

@@ -37,6 +37,7 @@ export const StateProvider = (props) => {
       },
       link: "/method",
       active: false,
+      nav: true,
     },
     {
       title: {
@@ -45,6 +46,7 @@ export const StateProvider = (props) => {
       },
       link: "/care",
       active: false,
+      nav: true,
     },
     {
       title: {
@@ -53,6 +55,7 @@ export const StateProvider = (props) => {
       },
       link: "/about",
       active: false,
+      nav: true,
     },
     {
       title: {
@@ -61,6 +64,7 @@ export const StateProvider = (props) => {
       },
       link: "/contact",
       active: false,
+      nav: true,
     },
     {
       title: {
@@ -69,6 +73,7 @@ export const StateProvider = (props) => {
       },
       link: "/reservation",
       active: false,
+      nav: false,
     },
   ]);
   const stateContext = {

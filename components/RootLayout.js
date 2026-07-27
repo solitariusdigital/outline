@@ -1,5 +1,6 @@
 import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
+import { usePathname } from "next/navigation";
 import secureLocalStorage from "react-secure-storage";
 import Image from "next/legacy/image";
 import logo from "@/assets/logoWhite.png";
@@ -16,7 +17,10 @@ export default function RootLayout({ children }) {
   const { footerDisplay, setFooterDisplay } = useContext(StateContext);
   const { menuBackground, setMenuBackground } = useContext(StateContext);
   const { menuMobile, setMenuMobile } = useContext(StateContext);
+  const { navigationTopBar, setNavigationTopBar } = useContext(StateContext);
   const [appLoader, setAppLoader] = useState(false);
+
+  const pathname = usePathname();
 
   const handleResize = () => {
     let element = document.getElementById("detailsInformation");
@@ -37,6 +41,26 @@ export default function RootLayout({ children }) {
     }
     setScreenSize(screenSize);
   };
+
+  useEffect(() => {
+    const isMatch =
+      pathname === "/" ||
+      navigationTopBar.some((item) => item.link === pathname && item.nav);
+
+    if (isMatch) {
+      setMenuMobile(false);
+      setTimeout(() => {
+        setMenuDisplay(true);
+        setFooterDisplay(true);
+      }, 100);
+    } else {
+      setMenuMobile(true);
+      setTimeout(() => {
+        setMenuDisplay(false);
+        setFooterDisplay(false);
+      }, 100);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (secureLocalStorage.getItem("languageBrowser")) {

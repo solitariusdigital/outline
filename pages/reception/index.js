@@ -29,9 +29,6 @@ import {
 } from "@/services/api";
 
 export default function Reception() {
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
 
   const [name, setName] = useState("");
@@ -91,14 +88,6 @@ export default function Reception() {
 
   const [index, setIndex] = useState(0);
   const loadingText = ["لطفا صبر کنید", "درحال بارگذاری"];
-
-  useEffect(() => {
-    setMenuMobile(true);
-    setTimeout(() => {
-      setMenuDisplay(false);
-      setFooterDisplay(false);
-    }, 100);
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {

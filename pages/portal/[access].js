@@ -46,9 +46,6 @@ export default function Access() {
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
   const { adminColorCode, setAdminColorCode } = useContext(StateContext);
   const { cachedVisitsData, setCachedVisitsData } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
 
   const [displayVisits, setDisplayVisits] = useState([]);
@@ -79,14 +76,6 @@ export default function Access() {
     border: "1px solid #d40d12",
     borderRadius: "5px",
   };
-
-  useEffect(() => {
-    setMenuMobile(true);
-    setTimeout(() => {
-      setMenuDisplay(false);
-      setFooterDisplay(false);
-    }, 100);
-  }, []);
 
   useEffect(() => {
     if (!currentUser) {

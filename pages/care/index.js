@@ -7,10 +7,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Image from "next/legacy/image";
 
 export default function Care() {
-  const { currentUser, setCurrentUser } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
 
   const targetBox = useRef(null);

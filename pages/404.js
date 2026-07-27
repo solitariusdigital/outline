@@ -3,19 +3,7 @@ import { StateContext } from "@/context/stateContext";
 import classes from "./home.module.scss";
 
 export default function NotFoundPage() {
-  const { currentUser, setCurrentUser } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
-
-  useEffect(() => {
-    setMenuMobile(true);
-    setTimeout(() => {
-      setMenuDisplay(false);
-      setFooterDisplay(false);
-    }, 100);
-  }, []);
 
   return (
     <div

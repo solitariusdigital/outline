@@ -41,9 +41,6 @@ export default function Reception({ records }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { popupDiagramData, setPopupDiagramData } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
   const [receptionCards, setReceptionCards] = useState([]);
   const [expandInformation, setExpandInformation] = useState(null);
@@ -57,7 +54,6 @@ export default function Reception({ records }) {
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const router = useRouter();
-
   // variables to edit user info
   const [editFormData, setEditFormData] = useState(null);
   const [name, setName] = useState("");
@@ -71,14 +67,6 @@ export default function Reception({ records }) {
     month: "",
     year: "",
   });
-
-  useEffect(() => {
-    setMenuMobile(true);
-    setTimeout(() => {
-      setMenuDisplay(false);
-      setFooterDisplay(false);
-    }, 100);
-  }, []);
 
   useEffect(() => {
     if (editFormData) {

@@ -70,8 +70,6 @@ const defaultInjections = [
 ];
 
 export default function Method() {
-  const { currentUser, setCurrentUser } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
   const { languageType, setLanguageType } = useContext(StateContext);
   const [displayType, setDisplayType] = useState("all");

@@ -15,18 +15,7 @@ import { getCurrentDateFarsi } from "@/services/utility";
 export default function Booking({ visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
-
-  useEffect(() => {
-    setMenuMobile(true);
-    setTimeout(() => {
-      setMenuDisplay(false);
-      setFooterDisplay(false);
-    }, 100);
-  }, []);
 
   useEffect(() => {
     const handleUserAccess = async () => {

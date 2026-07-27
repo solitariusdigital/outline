@@ -20,13 +20,9 @@ import { getSingleVisitApi, updateVisitApi } from "@/services/api";
 export default function Patient({ user, visits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { kavenegarKey, setKavenegarKey } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
   const [displayVisits, setDisplayVisits] = useState([]);
   const [filterVisits, setFilterVisits] = useState([]);
-
   const [visitTypes, setVisitTypes] = useState(
     "active" || "tomorrow" || "afterTomorrow" || "complete" || "cancel",
   );
@@ -36,14 +32,6 @@ export default function Patient({ user, visits }) {
   const margin = {
     margin: "4px 0px",
   };
-
-  useEffect(() => {
-    setMenuMobile(true);
-    setTimeout(() => {
-      setMenuDisplay(false);
-      setFooterDisplay(false);
-    }, 100);
-  }, []);
 
   useEffect(() => {
     if (currentUser && currentUser.permission === "admin") {

@@ -15,23 +15,12 @@ export default function Reservation({ activeVisits }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { selectDoctor, setSelectDoctor } = useContext(StateContext);
   const { selectBranch, setSelectBranch } = useContext(StateContext);
-  const { menuDisplay, setMenuDisplay } = useContext(StateContext);
-  const { footerDisplay, setFooterDisplay } = useContext(StateContext);
-  const { menuMobile, setMenuMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
   const [hideBooking, setHideBooking] = useState(true);
   const [displayReception, setDisplayReception] = useState(false);
 
   const isUserAuthorized =
     currentUser?.permission === "admin" || currentUser?.permission === "staff";
-
-  useEffect(() => {
-    setMenuMobile(true);
-    setTimeout(() => {
-      setMenuDisplay(false);
-      setFooterDisplay(false);
-    }, 100);
-  }, []);
 
   useEffect(() => {
     let isCurrent = true;
