@@ -31,7 +31,7 @@ export default function NotFoundPage() {
         </Fragment>
       ) : (
         <Fragment>
-          <h2>Page not found</h2>
+          <h2>Page Not Found</h2>
           <p>The desired page does not exist</p>
         </Fragment>
       )}
