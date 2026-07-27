@@ -222,18 +222,22 @@ export default function Access() {
   };
 
   const actionVisit = async (id, phone, time, type) => {
-    const api = Kavenegar.KavenegarApi({
-      apikey: kavenegarKey,
-    });
-    const message = `${
-      type === "complete" ? "تکمیل نوبت، مطمئنی؟" : "لغو نوبت، مطمئنی؟"
-    }`;
-    const template = `${
-      type === "complete" ? "completeOutline" : "cancelOutline"
-    }`;
+    const message =
+      type === "complete" ? "تکمیل نوبت، مطمئنی؟" : "لغو نوبت، مطمئنی؟";
+    const template = type === "complete" ? "completeOutline" : "cancelOutline";
+
     const confirm = window.confirm(message);
-    let visitData = await getSingleVisitApi(id);
-    if (confirm) {
+    if (!confirm) return;
+
+    setDisableButton(true);
+
+    try {
+      const api = Kavenegar.KavenegarApi({
+        apikey: kavenegarKey,
+      });
+
+      const visitData = await getSingleVisitApi(id);
+
       switch (type) {
         case "complete":
           visitData.completed = true;
@@ -242,16 +246,24 @@ export default function Access() {
           visitData.canceled = true;
           break;
       }
-      api.VerifyLookup({
-        receptor: phone,
-        token: time.split(" - ")[0].trim(),
-        template: template,
-      });
+
+      try {
+        api.VerifyLookup({
+          receptor: phone,
+          token: time.split(" - ")[0].trim(),
+          template,
+        });
+      } catch (smsErr) {
+        console.error(`SMS failed for visit ${id}:`, smsErr);
+      }
+
       await updateVisitApi(visitData);
 
-      let visits = await getVisitsApi();
-      let users = await getUsersApi();
-      visits = sortVisits(visits);
+      const [visitsRaw, users] = await Promise.all([
+        getVisitsApi(),
+        getUsersApi(),
+      ]);
+      const visits = sortVisits(visitsRaw);
       const activeVisits = visits.filter(
         (visit) => !visit.completed && !visit.canceled,
       );
@@ -263,6 +275,11 @@ export default function Access() {
         activeVisits,
         visitsData,
       }));
+    } catch (err) {
+      console.error("actionVisit failed:", err);
+      window.alert("خطا در ثبت تغییرات. لطفاً دوباره تلاش کنید.");
+    } finally {
+      setDisableButton(false);
     }
   };
 
@@ -287,43 +304,84 @@ export default function Access() {
   };
 
   const sendAfterTomorrowReminder = async () => {
-    const controlData = await getControlsApi();
-    const currentDate = getCurrentDateFarsi();
-    const controlObject = {
-      ...controlData[0],
-      reminder: {
-        ...controlData[0].reminder,
-        [currentDate]: true,
-      },
-    };
     const confirmationMessage = "ارسال پیامک گروهی، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
-    const afterTomorrowVisits = filterVisitsByDate(displayVisits, 2);
-    const api = Kavenegar.KavenegarApi({
-      apikey: kavenegarKey,
-    });
-    if (confirm) {
-      afterTomorrowVisits.forEach((visit, index) => {
-        api.VerifyLookup(
-          {
-            receptor: visit.user.phone,
-            token: visit.time.split(" - ")[0].trim(),
-            token2: visit.time.split(" - ")[1].trim(),
-            template: "reminderOutline",
-          },
-          async (response, status) => {
-            if (index === afterTomorrowVisits.length - 1) {
-              if (status === 200) {
-                await updateControlApi(controlObject);
-                window.alert("پیامک گروهی ارسال شد");
-                checkReminderSent();
-              } else {
-                window.alert("خطا در ارسال پیامک");
-              }
-            }
-          },
-        );
+    if (!confirm) return;
+
+    setDisableButton(true);
+
+    try {
+      const afterTomorrowVisits = filterVisitsByDate(displayVisits, 2);
+
+      if (afterTomorrowVisits.length === 0) {
+        window.alert("نوبتی برای پس‌فردا یافت نشد");
+        setDisableButton(false);
+        return;
+      }
+
+      const api = Kavenegar.KavenegarApi({
+        apikey: kavenegarKey,
       });
+
+      const sendVerifyLookup = (visit) =>
+        new Promise((resolve, reject) => {
+          api.VerifyLookup(
+            {
+              receptor: visit.user.phone,
+              token: visit.time.split(" - ")[0].trim(),
+              token2: visit.time.split(" - ")[1].trim(),
+              template: "reminderOutline",
+            },
+            (response, status) => {
+              if (status === 200) {
+                resolve(response);
+              } else {
+                reject(
+                  new Error(`Failed for visit ${visit.id}, status ${status}`),
+                );
+              }
+            },
+          );
+        });
+
+      const results = await Promise.allSettled(
+        afterTomorrowVisits.map((visit) => sendVerifyLookup(visit)),
+      );
+
+      const failed = results.filter((r) => r.status === "rejected");
+
+      if (failed.length > 0) {
+        console.error("Some reminders failed to send:", failed);
+      }
+
+      if (failed.length === results.length) {
+        window.alert("خطا در ارسال پیامک");
+        setDisableButton(false);
+        return;
+      }
+
+      const controlData = await getControlsApi();
+      const currentDate = getCurrentDateFarsi();
+      const controlObject = {
+        ...controlData[0],
+        reminder: {
+          ...controlData[0].reminder,
+          [currentDate]: true,
+        },
+      };
+      await updateControlApi(controlObject);
+
+      if (failed.length > 0) {
+        window.alert(`پیامک گروهی ارسال شد (${failed.length} مورد ناموفق)`);
+      } else {
+        window.alert("پیامک گروهی ارسال شد");
+      }
+
+      checkReminderSent();
+    } catch (err) {
+      console.error("sendAfterTomorrowReminder failed:", err);
+      window.alert("خطا در ارسال پیامک");
+      setDisableButton(false);
     }
   };
 
@@ -409,7 +467,7 @@ export default function Access() {
     });
   };
 
-  const checkEachVisitForPast = (index) => {
+  const checkEachVisitForPast = async (index) => {
     let currentDate = getCurrentDate();
     const visit = filterVisits[index];
     const visitDate = new Date(visit.date);
@@ -417,31 +475,53 @@ export default function Access() {
     return visitDate < currentDate;
   };
 
-  const cancelAllPastVisits = () => {
-    setDisableButton(true);
-    let currentDate = getCurrentDate();
-    const api = Kavenegar.KavenegarApi({
-      apikey: kavenegarKey,
-    });
-    const confirmationMessage = " لغو نوبت‌های گذشته، مطمئنی؟";
+  const cancelAllPastVisits = async () => {
+    const confirmationMessage = "لغو نوبت‌های گذشته، مطمئنی؟";
     const confirm = window.confirm(confirmationMessage);
-    if (confirm) {
-      displayVisits
-        .filter((visit) => !visit.completed && !visit.canceled)
-        .forEach(async (visit) => {
-          const visitDate = new Date(visit.date);
-          if (visitDate < currentDate) {
-            visit.canceled = true;
+    if (!confirm) return;
+
+    setDisableButton(true);
+
+    try {
+      const currentDate = getCurrentDate();
+      const api = Kavenegar.KavenegarApi({
+        apikey: kavenegarKey,
+      });
+
+      const visitsToCancel = displayVisits.filter(
+        (visit) =>
+          !visit.completed &&
+          !visit.canceled &&
+          new Date(visit.date) < currentDate,
+      );
+
+      const results = await Promise.allSettled(
+        visitsToCancel.map(async (visit) => {
+          visit.canceled = true;
+          try {
             api.VerifyLookup({
               receptor: visit.user.phone,
               token: visit.time.split(" - ")[0].trim(),
               template: "cancelOutline",
             });
-            await updateVisitApi(visit);
+          } catch (smsErr) {
+            console.error(`SMS failed for visit ${visit.id}:`, smsErr);
           }
-        });
+          await updateVisitApi(visit);
+          return visit.id;
+        }),
+      );
+
+      const failed = results.filter((r) => r.status === "rejected");
+      if (failed.length > 0) {
+        console.error("Some visits failed to update:", failed);
+        alert(`${failed.length} نوبت لغو نشد. لطفاً دوباره تلاش کنید.`);
+      }
+
       router.reload(router.asPath);
-    } else {
+    } catch (err) {
+      console.error("cancelAllPastVisits failed:", err);
+      alert("خطا در لغو نوبت‌ها. لطفاً دوباره تلاش کنید.");
       setDisableButton(false);
     }
   };
