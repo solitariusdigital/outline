@@ -99,7 +99,6 @@ export default function Home() {
                 </h2>
               </RevealText>
             </div>
-
             <div className="fadeOverlayBottom"></div>
           </div>
         </section>
