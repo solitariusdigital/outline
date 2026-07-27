@@ -4,33 +4,28 @@
 .container {
   color: config.$white;
   background: config.$darkblue;
-}
 
-.imageBox {
-  position: relative;
-  height: 100dvh;
-  width: 100%;
-
-  .title {
-    position: absolute;
-    left: 50%;
-    bottom: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
+  .imageBox {
+    position: relative;
+    height: 100dvh;
     width: 100%;
-    user-select: none;
-    width: config.$content-widthText;
-  }
 
-  .scrollDown {
-    position: absolute;
-    z-index: 2;
-    left: 50%;
-    bottom: 10%;
-    transform: translateX(-50%);
+    .title {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      user-select: none;
+      width: config.$content-widthText;
+      @include mixins.position-center();
+    }
+
+    .scrollDown {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: 10%;
+      transform: translateX(-50%);
+    }
   }
 }
 
