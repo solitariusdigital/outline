@@ -12,6 +12,12 @@
   @include mixins.mobile {
     width: 100%;
   }
+  @include mixins.tabletPortrait {
+    width: config.$content-width;
+  }
+  @include mixins.tabletLandscape {
+    width: config.$content-width;
+  }
 
   .mediaContainer {
     display: grid;
