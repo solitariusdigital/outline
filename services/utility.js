@@ -220,7 +220,6 @@ export async function uploadMedia(
     formData.append(key, value);
   });
 
-  console.log(url);
   await fetch(url, {
     method: "POST",
     body: formData,
