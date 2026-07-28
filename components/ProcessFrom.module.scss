@@ -1,0 +1,73 @@
+@use "styles/_config.scss" as config;
+@use "styles/_mixins.scss" as mixins;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 50%;
+  margin-top: 20px;
+  user-select: none;
+
+  @include mixins.mobile {
+    width: 100%;
+  }
+
+  .mediaContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    gap: 8px;
+  }
+
+  .preview {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    margin-top: 12px;
+  }
+
+  .input {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    margin-bottom: 24px;
+
+    @include mixins.mobile {
+      max-width: 100%;
+    }
+
+    .bar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .label {
+      color: config.$grey;
+      font-size: config.$small-font;
+      margin-bottom: 4px;
+    }
+
+    input,
+    select {
+      @include mixins.input();
+      width: 100%;
+    }
+
+    select {
+      text-transform: capitalize;
+    }
+  }
+
+  .alert {
+    margin: 16px;
+    color: config.$red;
+  }
+
+  button {
+    @include mixins.button(config.$blue, config.$blue, config.$white);
+    & {
+      margin: auto;
+    }
+  }
+}

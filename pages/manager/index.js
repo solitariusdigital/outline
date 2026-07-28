@@ -933,11 +933,7 @@ export default function Manager({ control }) {
             </div>
           </Fragment>
         )}
-        {navigation === "upload" && (
-          <div>
-            <ProcessFrom />
-          </div>
-        )}
+        {navigation === "upload" && <ProcessFrom />}
       </section>
     </>
   );

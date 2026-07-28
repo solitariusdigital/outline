@@ -5,44 +5,64 @@ import classes from "./ProcessFrom.module.scss";
 import Image from "next/legacy/image";
 import CloseIcon from "@mui/icons-material/Close";
 import loaderImage from "@/assets/loader.png";
-import {
-  areAllStatesValid,
-  extractParagraphs,
-  fourGenerator,
-  sixGenerator,
-  uploadMedia,
-  toFarsiNumber,
-  isValidDateFormat,
-} from "@/services/utility";
+import { fourGenerator, sixGenerator, uploadMedia } from "@/services/utility";
+
+const categories = [
+  "fillers",
+  "botox",
+  "mesotherapy",
+  "skin rejuvenation",
+  "PRP",
+  "enzyme",
+  "ultrasound",
+  "surgical laser",
+  "fractional laser",
+];
 
 export default function ProcessFrom() {
-  const [imagesPreview, setImagesPreview] = useState([]);
-  const [uploadImages, setUploadImages] = useState([]);
+  const [imagesPreviewBefore, setImagesPreviewBefore] = useState([]);
+  const [imagesPreviewAfter, setImagesPreviewAfter] = useState([]);
+  const [uploadImagesBefore, setUploadImagesBefore] = useState([]);
+  const [uploadImagesAfter, setUploadImagesAfter] = useState([]);
+  const [title, setTitle] = useState("");
+  const [selectCategory, setSelectCategory] = useState("");
   const [alert, setAlert] = useState("");
   const [loader, setLoader] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
   const sourceLink = "https://bucket.outlinecommunity.com";
   const router = useRouter();
 
-  const removeImageInputFile = () => {
-    const input = document.getElementById("inputImage");
-    input.value = null;
+  const removeImageInputFile = (inputId) => {
+    const input = document.getElementById(inputId);
+    if (input) input.value = null;
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = (event, type) => {
     const array = Array.from(event.target.files);
-    setUploadImages(array);
-    setImagesPreview(
-      array.map((item) => ({
-        file: item,
-        link: URL.createObjectURL(item),
-      })),
-    );
+    const preview = array.map((item) => ({
+      file: item,
+      link: URL.createObjectURL(item),
+      type: type,
+    }));
+
+    if (type === "before") {
+      setUploadImagesBefore(preview);
+      setImagesPreviewBefore(preview);
+    } else {
+      setUploadImagesAfter(preview);
+      setImagesPreviewAfter(preview);
+    }
   };
 
   const handleSubmit = async () => {
-    if (imagesPreview.length === 0) {
-      showAlert("انتخاب عکس یا ویدئو");
+    if (!title || !selectCategory) {
+      showAlert("عنوان و دسته‌بندی الزامیست");
+      return;
+    }
+
+    const uploadImages = uploadImagesAfter.concat(uploadImagesBefore);
+    if (uploadImages.length !== 2) {
+      showAlert("دو تصویر انتخاب کنید");
       return;
     }
 
@@ -52,88 +72,162 @@ export default function ProcessFrom() {
     let mediaLinks = [];
     const mediaFolder = "process";
     const processId = `prc${sixGenerator()}`;
+    const imageFormat = ".jpg";
 
-    if (imagesPreview.length > 0) {
-      const imageFormat = ".jpg";
-      for (const media of uploadImages) {
-        const mediaId = `img${fourGenerator()}`;
-        const mediaLink = `${sourceLink}/${mediaFolder}/${processId}/${mediaId}${imageFormat}`;
-        await uploadMedia(media, mediaId, mediaFolder, processId, imageFormat);
-        mediaLinks.push({
-          link: mediaLink,
-          type: "image",
-          active: true,
-        });
-      }
+    for (const media of uploadImages) {
+      const mediaId = `img${fourGenerator()}`;
+      const mediaLink = `${sourceLink}/${mediaFolder}/${processId}/${mediaId}${imageFormat}`;
+      await uploadMedia(
+        media.file,
+        mediaId,
+        mediaFolder,
+        processId,
+        imageFormat,
+      );
+      mediaLinks.push({
+        link: mediaLink,
+        type: media.type,
+        active: true,
+      });
     }
 
-    console.log(mediaLinks);
+    const processObject = {
+      title: title,
+      category: selectCategory,
+      media: mediaLinks,
+    };
 
-    // showAlert("ذخیره شد");
-    // router.reload(router.asPath);
+    showAlert("ذخیره شد");
+    router.reload(router.asPath);
+  };
+
+  const showAlert = (message) => {
+    setAlert(message);
+    setTimeout(() => {
+      setAlert("");
+    }, 3000);
   };
 
   return (
-    <div>
-      <div className={classes.formAction}>
-        <div className={classes.mediaContainer}>
-          <div className={classes.media}>
-            <label className="file">
-              <input
-                onChange={handleImageChange}
-                id="inputImage"
-                type="file"
-                accept="image/*"
-                multiple
-              />
-              <p>عکس</p>
-            </label>
-            <CloseIcon
-              className={classes.clearMedia}
-              onClick={() => {
-                setImagesPreview([]);
-                removeImageInputFile();
-              }}
-              sx={{ fontSize: 16 }}
+    <div className={classes.form}>
+      <div className={classes.input}>
+        <select
+          defaultValue={"default"}
+          onChange={(e) => {
+            setSelectCategory(e.target.value);
+          }}
+        >
+          <option value="default" disabled>
+            انتخاب دسته‌بندی
+          </option>
+          {categories.map((category, index) => {
+            return (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <div className={classes.input}>
+        <div className={classes.bar}>
+          <p className={classes.label}>عنوان</p>
+          <CloseIcon
+            className="icon"
+            onClick={() => setTitle("")}
+            sx={{ fontSize: 16 }}
+          />
+        </div>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          onChange={(e) => setTitle(e.target.value)}
+          maxLength={11}
+          value={title}
+          autoComplete="off"
+          dir="rtl"
+        />
+      </div>
+      <div className={classes.mediaContainer}>
+        <div className={classes.media}>
+          <CloseIcon
+            className="icon"
+            onClick={() => {
+              setImagesPreviewAfter([]);
+              setUploadImagesAfter([]);
+              removeImageInputFile("inputImageAfter");
+            }}
+            sx={{ fontSize: 16 }}
+          />
+          <label className="file">
+            <input
+              onChange={(e) => handleImageChange(e, "after")}
+              id="inputImageAfter"
+              type="file"
+              accept="image/*"
             />
+            <p>After</p>
+          </label>
+          {imagesPreviewAfter.length > 0 && (
             <div className={classes.preview}>
-              {imagesPreview.map((image, index) => (
+              {imagesPreviewAfter.map((image, index) => (
                 <Image
                   key={index}
-                  width={300}
-                  height={200}
-                  objectFit="contain"
+                  layout="fill"
+                  objectFit="cover"
                   src={image.link}
                   alt="image"
                   priority
                 />
               ))}
             </div>
-          </div>
+          )}
         </div>
-        <p
-          className={classes.alert}
-          style={{
-            fontFamily: "Farsi",
-          }}
-        >
-          {alert}
-        </p>
-        {loader && (
-          <div>
-            <Image width={50} height={50} src={loaderImage} alt="isLoading" />
-          </div>
-        )}
-        <button
-          disabled={disableButton}
-          style={{
-            fontFamily: "FarsiMedium",
-          }}
-          onClick={() => handleSubmit()}
-        >
-          ذخیره
-        </button>
+        <div className={classes.media}>
+          <CloseIcon
+            className="icon"
+            onClick={() => {
+              setImagesPreviewBefore([]);
+              setUploadImagesBefore([]);
+              removeImageInputFile("inputImageBefore");
+            }}
+            sx={{ fontSize: 16 }}
+          />
+          <label className="file">
+            <input
+              onChange={(e) => handleImageChange(e, "before")}
+              id="inputImageBefore"
+              type="file"
+              accept="image/*"
+            />
+            <p>Before</p>
+          </label>
+          {imagesPreviewBefore.length > 0 && (
+            <div className={classes.preview}>
+              {imagesPreviewBefore.map((image, index) => (
+                <Image
+                  key={index}
+                  layout="fill"
+                  objectFit="cover"
+                  src={image.link}
+                  alt="image"
+                  priority
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+      <p className={classes.alert}>{alert}</p>
+      {loader && (
+        <div>
+          <Image width={50} height={50} src={loaderImage} alt="isLoading" />
+        </div>
+      )}
+      <button disabled={disableButton} onClick={() => handleSubmit()}>
+        ذخیره
+      </button>
     </div>
   );
 }

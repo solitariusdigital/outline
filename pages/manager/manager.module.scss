@@ -133,6 +133,7 @@
     direction: rtl;
     text-align: center;
     user-select: none;
+    margin-top: 20px;
 
     @include mixins.mobile {
       grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
