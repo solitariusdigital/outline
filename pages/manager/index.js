@@ -16,6 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import loaderImage from "@/assets/loader.png";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
+import ProcessFrom from "@/components/ProcessFrom";
 import {
   getSingleUserApi,
   updateControlApi,
@@ -46,7 +47,7 @@ export default function Manager({ control }) {
   const [displayRecords, setDisplayRecords] = useState([]);
   const [filterRecords, setFilterRecords] = useState([]);
   const [navigation, setNavigation] = useState(
-    "time" || "reminder" || "count" || "reception",
+    "time" || "reminder" || "count" || "reception" || "upload",
   );
   const [displayReception, setDisplayReception] = useState(false);
   const [phone, setPhone] = useState("");
@@ -54,6 +55,14 @@ export default function Manager({ control }) {
   const [totalHours, setTotalHours] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState("default");
   const router = useRouter();
+
+  const navItems = [
+    { key: "time", label: "زمان" },
+    { key: "count", label: "شمارش" },
+    { key: "reminder", label: "یادآوری" },
+    { key: "reception", label: "پرونده" },
+    { key: "upload", label: "بارگذاری" },
+  ];
   const adminsName = {
     "#EAD8B1": "Site",
     "#F05A7E": "Tanaz",
@@ -89,19 +98,15 @@ export default function Manager({ control }) {
 
   useEffect(() => {
     const loadMore = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.scrollingElement.scrollHeight
-      ) {
-        setReqNumber(reqNumber + 52);
+      const { scrollTop, scrollHeight } = document.scrollingElement;
+      const nearBottom = window.innerHeight + scrollTop >= scrollHeight - 100;
+      if (nearBottom) {
+        setReqNumber((prev) => prev + 52);
       }
     };
     window.addEventListener("scroll", loadMore);
-    // Cleanup function to remove the event listener
-    return () => {
-      window.removeEventListener("scroll", loadMore);
-    };
-  }, [reqNumber, setReqNumber]);
+    return () => window.removeEventListener("scroll", loadMore);
+  }, []);
 
   useEffect(() => {
     const [year, month] = getCurrentDateFarsi().split("/");
@@ -326,38 +331,18 @@ export default function Manager({ control }) {
         />
         {currentUser?.super && (
           <div className={classes.navigation}>
-            <p
-              className={
-                navigation === "time" ? classes.activeNav : classes.nav
-              }
-              onClick={() => setNavigation("time")}
-            >
-              زمان
-            </p>
-            <p
-              className={
-                navigation === "count" ? classes.activeNav : classes.nav
-              }
-              onClick={() => setNavigation("count")}
-            >
-              شمارش
-            </p>
-            <p
-              className={
-                navigation === "reminder" ? classes.activeNav : classes.nav
-              }
-              onClick={() => setNavigation("reminder")}
-            >
-              یادآوری
-            </p>
-            <p
-              className={
-                navigation === "reception" ? classes.activeNav : classes.nav
-              }
-              onClick={() => setNavigation("reception")}
-            >
-              پرونده
-            </p>
+            {navItems.map(({ key, label }) => (
+              <p
+                key={key}
+                className={navigation === key ? classes.activeNav : classes.nav}
+                onClick={() => {
+                  setNavigation(key);
+                  setReqNumber(52);
+                }}
+              >
+                {label}
+              </p>
+            ))}
           </div>
         )}
         {navigation === "time" && (
@@ -947,6 +932,11 @@ export default function Manager({ control }) {
               )}
             </div>
           </Fragment>
+        )}
+        {navigation === "upload" && (
+          <div>
+            <ProcessFrom />
+          </div>
         )}
       </section>
     </>

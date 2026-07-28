@@ -5,6 +5,10 @@ export function fourGenerator() {
   return Math.floor(1000 + Math.random() * 9000);
 }
 
+export function sixGenerator() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
 export function convertDate(date) {
   return new Date(date).toLocaleDateString("fa-IR");
 }
@@ -195,4 +199,30 @@ export function applyFontToEnglishWords(inputString, fontType, language) {
     return `<span style="font-family: ${fontType}; ">${match}</span>`;
   });
   return outputString;
+}
+
+// upload media into s3 bucket
+export async function uploadMedia(
+  media,
+  mediaId,
+  mediaFolder,
+  subFolder,
+  format,
+) {
+  const file = media;
+  const res = await fetch(
+    `/api/upload?file=${mediaFolder}/${subFolder}/${mediaId}${format}`,
+  );
+  const { url, fields } = await res.json();
+
+  const formData = new FormData();
+  Object.entries({ ...fields, file }).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  console.log(url);
+  await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
 }

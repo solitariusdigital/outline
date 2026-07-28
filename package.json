@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1096.0",
+    "@aws-sdk/s3-presigned-post": "^3.1096.0",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.11.0",
     "@hassanmojab/react-modern-calendar-datepicker": "^3.1.7",
@@ -17,7 +19,7 @@
     "@typescript-eslint/eslint-plugin": "^8.37.0",
     "@typescript-eslint/parser": "^8.37.0",
     "@typescript-eslint/typescript-estree": "^8.37.0",
-    "aws-sdk": "^2.1692.0",
+    "dotenv": "^17.4.2",
     "eslint": "9.39.1",
     "eslint-config-next": "15.5.7",
     "kavenegar": "^1.1.4",
