@@ -113,22 +113,24 @@ export default function Access() {
   }, [loadPage, cachedVisitsData]);
 
   useEffect(() => {
-    if (visitTypes !== "all") {
-      const loadMore = () => {
-        if (
-          window.innerHeight + document.documentElement.scrollTop ===
-          document.scrollingElement.scrollHeight
-        ) {
-          setReqNumber(reqNumber + 50);
+    if (visitTypes === "all") return;
+
+    let ticking = false;
+    const loadMore = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const { scrollTop, scrollHeight } = document.scrollingElement;
+        if (window.innerHeight + scrollTop >= scrollHeight - 100) {
+          setReqNumber((prev) => prev + 50);
         }
-      };
-      window.addEventListener("scroll", loadMore);
-      // Cleanup function to remove the event listener
-      return () => {
-        window.removeEventListener("scroll", loadMore);
-      };
-    }
-  }, [visitTypes, reqNumber, setReqNumber]);
+        ticking = false;
+      });
+    };
+
+    window.addEventListener("scroll", loadMore);
+    return () => window.removeEventListener("scroll", loadMore);
+  }, [visitTypes, setReqNumber]);
 
   const fetchRefreshData = async () => {
     try {
@@ -456,8 +458,8 @@ export default function Access() {
     });
   };
 
-  const checkEachVisitForPast = async (index) => {
-    let currentDate = getCurrentDate();
+  const checkEachVisitForPast = (index) => {
+    const currentDate = getCurrentDate();
     const visit = filterVisits[index];
     const visitDate = new Date(visit.date);
     visitDate.setHours(0, 0, 0, 0);
