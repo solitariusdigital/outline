@@ -6,6 +6,7 @@ import Image from "next/legacy/image";
 import CloseIcon from "@mui/icons-material/Close";
 import loaderImage from "@/assets/loader.png";
 import { fourGenerator, sixGenerator, uploadMedia } from "@/services/utility";
+import { createProcessApi } from "@/services/api";
 
 const categories = [
   "fillers",
@@ -25,10 +26,11 @@ export default function ProcessFrom() {
   const [uploadImagesBefore, setUploadImagesBefore] = useState([]);
   const [uploadImagesAfter, setUploadImagesAfter] = useState([]);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
   const [alert, setAlert] = useState("");
-  const [loader, setLoader] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
+  const [progress, setProgress] = useState(0);
   const sourceLink = "https://bucket.outlinecommunity.com";
   const router = useRouter();
 
@@ -66,8 +68,10 @@ export default function ProcessFrom() {
       return;
     }
 
-    setLoader(true);
     setDisableButton(true);
+
+    const totalSteps = uploadImages.length;
+    const progressIncrement = 100 / totalSteps;
 
     let mediaLinks = [];
     const mediaFolder = "process";
@@ -89,16 +93,30 @@ export default function ProcessFrom() {
         type: media.type,
         active: true,
       });
+      setProgress((prevProgress) => prevProgress + progressIncrement);
     }
 
     const processObject = {
       title: title,
+      description: description,
       category: selectCategory,
       media: mediaLinks,
     };
 
+    await createProcessApi(processObject);
     showAlert("ذخیره شد");
-    router.reload(router.asPath);
+    setProgress(100);
+    setDisableButton(false);
+    setProgress(0);
+    setTitle("");
+    setDescription("");
+    setSelectCategory("");
+    setImagesPreviewBefore([]);
+    setUploadImagesBefore([]);
+    removeImageInputFile("inputImageBefore");
+    setImagesPreviewAfter([]);
+    setUploadImagesAfter([]);
+    removeImageInputFile("inputImageAfter");
   };
 
   const showAlert = (message) => {
@@ -131,7 +149,10 @@ export default function ProcessFrom() {
       </div>
       <div className={classes.input}>
         <div className={classes.bar}>
-          <p className={classes.label}>عنوان</p>
+          <p className={classes.label}>
+            عنوان
+            <span>*</span>
+          </p>
           <CloseIcon
             className="icon"
             onClick={() => setTitle("")}
@@ -148,6 +169,24 @@ export default function ProcessFrom() {
           autoComplete="off"
           dir="rtl"
         />
+      </div>
+      <div className={classes.input}>
+        <div className={classes.bar}>
+          <p className={classes.label}>توضیحات</p>
+          <CloseIcon
+            className="icon"
+            onClick={() => setDescription("")}
+            sx={{ fontSize: 16 }}
+          />
+        </div>
+        <textarea
+          type="text"
+          id="description"
+          name="description"
+          onChange={(e) => setDescription(e.target.value)}
+          value={description}
+          autoComplete="off"
+        ></textarea>
       </div>
       <div className={classes.mediaContainer}>
         <div className={classes.media}>
@@ -220,14 +259,16 @@ export default function ProcessFrom() {
         </div>
       </div>
       <p className={classes.alert}>{alert}</p>
-      {loader && (
+      {!disableButton ? (
+        <button disabled={disableButton} onClick={() => handleSubmit()}>
+          ذخیره
+        </button>
+      ) : (
         <div>
+          <p>Uploading {Math.round(progress)}%</p>
           <Image width={50} height={50} src={loaderImage} alt="isLoading" />
         </div>
       )}
-      <button disabled={disableButton} onClick={() => handleSubmit()}>
-        ذخیره
-      </button>
     </div>
   );
 }

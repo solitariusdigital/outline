@@ -1,8 +1,7 @@
-import Follow from "@/models/Follow";
+import Process from "@/models/Process";
 import dbConnect from "@/services/dbConnect";
-import { getCurrentDateFarsi } from "@/services/utility";
 
-export default async function followsHandler(req, res) {
+export default async function processHandler(req, res) {
   res.setHeader("Cache-Control", "s-maxage=10");
   const { method, body } = req;
 
@@ -11,27 +10,26 @@ export default async function followsHandler(req, res) {
   switch (method) {
     case "POST":
       try {
-        const newFollow = await Follow.create(body);
-        return res.status(200).json(newFollow);
+        const newProcess = await Process.create(body);
+        return res.status(200).json(newProcess);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
     case "GET":
       try {
-        let follows = null;
+        let process = null;
         if (req.query.id) {
-          follows = await Follow.findById(req.query.id);
+          process = await Process.findById(req.query.id);
         } else {
-          const [year] = getCurrentDateFarsi().split("/");
-          follows = await Follow.find({ time: { $regex: `^${year}` } });
+          process = await Process.find();
         }
-        return res.status(200).json(follows);
+        return res.status(200).json(process);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
     case "PUT":
       try {
-        const updateFollows = await Follow.findByIdAndUpdate(
+        const updateProcess = await Process.findByIdAndUpdate(
           body["_id"],
           body,
           {
@@ -39,10 +37,10 @@ export default async function followsHandler(req, res) {
             runValidators: true,
           },
         );
-        if (!updateFollows) {
+        if (!updateProcess) {
           return res.status(400).json({ msg: err.message });
         }
-        return res.status(200).json(updateFollows);
+        return res.status(200).json(updateProcess);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }

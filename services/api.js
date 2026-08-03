@@ -198,6 +198,46 @@ export const getFollowsApi = async () => {
   return await response.json();
 };
 
+// process api
+export const updateProcessApi = async (data) => {
+  const response = await fetch("/api/process", {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const createProcessApi = async (data) => {
+  const response = await fetch("/api/process", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getSingleProcessApi = async (id) => {
+  const response = await fetch(`/api/process?id=${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+export const getProcessApi = async () => {
+  const response = await fetch("/api/process", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
+
 // controls api
 export const updateControlApi = async (data) => {
   const response = await fetch("/api/controls", {
