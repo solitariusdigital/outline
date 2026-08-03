@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./Cover.module.scss";
 import GridBox from "@/components/GridBox";
+import Router from "next/router";
 
 export default function Cover() {
   const { language, setLanguage } = useContext(StateContext);
@@ -85,19 +86,19 @@ export default function Cover() {
   useEffect(() => {}, [screenSize]);
 
   return (
-    <div className={language ? classes.container : classes.containerReverse}>
+    <div
+      className={classes.container}
+      style={{
+        fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
+        direction: language ? "rtl" : "ltr",
+      }}
+    >
       <div className={classes.imageBox}>
         <div className="fadeOverlayTop"></div>
         <GridBox images={images} screenSize={screenSize} />
         <div className="fadeOverlayBottom"></div>
       </div>
-      <div
-        className={classes.infoBox}
-        style={{
-          fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
-          direction: language ? "rtl" : "ltr",
-        }}
-      >
+      <div className={classes.infoBox}>
         <h1>
           {language
             ? "به سوی تعالی زیبایی‌شناسی"
@@ -108,6 +109,15 @@ export default function Cover() {
             ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه  می‌کنیم."
             : "In the natural Outline method, we view the creation of beauty with precision and sensitivity."}
         </h2>
+        <button onClick={() => Router.push("/reservation")}>
+          <span
+            style={{
+              fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
+            }}
+          >
+            {language ? "پورتال نوبت" : "Portal"}
+          </span>
+        </button>
       </div>
     </div>
   );

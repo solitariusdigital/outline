@@ -9,7 +9,6 @@ import { RevealText } from "@/components/RevealText";
 import Cover from "@/components/Cover";
 
 export default function Home() {
-  const { currentUser, setCurrentUser } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
 
   return (
@@ -89,7 +88,7 @@ export default function Home() {
               style={{
                 fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
               }}
-              onClick={() => Router.push(currentUser ? "/booking" : "/portal")}
+              onClick={() => Router.push("/reservation")}
             >
               <RevealText direction="up" delay={300}>
                 <h2>

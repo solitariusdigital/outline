@@ -70,11 +70,8 @@ $screen-fourK: 6000px;
   user-select: none;
   height: 50px;
   border-radius: 50px;
+  width: 200px;
   cursor: pointer;
-
-  @include mobile {
-    width: 350px;
-  }
 
   &:after {
     content: "";
