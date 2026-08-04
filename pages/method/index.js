@@ -213,7 +213,7 @@ export default function Method() {
             ))
             .slice(0, 6)}
         </div>
-        <div className={classes.categorySecond} ref={targetBox}>
+        <div className={classes.categorySecond}>
           {defaultInjections
             .map((item, index) => (
               <div
