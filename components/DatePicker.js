@@ -101,7 +101,6 @@ export default function DatePicker({ visits }) {
         setIsDateDisabled(false);
       }
     };
-
     checkDate();
   }, [day]);
 
@@ -502,6 +501,16 @@ export default function DatePicker({ visits }) {
       );
     } else {
       timeToUse = originalTime;
+    }
+
+    const targetKeys = ["15:00", "15:30", "16:00"];
+    const breakDay = day?.month === 5 && day?.day < 22;
+    if (!breakDay) {
+      for (const key in timeToUse) {
+        if (targetKeys.includes(key)) {
+          timeToUse[key].display = false;
+        }
+      }
     }
 
     let updatedTimes = { ...timeToUse };
