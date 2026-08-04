@@ -198,7 +198,7 @@ export default function DatePicker({ visits }) {
   const checkCategoryLimit = () => {
     const limits = {
       one: 3,
-      two: 4,
+      two: 3,
       three: 6,
     };
 
