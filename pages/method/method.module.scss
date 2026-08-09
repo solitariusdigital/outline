@@ -37,7 +37,7 @@
   padding: 12px 0px;
   margin: auto;
   width: 45%;
-  max-width: config.$max-widthHeigh;
+  max-width: config.$max-width;
   text-transform: capitalize;
   user-select: none;
 
@@ -86,7 +86,7 @@
   margin: auto;
   padding: 50px 0px;
   width: config.$content-width;
-  max-width: config.$max-widthHeigh;
+  max-width: config.$max-width;
 
   @include mixins.mobile {
     display: flex;
@@ -107,8 +107,9 @@
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 50dvh;
     border-radius: 8px;
+    height: 50dvh;
+    max-height: 500px;
 
     @include mixins.mobile {
       height: 40dvh;

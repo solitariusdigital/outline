@@ -32,7 +32,7 @@
     margin: auto;
     padding: 100px 0px;
     width: 50%;
-    max-width: config.$max-widthHeigh;
+    max-width: calc(config.$max-width / 2);
 
     @include mixins.mobile {
       width: calc(100% - 24px);

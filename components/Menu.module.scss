@@ -11,12 +11,12 @@
   user-select: none;
   color: config.$white;
   width: 100%;
-  max-width: config.$max-widthHeigh;
 
   .fullMenu {
     margin: auto;
-    width: config.$content-width;
     height: 100px;
+    width: config.$content-width;
+    max-width: config.$max-width;
     @include mixins.row-space-between-center();
 
     @include mixins.mobile {
