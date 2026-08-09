@@ -78,7 +78,7 @@ export default function Contact() {
         </div>
         <div className={classes.content} ref={targetBox}>
           <div className={classes.row}>
-            <h3>{language ? "شعبه تهران" : "Tehran branch"}</h3>
+            <h3>{language ? "تهران" : "Tehran"}</h3>
             <h4
               className={classes.action}
               onClick={() => window.open(tehranLocation)}
