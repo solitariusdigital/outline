@@ -495,7 +495,7 @@ export default function DatePicker({ visits }) {
 
     let timeToUse;
     if (!isSunday) {
-      const numberSlice = 6;
+      const numberSlice = 5;
       timeToUse = Object.fromEntries(
         Object.entries(originalTime).slice(numberSlice),
       );
