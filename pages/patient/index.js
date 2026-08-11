@@ -362,14 +362,34 @@ export default function Patient({ user, visits }) {
 export async function getServerSideProps(context) {
   try {
     await dbConnect();
-    let id = context.query.id;
+    const { id } = context.query;
 
-    const user = await userModel.findOne({ _id: id });
-    const visits = await visitModel.find({ userId: id });
-    visits
-      .sort((a, b) => new Date(a.date) - new Date(b.date))
-      .sort((a, b) => a.completed - b.completed)
-      .sort((a, b) => a.canceled - b.canceled);
+    // Run both queries simultaneously instead of waiting for one then the other
+    const [user, visits] = await Promise.all([
+      userModel
+        .findOne(
+          { _id: id },
+          {
+            /* projection */
+          },
+        )
+        .lean(),
+      visitModel
+        .find(
+          { userId: id },
+          {
+            /* projection */
+          },
+        )
+        .sort({
+          canceled: 1, // false first
+          completed: 1, // false first
+          date: 1, // oldest first
+        })
+        .lean(),
+    ]);
+
+    if (!user) return { notFound: true };
 
     return {
       props: {
@@ -379,8 +399,6 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     console.error(error);
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 }

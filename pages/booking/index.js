@@ -99,10 +99,20 @@ export async function getServerSideProps(context) {
   try {
     await dbConnect();
     const [year] = getCurrentDateFarsi().split("/");
-    let visits = await visitModel.find({ time: { $regex: `^${year}` } });
-    let activeVisits = visits.filter(
-      (visit) => !visit.completed && !visit.canceled,
-    );
+
+    const activeVisits = await visitModel
+      .find(
+        {
+          time: { $regex: `^${year}` },
+          completed: false,
+          canceled: false,
+        },
+        {
+          /* projection — only fields your page needs */
+        },
+      )
+      .lean()
+      .exec();
 
     return {
       props: {
@@ -111,8 +121,6 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     console.error(error);
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 }

@@ -106,12 +106,14 @@
         &:hover {
           color: config.$blue;
           font-weight: bold;
+          scale: 1.1;
         }
       }
     }
     .activeNav {
       color: config.$blue;
       font-weight: bold;
+      scale: 1.1;
     }
   }
 

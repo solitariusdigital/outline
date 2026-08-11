@@ -1157,20 +1157,17 @@ export async function getServerSideProps(context) {
   try {
     await dbConnect();
 
-    let records = await recordModel.find({
-      date: { $regex: `^${convertPersianDate(getCurrentDateFarsi())}` },
-    });
-    records.sort((a, b) => {
-      // Sort by completed (false first)
-      if (a.completed !== b.completed) {
-        return a.completed ? 1 : -1;
-      }
-      // Sort by checkup (false first)
-      if (a.checkup !== b.checkup) {
-        return a.checkup ? 1 : -1;
-      }
-      return new Date(b.updatedAt) - new Date(a.updatedAt);
-    });
+    const today = convertPersianDate(getCurrentDateFarsi());
+
+    const records = await recordModel
+      .find({ date: { $regex: `^${today}` } }, {})
+      .sort({
+        completed: 1, // false (0) before true (1)
+        checkup: 1, // false (0) before true (1)
+        updatedAt: -1, // newest first
+      })
+      .lean()
+      .exec();
 
     return {
       props: {
@@ -1179,8 +1176,6 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     console.error(error);
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 }

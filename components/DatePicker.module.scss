@@ -82,11 +82,11 @@
   .time,
   .activeTime {
     padding: 8px;
-    background: config.$white;
-    box-shadow: config.$card-shadow;
     color: config.$black;
-    cursor: pointer;
     border-radius: 50px;
+    background: config.$white;
+    box-shadow: config.$button-shadow;
+    cursor: pointer;
 
     @include mixins.desktop {
       &:hover {

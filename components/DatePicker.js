@@ -772,7 +772,7 @@ export default function DatePicker({ visits }) {
           <div className={classes.input}>
             <div className={classes.bar}>
               <p className={classes.label}>
-                موضوع مراجعه الزامی
+                موضوع مراجعه
                 <span>*</span>
               </p>
             </div>
