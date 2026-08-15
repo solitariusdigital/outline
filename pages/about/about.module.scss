@@ -34,8 +34,10 @@
     height: 100dvh;
     margin: auto;
     max-width: config.$max-width;
-    max-height: config.$max-height;
 
+    @include mixins.allDesktop {
+      max-height: config.$max-height;
+    }
     @include mixins.mobile {
       display: flex;
       flex-direction: column;

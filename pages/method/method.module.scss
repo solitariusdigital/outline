@@ -42,9 +42,7 @@
   user-select: none;
 
   @include mixins.mobile {
-    width: calc(100% - 24px);
-    gap: 24px;
-    justify-content: flex-start;
+    width: config.$content-width - 5%;
   }
   @include mixins.tabletPortrait {
     width: config.$content-width - 20%;
@@ -69,7 +67,7 @@
   width: 35%;
 
   @include mixins.mobile {
-    width: calc(100% - 24px);
+    width: config.$content-width - 10%;
   }
   @include mixins.tabletPortrait {
     width: config.$content-width - 30%;

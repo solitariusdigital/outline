@@ -360,9 +360,9 @@ export default function DatePicker({ visits }) {
         "13:30": { display: true, active: false, count: 0 },
         "14:00": { display: true, active: false, count: 0 },
         "14:30": { display: true, active: false, count: 0 },
-        "15:00": { display: true, active: false, count: 0 },
-        "15:30": { display: true, active: false, count: 0 },
-        "16:00": { display: true, active: false, count: 0 },
+        "15:00": { display: false, active: false, count: 0 },
+        "15:30": { display: false, active: false, count: 0 },
+        "16:00": { display: false, active: false, count: 0 },
         "16:30": { display: true, active: false, count: 0 },
         "17:00": { display: true, active: false, count: 0 },
         "17:30": { display: true, active: false, count: 0 },
@@ -388,9 +388,9 @@ export default function DatePicker({ visits }) {
         "13:30": { display: true, active: false, count: 0 },
         "14:00": { display: true, active: false, count: 0 },
         "14:30": { display: true, active: false, count: 0 },
-        "15:00": { display: true, active: false, count: 0 },
-        "15:30": { display: true, active: false, count: 0 },
-        "16:00": { display: true, active: false, count: 0 },
+        "15:00": { display: false, active: false, count: 0 },
+        "15:30": { display: false, active: false, count: 0 },
+        "16:00": { display: false, active: false, count: 0 },
         "16:30": { display: true, active: false, count: 0 },
         "17:00": { display: true, active: false, count: 0 },
         "17:30": { display: true, active: false, count: 0 },
@@ -417,9 +417,9 @@ export default function DatePicker({ visits }) {
           "13:30": { display: true, active: false, count: 0 },
           "14:00": { display: true, active: false, count: 0 },
           "14:30": { display: true, active: false, count: 0 },
-          "15:00": { display: true, active: false, count: 0 },
-          "15:30": { display: true, active: false, count: 0 },
-          "16:00": { display: true, active: false, count: 0 },
+          "15:00": { display: false, active: false, count: 0 },
+          "15:30": { display: false, active: false, count: 0 },
+          "16:00": { display: false, active: false, count: 0 },
           "16:30": { display: true, active: false, count: 0 },
           "17:00": { display: true, active: false, count: 0 },
           "17:30": { display: true, active: false, count: 0 },
@@ -501,16 +501,6 @@ export default function DatePicker({ visits }) {
       );
     } else {
       timeToUse = originalTime;
-    }
-
-    const targetKeys = ["15:00", "15:30", "16:00"];
-    const breakDay = day?.month === 5 && day?.day < 22;
-    if (!breakDay) {
-      for (const key in timeToUse) {
-        if (targetKeys.includes(key)) {
-          timeToUse[key].display = false;
-        }
-      }
     }
 
     let updatedTimes = { ...timeToUse };
