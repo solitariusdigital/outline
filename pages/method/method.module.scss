@@ -99,6 +99,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
     position: relative;
+    user-select: none;
 
     .overlay {
       position: absolute;
@@ -121,6 +122,13 @@
           width: 80%;
         }
       }
+    }
+
+    .control {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
     }
   }
 

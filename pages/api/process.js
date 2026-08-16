@@ -44,5 +44,15 @@ export default async function processHandler(req, res) {
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
+    case "DELETE":
+      try {
+        const deleteProcess = await Process.findByIdAndDelete(req.query.id);
+        if (!deleteProcess) {
+          return res.status(404).json({ msg: "Process not found" });
+        }
+        return res.status(200).json({ msg: "Process deleted successfully" });
+      } catch (err) {
+        return res.status(400).json({ msg: err.message });
+      }
   }
 }

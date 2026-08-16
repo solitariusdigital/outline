@@ -1,11 +1,13 @@
 import { useContext, Fragment, useEffect, useRef, useState } from "react";
 import { StateContext } from "@/context/stateContext";
+import { NextSeo } from "next-seo";
 import classes from "./method.module.scss";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
-import { NextSeo } from "next-seo";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import Tooltip from "@mui/material/Tooltip";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { getProcessApi } from "@/services/api";
+import { getProcessApi, deleteProcessApi } from "@/services/api";
 
 const processTypes = [
   {
@@ -71,12 +73,14 @@ const processTypes = [
 ];
 
 export default function Method() {
+  const { currentUser, setCurrentUser } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
   const { languageType, setLanguageType } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const [displayType, setDisplayType] = useState("all");
   const [displayProcess, setDisplayProcess] = useState([]);
   const [hoveredId, setHoveredId] = useState(null);
+  const [refresh, setRefresh] = useState(0);
 
   const fullSizeScreen = screenSize === "desktop";
 
@@ -93,7 +97,16 @@ export default function Method() {
       }
     };
     fetchData();
-  }, []);
+  }, [refresh]);
+
+  const handleDelete = async (id) => {
+    let confirmationMessage = "حذف مطمئنی؟";
+    let confirm = window.confirm(confirmationMessage);
+    if (confirm) {
+      await deleteProcessApi(id);
+      setRefresh((prev) => prev + 1);
+    }
+  };
 
   const scrollToDivBox = () => {
     if (targetBox.current) {
@@ -214,6 +227,17 @@ export default function Method() {
                 onMouseEnter={() => setHoveredId(pair._id)}
                 onMouseLeave={() => setHoveredId(null)}
               >
+                {currentUser?.super && (
+                  <div className={classes.control}>
+                    <Tooltip title="Delete">
+                      <DeleteOutlineIcon
+                        className="icon"
+                        sx={{ fontSize: 20, color: "white" }}
+                        onClick={() => handleDelete(pair._id)}
+                      />
+                    </Tooltip>
+                  </div>
+                )}
                 <div className={classes.imageBoxBefore}>
                   <Image
                     src={pair.media[1].link}

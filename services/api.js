@@ -237,6 +237,15 @@ export const getProcessApi = async () => {
   });
   return await response.json();
 };
+export const deleteProcessApi = async (id) => {
+  const response = await fetch(`/api/process?id=${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+};
 
 // controls api
 export const updateControlApi = async (data) => {
