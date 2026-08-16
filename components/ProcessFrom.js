@@ -57,8 +57,8 @@ export default function ProcessFrom() {
   };
 
   const handleSubmit = async () => {
-    if (!title || !selectCategory) {
-      showAlert("عنوان و دسته‌بندی الزامیست");
+    if (!selectCategory) {
+      showAlert("دسته‌بندی الزامیست");
       return;
     }
 
@@ -149,10 +149,7 @@ export default function ProcessFrom() {
       </div>
       <div className={classes.input}>
         <div className={classes.bar}>
-          <p className={classes.label}>
-            عنوان
-            <span>*</span>
-          </p>
+          <p className={classes.label}>عنوان</p>
           <CloseIcon
             className="icon"
             onClick={() => setTitle("")}

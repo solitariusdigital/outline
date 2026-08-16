@@ -5,8 +5,9 @@ import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
 import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { getProcessApi } from "@/services/api";
 
-const defaultInjections = [
+const processTypes = [
   {
     item: {
       fa: "همه",
@@ -72,56 +73,27 @@ const defaultInjections = [
 export default function Method() {
   const { language, setLanguage } = useContext(StateContext);
   const { languageType, setLanguageType } = useContext(StateContext);
+  const { screenSize, setScreenSize } = useContext(StateContext);
   const [displayType, setDisplayType] = useState("all");
+  const [displayProcess, setDisplayProcess] = useState([]);
+  const [hoveredId, setHoveredId] = useState(null);
+
+  const fullSizeScreen = screenSize === "desktop";
 
   const targetBox = useRef(null);
 
-  const imagePairs = [
-    {
-      before: {
-        src: "https://bucket.outlinecommunity.com/landing/IMG_01.jpg",
-        alt: "image",
-      },
-      after: {
-        src: "https://bucket.outlinecommunity.com/landing/IMG_02.jpg",
-        alt: "image",
-      },
-      type: "botox",
-    },
-    {
-      before: {
-        src: "https://bucket.outlinecommunity.com/landing/IMG_03.jpg",
-        alt: "image",
-      },
-      after: {
-        src: "https://bucket.outlinecommunity.com/landing/IMG_04.jpg",
-        alt: "image",
-      },
-      type: "fillers",
-    },
-    {
-      before: {
-        src: "https://bucket.outlinecommunity.com/landing/IMG_01.jpg",
-        alt: "image",
-      },
-      after: {
-        src: "https://bucket.outlinecommunity.com/landing/IMG_02.jpg",
-        alt: "image",
-      },
-      type: "enzyme",
-    },
-    {
-      before: {
-        src: "https://bucket.outlinecommunity.com/landing/IMG_03.jpg",
-        alt: "image",
-      },
-      after: {
-        src: "https://bucket.outlinecommunity.com/landing/IMG_04.jpg",
-        alt: "image",
-      },
-      type: "PRP",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let process = await getProcessApi();
+        console.log(process);
+        setDisplayProcess(process);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const scrollToDivBox = () => {
     if (targetBox.current) {
@@ -130,7 +102,7 @@ export default function Method() {
   };
 
   const toggleType = (index) => {
-    setDisplayType(defaultInjections[index].item.en);
+    setDisplayType(processTypes[index].item.en);
   };
 
   return (
@@ -163,7 +135,7 @@ export default function Method() {
         className={classes.container}
         style={{
           fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
-          direction: language ? "rtl" : "ltr",
+          direction: "ltr",
         }}
       >
         <div className={classes.imageBox}>
@@ -197,7 +169,7 @@ export default function Method() {
           <div className="fadeOverlayBottom"></div>
         </div>
         <div className={classes.category} ref={targetBox}>
-          {defaultInjections
+          {processTypes
             .map((item, index) => (
               <div
                 key={index}
@@ -214,7 +186,7 @@ export default function Method() {
             .slice(0, 6)}
         </div>
         <div className={classes.categorySecond}>
-          {defaultInjections
+          {processTypes
             .map((item, index) => (
               <div
                 key={index}
@@ -231,34 +203,65 @@ export default function Method() {
             .slice(6, 11)}
         </div>
         <div className={classes.gallery}>
-          {imagePairs
+          {displayProcess
             .filter(
-              (pair) => displayType === "all" || pair.type === displayType,
+              (pair) => displayType === "all" || pair.category === displayType,
             )
             .map((pair, index) => (
-              <div key={index} className={classes.pair}>
-                <div className={classes.imageBox}>
+              <div
+                key={index}
+                className={classes.pair}
+                onMouseEnter={() => setHoveredId(pair._id)}
+                onMouseLeave={() => setHoveredId(null)}
+              >
+                <div className={classes.imageBoxBefore}>
                   <Image
-                    src={pair.before.src}
-                    blurDataURL={pair.before.src}
+                    src={pair.media[1].link}
+                    blurDataURL={pair.media[1].link}
                     placeholder="blur"
-                    alt={pair.before.alt}
+                    alt={pair.category}
                     layout="fill"
                     objectFit="cover"
                     as="image"
                   />
                 </div>
-                <div className={classes.imageBox}>
+                <div className={classes.imageBoxAfter}>
                   <Image
-                    src={pair.after.src}
-                    blurDataURL={pair.after.src}
+                    src={pair.media[0].link}
+                    blurDataURL={pair.media[0].link}
                     placeholder="blur"
-                    alt={pair.after.alt}
+                    alt={pair.category}
                     layout="fill"
                     objectFit="cover"
                     as="image"
                   />
                 </div>
+                {(pair.title || pair.description) && (
+                  <>
+                    {fullSizeScreen && hoveredId === pair._id && (
+                      <div
+                        className={classes.overlay}
+                        style={{
+                          fontFamily: "Yekan-Regular",
+                        }}
+                      >
+                        <h2>{pair.title}</h2>
+                        <p>{pair.description}</p>
+                      </div>
+                    )}
+                    {!fullSizeScreen && (
+                      <div
+                        className={classes.overlay}
+                        style={{
+                          fontFamily: "Yekan-Regular",
+                        }}
+                      >
+                        <h2>{pair.title}</h2>
+                        <p>{pair.description}</p>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             ))}
         </div>

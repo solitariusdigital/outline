@@ -42,7 +42,7 @@
   user-select: none;
 
   @include mixins.mobile {
-    width: config.$content-width - 5%;
+    width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
     width: config.$content-width - 20%;
@@ -67,7 +67,7 @@
   width: 35%;
 
   @include mixins.mobile {
-    width: config.$content-width - 10%;
+    width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
     width: config.$content-width - 30%;
@@ -80,7 +80,7 @@
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-  gap: 36px;
+  gap: 24px;
   margin: auto;
   padding: 50px 0px;
   width: config.$content-width;
@@ -98,19 +98,51 @@
   .pair {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-    gap: 16px;
+    position: relative;
+
+    .overlay {
+      position: absolute;
+      bottom: 0px !important;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      padding: 12px 0px;
+      color: config.$white;
+      transition: opacity 0.4s ease;
+      backdrop-filter: blur(5px) saturate(120%);
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+
+      h3 {
+        @include mixins.mobile {
+          width: 80%;
+        }
+      }
+    }
   }
 
-  .imageBox {
+  .imageBoxAfter,
+  .imageBoxBefore {
     position: relative;
     overflow: hidden;
     width: 100%;
-    border-radius: 8px;
-    height: 50dvh;
-    max-height: 500px;
+    height: 55dvh;
+    max-height: 600px;
 
     @include mixins.mobile {
       height: 40dvh;
     }
+  }
+
+  .imageBoxAfter {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  .imageBoxBefore {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
   }
 }
