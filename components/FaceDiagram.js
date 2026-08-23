@@ -628,12 +628,7 @@ export default function FaceDiagram() {
                         )}
                       </div>
                       {amountFiller[key]?.[value] && (
-                        <div
-                          className={classes.row}
-                          style={{
-                            width: "50%",
-                          }}
-                        >
+                        <div className={classes.row}>
                           <span>cc</span>
                           <h4>{amountFiller[key][value]}</h4>
                         </div>
