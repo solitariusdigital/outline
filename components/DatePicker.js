@@ -433,6 +433,11 @@ export default function DatePicker({ visits }) {
             active: false,
             count: 0,
           },
+          "19:00": {
+            display: currentUser.permission === "admin",
+            active: false,
+            count: 0,
+          },
         },
         kish: {
           "16:00": { display: true, active: false, count: 0 },
