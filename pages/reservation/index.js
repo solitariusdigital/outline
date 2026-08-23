@@ -269,7 +269,6 @@ export async function getServerSideProps(context) {
         { completed: false, canceled: false },
         {
           _id: 1,
-          patientName: 1,
           createdAt: 1,
         },
       )
