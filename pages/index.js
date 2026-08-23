@@ -519,10 +519,17 @@ export async function getServerSideProps(context) {
   try {
     await dbConnect();
 
-    let visits = await visitModel.find();
-    let activeVisits = visits.filter(
-      (visit) => !visit.completed && !visit.canceled,
-    );
+    const activeVisits = await visitModel
+      .find(
+        { completed: false, canceled: false },
+        {
+          _id: 1,
+          patientName: 1,
+          createdAt: 1,
+        },
+      )
+      .lean()
+      .exec();
 
     return {
       props: {
@@ -531,8 +538,6 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     console.error(error);
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 }
