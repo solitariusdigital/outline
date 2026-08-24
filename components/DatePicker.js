@@ -195,9 +195,13 @@ export default function DatePicker({ visits }) {
   };
 
   const checkCategoryLimit = () => {
+    const limitTimes = ["16:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+    let limitCount =
+      selectDoctor === "دکتر فراهانی" && limitTimes.includes(time) ? 2 : 3;
+
     const limits = {
-      one: 3,
-      two: 3,
+      one: limitCount,
+      two: limitCount,
       three: 6,
     };
 
