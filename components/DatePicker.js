@@ -193,11 +193,27 @@ export default function DatePicker({ visits }) {
       });
     }
   };
-
+  // 6 faghat saat aval
+  // 5 avaly 3 ta dovomy 2 ta
+  // 4
+  // 6
   const checkCategoryLimit = () => {
-    const limitTimes = ["16:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+    let timeSlots = null;
+    if (isSunday(day)) {
+      timeSlots = [
+        "13:00",
+        "14:00",
+        "16:30",
+        "17:00",
+        "17:30",
+        "18:00",
+        "18:30",
+      ];
+    } else {
+      timeSlots = ["14:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+    }
     let limitCount =
-      selectDoctor === "دکتر فراهانی" && limitTimes.includes(time) ? 2 : 3;
+      selectDoctor === "دکتر فراهانی" && timeSlots.includes(time) ? 2 : 3;
 
     const limits = {
       one: limitCount,
@@ -513,12 +529,9 @@ export default function DatePicker({ visits }) {
     }
 
     const targetKeys = ["15:00", "15:30", "16:00"];
-    const breakDay = day?.month === 5 && day?.day < 22;
-    if (!breakDay) {
-      for (const key in timeToUse) {
-        if (targetKeys.includes(key)) {
-          timeToUse[key].display = false;
-        }
+    for (const key in timeToUse) {
+      if (targetKeys.includes(key)) {
+        timeToUse[key].display = false;
       }
     }
 
