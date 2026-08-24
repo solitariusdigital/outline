@@ -193,10 +193,7 @@ export default function DatePicker({ visits }) {
       });
     }
   };
-  // 6 faghat saat aval
-  // 5 avaly 3 ta dovomy 2 ta
-  // 4
-  // 6
+
   const checkCategoryLimit = () => {
     let timeSlots = null;
     if (isSunday(day)) {
