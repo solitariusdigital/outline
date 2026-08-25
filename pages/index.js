@@ -105,3 +105,29 @@ export default function Home() {
     </Fragment>
   );
 }
+
+export async function getServerSideProps(context) {
+  try {
+    await dbConnect();
+
+    const activeVisits = await visitModel
+      .find(
+        { completed: false, canceled: false },
+        {
+          _id: 1,
+          createdAt: 1,
+        },
+      )
+      .lean()
+      .exec();
+
+    return {
+      props: {
+        activeVisits: JSON.parse(JSON.stringify(activeVisits)),
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return { notFound: true };
+  }
+}

@@ -195,9 +195,22 @@ export default function DatePicker({ visits }) {
   };
 
   const checkCategoryLimit = () => {
-    const limitTimes = ["16:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+    let timeSlots = null;
+    if (isSunday(day)) {
+      timeSlots = [
+        "13:00",
+        "14:00",
+        "16:30",
+        "17:00",
+        "17:30",
+        "18:00",
+        "18:30",
+      ];
+    } else {
+      timeSlots = ["14:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+    }
     let limitCount =
-      selectDoctor === "دکتر فراهانی" && limitTimes.includes(time) ? 2 : 3;
+      selectDoctor === "دکتر فراهانی" && timeSlots.includes(time) ? 2 : 3;
 
     const limits = {
       one: limitCount,
@@ -510,6 +523,13 @@ export default function DatePicker({ visits }) {
       );
     } else {
       timeToUse = originalTime;
+    }
+
+    const targetKeys = ["15:00", "15:30", "16:00"];
+    for (const key in timeToUse) {
+      if (targetKeys.includes(key)) {
+        timeToUse[key].display = false;
+      }
     }
 
     let updatedTimes = { ...timeToUse };
