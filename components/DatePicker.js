@@ -65,6 +65,7 @@ export default function DatePicker({ visits }) {
       "مشاوره یا تزریق جوانساز",
       "طراحی چهره فول فیس",
       "مزوتراپی",
+      "نخ",
     ],
     three: ["لیزر"],
   };
@@ -200,14 +201,15 @@ export default function DatePicker({ visits }) {
       timeSlots = [
         "13:00",
         "14:00",
-        "16:30",
+        "14:30",
+        "15:00",
+        "16:00",
         "17:00",
-        "17:30",
         "18:00",
         "18:30",
       ];
     } else {
-      timeSlots = ["14:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+      timeSlots = ["14:30", "15:00", "16:00", "17:00", "18:00", "18:30"];
     }
     let limitCount =
       selectDoctor === "دکتر فراهانی" && timeSlots.includes(time) ? 2 : 3;
@@ -515,17 +517,26 @@ export default function DatePicker({ visits }) {
     let originalTime = setOriginalTimes(selectDoctor, selectBranch);
     setDisplayForm(true);
 
-    let timeToUse;
+    const keys = Object.keys(originalTime);
+    const lastKey = keys[keys.length - 1];
+    let dateCondition = day.month > 6 || day.day > 15;
+
     if (!isSunday) {
-      const numberSlice = 5;
-      timeToUse = Object.fromEntries(
-        Object.entries(originalTime).slice(numberSlice),
-      );
-    } else {
-      timeToUse = originalTime;
+      const sliceNo = dateCondition ? 6 : 5;
+      const keysToUpdate = keys.slice(0, sliceNo);
+
+      keysToUpdate.forEach((key) => {
+        originalTime[key].display = false;
+      });
     }
 
-    const targetKeys = ["15:00", "15:30", "16:00"];
+    if (dateCondition && selectDoctor === "دکتر فراهانی") {
+      originalTime[lastKey].display = false;
+    }
+
+    const timeToUse = originalTime;
+
+    const targetKeys = ["15:30"];
     for (const key in timeToUse) {
       if (targetKeys.includes(key)) {
         timeToUse[key].display = false;
