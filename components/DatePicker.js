@@ -520,18 +520,14 @@ export default function DatePicker({ visits }) {
 
     const keys = Object.keys(originalTime);
     const lastKey = keys[keys.length - 1];
-    let dateCondition = day.month > 6 || day.day > 15;
-
     if (!isSunday) {
-      const sliceNo = dateCondition ? 6 : 5;
+      const sliceNo = 6;
       const keysToUpdate = keys.slice(0, sliceNo);
-
       keysToUpdate.forEach((key) => {
         originalTime[key].display = false;
       });
     }
-
-    if (dateCondition && selectDoctor === "دکتر فراهانی") {
+    if (selectDoctor === "دکتر فراهانی") {
       originalTime[lastKey].display = false;
     }
 
