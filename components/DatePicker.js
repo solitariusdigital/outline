@@ -63,6 +63,7 @@ export default function DatePicker({ visits }) {
     two: [
       "مشاوره یا تزریق فیلر",
       "مشاوره یا تزریق جوانساز",
+      "مشاوره یا لیفت نخ",
       "طراحی چهره فول فیس",
       "مزوتراپی",
     ],
@@ -195,26 +196,28 @@ export default function DatePicker({ visits }) {
   };
 
   const checkCategoryLimit = () => {
-    let timeSlots = null;
+    let firstSlots = ["11:30", "12:00", "13:00", "13:30"];
+    let generalSlots = null;
     if (isSunday(day)) {
-      timeSlots = [
+      generalSlots = [
         "13:00",
         "14:00",
-        "16:30",
+        "14:30",
+        "15:00",
+        "16:00",
         "17:00",
-        "17:30",
         "18:00",
         "18:30",
       ];
     } else {
-      timeSlots = ["14:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+      generalSlots = ["14:30", "15:00", "16:00", "17:00", "18:00", "18:30"];
     }
-    let limitCount =
-      selectDoctor === "دکتر فراهانی" && timeSlots.includes(time) ? 2 : 3;
+    let generalCount = generalSlots.includes(time) ? 2 : 3;
+    let firstHours = firstSlots.includes(time);
 
     const limits = {
-      one: limitCount,
-      two: limitCount,
+      one: firstHours ? 2 : generalCount,
+      two: firstHours ? 4 : generalCount,
       three: 6,
     };
 
@@ -515,17 +518,22 @@ export default function DatePicker({ visits }) {
     let originalTime = setOriginalTimes(selectDoctor, selectBranch);
     setDisplayForm(true);
 
-    let timeToUse;
+    const keys = Object.keys(originalTime);
+    const lastKey = keys[keys.length - 1];
     if (!isSunday) {
-      const numberSlice = 5;
-      timeToUse = Object.fromEntries(
-        Object.entries(originalTime).slice(numberSlice),
-      );
-    } else {
-      timeToUse = originalTime;
+      const sliceNo = 6;
+      const keysToUpdate = keys.slice(0, sliceNo);
+      keysToUpdate.forEach((key) => {
+        originalTime[key].display = false;
+      });
+    }
+    if (selectDoctor === "دکتر فراهانی") {
+      originalTime[lastKey].display = false;
     }
 
-    const targetKeys = ["15:00", "15:30", "16:00"];
+    const timeToUse = originalTime;
+
+    const targetKeys = ["15:30"];
     for (const key in timeToUse) {
       if (targetKeys.includes(key)) {
         timeToUse[key].display = false;
