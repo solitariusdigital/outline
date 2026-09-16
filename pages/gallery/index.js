@@ -9,75 +9,10 @@ import Tooltip from "@mui/material/Tooltip";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { getProcessApi, deleteProcessApi } from "@/services/api";
 
-const processTypes = [
-  {
-    item: {
-      fa: "همه",
-      en: "all",
-    },
-  },
-  {
-    item: {
-      fa: "فیلر",
-      en: "fillers",
-    },
-  },
-  {
-    item: {
-      fa: "بوتاکس",
-      en: "botox",
-    },
-  },
-  {
-    item: {
-      fa: "مزوتراپی",
-      en: "mesotherapy",
-    },
-  },
-  {
-    item: {
-      fa: "جوانساز",
-      en: "skin rejuvenation",
-    },
-  },
-  {
-    item: {
-      fa: "پی آر پی",
-      en: "PRP",
-    },
-  },
-  {
-    item: {
-      fa: "آنزیم",
-      en: "enzyme",
-    },
-  },
-  {
-    item: {
-      fa: "سونوگرافی",
-      en: "ultrasound",
-    },
-  },
-  {
-    item: {
-      fa: "لیزر سرجیکال",
-      en: "surgical laser",
-    },
-  },
-  {
-    item: {
-      fa: "لیزر فرکشنال",
-      en: "fractional laser",
-    },
-  },
-];
-
 export default function Gallery() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
-  const { languageType, setLanguageType } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
-  const [displayType, setDisplayType] = useState("all");
   const [displayProcess, setDisplayProcess] = useState([]);
   const [hoveredId, setHoveredId] = useState(null);
   const [refresh, setRefresh] = useState(0);
@@ -112,10 +47,6 @@ export default function Gallery() {
     if (targetBox.current) {
       targetBox.current.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const toggleType = (index) => {
-    setDisplayType(processTypes[index].item.en);
   };
 
   return (
@@ -174,113 +105,75 @@ export default function Gallery() {
           </div>
           <div className="fadeOverlayBottom"></div>
         </div>
-        <div className={classes.category} ref={targetBox}>
-          {processTypes
-            .map((item, index) => (
-              <div
-                key={index}
-                className={
-                  item.item.en === displayType
-                    ? classes.itemActive
-                    : classes.item
-                }
-                onClick={() => toggleType(index)}
-              >
-                <h4>{item.item[languageType]}</h4>
-              </div>
-            ))
-            .slice(0, 6)}
-        </div>
-        <div className={classes.categorySecond}>
-          {processTypes
-            .map((item, index) => (
-              <div
-                key={index}
-                className={
-                  item.item.en === displayType
-                    ? classes.itemActive
-                    : classes.item
-                }
-                onClick={() => toggleType(index)}
-              >
-                <h4>{item.item[languageType]}</h4>
-              </div>
-            ))
-            .slice(6, 11)}
-        </div>
-        <div className={classes.gallery}>
-          {displayProcess
-            .filter(
-              (pair) => displayType === "all" || pair.category === displayType,
-            )
-            .map((pair, index) => (
-              <div
-                key={index}
-                className={classes.pair}
-                onMouseEnter={() => setHoveredId(pair._id)}
-                onMouseLeave={() => setHoveredId(null)}
-              >
-                {currentUser?.super && (
-                  <div className={classes.control}>
-                    <Tooltip title="Delete">
-                      <DeleteOutlineIcon
-                        className="icon"
-                        sx={{ fontSize: 20, color: "white" }}
-                        onClick={() => handleDelete(pair._id)}
-                      />
-                    </Tooltip>
-                  </div>
-                )}
-                <div className={classes.imageBoxBefore}>
-                  <Image
-                    src={pair.media[1].link}
-                    blurDataURL={pair.media[1].link}
-                    placeholder="blur"
-                    alt={pair.category}
-                    layout="fill"
-                    objectFit="cover"
-                    as="image"
-                  />
+        <div className={classes.gallery} ref={targetBox}>
+          {displayProcess.map((pair, index) => (
+            <div
+              key={index}
+              className={classes.pair}
+              onMouseEnter={() => setHoveredId(pair._id)}
+              onMouseLeave={() => setHoveredId(null)}
+            >
+              {currentUser?.super && (
+                <div className={classes.control}>
+                  <Tooltip title="Delete">
+                    <DeleteOutlineIcon
+                      className="icon"
+                      sx={{ fontSize: 20, color: "white" }}
+                      onClick={() => handleDelete(pair._id)}
+                    />
+                  </Tooltip>
                 </div>
-                <div className={classes.imageBoxAfter}>
-                  <Image
-                    src={pair.media[0].link}
-                    blurDataURL={pair.media[0].link}
-                    placeholder="blur"
-                    alt={pair.category}
-                    layout="fill"
-                    objectFit="cover"
-                    as="image"
-                  />
-                </div>
-                {(pair.title || pair.description) && (
-                  <>
-                    {fullSizeScreen && hoveredId === pair._id && (
-                      <div
-                        className={classes.overlay}
-                        style={{
-                          fontFamily: "Yekan-Regular",
-                        }}
-                      >
-                        <h2>{pair.title}</h2>
-                        <p>{pair.description}</p>
-                      </div>
-                    )}
-                    {!fullSizeScreen && (
-                      <div
-                        className={classes.overlay}
-                        style={{
-                          fontFamily: "Yekan-Regular",
-                        }}
-                      >
-                        <h2>{pair.title}</h2>
-                        <p>{pair.description}</p>
-                      </div>
-                    )}
-                  </>
-                )}
+              )}
+              <div className={classes.imageBoxBefore}>
+                <Image
+                  src={pair.media[1].link}
+                  blurDataURL={pair.media[1].link}
+                  placeholder="blur"
+                  alt={pair.category}
+                  layout="fill"
+                  objectFit="cover"
+                  as="image"
+                />
               </div>
-            ))}
+              <div className={classes.imageBoxAfter}>
+                <Image
+                  src={pair.media[0].link}
+                  blurDataURL={pair.media[0].link}
+                  placeholder="blur"
+                  alt={pair.category}
+                  layout="fill"
+                  objectFit="cover"
+                  as="image"
+                />
+              </div>
+              {(pair.title || pair.description) && (
+                <>
+                  {fullSizeScreen && hoveredId === pair._id && (
+                    <div
+                      className={classes.overlay}
+                      style={{
+                        fontFamily: "Yekan-Regular",
+                      }}
+                    >
+                      <h2>{pair.title}</h2>
+                      <p>{pair.description}</p>
+                    </div>
+                  )}
+                  {!fullSizeScreen && (
+                    <div
+                      className={classes.overlay}
+                      style={{
+                        fontFamily: "Yekan-Regular",
+                      }}
+                    >
+                      <h2>{pair.title}</h2>
+                      <p>{pair.description}</p>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
         </div>
       </section>
     </Fragment>

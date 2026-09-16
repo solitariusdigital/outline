@@ -29,54 +29,6 @@
   }
 }
 
-.category,
-.categorySecond {
-  @include mixins.row-space-between-center();
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 12px 0px;
-  margin: auto;
-  width: 45%;
-  max-width: config.$max-width;
-  text-transform: capitalize;
-  user-select: none;
-
-  @include mixins.mobile {
-    width: calc(100% - 24px);
-  }
-  @include mixins.tabletPortrait {
-    width: config.$content-width - 20%;
-  }
-  @include mixins.tabletLandscape {
-    width: config.$content-width - 30%;
-  }
-
-  .item {
-    cursor: pointer;
-
-    &:hover {
-      color: config.$gold;
-    }
-  }
-  .itemActive {
-    color: config.$gold;
-  }
-}
-
-.categorySecond {
-  width: 35%;
-
-  @include mixins.mobile {
-    width: calc(100% - 24px);
-  }
-  @include mixins.tabletPortrait {
-    width: config.$content-width - 30%;
-  }
-  @include mixins.tabletLandscape {
-    width: config.$content-width - 40%;
-  }
-}
-
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));

@@ -1,13 +1,73 @@
-import { useContext, Fragment, useEffect, useRef } from "react";
+import { useContext, Fragment, useEffect, useRef, useState } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./method.module.scss";
 import logo from "@/assets/logo.png";
+import Image from "next/legacy/image";
 import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import Image from "next/legacy/image";
+import { applyFontToEnglishWords } from "@/services/utility";
+
+const methodTypes = [
+  {
+    item: {
+      fa: "تزریق شقیقه",
+      en: "all",
+    },
+  },
+  {
+    item: {
+      fa: "تزریق میدفیس",
+      en: "fillers",
+    },
+  },
+  {
+    item: {
+      fa: "اصلاح خط خنده و خط غم",
+      en: "botox",
+    },
+  },
+  {
+    item: {
+      fa: "اصلاح چانه و زاویه فک",
+      en: "mesotherapy",
+    },
+  },
+  {
+    item: {
+      fa: "جوان‌ سازی",
+      en: "skin rejuvenation",
+    },
+  },
+  {
+    item: {
+      fa: "لیفت صورت با نخ",
+      en: "PRP",
+    },
+  },
+  {
+    item: {
+      fa: "لیفت نان‌سرجیکال",
+      en: "enzyme",
+    },
+  },
+  {
+    item: {
+      fa: "لیزر فرکشنال CO₂",
+      en: "ultrasound",
+    },
+  },
+  {
+    item: {
+      fa: "لیزر Helios III Q-Switched",
+      en: "surgical laser",
+    },
+  },
+];
 
 export default function Method() {
   const { language, setLanguage } = useContext(StateContext);
+  const { languageType, setLanguageType } = useContext(StateContext);
+  const [selectTopic, setSelectTopic] = useState("تزریق شقیقه");
 
   const targetBox = useRef(null);
 
@@ -17,7 +77,7 @@ export default function Method() {
     }
   };
 
-  const text = {
+  const texts = {
     "تزریق شقیقه": [
       {
         fa: "نقش شقیقه در زیبایی چهره",
@@ -1558,7 +1618,85 @@ export default function Method() {
           </div>
           <div className="fadeOverlayBottom"></div>
         </div>
-        <div ref={targetBox}></div>
+        <div className={classes.category} ref={targetBox}>
+          {methodTypes
+            .map((item, index) => (
+              <div
+                key={index}
+                className={
+                  item.item.fa === selectTopic
+                    ? classes.itemActive
+                    : classes.item
+                }
+                onClick={() => setSelectTopic(item.item.fa)}
+              >
+                <h4
+                  className={classes.text}
+                  key={index}
+                  style={{
+                    fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: applyFontToEnglishWords(
+                      item.item[languageType],
+                      "Titillium-Thin",
+                      languageType,
+                    ),
+                  }}
+                ></h4>
+              </div>
+            ))
+            .slice(0, 5)}
+        </div>
+        <div className={classes.categorySecond}>
+          {methodTypes
+            .map((item, index) => (
+              <div
+                key={index}
+                className={
+                  item.item.fa === selectTopic
+                    ? classes.itemActive
+                    : classes.item
+                }
+                onClick={() => setSelectTopic(item.item.fa)}
+              >
+                <h4
+                  className={classes.text}
+                  key={index}
+                  style={{
+                    fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: applyFontToEnglishWords(
+                      item.item[languageType],
+                      "Titillium-Thin",
+                      languageType,
+                    ),
+                  }}
+                ></h4>
+              </div>
+            ))
+            .slice(5, 9)}
+        </div>
+
+        <div className={classes.content}>
+          {texts[selectTopic]?.map((text, index) => (
+            <h3
+              className={classes.text}
+              key={index}
+              style={{
+                fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+              }}
+              dangerouslySetInnerHTML={{
+                __html: applyFontToEnglishWords(
+                  text[languageType],
+                  "Titillium-Thin",
+                  languageType,
+                ),
+              }}
+            ></h3>
+          ))}
+        </div>
       </section>
     </Fragment>
   );

@@ -11,6 +11,7 @@
   height: 100dvh;
   width: 100%;
   user-select: none;
+  margin-bottom: 50px;
 
   .title {
     display: flex;
@@ -26,5 +27,80 @@
     left: 50%;
     bottom: 10%;
     transform: translateX(-50%);
+  }
+}
+
+.category,
+.categorySecond {
+  @include mixins.row-space-between-center();
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 0px;
+  margin: auto;
+  width: 45%;
+  max-width: config.$max-width;
+  text-transform: capitalize;
+  user-select: none;
+
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
+  @include mixins.tabletPortrait {
+    width: config.$content-width - 10%;
+  }
+  @include mixins.tabletLandscape {
+    width: config.$content-width - 10%;
+  }
+
+  .item {
+    cursor: pointer;
+
+    &:hover {
+      color: config.$gold;
+    }
+  }
+  .itemActive {
+    color: config.$gold;
+  }
+}
+
+.categorySecond {
+  width: 40%;
+
+  @include mixins.mobile {
+    width: calc(100% - 24px);
+  }
+  @include mixins.tabletPortrait {
+    width: config.$content-width - 10%;
+  }
+  @include mixins.tabletLandscape {
+    width: config.$content-width - 20%;
+  }
+}
+
+.content {
+  max-width: config.$max-width;
+  margin-top: 50px;
+  height: 100%;
+  border: 1px solid config.$darkblue;
+
+  @include mixins.mobile {
+    order: 1;
+    width: calc(100% - 24px);
+    padding: 50px 0px;
+  }
+  @include mixins.tabletPortrait {
+    order: 1;
+    width: calc(100% - 24px);
+    padding: 50px 0px;
+  }
+
+  .text {
+    margin: 12px auto;
+    width: config.$content-widthText;
+
+    @include mixins.mobile {
+      width: calc(100% - 24px);
+    }
   }
 }
