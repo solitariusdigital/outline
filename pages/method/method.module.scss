@@ -37,7 +37,7 @@
   gap: 12px;
   padding: 12px 0px;
   margin: auto;
-  width: 45%;
+  width: 80%;
   max-width: config.$max-width;
   text-transform: capitalize;
   user-select: none;
@@ -65,13 +65,13 @@
 }
 
 .categorySecond {
-  width: 40%;
+  width: 60%;
 
   @include mixins.mobile {
     width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
-    width: config.$content-width - 10%;
+    width: config.$content-width - 20%;
   }
   @include mixins.tabletLandscape {
     width: config.$content-width - 20%;
@@ -80,27 +80,25 @@
 
 .content {
   max-width: config.$max-width;
-  margin-top: 50px;
+  width: 100%;
   height: 100%;
+  margin: auto;
   border: 1px solid config.$darkblue;
+  margin-top: 50px;
 
   @include mixins.mobile {
-    order: 1;
     width: calc(100% - 24px);
-    padding: 50px 0px;
   }
   @include mixins.tabletPortrait {
-    order: 1;
     width: calc(100% - 24px);
-    padding: 50px 0px;
   }
 
   .text {
-    margin: 12px auto;
+    margin: 24px auto;
     width: config.$content-widthText;
 
     @include mixins.mobile {
-      width: calc(100% - 24px);
+      width: 100%;
     }
   }
 }

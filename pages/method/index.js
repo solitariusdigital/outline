@@ -11,55 +11,55 @@ const methodTypes = [
   {
     item: {
       fa: "تزریق شقیقه",
-      en: "all",
+      en: "Temple Injection",
     },
   },
   {
     item: {
       fa: "تزریق میدفیس",
-      en: "fillers",
+      en: "Midface Injection",
     },
   },
   {
     item: {
       fa: "اصلاح خط خنده و خط غم",
-      en: "botox",
+      en: "Laugh Line & Marionette Line Correction",
     },
   },
   {
     item: {
       fa: "اصلاح چانه و زاویه فک",
-      en: "mesotherapy",
+      en: "Chin & Jawline Correction",
     },
   },
   {
     item: {
-      fa: "جوان‌ سازی",
-      en: "skin rejuvenation",
+      fa: "جوان‌ ساز",
+      en: "Rejuvenation",
     },
   },
   {
     item: {
       fa: "لیفت صورت با نخ",
-      en: "PRP",
+      en: "Thread Face Lift",
     },
   },
   {
     item: {
       fa: "لیفت نان‌سرجیکال",
-      en: "enzyme",
+      en: "Non-surgical Lift",
     },
   },
   {
     item: {
       fa: "لیزر فرکشنال CO₂",
-      en: "ultrasound",
+      en: "Fractional CO₂ Laser",
     },
   },
   {
     item: {
       fa: "لیزر Helios III Q-Switched",
-      en: "surgical laser",
+      en: "Helios III Q-Switched Laser",
     },
   },
 ];
@@ -506,7 +506,7 @@ export default function Method() {
         en: "In Outline, the contour of the face is designed; it is not simply made more prominent.",
       },
     ],
-    "جوان‌ سازی": [
+    "جوان‌ ساز": [
       {
         fa: "Regenerative Aesthetics",
         en: "Regenerative Aesthetics",
