@@ -204,13 +204,12 @@ export default function DatePicker({ visits }) {
         "14:00",
         "14:30",
         "15:00",
-        "16:00",
         "17:00",
         "18:00",
         "18:30",
       ];
     } else {
-      generalSlots = ["14:30", "15:00", "16:00", "17:00", "18:00", "18:30"];
+      generalSlots = ["14:30", "15:00", "17:00", "18:00", "18:30"];
     }
     let generalCount = generalSlots.includes(time) ? 2 : 3;
     let firstHours = firstSlots.includes(time);
