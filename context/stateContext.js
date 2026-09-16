@@ -32,19 +32,19 @@ export const StateProvider = (props) => {
   const [navigationTopBar, setNavigationTopBar] = useState([
     {
       title: {
-        fa: "متد اوت‌لاین",
-        en: "OUTLINE METHOD",
+        fa: "گالری مراجعین",
+        en: "PPATIENT GALLERY",
       },
-      link: "/method",
+      link: "/gallery",
       active: false,
       nav: true,
     },
     {
       title: {
-        fa: "مراقبت پزشکی",
-        en: "MEDICAL CARE",
+        fa: "متد اوت‌لاین",
+        en: "OUTLINE METHOD",
       },
-      link: "/care",
+      link: "/method",
       active: false,
       nav: true,
     },

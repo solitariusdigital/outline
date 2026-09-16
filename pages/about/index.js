@@ -103,7 +103,7 @@ export default function About() {
                   <span style={{ fontFamily: "Titillium-Light" }}>Outline</span>
                 </>
               ) : (
-                "The philosophy of the Outline method"
+                "The Philosophy Of The Outline Method"
               )}
             </h1>
           </div>
