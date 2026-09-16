@@ -21,40 +21,32 @@ export default function About() {
 
   const texts = [
     {
-      fa: "ما معتقدیم هر چهره، ترکیبی منحصربه‌فرد از آناتومی، نور، سایه، حجم، کیفیت پوست و حالات چهره است. به همین دلیل، هیچ نسخه یکسانی برای همه افراد وجود ندارد. هر صورت، داستان خود را دارد و وظیفه ما، بازطراحی آن بر اساس همان ویژگی‌های منحصربه‌فرد است؛ نه تغییر هویت آن.",
-      en: "We believe that every face is a unique composition of anatomy, light, shadow, volume, skin quality, and facial expression. No two faces age the same way, and no two treatment plans should ever be identical. Every face tells its own story, and our role is not to change that story, but to refine and reveal its most balanced, natural version.",
+      fa: "در متد Outline، هدف از تزریق تغییر چهره نیست؛ هدف، درک ساختار چهره و بازگرداندن تناسب میان اجزای آن است.",
+      en: "In the Outline method, the goal of the injection is not to change the face; the goal is to understand the structure of the face and restore proportion among its features.",
     },
     {
-      fa: "متد Outline حاصل تلفیق علم روز پزشکی زیبایی، شناخت دقیق آناتومی و نگاه هنرمندانه به تناسبات چهره است. این متد به‌طور مداوم بر پایه جدیدترین مقالات علمی، تکنیک‌های نوین و تجربه بالینی به‌روزرسانی می‌شود تا درمان‌ها همواره دقیق‌تر، ایمن‌تر و طبیعی‌تر باشند.",
-      en: "Outline is built on the integration of advanced aesthetic medicine, anatomical precision, and artistic vision. Our approach evolves continuously through the latest scientific research, modern aesthetic techniques, and clinical experience, ensuring that every treatment remains evidence-based, safe, and naturally elegant.",
+      fa: "هر چهره معماری منحصربه‌فرد خود را دارد. فرم استخوان‌ها، توزیع بافت نرم، لیگامان‌ها، نسبت اجزای صورت و حتی نحوه حرکت عضلات، در شکل‌گیری هویت ظاهری یک فرد نقش دارند. به همین دلیل، در Outline یک الگوی ثابت برای تمام چهره‌ها وجود ندارد.",
+      en: "Every face has its own unique architecture. The shape of the bones, the distribution of soft tissue, the ligaments, the proportions of facial features, and even the way the muscles move all play a role in shaping a person's outward identity. For this reason, there is no fixed template for all faces in Outline.",
     },
     {
-      fa: "الهام ما از هنر کلاسیک است؛ از هنرمندانی مانند لئوناردو داوینچی، میکل‌آنژ و پیکاسو که زیبایی را در تناسب، هارمونی و جزئیات می‌دیدند. همان‌گونه که یک اثر هنری با اصلاح هوشمندانه جزئیات کامل می‌شود، در Outline نیز تغییرات کوچک اما دقیق، می‌توانند چهره‌ای متعادل‌تر، جوان‌تر و طبیعی‌تر خلق کنند.",
-      en: "Our philosophy is inspired by the timeless principles of classical art. Masters such as Leonardo da Vinci, Michelangelo, and Pablo Picasso understood that true beauty lies in harmony, proportion, and thoughtful attention to detail. In the same way, Outline focuses on subtle, intentional refinements that collectively create a more youthful, balanced, and authentic appearance.",
+      fa: "ما صورت را مجموعه‌ای از نواحی جداگانه نمی‌بینیم. شقیقه، میدفیس، لب، چانه و خط فک بخش‌هایی از یک ساختار سه‌بعدی و به‌هم‌پیوسته‌اند؛ تغییری کوچک در یک ناحیه می‌تواند بر درک ما از تناسب کل چهره تأثیر بگذارد.",
+      en: "We do not view the face as a collection of separate regions. The temple, midface, lips, chin, and jawline are parts of a single three-dimensional, interconnected structure; a small change in one area can affect our perception of the proportion of the entire face.",
     },
     {
-      fa: "در فلسفه Outline، پیری تنها به معنای از دست رفتن حجم نیست. با افزایش سن، جایگاه بافت‌ها تغییر می‌کند، فت‌پدها تحلیل می‌روند، لیگامان‌ها ضعیف می‌شوند، کیفیت پوست کاهش پیدا می‌کند و الگوی انعکاس نور روی صورت تغییر می‌کند. به همین دلیل، جوانسازی واقعی باید همه این لایه‌ها را در کنار هم درمان کند.",
-      en: "We do not see facial aging as a simple loss of volume. Aging is a dynamic process involving the descent of facial tissues, fat pad atrophy, ligament laxity, declining skin quality, and changes in the way light interacts with the face. For this reason, genuine facial rejuvenation requires a comprehensive understanding of every layer contributing to the aging process.",
+      fa: "به همین دلیل، پیش از هر تزریق این سؤال مطرح می‌شود:",
+      en: "For this reason, before any injection, this question arises:",
     },
     {
-      fa: "ما ابتدا ساختار و مسیرهای لیفت را طراحی می‌کنیم، سپس کمبود حجم‌ها را به‌صورت هدفمند اصلاح می‌کنیم و در ادامه، با کمک بایواستیمولاتورها، اسکین‌بوسترها و لیزر، کیفیت پوست را بازسازی می‌کنیم. این رویکرد، همان چیزی است که ما آن را جوانسازی لایه‌لایه می‌نامیم.",
-      en: "Our treatments begin by restoring structural support and redefining facial lifting vectors. Volume is then replaced only where it has been anatomically lost. Finally, regenerative therapies, biostimulators, skin boosters, and advanced laser technologies are used to improve skin quality and complete the rejuvenation process. We refer to this philosophy as layer-by-layer rejuvenation.",
+      fa: "چهره واقعاً به چه تغییری نیاز دارد؟",
+      en: "What change does the face truly need?",
     },
     {
-      fa: "یکی از اصول اساسی Outline، مینیمالیسم است. ما باور داریم زیبایی با حجم بیشتر ایجاد نمی‌شود؛ بلکه با شناخت صحیح آناتومی، هدایت نور و سایه، و حفظ هویت چهره شکل می‌گیرد. هدف ما این نیست که دیگران متوجه تزریق شوند؛ هدف این است که بگویند: «چقدر شاداب‌تر و زیباتر شده‌ای.»",
-      en: "Minimalism is one of the defining principles of Outline. We believe beauty is never achieved through excessive volume, but through precise anatomical planning, intelligent facial contouring, and the careful orchestration of light and shadow. The goal is never for people to notice the treatment itself; the goal is for them to notice that you simply look healthier, more refreshed, and naturally beautiful.",
+      fa: "گاهی پاسخ اضافه کردن حجم است، گاهی ایجاد ساپورت، گاهی بازتعریف یک کانتور و گاهی بهترین تصمیم، تزریق نکردن یک ناحیه است.",
+      en: "Sometimes the answer is adding volume, sometimes creating support, sometimes redefining a contour, and sometimes the best decision is not injecting an area at all.",
     },
     {
-      fa: "در Outline، هر برنامه درمانی کاملاً شخصی‌سازی می‌شود. آنالیز سه‌بعدی چهره، کیفیت پوست، الگوی پیری، نسبت‌های صورت و اهداف هر فرد، مسیر درمان را مشخص می‌کنند. به همین دلیل، هیچ دو طراحی چهره‌ای در Outline شبیه یکدیگر نیست.",
-      en: "Every treatment at Outline is fully personalized. Facial anatomy, aging patterns, skin quality, proportions, and each patient's aesthetic goals are carefully analyzed before a treatment plan is designed. No two faces are alike, and neither are our results.",
-    },
-    {
-      fa: "‏Outline فقط یک تکنیک نیست؛ یک فلسفه است.",
-      en: "Outline is more than a technique, it is a philosophy.",
-    },
-    {
-      fa: "‏فلسفه‌ای که باور دارد زیبایی، حاصل هماهنگی میان آناتومی، ساختار، کیفیت پوست، علم و هنر است؛ و هر انسان، شایسته آن است که بدون از دست دادن هویت خود، بهترین نسخه از چهره‌اش را داشته باشد.‏‏‏‏",
-      en: "A philosophy that believes true beauty is created through the harmony of anatomy, structure, skin quality, science, and art. Every individual deserves to become the finest version of themselves while preserving the unique identity that makes them who they are.",
+      fa: "هدف نهایی Outline ساختن یک چهره جدید نیست؛ بلکه رسیدن به نسخه‌ای متعادل‌تر، جوان‌تر و همچنان قابل‌شناسایی از همان چهره است.",
+      en: "The ultimate goal of Outline is not to create a new face; rather, it is to achieve a more balanced, younger, and still recognizable version of the same face.",
     },
   ];
 
@@ -111,25 +103,9 @@ export default function About() {
                   <span style={{ fontFamily: "Titillium-Light" }}>Outline</span>
                 </>
               ) : (
-                "The Philosophy Behind Outline"
+                "The philosophy of the Outline method"
               )}
             </h1>
-            <h2
-              style={{
-                marginTop: language ? "0px" : "16px",
-              }}
-            >
-              {language ? (
-                <>
-                  در{" "}
-                  <span style={{ fontFamily: "Titillium-Light" }}>Outline</span>
-                  ، زیبایی از طریق تزریق ساخته نمی‌شود بلکه از طریق طراحی خلق
-                  می‌شود.
-                </>
-              ) : (
-                "At Outline, beauty is not created through injections, it is created through design."
-              )}
-            </h2>
           </div>
           <div className={classes.scrollDown} onClick={() => scrollToDivBox()}>
             <KeyboardArrowDownIcon
@@ -143,7 +119,7 @@ export default function About() {
           <div className={classes.content}>
             {texts
               .map((text, index) => (
-                <p
+                <h3
                   className={classes.text}
                   key={index}
                   style={{
@@ -156,9 +132,9 @@ export default function About() {
                       languageType,
                     ),
                   }}
-                ></p>
+                ></h3>
               ))
-              .slice(0, 4)}
+              .slice(0, 3)}
           </div>
           <div className={classes.imageBox}>
             <div className="fadeOverlayTop"></div>
@@ -193,7 +169,7 @@ export default function About() {
           <div className={classes.content}>
             {texts
               .map((text, index) => (
-                <p
+                <h3
                   className={classes.text}
                   key={index}
                   style={{
@@ -206,9 +182,9 @@ export default function About() {
                       languageType,
                     ),
                   }}
-                ></p>
+                ></h3>
               ))
-              .slice(4, 9)}
+              .slice(3, 7)}
           </div>
         </div>
       </section>
