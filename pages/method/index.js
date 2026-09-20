@@ -82,6 +82,7 @@ export default function Method() {
       {
         fa: "نقش شقیقه در زیبایی چهره",
         en: "The Role of the Temple in Facial Beauty",
+        title: true,
       },
       {
         fa: "شقیقه شاید در نگاه اول یکی از اجزای اصلی صورت به نظر نرسد، اما نقش مهمی در فرم کلی و پیوستگی کانتور چهره دارد.",
@@ -96,7 +97,7 @@ export default function Method() {
         en: "With aging, bony changes and the reduction or displacement of soft tissue volume can cause hollowing in the temple area. This change is sometimes not very noticeable on its own, but it can significantly affect our perception of the entire face.",
       },
       {
-        fa: "تزریق شقیقه فقط برای پر کردن گودی نیست",
+        fa: "تزریق شقیقه فقط برای پر کردن گودی نیست.",
         en: "Temple Injection Is Not Just About Filling Hollows",
       },
       {
@@ -118,6 +119,7 @@ export default function Method() {
       {
         fa: "رویکرد Outline",
         en: "The Outline Approach",
+        title: true,
       },
       {
         fa: "پیش از تزریق، شقیقه به‌صورت یک ناحیه مستقل ارزیابی نمی‌شود.",
@@ -138,6 +140,7 @@ export default function Method() {
       {
         fa: "نتیجه‌ای که به دنبال آن هستیم",
         en: "The Result We Are Aiming For",
+        title: true,
       },
       {
         fa: "یک تزریق موفق شقیقه نباید در نگاه اول قابل تشخیص باشد.",
@@ -156,6 +159,7 @@ export default function Method() {
       {
         fa: "میدفیس؛ مرکز تعادل چهره",
         en: "Midface: The Center of Facial Balance",
+        title: true,
       },
       {
         fa: "Midface یا بخش میانی صورت، یکی از مهم‌ترین نواحی در معماری چهره است.",
@@ -190,7 +194,7 @@ export default function Method() {
         en: 'For this reason, these changes cannot always be corrected simply by "adding volume."',
       },
       {
-        fa: "تزریق میدفیس با گونه‌سازی یکسان نیست",
+        fa: "تزریق میدفیس با گونه‌سازی یکسان نیست.",
         en: "Midface Injection Is Not the Same as Cheek Augmentation",
       },
       {
@@ -224,6 +228,7 @@ export default function Method() {
       {
         fa: "رویکرد Outline",
         en: "The Outline Approach",
+        title: true,
       },
       {
         fa: "در متد Outline، پیش از تزریق Midface، ساختار کل صورت ارزیابی می‌شود.",
@@ -248,6 +253,7 @@ export default function Method() {
       {
         fa: "هدف نهایی",
         en: "The Ultimate Goal",
+        title: true,
       },
       {
         fa: "هدف تزریق Midface در Outline ساختن یک گونه جدید نیست.",
@@ -270,6 +276,7 @@ export default function Method() {
       {
         fa: "هر خطی نیاز به تزریق مستقیم ندارد",
         en: "Not Every Line Needs Direct Injection",
+        title: true,
       },
       {
         fa: "خط خنده و خط غم از شایع‌ترین تغییراتی هستند که با افزایش سن در قسمت مرکزی و پایینی صورت دیده می‌شوند.",
@@ -294,6 +301,7 @@ export default function Method() {
       {
         fa: "خط خنده",
         en: "The Smile Line",
+        title: true,
       },
       {
         fa: "Nasolabial Fold یا خط خنده، بخشی طبیعی از آناتومی صورت است و حتی در چهره‌های جوان نیز وجود دارد.",
@@ -318,6 +326,7 @@ export default function Method() {
       {
         fa: "خط غم",
         en: "Marionette Lines",
+        title: true,
       },
       {
         fa: "Marionette Lines یا خطوطی که از گوشه‌های دهان به سمت پایین امتداد پیدا می‌کنند، می‌توانند حالت چهره را خسته‌تر یا غمگین‌تر نشان دهند.",
@@ -338,6 +347,7 @@ export default function Method() {
       {
         fa: "رویکرد Outline",
         en: "The Outline Approach",
+        title: true,
       },
       {
         fa: "در Outline، ابتدا Midface، اطراف دهان، چانه و Jawline در کنار یکدیگر بررسی می‌شوند.",
@@ -362,6 +372,7 @@ export default function Method() {
       {
         fa: "حفظ حرکت و حالت طبیعی صورت",
         en: "Preserving Natural Facial Movement and Expression",
+        title: true,
       },
       {
         fa: "خطوط صورت بخشی از Expression و هویت چهره هستند.",
@@ -382,8 +393,9 @@ export default function Method() {
     ],
     "اصلاح چانه و زاویه فک": [
       {
-        fa: "Profile & Proportion",
-        en: "Profile & Proportion",
+        fa: "Profile and Proportion",
+        en: "Profile and Proportion",
+        title: true,
       },
       {
         fa: "زیبایی چانه و خط فک را نمی‌توان مستقل از سایر اجزای صورت ارزیابی کرد.",
@@ -408,6 +420,7 @@ export default function Method() {
       {
         fa: "چانه؛ نقطه‌ای کوچک با تأثیری بزرگ",
         en: "The Chin: A Small Point With a Big Impact",
+        title: true,
       },
       {
         fa: "چانه یکی از عناصر اصلی در تعیین نسبت‌های صورت، به‌خصوص در نمای نیم‌رخ است.",
@@ -432,6 +445,7 @@ export default function Method() {
       {
         fa: "Jawline؛ تعریف بهتر، نه الزاماً فک بزرگ‌تر",
         en: "Jawline: Better Definition, Not Necessarily a Bigger Jaw",
+        title: true,
       },
       {
         fa: "یک Jawline زیبا الزاماً یک خط فک بسیار تیز و برجسته نیست.",
@@ -450,7 +464,7 @@ export default function Method() {
         en: "The goal is not for all faces to move toward one specific shape.",
       },
       {
-        fa: "زنانه یا مردانه؛ یک الگوی ثابت وجود ندارد",
+        fa: "زنانه یا مردانه؛ یک الگوی ثابت وجود ندارد.",
         en: "Feminine or Masculine: There Is No Fixed Template",
       },
       {
@@ -472,6 +486,7 @@ export default function Method() {
       {
         fa: "رویکرد Outline",
         en: "The Outline Approach",
+        title: true,
       },
       {
         fa: "در ارزیابی چانه و فک، صورت از روبه‌رو، نیم‌رخ و زوایای مختلف بررسی می‌شود.",
@@ -492,6 +507,7 @@ export default function Method() {
       {
         fa: "نتیجه‌ای که به دنبال آن هستیم",
         en: "The Result We Are Aiming For",
+        title: true,
       },
       {
         fa: "نتیجه مطلوب، فکی نیست که قبل از هر جزء دیگری در صورت دیده شود.",
@@ -510,6 +526,7 @@ export default function Method() {
       {
         fa: "Regenerative Aesthetics",
         en: "Regenerative Aesthetics",
+        title: true,
       },
       {
         fa: "جوان‌سازی پوست فقط به معنی افزایش رطوبت یا ایجاد درخشندگی موقت نیست.",
@@ -554,6 +571,7 @@ export default function Method() {
       {
         fa: "Profhilo",
         en: "Profhilo",
+        title: true,
       },
       {
         fa: "Profhilo یک درمان مبتنی بر هیالورونیک اسید با غلظت بالا است که با هدف بهبود کیفیت پوست و Bio-remodeling طراحی شده است.",
@@ -574,6 +592,7 @@ export default function Method() {
       {
         fa: "Jalupro",
         en: "Jalupro",
+        title: true,
       },
       {
         fa: "Jalupro بر پایه ترکیبی از هیالورونیک اسید و آمینواسیدها طراحی شده است.",
@@ -590,6 +609,7 @@ export default function Method() {
       {
         fa: "PDRN",
         en: "PDRN",
+        title: true,
       },
       {
         fa: "PDRN رویکرد متفاوتی به جوان‌سازی دارد.",
@@ -610,6 +630,7 @@ export default function Method() {
       {
         fa: "Lanluma",
         en: "Lanluma",
+        title: true,
       },
       {
         fa: "Lanluma بر پایه Poly-L-Lactic Acid یا PLLA ساخته شده است و در گروه Collagen Biostimulators قرار می‌گیرد.",
@@ -630,6 +651,7 @@ export default function Method() {
       {
         fa: "رویکرد Outline",
         en: "The Outline Approach",
+        title: true,
       },
       {
         fa: "در Outline، انتخاب درمان با نام محصول شروع نمی‌شود.",
@@ -666,6 +688,7 @@ export default function Method() {
       {
         fa: "جوان‌سازی بدون تغییر هویت",
         en: "Rejuvenation Without Changing Identity",
+        title: true,
       },
       {
         fa: "فلسفه جوان‌سازی در Outline با فلسفه تزریق صورت یکسان است.",
@@ -688,6 +711,7 @@ export default function Method() {
       {
         fa: "Thread Lifting",
         en: "Thread Lifting",
+        title: true,
       },
       {
         fa: "لیفت با نخ یکی از روش‌های کم‌تهاجمی برای ایجاد تغییر در موقعیت و حمایت از بافت‌های نرم صورت است.",
@@ -712,6 +736,7 @@ export default function Method() {
       {
         fa: "نخ چگونه باعث لیفت می‌شود؟",
         en: "How Do Threads Create a Lift?",
+        title: true,
       },
       {
         fa: "نخ‌های مخصوص لیفت دارای ساختارهایی هستند که امکان درگیری با بافت نرم را فراهم می‌کنند.",
@@ -736,6 +761,7 @@ export default function Method() {
       {
         fa: "Vector مهم‌تر از میزان کشش است",
         en: "Vector Matters More Than the Amount of Tension",
+        title: true,
       },
       {
         fa: "یکی از مهم‌ترین قسمت‌های Thread Lifting، طراحی جهت حرکت بافت است.",
@@ -774,7 +800,7 @@ export default function Method() {
         en: "Thread lifting generally has greater applicability in individuals with mild to moderate degrees of soft tissue displacement.",
       },
       {
-        fa: "در مقابل، در laxity شدید پوست یا افتادگی قابل‌توجه بافت‌ها، محدودیت‌های این روش باید در نظر گرفته شوند و ممکن است روش‌های دیگری نتیجه مناسب‌تری ایجاد کنند.",
+        fa: "در مقابل، در Laxity شدید پوست یا افتادگی قابل‌توجه بافت‌ها، محدودیت‌های این روش باید در نظر گرفته شوند و ممکن است روش‌های دیگری نتیجه مناسب‌تری ایجاد کنند.",
         en: "In contrast, with severe skin laxity or significant tissue sagging, the limitations of this method must be considered, and other methods may produce more suitable results.",
       },
       {
@@ -784,6 +810,7 @@ export default function Method() {
       {
         fa: "لیفت با نخ یا فیلر؟",
         en: "Thread Lift or Filler?",
+        title: true,
       },
       {
         fa: "این دو درمان الزاماً جایگزین یکدیگر نیستند.",
@@ -804,6 +831,7 @@ export default function Method() {
       {
         fa: "رویکرد Outline",
         en: "The Outline Approach",
+        title: true,
       },
       {
         fa: "پیش از Thread Lifting، صورت به‌صورت سه‌بعدی بررسی می‌شود.",
@@ -828,6 +856,7 @@ export default function Method() {
       {
         fa: "نتیجه‌ای که به دنبال آن هستیم",
         en: "The Result We Are Aiming For",
+        title: true,
       },
       {
         fa: "یک Thread Lift خوب نباید Expression طبیعی صورت را از بین ببرد.",
@@ -850,6 +879,7 @@ export default function Method() {
       {
         fa: "Non-Surgical Lift",
         en: "Non-Surgical Lift",
+        title: true,
       },
       {
         fa: "لیفت مؤثر همیشه به معنی اضافه کردن حجم بیشتر یا انجام جراحی نیست.",
@@ -882,6 +912,7 @@ export default function Method() {
       {
         fa: "چهار مسیر برای رسیدن به یک هدف",
         en: "Four Paths to One Goal",
+        title: true,
       },
       {
         fa: "در Outline، لیفت غیرجراحی می‌تواند از چهار مسیر اصلی دنبال شود:",
@@ -906,6 +937,7 @@ export default function Method() {
       {
         fa: "01 — Structural Lift",
         en: "01 — Structural Lift",
+        title: true,
       },
       {
         fa: "ابتدا ساختار",
@@ -924,7 +956,7 @@ export default function Method() {
         en: "In these circumstances, adding volume at the surface of the face is not necessarily the right answer.",
       },
       {
-        fa: "در Outline می‌توان از Collagen Biostimulatorهایی مانند Ellansé در نقاط انتخاب‌شده برای ایجاد Support و تحریک کلاژن‌سازی استفاده کرد.",
+        fa: "در Outline می‌توان از Collagen Biostimulatorهایی مانند Ellanse در نقاط انتخاب‌شده برای ایجاد Support و تحریک کلاژن‌سازی استفاده کرد.",
         en: "In Outline, collagen biostimulators such as Ellansé can be used at selected points to create support and stimulate collagen production.",
       },
       {
@@ -944,12 +976,13 @@ export default function Method() {
         en: "Sometimes a limited change at one structural point can have a greater effect on facial proportion than injecting a large volume at multiple points.",
       },
       {
-        fa: "Structure Before Volume.",
-        en: "Structure Before Volume.",
+        fa: "Structure Before Volume",
+        en: "Structure Before Volume",
       },
       {
         fa: "02 — Skin Tightening",
         en: "02 — Skin Tightening",
+        title: true,
       },
       {
         fa: "لیفت بدون کیفیت پوست کامل نیست",
@@ -986,6 +1019,7 @@ export default function Method() {
       {
         fa: "03 — Volume Correction",
         en: "03 — Volume Correction",
+        title: true,
       },
       {
         fa: "حجم، فقط جایی که واقعاً از دست رفته است",
@@ -1022,6 +1056,7 @@ export default function Method() {
       {
         fa: "04 — Thread Lift",
         en: "04 — Thread Lift",
+        title: true,
       },
       {
         fa: "Repositioning به‌جای Filling",
@@ -1090,6 +1125,7 @@ export default function Method() {
       {
         fa: "فلسفه Non-Surgical Lift در Outline",
         en: "The Philosophy of Non-Surgical Lift in Outline",
+        title: true,
       },
       {
         fa: "در بسیاری از روش‌های جوان‌سازی، سؤال این است:",
@@ -1134,6 +1170,7 @@ export default function Method() {
       {
         fa: "هدف نهایی",
         en: "The Ultimate Goal",
+        title: true,
       },
       {
         fa: "هدف ما ساختن صورتی پرتر نیست.",
@@ -1164,18 +1201,15 @@ export default function Method() {
         en: "Four different paths, with one shared goal:",
       },
       {
-        fa: "Lift Without Overfilling.",
-        en: "Lift Without Overfilling.",
-      },
-      {
         fa: "لیفت، بدون تغییر هویت چهره.",
-        en: "A lift, without changing the identity of the face.",
+        en: "Lift Without Overfilling.",
       },
     ],
     "لیزر فرکشنال CO₂": [
       {
-        fa: "Skin Resurfacing & Remodeling",
-        en: "Skin Resurfacing & Remodeling",
+        fa: "Skin Resurfacing and Remodeling",
+        en: "Skin Resurfacing and Remodeling",
+        title: true,
       },
       {
         fa: "کیفیت پوست فقط با میزان رطوبت یا نبود لک تعریف نمی‌شود.",
@@ -1226,12 +1260,8 @@ export default function Method() {
         en: "Fractional CO₂ laser can simultaneously affect several different skin characteristics and, depending on the individual's condition, be used to improve things such as:",
       },
       {
-        fa: "Texture نامنظم پوست، منافذ قابل مشاهده، خطوط ظریف، برخی اسکارهای آکنه، آسیب ناشی از نور خورشید و بعضی اختلالات سطحی pigmentation",
+        fa: "Texture نامنظم پوست، منافذ قابل مشاهده، خطوط ظریف، برخی اسکارهای آکنه، آسیب ناشی از نور خورشید و بعضی اختلالات سطحی Pigmentation مورد استفاده قرار گیرد.",
         en: "Irregular skin texture, visible pores, fine lines, certain acne scars, sun-induced damage, and some superficial pigmentation disorders",
-      },
-      {
-        fa: "مورد استفاده قرار گیرد.",
-        en: "can be addressed with it.",
       },
       {
         fa: "اما تمام مشکلات پوستی با یک تنظیم و یک عمق درمان نمی‌شوند.",
@@ -1242,8 +1272,9 @@ export default function Method() {
         en: "For example, treating fine lines around the eyes does not have the same goal and design as treating a deep acne scar.",
       },
       {
-        fa: "Controlled Injury. Controlled Repair.",
-        en: "Controlled Injury. Controlled Repair.",
+        fa: "Controlled Injury. Controlled Repair",
+        en: "Controlled Injury. Controlled Repair",
+        title: true,
       },
       {
         fa: "اساس بسیاری از درمان‌های بازسازی پوست یک مفهوم ساده است:",
@@ -1290,12 +1321,8 @@ export default function Method() {
         en: "The intensity of treatment must match the skin's problem and its own healing capacity.",
       },
       {
-        fa: "CO₂ و جوان‌سازی ترکیبی",
-        en: "CO₂ and Combined Rejuvenation",
-      },
-      {
-        fa: "Aging فقط در سطح پوست اتفاق نمی‌افتد.",
-        en: "Aging does not occur only at the surface of the skin.",
+        fa: "CO₂ و جوان‌سازی ترکیبی Aging فقط در سطح پوست اتفاق نمی‌افتد.",
+        en: "CO₂ and Combined Rejuvenation aging does not occur only at the surface of the skin.",
       },
       {
         fa: "به همین دلیل CO₂ می‌تواند بخشی از یک برنامه بزرگ‌تر جوان‌سازی باشد، اما جایگزین تمام درمان‌های دیگر نیست.",
@@ -1312,6 +1339,7 @@ export default function Method() {
       {
         fa: "رویکرد Outline",
         en: "The Outline Approach",
+        title: true,
       },
       {
         fa: "در Outline، ابتدا مشخص می‌کنیم چه چیزی در کیفیت پوست باید تغییر کند:",
@@ -1336,6 +1364,7 @@ export default function Method() {
       {
         fa: "نتیجه‌ای که به دنبال آن هستیم",
         en: "The Result We Are Aiming For",
+        title: true,
       },
       {
         fa: "CO₂ قرار نیست فرم صورت را تغییر دهد.",
@@ -1350,8 +1379,8 @@ export default function Method() {
         en: "And unlike many immediate treatments, this change forms gradually, in tandem with the skin's remodeling process.",
       },
       {
-        fa: "Resurface. Repair. Remodel.",
-        en: "Resurface. Repair. Remodel.",
+        fa: "Resurface. Repair. Remodel",
+        en: "Resurface. Repair. Remodel",
       },
       {
         fa: "در Outline، جوان‌سازی فقط تغییر کانتور صورت نیست؛ کیفیت پوستی که روی آن قرار گرفته نیز بخشی از زیبایی چهره است.",
@@ -1360,8 +1389,9 @@ export default function Method() {
     ],
     "لیزر Helios III Q-Switched": [
       {
-        fa: "Pigment Correction & Skin Toning",
-        en: "Pigment Correction & Skin Toning",
+        fa: "Pigment Correction and Skin Toning",
+        en: "Pigment Correction and Skin Toning",
+        title: true,
       },
       {
         fa: "رنگ یکنواخت پوست یکی از مهم‌ترین عناصر کیفیت و شفافیت آن است.",
@@ -1386,6 +1416,7 @@ export default function Method() {
       {
         fa: "Helios III چیست؟",
         en: "What Is Helios III?",
+        title: true,
       },
       {
         fa: "Helios III یک لیزر Q-Switched Nd:YAG است که با دو طول موج اصلی 1064 nm و 532 nm کار می‌کند.",
@@ -1434,6 +1465,7 @@ export default function Method() {
       {
         fa: "Laser Toning",
         en: "Laser Toning",
+        title: true,
       },
       {
         fa: "در برخی اختلالات Pigmentation، درمان تهاجمی‌تر الزاماً نتیجه بهتری ایجاد نمی‌کند.",
@@ -1450,10 +1482,11 @@ export default function Method() {
       {
         fa: "هدف:",
         en: "The goal:",
+        title: true,
       },
       {
-        fa: "Less Inflammation. More Control.",
-        en: "Less Inflammation. More Control.",
+        fa: "Less Inflammation. More Control",
+        en: "Less Inflammation. More Control",
       },
       {
         fa: "نه اینکه پوست را مجبور کنیم در یک جلسه تغییر کند، بلکه درمان را متناسب با بیولوژی Pigmentation طراحی کنیم.",
@@ -1478,6 +1511,7 @@ export default function Method() {
       {
         fa: "Melasma متفاوت است",
         en: "Melasma Is Different",
+        title: true,
       },
       {
         fa: "Melasma را نباید صرفاً تجمعی از Pigment در نظر گرفت که باید با انرژی بیشتر تخریب شود.",
@@ -1520,8 +1554,9 @@ export default function Method() {
         en: "The goal is to deliver the right energy to the right target.",
       },
       {
-        fa: "CO₂ یا Q-Switched?",
+        fa: "CO₂ یا Q-Switched",
         en: "CO₂ or Q-Switched?",
+        title: true,
       },
       {
         fa: "این دو لیزر نقش یکسانی ندارند.",
@@ -1542,6 +1577,7 @@ export default function Method() {
       {
         fa: "نتیجه‌ای که به دنبال آن هستیم",
         en: "The Result We Are Aiming For",
+        title: true,
       },
       {
         fa: "هدف درمان Pigmentation ایجاد پوستی مصنوعی و بدون هیچ Variation رنگی نیست.",
@@ -1552,8 +1588,8 @@ export default function Method() {
         en: "The goal is to reduce unwanted pigmentation and create more even, clearer skin, without causing unnecessary inflammation and damage.",
       },
       {
-        fa: "Target the Pigment. Respect The Skin.",
-        en: "Target the Pigment. Respect the Skin.",
+        fa: "Target the Pigment. Respect The Skin",
+        en: "Target the Pigment. Respect the Skin",
       },
       {
         fa: "در Outline، لک را فقط نمی‌بینیم؛ رفتار پوستی که آن لک را ساخته است نیز در نظر می‌گیریم.",
@@ -1678,24 +1714,41 @@ export default function Method() {
             ))
             .slice(5, 9)}
         </div>
-
         <div className={classes.content}>
-          {texts[selectTopic]?.map((text, index) => (
-            <h3
-              className={classes.text}
-              key={index}
-              style={{
-                fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
-              }}
-              dangerouslySetInnerHTML={{
-                __html: applyFontToEnglishWords(
-                  text[languageType],
-                  "Titillium-Thin",
-                  languageType,
-                ),
-              }}
-            ></h3>
-          ))}
+          {texts[selectTopic]?.map((text, index) =>
+            text.title ? (
+              <h2
+                className={classes.text}
+                key={index}
+                style={{
+                  fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+                  color: "#daa483",
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: applyFontToEnglishWords(
+                    text[languageType],
+                    "Titillium-Thin",
+                    languageType,
+                  ),
+                }}
+              />
+            ) : (
+              <h3
+                className={classes.text}
+                key={index}
+                style={{
+                  fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: applyFontToEnglishWords(
+                    text[languageType],
+                    "Titillium-Thin",
+                    languageType,
+                  ),
+                }}
+              />
+            ),
+          )}
         </div>
       </section>
     </Fragment>
