@@ -30,19 +30,29 @@
   }
 }
 
+.scrollUp {
+  display: flex;
+  margin: auto;
+  width: fit-content;
+  margin-top: 50px;
+}
+
 .category,
 .categorySecond {
   @include mixins.row-space-between-center();
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 12px 36px;
   padding: 12px 0px;
   margin: auto;
-  width: 80%;
-  max-width: config.$max-width;
   text-transform: capitalize;
   user-select: none;
+  width: config.$content-width - 30%;
+  max-width: config.$max-width;
 
   @include mixins.mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
@@ -65,9 +75,12 @@
 }
 
 .categorySecond {
-  width: 60%;
+  width: config.$content-width - 40%;
 
   @include mixins.mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
@@ -80,11 +93,8 @@
 
 .content {
   max-width: config.$max-width;
-  width: 100%;
-  height: 100%;
+  width: config.$content-widthText;
   margin: auto;
-  border: 1px solid config.$darkblue;
-  margin-top: 50px;
 
   @include mixins.mobile {
     width: calc(100% - 24px);
@@ -94,8 +104,7 @@
   }
 
   .text {
-    margin: 24px auto;
-    width: config.$content-widthText;
+    margin: 12px auto;
 
     @include mixins.mobile {
       width: 100%;

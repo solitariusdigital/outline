@@ -56,16 +56,23 @@ export default function Home() {
           <div className={classes.content}>
             <RevealText direction="up" delay={300}>
               <h1>
-                {language
-                  ? "به سوی تعالی زیبایی‌شناسی"
-                  : "Towards Aesthetic Transcendence"}
+                {language ? (
+                  <>
+                    فلسفه متد{" "}
+                    <span style={{ fontFamily: "Titillium-Light" }}>
+                      Outline
+                    </span>
+                  </>
+                ) : (
+                  "The Philosophy Of The Outline Method"
+                )}
               </h1>
             </RevealText>
             <RevealText direction="up" delay={500}>
               <h2>
                 {language
-                  ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه  می‌کنیم. این متد، ترکیبی از علم روز و هنر کلاسیک است که هدف آن ایجاد تعادل و هماهنگی طبیعی در صورت است."
-                  : "In the natural Outline method, we view the creation of beauty with precision and sensitivity. This method combines modern science with classical art, aiming to establish natural balance and harmony in the face."}
+                  ? "متد اوت‌لاین حاصل تلفیق علم روز پزشکی زیبایی، شناخت دقیق آناتومی و نگاه هنرمندانه به تناسبات چهره است. این متد به‌طور مداوم بر پایه جدیدترین مقالات علمی، تکنیک‌های نوین و تجربه بالینی به‌روزرسانی می‌شود تا درمان‌ها همواره دقیق‌تر، ایمن‌تر و طبیعی‌تر باشند."
+                  : "Outline is built on the integration of advanced aesthetic medicine, anatomical precision, and artistic vision. Our approach evolves continuously through the latest scientific research, modern aesthetic techniques, and clinical experience, ensuring that every treatment remains evidence-based, safe, and naturally elegant."}
               </h2>
             </RevealText>
           </div>

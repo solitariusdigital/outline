@@ -5,6 +5,7 @@ import logo from "@/assets/logo.png";
 import Image from "next/legacy/image";
 import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { applyFontToEnglishWords } from "@/services/utility";
 
 const methodTypes = [
@@ -1480,8 +1481,8 @@ export default function Method() {
         en: "For this reason, in selected patients, more controlled approaches with Q-switched 1064 nm can be used.",
       },
       {
-        fa: "هدف:",
-        en: "The goal:",
+        fa: "هدف",
+        en: "The goal",
         title: true,
       },
       {
@@ -1644,7 +1645,16 @@ export default function Method() {
             priority
           />
           <div className={classes.title}>
-            <h1>{language ? "متد اوت‌لاین" : "Outline Method"}</h1>
+            <h1>
+              {language ? (
+                <>
+                  متد{" "}
+                  <span style={{ fontFamily: "Titillium-Light" }}>Outline</span>
+                </>
+              ) : (
+                "The Outline Method"
+              )}
+            </h1>
           </div>
           <div className={classes.scrollDown} onClick={() => scrollToDivBox()}>
             <KeyboardArrowDownIcon
@@ -1723,6 +1733,7 @@ export default function Method() {
                 style={{
                   fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
                   color: "#daa483",
+                  marginTop: "36px",
                 }}
                 dangerouslySetInnerHTML={{
                   __html: applyFontToEnglishWords(
@@ -1749,6 +1760,12 @@ export default function Method() {
               />
             ),
           )}
+        </div>
+        <div className={classes.scrollUp} onClick={() => scrollToDivBox()}>
+          <KeyboardArrowUpIcon
+            className="iconSite"
+            sx={{ fontSize: 40, color: "white" }}
+          />
         </div>
       </section>
     </Fragment>

@@ -106,7 +106,7 @@ export default function Cover() {
         </h1>
         <h2>
           {language
-            ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیّت نگاه  می‌کنیم."
+            ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیت نگاه  می‌کنیم."
             : "In the natural Outline method, we view the creation of beauty with precision and sensitivity."}
         </h2>
         <button onClick={() => Router.push("/reservation")}>
