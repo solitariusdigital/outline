@@ -31,7 +31,7 @@
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   gap: 24px;
   margin: auto;
   padding: 50px 0px;
@@ -46,10 +46,22 @@
   @include mixins.tabletPortrait {
     grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
   }
+  @include mixins.tabletLandscape {
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  }
+
+  .imageBox {
+    position: relative;
+    overflow: hidden;
+    height: 70dvh;
+    border-radius: 8px;
+
+    @include mixins.mobile {
+      height: 55dvh;
+    }
+  }
 
   .pair {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
     position: relative;
     user-select: none;
 
@@ -82,27 +94,5 @@
       left: 10px;
       z-index: 1;
     }
-  }
-
-  .imageBoxAfter,
-  .imageBoxBefore {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: 55dvh;
-    max-height: 600px;
-
-    @include mixins.mobile {
-      height: 40dvh;
-    }
-  }
-
-  .imageBoxAfter {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-  .imageBoxBefore {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
   }
 }

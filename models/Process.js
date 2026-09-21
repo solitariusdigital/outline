@@ -4,7 +4,6 @@ const ProcessSchema = new Schema(
   {
     title: String,
     description: String,
-    category: String,
     media: [],
   },
   { timestamps: true },

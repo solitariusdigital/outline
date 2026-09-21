@@ -8,26 +8,11 @@ import loaderImage from "@/assets/loader.png";
 import { fourGenerator, sixGenerator, uploadMedia } from "@/services/utility";
 import { createProcessApi } from "@/services/api";
 
-const categories = [
-  "fillers",
-  "botox",
-  "mesotherapy",
-  "skin rejuvenation",
-  "PRP",
-  "enzyme",
-  "ultrasound",
-  "surgical laser",
-  "fractional laser",
-];
-
 export default function ProcessFrom() {
-  const [imagesPreviewBefore, setImagesPreviewBefore] = useState([]);
-  const [imagesPreviewAfter, setImagesPreviewAfter] = useState([]);
-  const [uploadImagesBefore, setUploadImagesBefore] = useState([]);
-  const [uploadImagesAfter, setUploadImagesAfter] = useState([]);
+  const [imagePreview, setImagePreview] = useState([]);
+  const [uploadImage, setUploadImage] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [selectCategory, setSelectCategory] = useState("");
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -39,38 +24,25 @@ export default function ProcessFrom() {
     if (input) input.value = null;
   };
 
-  const handleImageChange = (event, type) => {
+  const handleImageChange = (event) => {
     const array = Array.from(event.target.files);
     const preview = array.map((item) => ({
       file: item,
       link: URL.createObjectURL(item),
-      type: type,
     }));
-
-    if (type === "before") {
-      setUploadImagesBefore(preview);
-      setImagesPreviewBefore(preview);
-    } else {
-      setUploadImagesAfter(preview);
-      setImagesPreviewAfter(preview);
-    }
+    setUploadImage(preview);
+    setImagePreview(preview);
   };
 
   const handleSubmit = async () => {
-    if (!selectCategory) {
-      showAlert("دسته‌بندی الزامیست");
-      return;
-    }
-
-    const uploadImages = uploadImagesAfter.concat(uploadImagesBefore);
-    if (uploadImages.length !== 2) {
-      showAlert("دو تصویر انتخاب کنید");
+    if (uploadImage.length !== 1) {
+      showAlert("تصویر انتخاب کنید");
       return;
     }
 
     setDisableButton(true);
 
-    const totalSteps = uploadImages.length;
+    const totalSteps = uploadImage.length;
     const progressIncrement = 100 / totalSteps;
 
     let mediaLinks = [];
@@ -78,7 +50,7 @@ export default function ProcessFrom() {
     const processId = `prc${sixGenerator()}`;
     const imageFormat = ".jpg";
 
-    for (const media of uploadImages) {
+    for (const media of uploadImage) {
       const mediaId = `img${fourGenerator()}`;
       const mediaLink = `${sourceLink}/${mediaFolder}/${processId}/${mediaId}${imageFormat}`;
       await uploadMedia(
@@ -90,7 +62,6 @@ export default function ProcessFrom() {
       );
       mediaLinks.push({
         link: mediaLink,
-        type: media.type,
         active: true,
       });
       setProgress((prevProgress) => prevProgress + progressIncrement);
@@ -99,24 +70,20 @@ export default function ProcessFrom() {
     const processObject = {
       title: title,
       description: description,
-      category: selectCategory,
       media: mediaLinks,
     };
 
     await createProcessApi(processObject);
+
     showAlert("ذخیره شد");
     setProgress(100);
     setDisableButton(false);
     setProgress(0);
     setTitle("");
     setDescription("");
-    setSelectCategory("");
-    setImagesPreviewBefore([]);
-    setUploadImagesBefore([]);
-    removeImageInputFile("inputImageBefore");
-    setImagesPreviewAfter([]);
-    setUploadImagesAfter([]);
-    removeImageInputFile("inputImageAfter");
+    setImagePreview([]);
+    setUploadImage([]);
+    removeImageInputFile("inputImage");
   };
 
   const showAlert = (message) => {
@@ -128,25 +95,6 @@ export default function ProcessFrom() {
 
   return (
     <div className={classes.form}>
-      <div className={classes.input}>
-        <select
-          defaultValue={"default"}
-          onChange={(e) => {
-            setSelectCategory(e.target.value);
-          }}
-        >
-          <option value="default" disabled>
-            انتخاب دسته‌بندی
-          </option>
-          {categories.map((category, index) => {
-            return (
-              <option key={index} value={category}>
-                {category}
-              </option>
-            );
-          })}
-        </select>
-      </div>
       <div className={classes.input}>
         <div className={classes.bar}>
           <p className={classes.label}>عنوان</p>
@@ -190,58 +138,24 @@ export default function ProcessFrom() {
           <CloseIcon
             className="icon"
             onClick={() => {
-              setImagesPreviewAfter([]);
-              setUploadImagesAfter([]);
-              removeImageInputFile("inputImageAfter");
+              setImagePreview([]);
+              setUploadImage([]);
+              removeImageInputFile("inputImage");
             }}
             sx={{ fontSize: 16 }}
           />
           <label className="file">
             <input
-              onChange={(e) => handleImageChange(e, "after")}
-              id="inputImageAfter"
+              onChange={(e) => handleImageChange(e)}
+              id="inputImage"
               type="file"
               accept="image/*"
             />
-            <p>After</p>
+            <p>Select Image</p>
           </label>
-          {imagesPreviewAfter.length > 0 && (
+          {imagePreview.length > 0 && (
             <div className={classes.preview}>
-              {imagesPreviewAfter.map((image, index) => (
-                <Image
-                  key={index}
-                  layout="fill"
-                  objectFit="cover"
-                  src={image.link}
-                  alt="image"
-                  priority
-                />
-              ))}
-            </div>
-          )}
-        </div>
-        <div className={classes.media}>
-          <CloseIcon
-            className="icon"
-            onClick={() => {
-              setImagesPreviewBefore([]);
-              setUploadImagesBefore([]);
-              removeImageInputFile("inputImageBefore");
-            }}
-            sx={{ fontSize: 16 }}
-          />
-          <label className="file">
-            <input
-              onChange={(e) => handleImageChange(e, "before")}
-              id="inputImageBefore"
-              type="file"
-              accept="image/*"
-            />
-            <p>Before</p>
-          </label>
-          {imagesPreviewBefore.length > 0 && (
-            <div className={classes.preview}>
-              {imagesPreviewBefore.map((image, index) => (
+              {imagePreview.map((image, index) => (
                 <Image
                   key={index}
                   layout="fill"

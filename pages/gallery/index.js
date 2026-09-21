@@ -124,18 +124,7 @@ export default function Gallery() {
                   </Tooltip>
                 </div>
               )}
-              <div className={classes.imageBoxBefore}>
-                <Image
-                  src={pair.media[1].link}
-                  blurDataURL={pair.media[1].link}
-                  placeholder="blur"
-                  alt={pair.category}
-                  layout="fill"
-                  objectFit="cover"
-                  as="image"
-                />
-              </div>
-              <div className={classes.imageBoxAfter}>
+              <div className={classes.imageBox}>
                 <Image
                   src={pair.media[0].link}
                   blurDataURL={pair.media[0].link}
@@ -143,7 +132,6 @@ export default function Gallery() {
                   alt={pair.category}
                   layout="fill"
                   objectFit="cover"
-                  as="image"
                 />
               </div>
               {(pair.title || pair.description) && (

@@ -21,13 +21,14 @@
   }
 
   .mediaContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 100%;
+    max-width: 400px;
 
     @include mixins.mobile {
-      display: flex;
-      flex-direction: column-reverse;
+      max-width: 100%;
     }
   }
 
