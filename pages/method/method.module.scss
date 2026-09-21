@@ -46,7 +46,7 @@
   margin: auto;
   text-transform: capitalize;
   user-select: none;
-  width: config.$content-width - 30%;
+  width: config.$content-width - 20%;
   max-width: config.$max-width;
 
   @include mixins.mobile {
@@ -75,7 +75,7 @@
 }
 
 .categorySecond {
-  width: config.$content-width - 40%;
+  width: config.$content-width - 30%;
 
   @include mixins.mobile {
     display: flex;
