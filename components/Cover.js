@@ -3,6 +3,7 @@ import { StateContext } from "@/context/stateContext";
 import classes from "./Cover.module.scss";
 import GridBox from "@/components/GridBox";
 import Router from "next/router";
+import { RevealText } from "@/components/RevealText";
 
 export default function Cover() {
   const { language, setLanguage } = useContext(StateContext);
@@ -99,25 +100,31 @@ export default function Cover() {
         <div className="fadeOverlayBottom"></div>
       </div>
       <div className={classes.infoBox}>
-        <h1>
-          {language
-            ? "به سوی تعالی زیبایی‌شناسی"
-            : "Towards Aesthetic Transcendence"}
-        </h1>
-        <h2>
-          {language
-            ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیت نگاه  می‌کنیم."
-            : "In the natural Outline method, we view the creation of beauty with precision and sensitivity."}
-        </h2>
-        <button onClick={() => Router.push("/reservation")}>
-          <span
-            style={{
-              fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
-            }}
-          >
-            {language ? "پورتال نوبت" : "Portal"}
-          </span>
-        </button>
+        <RevealText direction="up" delay={300}>
+          <h1>
+            {language
+              ? "به سوی تعالی زیبایی‌شناسی"
+              : "Towards Aesthetic Transcendence"}
+          </h1>
+        </RevealText>
+        <RevealText direction="up" delay={500}>
+          <h2>
+            {language
+              ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیت نگاه  می‌کنیم."
+              : "In the natural Outline method, we view the creation of beauty with precision and sensitivity."}
+          </h2>
+        </RevealText>
+        <RevealText direction="up" delay={700}>
+          <button onClick={() => Router.push("/reservation")}>
+            <span
+              style={{
+                fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
+              }}
+            >
+              {language ? "پورتال نوبت" : "Portal"}
+            </span>
+          </button>
+        </RevealText>
       </div>
     </div>
   );

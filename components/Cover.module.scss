@@ -45,18 +45,13 @@
     }
 
     h1 {
-      margin: 0px auto;
+      margin: auto;
       margin-bottom: 24px;
       color: config.$gold;
-      width: config.$content-widthText;
-
-      @include mixins.mobile {
-        width: calc(100% - 24px);
-      }
     }
     h2 {
-      width: config.$content-widthText;
-      margin: 0px auto;
+      width: config.$content-width;
+      margin: auto;
 
       @include mixins.mobile {
         width: calc(100% - 24px);
@@ -66,7 +61,7 @@
     button {
       @include mixins.buttonAnime(config.$gold, config.$darkblue);
       & {
-        margin-top: 50px;
+        margin-top: 24px;
       }
     }
   }

@@ -134,6 +134,15 @@ export default function Gallery() {
                   objectFit="cover"
                 />
               </div>
+              <div
+                className={classes.info}
+                style={{
+                  fontFamily: "Titillium-Thin",
+                }}
+              >
+                <h3>BEFORE</h3>
+                <h3>AFTER</h3>
+              </div>
               {(pair.title || pair.description) && (
                 <>
                   {fullSizeScreen && hoveredId === pair._id && (
