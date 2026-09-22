@@ -100,14 +100,14 @@ export default function Cover() {
         <div className="fadeOverlayBottom"></div>
       </div>
       <div className={classes.infoBox}>
-        <RevealText direction="up" delay={300}>
+        <RevealText direction="down" delay={300}>
           <h1>
             {language
               ? "به سوی تعالی زیبایی‌شناسی"
               : "Towards Aesthetic Transcendence"}
           </h1>
         </RevealText>
-        <RevealText direction="up" delay={500}>
+        <RevealText direction="down" delay={500}>
           <h2>
             {language
               ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیت نگاه  می‌کنیم."

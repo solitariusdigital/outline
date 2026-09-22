@@ -54,7 +54,7 @@ export default function Home() {
           }}
         >
           <div className={classes.content}>
-            <RevealText direction="up" delay={300}>
+            <RevealText direction="down" delay={300}>
               <h1>
                 {language ? (
                   <>
@@ -97,7 +97,7 @@ export default function Home() {
               }}
               onClick={() => Router.push("/reservation")}
             >
-              <RevealText direction="up" delay={300}>
+              <RevealText direction="down" delay={300}>
                 <h2>
                   {language
                     ? "امروز نوبت خود را بگیرید"

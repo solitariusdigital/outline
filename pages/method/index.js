@@ -7,6 +7,7 @@ import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { applyFontToEnglishWords } from "@/services/utility";
+import { RevealText } from "@/components/RevealText";
 
 const methodTypes = [
   {
@@ -1727,37 +1728,41 @@ export default function Method() {
         <div className={classes.content}>
           {texts[selectTopic]?.map((text, index) =>
             text.title ? (
-              <h2
-                className={classes.text}
-                key={index}
-                style={{
-                  fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
-                  color: "#daa483",
-                  marginTop: "36px",
-                }}
-                dangerouslySetInnerHTML={{
-                  __html: applyFontToEnglishWords(
-                    text[languageType],
-                    "Titillium-Thin",
-                    languageType,
-                  ),
-                }}
-              />
+              <RevealText direction="up" delay={100}>
+                <h2
+                  className={classes.text}
+                  key={index}
+                  style={{
+                    fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+                    color: "#daa483",
+                    marginTop: "50px",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: applyFontToEnglishWords(
+                      text[languageType],
+                      "Titillium-Thin",
+                      languageType,
+                    ),
+                  }}
+                />
+              </RevealText>
             ) : (
-              <h3
-                className={classes.text}
-                key={index}
-                style={{
-                  fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
-                }}
-                dangerouslySetInnerHTML={{
-                  __html: applyFontToEnglishWords(
-                    text[languageType],
-                    "Titillium-Thin",
-                    languageType,
-                  ),
-                }}
-              />
+              <RevealText direction="up" delay={300}>
+                <h3
+                  className={classes.text}
+                  key={index}
+                  style={{
+                    fontFamily: language ? "Yekan-Light" : "Titillium-Thin",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: applyFontToEnglishWords(
+                      text[languageType],
+                      "Titillium-Thin",
+                      languageType,
+                    ),
+                  }}
+                />
+              </RevealText>
             ),
           )}
         </div>

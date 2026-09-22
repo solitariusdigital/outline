@@ -93,7 +93,7 @@
 
 .content {
   max-width: config.$max-width;
-  width: config.$content-widthText;
+  width: config.$content-widthText - 30%;
   margin: auto;
 
   @include mixins.mobile {
@@ -102,9 +102,12 @@
   @include mixins.tabletPortrait {
     width: calc(100% - 24px);
   }
+  @include mixins.tabletLandscape {
+    width: config.$content-widthText;
+  }
 
   .text {
-    margin: 12px auto;
+    margin: 8px auto;
 
     @include mixins.mobile {
       width: 100%;
