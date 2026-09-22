@@ -36,7 +36,7 @@ const methodTypes = [
   },
   {
     item: {
-      fa: "جوان‌ ساز",
+      fa: "جوان‌ساز",
       en: "Rejuvenation",
     },
   },
@@ -524,7 +524,7 @@ export default function Method() {
         en: "In Outline, the contour of the face is designed; it is not simply made more prominent.",
       },
     ],
-    "جوان‌ ساز": [
+    جوان‌ساز: [
       {
         fa: "Regenerative Aesthetics",
         en: "Regenerative Aesthetics",
@@ -559,7 +559,7 @@ export default function Method() {
         en: 'The term "rejuvenator" encompasses a wide range of products with different compositions and mechanisms.',
       },
       {
-        fa: "برخی درمان‌ها بیشتر بر hydration و بهبود کیفیت پوست تمرکز دارند، برخی محیط خارج سلولی پوست را هدف قرار می‌دهند و برخی با ایجاد تحریک بیولوژیک، فرآیندهای مرتبط با بازسازی بافت و تولید کلاژن را تحت تأثیر قرار می‌دهند.",
+        fa: "برخی درمان‌ها بیشتر بر Hydration و بهبود کیفیت پوست تمرکز دارند، برخی محیط خارج سلولی پوست را هدف قرار می‌دهند و برخی با ایجاد تحریک بیولوژیک، فرآیندهای مرتبط با بازسازی بافت و تولید کلاژن را تحت تأثیر قرار می‌دهند.",
         en: "Some treatments focus mainly on hydration and improving skin quality, some target the skin's extracellular environment, and others influence tissue-regeneration and collagen-production processes by creating biological stimulation.",
       },
       {
@@ -576,7 +576,7 @@ export default function Method() {
         title: true,
       },
       {
-        fa: "Profhilo یک درمان مبتنی بر هیالورونیک اسید با غلظت بالا است که با هدف بهبود کیفیت پوست و Bio-remodeling طراحی شده است.",
+        fa: "Profhilo یک درمان مبتنی بر هیالورونیک اسید با غلظت بالا است که با هدف بهبود کیفیت پوست و Bio-Remodeling طراحی شده است.",
         en: "Profhilo is a high-concentration hyaluronic-acid-based treatment designed to improve skin quality and promote bio-remodeling.",
       },
       {
@@ -584,7 +584,7 @@ export default function Method() {
         en: "Unlike conventional fillers, its main goal is not to create volume or change the facial contour.",
       },
       {
-        fa: "Profhilo بیشتر زمانی مورد توجه قرار می‌گیرد که کاهش hydration، الاستیسیته و کیفیت عمومی پوست بخشی از مشکل باشد.",
+        fa: "Profhilo بیشتر زمانی مورد توجه قرار می‌گیرد که کاهش Hydration، الاستیسیته و کیفیت عمومی پوست بخشی از مشکل باشد.",
         en: "Profhilo is more often considered when reduced hydration, elasticity, and overall skin quality are part of the problem.",
       },
       {

@@ -32,8 +32,8 @@ export const StateProvider = (props) => {
   const [navigationTopBar, setNavigationTopBar] = useState([
     {
       title: {
-        fa: "گالری مراجعین",
-        en: "PPATIENT GALLERY",
+        fa: "گالری",
+        en: "PPATIENT",
       },
       link: "/gallery",
       active: false,
