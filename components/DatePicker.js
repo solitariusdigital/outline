@@ -196,7 +196,7 @@ export default function DatePicker({ visits }) {
   };
 
   const checkCategoryLimit = () => {
-    let firstSlots = ["11:30", "12:00", "13:00", "13:30"];
+    let firstSlots = ["12:00", "12:30", "13:00", "13:30"];
     let generalSlots = null;
     if (isSunday(day)) {
       generalSlots = [
@@ -429,7 +429,7 @@ export default function DatePicker({ visits }) {
           "10:00": { display: false, active: false, count: 0 },
           "10:30": { display: false, active: false, count: 0 },
           "11:00": { display: false, active: false, count: 0 },
-          "11:30": { display: true, active: false, count: 0 },
+          "11:30": { display: false, active: false, count: 0 },
           "12:00": { display: true, active: false, count: 0 },
           "12:30": { display: true, active: false, count: 0 },
           "13:00": { display: true, active: false, count: 0 },
