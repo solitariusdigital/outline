@@ -56,10 +56,10 @@ export function convertPersianToGregorian(persianDate, time) {
   ).toISOString();
 }
 
-export function isSunday(persianDate) {
+export function isThursday(persianDate) {
   const { day, month, year } = persianDate;
   return (
-    moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() === 0
+    moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").toDate().getDay() === 4
   );
 }
 
@@ -68,7 +68,7 @@ export function ganjeDays(persianDate) {
   const dayOfWeek = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD")
     .toDate()
     .getDay();
-  return dayOfWeek === 4 || dayOfWeek === 5 || dayOfWeek === 6; // Thu / Fri / Sat
+  return dayOfWeek === 4 || dayOfWeek === 5; // Thu / Fri
 }
 
 export function pourgholiDays(persianDate) {
@@ -77,7 +77,7 @@ export function pourgholiDays(persianDate) {
     .toDate()
     .getDay();
 
-  return dayOfWeek === 4 || dayOfWeek === 5 || dayOfWeek === 6; // Thu / Fri / Sat
+  return dayOfWeek === 4 || dayOfWeek === 5; // Thu / Fri
 }
 
 export function tehranBranch(persianDate) {
@@ -89,7 +89,7 @@ export function tehranBranch(persianDate) {
   //   return dayOfWeek === 5;
   // }
 
-  return dayOfWeek === 5 || dayOfWeek === 6; // Fri / Sat
+  return dayOfWeek === 5; // Fri
 }
 
 export function getCurrentDate() {

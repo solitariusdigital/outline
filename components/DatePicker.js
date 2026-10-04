@@ -12,7 +12,7 @@ import Kavenegar from "kavenegar";
 import {
   toFarsiNumber,
   convertPersianToGregorian,
-  isSunday,
+  isThursday,
   toEnglishNumber,
   isEnglishNumber,
   ganjeDays,
@@ -198,7 +198,7 @@ export default function DatePicker({ visits }) {
   const checkCategoryLimit = () => {
     let firstSlots = ["12:00", "12:30", "13:00", "13:30"];
     let generalSlots = null;
-    if (isSunday(day)) {
+    if (isThursday(day)) {
       generalSlots = [
         "13:00",
         "14:00",
@@ -316,7 +316,7 @@ export default function DatePicker({ visits }) {
       `${toFarsiNumber(day.year)}/${toFarsiNumber(day.month)}/${toFarsiNumber(
         day.day,
       )}`,
-      isSunday(day),
+      isThursday(day),
       ganjeDays(day),
       pourgholiDays(day),
       tehranBranch(day),
@@ -480,7 +480,7 @@ export default function DatePicker({ visits }) {
 
   const updateDisplayTime = (
     selectDate,
-    isSunday,
+    isThursday,
     ganjeDays,
     pourgholiDays,
     tehranBranch,
@@ -519,7 +519,7 @@ export default function DatePicker({ visits }) {
 
     const keys = Object.keys(originalTime);
     const lastKey = keys[keys.length - 1];
-    if (!isSunday) {
+    if (!isThursday) {
       const sliceNo = 6;
       const keysToUpdate = keys.slice(0, sliceNo);
       keysToUpdate.forEach((key) => {
