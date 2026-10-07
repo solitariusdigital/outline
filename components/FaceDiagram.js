@@ -30,6 +30,7 @@ const defaultInjections = {
   نخ: [],
   "لیزر سرجیکال": [],
   "لیزر فرکشنال": [],
+  "لیزر کیوسوئیچ": [],
 };
 const categories = {
   فیلر: [
@@ -77,14 +78,17 @@ const categories = {
     "فول فیس",
     "گردن",
     "دست",
-    "Sline زیرچشم",
-    "Sline فیس",
     "جالپرو",
     "پی‌دی‌آر‌ان",
     "لنلوما",
     "یانگ آی",
+    "Sline زیرچشم",
+    "Sline فیس",
     "Pn Silk",
     "Pn Densify",
+    "Pb L",
+    "Pb M",
+    "Pb H",
   ],
   "پی آر پی": ["مو", "صورت"],
   آنزیم: [
@@ -123,6 +127,7 @@ const categories = {
     "چانه",
     "گردن",
   ],
+  "لیزر کیوسوئیچ": ["Tattoo Removal", "جوانساز"],
 };
 const fillerColor = {
   پیشانی: "#FFE7D0",
@@ -174,7 +179,8 @@ export default function FaceDiagram() {
       "سونوگرافی" ||
       "نخ" ||
       "لیزر سرجیکال" ||
-      "لیزر فرکشنال",
+      "لیزر فرکشنال" ||
+      "لیزر کیوسوئیچ",
   );
   // follow up items
   const [title, setTitle] = useState("");
