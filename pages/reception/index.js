@@ -319,6 +319,7 @@ export default function Reception() {
         نخ: [],
         "لیزر سرجیکال": [],
         "لیزر فرکشنال": [],
+        "لیزر کیوسوئیچ": [],
       },
       comment: "",
       message: "",

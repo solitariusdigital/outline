@@ -366,7 +366,7 @@ export default function DatePicker({ visits }) {
     setTimeCountPerDate(timeCountPerDate);
   };
 
-  const setOriginalTimes = (doctor, branch) => {
+  const setOriginalTimes = (doctor, branch, isThursday) => {
     const times = {
       "دکتر پورقلی": {
         "10:00": { display: false, active: false, count: 0 },
@@ -443,17 +443,17 @@ export default function DatePicker({ visits }) {
           "17:00": { display: true, active: false, count: 0 },
           "17:30": { display: true, active: false, count: 0 },
           "18:00": {
-            display: currentUser.permission === "admin",
+            display: !isThursday && currentUser.permission === "admin",
             active: false,
             count: 0,
           },
           "18:30": {
-            display: currentUser.permission === "admin",
+            display: !isThursday && currentUser.permission === "admin",
             active: false,
             count: 0,
           },
           "19:00": {
-            display: currentUser.permission === "admin",
+            display: false,
             active: false,
             count: 0,
           },
@@ -514,20 +514,16 @@ export default function DatePicker({ visits }) {
       setDisplayForm(false);
       return;
     }
-    let originalTime = setOriginalTimes(selectDoctor, selectBranch);
+    let originalTime = setOriginalTimes(selectDoctor, selectBranch, isThursday);
     setDisplayForm(true);
 
     const keys = Object.keys(originalTime);
-    const lastKey = keys[keys.length - 1];
     if (!isThursday) {
       const sliceNo = 6;
       const keysToUpdate = keys.slice(0, sliceNo);
       keysToUpdate.forEach((key) => {
         originalTime[key].display = false;
       });
-    }
-    if (selectDoctor === "دکتر فراهانی") {
-      originalTime[lastKey].display = false;
     }
 
     const timeToUse = originalTime;
