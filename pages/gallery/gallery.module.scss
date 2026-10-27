@@ -43,6 +43,7 @@
   margin: auto;
   padding-top: 50px;
   width: config.$content-width;
+  direction: rtl;
 
   @include mixins.mobile {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
@@ -79,6 +80,7 @@
       color: config.$gold;
       @include mixins.row-space-between-center();
       justify-content: space-around;
+      direction: ltr;
     }
 
     .overlay {
