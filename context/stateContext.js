@@ -33,7 +33,7 @@ export const StateProvider = (props) => {
     {
       title: {
         fa: "گالری",
-        en: "PPATIENT",
+        en: "GALLERY",
       },
       link: "/gallery",
       active: false,

@@ -7,6 +7,7 @@ import logo from "@/assets/logo.png";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Tooltip from "@mui/material/Tooltip";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { getProcessApi, deleteProcessApi } from "@/services/api";
 
 export default function Gallery() {
@@ -25,7 +26,7 @@ export default function Gallery() {
     const fetchData = async () => {
       try {
         let process = await getProcessApi();
-        console.log(process);
+        process.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
         setDisplayProcess(process);
       } catch (error) {
         console.error(error);
@@ -117,7 +118,7 @@ export default function Gallery() {
                 <div className={classes.control}>
                   <Tooltip title="Delete">
                     <DeleteOutlineIcon
-                      className="icon"
+                      className="iconSite"
                       sx={{ fontSize: 20, color: "white" }}
                       onClick={() => handleDelete(pair._id)}
                     />
@@ -171,6 +172,12 @@ export default function Gallery() {
               )}
             </div>
           ))}
+        </div>
+        <div className={classes.scrollUp} onClick={() => scrollToDivBox()}>
+          <KeyboardArrowUpIcon
+            className="iconSite"
+            sx={{ fontSize: 40, color: "white" }}
+          />
         </div>
       </section>
     </Fragment>

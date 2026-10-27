@@ -152,6 +152,6 @@ const styles = {
     overflow: "hidden",
     display: "flex",
     flexDirection: "column",
-    borderRadius: "8px",
+    borderRadius: "5px",
   },
 };

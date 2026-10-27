@@ -27,37 +27,46 @@
       transform: translateX(-50%);
     }
   }
+
+  .scrollUp {
+    display: flex;
+    margin: auto;
+    width: fit-content;
+    margin-top: 50px;
+  }
 }
 
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  gap: 24px;
+  gap: 16px;
   margin: auto;
-  padding: 50px 0px;
+  padding-top: 50px;
   width: config.$content-width;
-  max-width: config.$max-width;
 
   @include mixins.mobile {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
     width: calc(100% - 24px);
   }
   @include mixins.tabletPortrait {
-    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
   }
   @include mixins.tabletLandscape {
-    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   }
 
   .imageBox {
     position: relative;
     overflow: hidden;
-    height: 70dvh;
-    border-radius: 8px;
+    height: 50dvh;
+    border: 1px solid config.$gold;
+    @include mixins.border-radius();
 
-    @include mixins.mobile {
-      height: 55dvh;
+    @include mixins.tabletPortrait {
+      height: 40dvh;
+    }
+    @include mixins.allDesktop {
+      height: 60dvh;
     }
   }
 
@@ -67,6 +76,7 @@
 
     .info {
       height: 50px;
+      color: config.$gold;
       @include mixins.row-space-between-center();
       justify-content: space-around;
     }
@@ -81,9 +91,9 @@
       text-align: center;
       width: 100%;
       padding: 12px 0px;
-      color: config.$white;
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
+      color: config.$darkblue;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
       transition: opacity 0.4s ease;
       @include mixins.glass-effect();
 
