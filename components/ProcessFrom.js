@@ -1,23 +1,42 @@
-import { Fragment, useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
-import { useRouter } from "next/router";
 import classes from "./ProcessFrom.module.scss";
+import Router from "next/router";
 import Image from "next/legacy/image";
 import CloseIcon from "@mui/icons-material/Close";
 import loaderImage from "@/assets/loader.png";
 import { fourGenerator, sixGenerator, uploadMedia } from "@/services/utility";
-import { createProcessApi } from "@/services/api";
+import {
+  createProcessApi,
+  getSingleProcessApi,
+  updateProcessApi,
+} from "@/services/api";
 
 export default function ProcessFrom() {
+  const { editProcess, setEditProcess } = useContext(StateContext);
   const [imagePreview, setImagePreview] = useState([]);
   const [uploadImage, setUploadImage] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
-  const [progress, setProgress] = useState(0);
   const sourceLink = "https://bucket.outlinecommunity.com";
-  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let processData = await getSingleProcessApi(editProcess);
+      setTitle(processData.title);
+      setDescription(processData.description);
+      setImagePreview([
+        {
+          link: processData.media[0].link,
+        },
+      ]);
+    };
+    if (editProcess) {
+      fetchData();
+    }
+  }, []);
 
   const removeImageInputFile = (inputId) => {
     const input = document.getElementById(inputId);
@@ -35,55 +54,61 @@ export default function ProcessFrom() {
   };
 
   const handleSubmit = async () => {
-    if (uploadImage.length !== 1) {
-      showAlert("تصویر انتخاب کنید");
+    if (!editProcess && uploadImage.length !== 1) {
+      showAlert("انتخاب تصویر");
       return;
     }
 
     setDisableButton(true);
 
-    const totalSteps = uploadImage.length;
-    const progressIncrement = 100 / totalSteps;
+    if (!editProcess) {
+      let mediaLinks = [];
+      const mediaFolder = "process";
+      const processId = `prc${sixGenerator()}`;
+      const imageFormat = ".jpg";
 
-    let mediaLinks = [];
-    const mediaFolder = "process";
-    const processId = `prc${sixGenerator()}`;
-    const imageFormat = ".jpg";
-
-    for (const media of uploadImage) {
-      const mediaId = `img${fourGenerator()}`;
-      const mediaLink = `${sourceLink}/${mediaFolder}/${processId}/${mediaId}${imageFormat}`;
-      await uploadMedia(
-        media.file,
-        mediaId,
-        mediaFolder,
-        processId,
-        imageFormat,
-      );
-      mediaLinks.push({
-        link: mediaLink,
-        active: true,
-      });
-      setProgress((prevProgress) => prevProgress + progressIncrement);
+      for (const media of uploadImage) {
+        const mediaId = `img${fourGenerator()}`;
+        const mediaLink = `${sourceLink}/${mediaFolder}/${processId}/${mediaId}${imageFormat}`;
+        await uploadMedia(
+          media.file,
+          mediaId,
+          mediaFolder,
+          processId,
+          imageFormat,
+        );
+        mediaLinks.push({
+          link: mediaLink,
+          active: true,
+        });
+      }
     }
 
     const processObject = {
       title: title,
       description: description,
-      media: mediaLinks,
+      media: editProcess ? imagePreview : mediaLinks,
     };
 
-    await createProcessApi(processObject);
+    if (editProcess) {
+      processObject._id = editProcess;
+      await updateProcessApi(processObject);
+    } else {
+      await createProcessApi(processObject);
+    }
 
     showAlert("ذخیره شد");
-    setProgress(100);
-    setDisableButton(false);
-    setProgress(0);
     setTitle("");
     setDescription("");
     setImagePreview([]);
     setUploadImage([]);
     removeImageInputFile("inputImage");
+    setDisableButton(false);
+
+    if (editProcess) {
+      setEditProcess("");
+      Router.push("/gallery");
+    }
   };
 
   const showAlert = (message) => {
@@ -105,6 +130,7 @@ export default function ProcessFrom() {
           />
         </div>
         <input
+          placeholder="..."
           type="text"
           id="title"
           name="title"
@@ -125,6 +151,7 @@ export default function ProcessFrom() {
           />
         </div>
         <textarea
+          placeholder="..."
           type="text"
           id="description"
           name="description"
@@ -135,32 +162,36 @@ export default function ProcessFrom() {
       </div>
       <div className={classes.mediaContainer}>
         <div className={classes.media}>
-          <CloseIcon
-            className="icon"
-            onClick={() => {
-              setImagePreview([]);
-              setUploadImage([]);
-              removeImageInputFile("inputImage");
-            }}
-            sx={{ fontSize: 16 }}
-          />
-          <label className="file">
-            <input
-              onChange={(e) => handleImageChange(e)}
-              id="inputImage"
-              type="file"
-              accept="image/*"
-            />
-            <p>Select Image</p>
-          </label>
+          {!editProcess && (
+            <>
+              <CloseIcon
+                className="icon"
+                onClick={() => {
+                  setImagePreview([]);
+                  setUploadImage([]);
+                  removeImageInputFile("inputImage");
+                }}
+                sx={{ fontSize: 16 }}
+              />
+              <label className="file">
+                <input
+                  onChange={(e) => handleImageChange(e)}
+                  id="inputImage"
+                  type="file"
+                  accept="image/*"
+                />
+                <p>Select Image</p>
+              </label>
+            </>
+          )}
           {imagePreview.length > 0 && (
             <div className={classes.preview}>
               {imagePreview.map((image, index) => (
                 <Image
                   key={index}
+                  src={image.link}
                   layout="fill"
                   objectFit="cover"
-                  src={image.link}
                   alt="image"
                   priority
                 />
@@ -176,7 +207,6 @@ export default function ProcessFrom() {
         </button>
       ) : (
         <div>
-          <p>Uploading {Math.round(progress)}%</p>
           <Image width={50} height={50} src={loaderImage} alt="isLoading" />
         </div>
       )}

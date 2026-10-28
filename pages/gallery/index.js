@@ -4,8 +4,10 @@ import { NextSeo } from "next-seo";
 import classes from "./gallery.module.scss";
 import Image from "next/legacy/image";
 import logo from "@/assets/logo.png";
+import Router from "next/router";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Tooltip from "@mui/material/Tooltip";
+import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { getProcessApi, deleteProcessApi } from "@/services/api";
@@ -14,6 +16,7 @@ export default function Gallery() {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
+  const { editProcess, setEditProcess } = useContext(StateContext);
   const [displayProcess, setDisplayProcess] = useState([]);
   const [hoveredId, setHoveredId] = useState(null);
   const [refresh, setRefresh] = useState(0);
@@ -26,7 +29,7 @@ export default function Gallery() {
     const fetchData = async () => {
       try {
         let process = await getProcessApi();
-        process.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        process.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setDisplayProcess(process);
       } catch (error) {
         console.error(error);
@@ -42,6 +45,11 @@ export default function Gallery() {
       await deleteProcessApi(id);
       setRefresh((prev) => prev + 1);
     }
+  };
+
+  const handleEdit = async (id) => {
+    setEditProcess(id);
+    Router.push("/manager");
   };
 
   const scrollToDivBox = () => {
@@ -116,6 +124,13 @@ export default function Gallery() {
             >
               {currentUser?.super && (
                 <div className={classes.control}>
+                  <Tooltip title="Edit">
+                    <EditIcon
+                      className="iconSite"
+                      sx={{ fontSize: 20, color: "white" }}
+                      onClick={() => handleEdit(pair._id)}
+                    />
+                  </Tooltip>
                   <Tooltip title="Delete">
                     <DeleteOutlineIcon
                       className="iconSite"

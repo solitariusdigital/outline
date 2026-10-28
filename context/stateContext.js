@@ -13,6 +13,7 @@ export const StateProvider = (props) => {
     "desktop" || "tablet-landscape" || "tablet-portrait" || "mobile",
   );
   const [selectDoctor, setSelectDoctor] = useState("");
+  const [editProcess, setEditProcess] = useState("");
   const [selectBranch, setSelectBranch] = useState("tehran" || "kish");
   const [notification, setNotification] = useState(false);
   const [menuDisplay, setMenuDisplay] = useState(true);
@@ -111,6 +112,8 @@ export const StateProvider = (props) => {
     setSelectBranch,
     menuDisplay,
     setMenuDisplay,
+    editProcess,
+    setEditProcess,
   };
   return (
     <StateContext.Provider value={stateContext}>

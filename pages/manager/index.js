@@ -34,6 +34,7 @@ import {
 export default function Manager({ control }) {
   const { currentUser, setCurrentUser } = useContext(StateContext);
   const { language, setLanguage } = useContext(StateContext);
+  const { editProcess, setEditProcess } = useContext(StateContext);
   const [controlData, setControlData] = useState(control[0]);
   const [userData, setUsersData] = useState([]);
   const [allUserData, setAllUserData] = useState(null);
@@ -123,6 +124,9 @@ export default function Manager({ control }) {
     };
     if (navigation === "reception") {
       fetchData();
+    }
+    if (editProcess) {
+      setNavigation("upload");
     }
   }, [navigation]);
 
@@ -336,6 +340,7 @@ export default function Manager({ control }) {
                 key={key}
                 className={navigation === key ? classes.activeNav : classes.nav}
                 onClick={() => {
+                  setEditProcess("");
                   setNavigation(key);
                   setReqNumber(52);
                 }}
