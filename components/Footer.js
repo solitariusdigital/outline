@@ -23,6 +23,7 @@ export default function Footer() {
       }}
     >
       <div className={classes.social}>
+        <h4>{language ? "ما را دنبال کنید" : "Follow us"}</h4>
         <InstagramIcon
           className={classes.icon}
           sx={{ fontSize: 24 }}
@@ -33,7 +34,6 @@ export default function Footer() {
             )
           }
         />
-        <h4>{language ? "ما را دنبال کنید" : "Follow us"}</h4>
         <div className={classes.logo}>
           <Link href="/" passHref>
             <Image

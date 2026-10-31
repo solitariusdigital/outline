@@ -43,20 +43,21 @@
   user-select: none;
 
   .action {
-    z-index: 2;
-    text-align: center;
-    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     @include mixins.border-radius();
-    @include mixins.glass-effect();
     @include mixins.position-center();
-
-    &:hover {
-      cursor: pointer;
-      color: config.$gold;
-    }
 
     @include mixins.mobile {
       width: calc(100% - 24px);
+    }
+
+    button {
+      @include mixins.buttonAnime(config.$gold, config.$darkblue);
+      & {
+        margin-top: 24px;
+      }
     }
   }
 }

@@ -95,7 +95,6 @@ export default function Home() {
               style={{
                 fontFamily: language ? "Yekan-Regular" : "Titillium-Light",
               }}
-              onClick={() => Router.push("/reservation")}
             >
               <RevealText direction="down" delay={300}>
                 <h2>
@@ -103,6 +102,19 @@ export default function Home() {
                     ? "امروز نوبت خود را بگیرید"
                     : "Get Your Appointment Today"}
                 </h2>
+              </RevealText>
+              <RevealText direction="up" delay={500}>
+                <button onClick={() => Router.push("/reservation")}>
+                  <span
+                    style={{
+                      fontFamily: language
+                        ? "Yekan-Regular"
+                        : "Titillium-Light",
+                    }}
+                  >
+                    {language ? "پورتال نوبت" : "Portal"}
+                  </span>
+                </button>
               </RevealText>
             </div>
             <div className="fadeOverlayBottom"></div>
