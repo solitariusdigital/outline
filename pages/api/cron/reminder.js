@@ -3,7 +3,7 @@ import Reminder from "@/models/Reminder";
 import { convertDate } from "@/services/utility";
 import Kavenegar from "kavenegar";
 
-export default async function handler(req, res) {
+export default async function reminderHandler(req, res) {
   try {
     await dbConnect();
 

@@ -56,16 +56,9 @@ export default function Home() {
           <div className={classes.content}>
             <RevealText direction="down" delay={300}>
               <h1>
-                {language ? (
-                  <>
-                    فلسفه متد{" "}
-                    <span style={{ fontFamily: "Titillium-Light" }}>
-                      Outline
-                    </span>
-                  </>
-                ) : (
-                  "The Philosophy Of The Outline Method"
-                )}
+                {language
+                  ? "فلسفه متد اوت‌لاین"
+                  : "The Philosophy Of The Outline Method"}
               </h1>
             </RevealText>
             <RevealText direction="up" delay={500}>

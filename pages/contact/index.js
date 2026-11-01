@@ -71,7 +71,7 @@ export default function Contact() {
           <div className={classes.scrollDown} onClick={() => scrollToDivBox()}>
             <KeyboardArrowDownIcon
               className="iconSite"
-              sx={{ fontSize: 40, color: "white" }}
+              sx={{ fontSize: 50, color: "white" }}
             />
           </div>
           <div className="fadeOverlayBottom"></div>

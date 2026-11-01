@@ -1660,7 +1660,7 @@ export default function Method() {
           <div className={classes.scrollDown} onClick={() => scrollToDivBox()}>
             <KeyboardArrowDownIcon
               className="iconSite"
-              sx={{ fontSize: 40, color: "white" }}
+              sx={{ fontSize: 50, color: "white" }}
             />
           </div>
           <div className="fadeOverlayBottom"></div>
@@ -1769,7 +1769,7 @@ export default function Method() {
         <div className={classes.scrollUp} onClick={() => scrollToDivBox()}>
           <KeyboardArrowUpIcon
             className="iconSite"
-            sx={{ fontSize: 40, color: "white" }}
+            sx={{ fontSize: 50, color: "white" }}
           />
         </div>
       </section>

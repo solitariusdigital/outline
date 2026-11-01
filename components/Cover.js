@@ -103,15 +103,15 @@ export default function Cover() {
         <RevealText direction="down" delay={300}>
           <h1>
             {language
-              ? "به سوی تعالی زیبایی‌شناسی"
-              : "Towards Aesthetic Transcendence"}
+              ? "زیبایی، توانایی درک جزئیات کوچک است"
+              : "Beauty lies in the ability to notice the smallest details"}
           </h1>
         </RevealText>
         <RevealText direction="down" delay={500}>
           <h2>
             {language
-              ? "در متد نچرال اوت‌لاین، ما به هنر خلق زیبایی با دقت و حساسیت نگاه  می‌کنیم."
-              : "In the natural Outline method, we view the creation of beauty with precision and sensitivity."}
+              ? "در اوت‌لاین ما به این اصول پایبندیم و باور داریم که تغییرات جزئی، بزرگترین تحولات را رقم می‌زنند."
+              : "At Outline, we stand by these principles and believe that small changes bring about the greatest transformations."}
           </h2>
         </RevealText>
         <RevealText direction="up" delay={700}>

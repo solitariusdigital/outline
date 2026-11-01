@@ -50,7 +50,7 @@
       color: config.$gold;
     }
     h2 {
-      width: config.$content-width;
+      width: config.$content-width - 5;
       margin: auto;
 
       @include mixins.mobile {
