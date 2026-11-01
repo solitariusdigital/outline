@@ -23,15 +23,18 @@ export default function Footer() {
       }}
     >
       <div className={classes.social}>
-        <h4>{language ? "ما را دنبال کنید" : "Follow us"}</h4>
+        <h4
+          onClick={() =>
+            window.open("https://www.instagram.com/outline.community", "_ self")
+          }
+        >
+          {language ? "ما را دنبال کنید" : "Follow us"}
+        </h4>
         <InstagramIcon
           className={classes.icon}
           sx={{ fontSize: 24 }}
           onClick={() =>
-            window.open(
-              "https://www.instagram.com/dr.farahani.outline",
-              "_ self",
-            )
+            window.open("https://www.instagram.com/outline.community", "_ self")
           }
         />
         <div className={classes.logo}>
