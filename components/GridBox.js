@@ -136,7 +136,7 @@ const styles = {
   wrapper: {
     position: "relative",
     width: "100%",
-    height: "100vh",
+    height: "100dvh",
     overflow: "hidden",
   },
   track: {

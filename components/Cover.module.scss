@@ -37,6 +37,13 @@
     text-align: center;
     align-items: center;
 
+    @include mixins.mobile {
+      @include mixins.transparentBackground(0.4, config.$purple);
+    }
+    @include mixins.tabletPortrait {
+      @include mixins.transparentBackground(0.4, config.$purple);
+    }
+
     h1 {
       margin: auto;
       margin-bottom: 24px;
