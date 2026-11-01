@@ -94,7 +94,7 @@ export default function Contact() {
                 fontFamily: "Titillium-Light",
                 direction: "ltr",
               }}
-              onClick={() => window.open(`tel:++989333363411`, "_self")}
+              onClick={() => window.open(`tel:+989333363411`, "_self")}
             >
               +98 933 336 3411
             </h4>
