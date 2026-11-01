@@ -139,8 +139,8 @@ export default function About() {
           <div className={classes.imageBox}>
             <div className="fadeOverlayTop"></div>
             <Image
-              src="https://bucket.outlinecommunity.com/resources/stone.jpg"
-              blurDataURL="https://bucket.outlinecommunity.com/resources/stone.jpg"
+              src="https://bucket.outlinecommunity.com/resources/rockOne.jpg"
+              blurDataURL="https://bucket.outlinecommunity.com/resources/rockOne.jpg"
               placeholder="blur"
               alt="About"
               fill
@@ -155,8 +155,8 @@ export default function About() {
           <div className={classes.imageBox}>
             <div className="fadeOverlayTop"></div>
             <Image
-              src="https://bucket.outlinecommunity.com/resources/atom.jpg"
-              blurDataURL="https://bucket.outlinecommunity.com/resources/atom.jpg"
+              src="https://bucket.outlinecommunity.com/resources/rockTwo.jpg"
+              blurDataURL="https://bucket.outlinecommunity.com/resources/rockTwo.jpg"
               placeholder="blur"
               alt="About"
               fill
