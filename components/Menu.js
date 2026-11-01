@@ -3,7 +3,7 @@ import { StateContext } from "@/context/stateContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import classes from "./Menu.module.scss";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import logo from "@/assets/logoWhite.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -90,8 +90,8 @@ export default function Menu() {
           <Link href="/" passHref>
             <Image
               src={logo}
-              layout="fill"
-              objectFit="contain"
+              fill
+              style={{ objectFit: "contain" }}
               alt="logo"
               as="image"
               priority

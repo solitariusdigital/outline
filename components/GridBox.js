@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 const PORTRAIT_RATIO = 4 / 3;
 
@@ -119,8 +119,8 @@ export default function GridBox({ images = [] }) {
                   blurDataURL={card.src}
                   placeholder="blur"
                   alt={card.alt}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                   priority
                 />
               )}

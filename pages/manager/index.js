@@ -14,7 +14,7 @@ import StarIcon from "@mui/icons-material/Star";
 import Tooltip from "@mui/material/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
 import loaderImage from "@/assets/loader.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import logo from "@/assets/logo.png";
 import ProcessFrom from "@/components/ProcessFrom";
 import {

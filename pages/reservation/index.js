@@ -2,7 +2,7 @@ import { useContext, Fragment, useEffect, useState } from "react";
 import { StateContext } from "@/context/stateContext";
 import Link from "next/link";
 import classes from "./reservation.module.scss";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { NextSeo } from "next-seo";
 import logo from "@/assets/logo.png";
 import Router from "next/router";

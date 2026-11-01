@@ -2,7 +2,7 @@ import { useState, useContext, Fragment, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import { usePathname } from "next/navigation";
 import secureLocalStorage from "react-secure-storage";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import logo from "@/assets/logoWhite.png";
 import Menu from "@/components/Menu";
 import Footer from "@/components/Footer";
@@ -148,8 +148,8 @@ export default function RootLayout({ children }) {
           <div className="logo">
             <Image
               src={logo}
-              layout="fill"
-              objectFit="contain"
+              fill
+              style={{ objectFit: "contain" }}
               alt="logo"
               as="image"
               priority

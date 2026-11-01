@@ -2,7 +2,7 @@ import { useContext, Fragment, useEffect, useRef, useState } from "react";
 import { StateContext } from "@/context/stateContext";
 import { NextSeo } from "next-seo";
 import classes from "./gallery.module.scss";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import logo from "@/assets/logo.png";
 import Router from "next/router";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -97,9 +97,9 @@ export default function Gallery() {
             src="https://bucket.outlinecommunity.com/resources/smoke.jpg"
             blurDataURL="https://bucket.outlinecommunity.com/resources/smoke.jpg"
             placeholder="blur"
-            alt="About"
-            layout="fill"
-            objectFit="cover"
+            alt="Gallery"
+            fill
+            style={{ objectFit: "cover" }}
             as="image"
             priority
           />
@@ -145,9 +145,9 @@ export default function Gallery() {
                   src={pair.media[0].link}
                   blurDataURL={pair.media[0].link}
                   placeholder="blur"
-                  alt={pair.category}
-                  layout="fill"
-                  objectFit="cover"
+                  alt={pair.category ?? "Process"}
+                  fill
+                  style={{ objectFit: "cover" }}
                 />
               </div>
               <div

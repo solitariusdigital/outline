@@ -2,7 +2,7 @@ import { useState, useContext, Fragment, useEffect, useRef } from "react";
 import { StateContext } from "@/context/stateContext";
 import { useRouter } from "next/router";
 import classes from "./portal.module.scss";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import Person4Icon from "@mui/icons-material/Person4";
 import HomeIcon from "@mui/icons-material/Home";

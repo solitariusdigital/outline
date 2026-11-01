@@ -3,7 +3,7 @@ import { StateContext } from "@/context/stateContext";
 import { NextSeo } from "next-seo";
 import classes from "./contact.module.scss";
 import logo from "@/assets/logo.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function Contact() {
@@ -60,8 +60,8 @@ export default function Contact() {
             blurDataURL="https://bucket.outlinecommunity.com/resources/wave.jpg"
             placeholder="blur"
             alt="Contact"
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
             as="image"
             priority
           />

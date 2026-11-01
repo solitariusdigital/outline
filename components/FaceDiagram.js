@@ -2,7 +2,7 @@ import { useState, useContext, Fragment } from "react";
 import { StateContext } from "@/context/stateContext";
 import { useRouter } from "next/router";
 import classes from "./FaceDiagram.module.scss";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import faceDiagram from "@/assets/faceDiagram.png";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Tooltip from "@mui/material/Tooltip";
@@ -534,8 +534,8 @@ export default function FaceDiagram() {
                         blurDataURL={faceDiagram}
                         alt="faceDiagram"
                         placeholder="blur"
-                        layout="fill"
-                        objectFit="contain"
+                        fill
+                        style={{ objectFit: "contain" }}
                         as="image"
                         unoptimized
                       />

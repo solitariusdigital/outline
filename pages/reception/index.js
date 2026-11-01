@@ -2,7 +2,7 @@ import { useState, Fragment, useEffect, useContext } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./reception.module.scss";
 import { NextSeo } from "next-seo";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import logo from "@/assets/logo.png";
 import { useRouter } from "next/router";
 import CloseIcon from "@mui/icons-material/Close";

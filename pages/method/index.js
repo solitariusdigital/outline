@@ -2,7 +2,7 @@ import { useContext, Fragment, useEffect, useRef, useState } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./method.module.scss";
 import logo from "@/assets/logo.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -1639,9 +1639,9 @@ export default function Method() {
             src="https://bucket.outlinecommunity.com/resources/earth.jpg"
             blurDataURL="https://bucket.outlinecommunity.com/resources/earth.jpg"
             placeholder="blur"
-            alt="About"
-            layout="fill"
-            objectFit="cover"
+            alt="Method"
+            fill
+            style={{ objectFit: "cover" }}
             as="image"
             priority
           />
@@ -1728,7 +1728,7 @@ export default function Method() {
         <div className={classes.content}>
           {texts[selectTopic]?.map((text, index) =>
             text.title ? (
-              <RevealText direction="up" delay={100}>
+              <RevealText key={index} direction="up" delay={100}>
                 <h2
                   className={classes.text}
                   key={index}
@@ -1747,7 +1747,7 @@ export default function Method() {
                 />
               </RevealText>
             ) : (
-              <RevealText direction="up" delay={300}>
+              <RevealText key={index} direction="up" delay={300}>
                 <h3
                   className={classes.text}
                   key={index}

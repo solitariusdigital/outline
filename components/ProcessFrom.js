@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { StateContext } from "@/context/stateContext";
 import classes from "./ProcessFrom.module.scss";
 import Router from "next/router";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import loaderImage from "@/assets/loader.png";
 import { fourGenerator, sixGenerator, uploadMedia } from "@/services/utility";
@@ -190,8 +190,8 @@ export default function ProcessFrom() {
                 <Image
                   key={index}
                   src={image.link}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                   alt="image"
                   priority
                 />

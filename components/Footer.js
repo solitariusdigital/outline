@@ -4,7 +4,7 @@ import classes from "./Footer.module.scss";
 import Link from "next/link";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import logo from "@/assets/logoWhite.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export default function Footer() {
   const { language, setLanguage } = useContext(StateContext);
@@ -41,8 +41,8 @@ export default function Footer() {
           <Link href="/" passHref>
             <Image
               src={logo}
-              layout="fill"
-              objectFit="contain"
+              fill
+              style={{ objectFit: "contain" }}
               alt="logo"
               as="image"
               priority

@@ -4,7 +4,7 @@ import classes from "./about.module.scss";
 import logo from "@/assets/logo.png";
 import { NextSeo } from "next-seo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { applyFontToEnglishWords } from "@/services/utility";
 
 export default function About() {
@@ -90,8 +90,8 @@ export default function About() {
             blurDataURL="https://bucket.outlinecommunity.com/resources/atomic.jpg"
             placeholder="blur"
             alt="About"
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
             as="image"
             priority
           />
@@ -143,8 +143,8 @@ export default function About() {
               blurDataURL="https://bucket.outlinecommunity.com/resources/stone.jpg"
               placeholder="blur"
               alt="About"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
               as="image"
               priority
             />
@@ -159,8 +159,8 @@ export default function About() {
               blurDataURL="https://bucket.outlinecommunity.com/resources/atom.jpg"
               placeholder="blur"
               alt="About"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
               as="image"
               priority
             />

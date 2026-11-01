@@ -3,7 +3,7 @@ import { StateContext } from "@/context/stateContext";
 import Router from "next/router";
 import { NextSeo } from "next-seo";
 import classes from "./home.module.scss";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import logo from "@/assets/logo.png";
 import { RevealText } from "@/components/RevealText";
 import Cover from "@/components/Cover";
@@ -78,8 +78,8 @@ export default function Home() {
               blurDataURL="https://bucket.outlinecommunity.com/resources/magnetic.jpg"
               placeholder="blur"
               alt="Home"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
               as="image"
               priority
             />

@@ -10,7 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import secureLocalStorage from "react-secure-storage";
 import Router from "next/router";
 import { createUserApi, getUsersApi } from "@/services/api";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import logo from "@/assets/logo.png";
 import Progress from "./Progress";
 import Kavenegar from "kavenegar";
