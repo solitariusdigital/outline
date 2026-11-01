@@ -80,22 +80,21 @@ export default function GridBox({ images = [] }) {
   useEffect(() => {
     const el = trackRef.current;
     if (!el || !loopH) return;
-    el.scrollTop = 0;
     let animId;
+    let y = 0;
+    let last = performance.now();
+    const SPEED = 36; // px per second (was 0.6px/frame at 60fps)
 
-    const tick = () => {
-      el.scrollTop += 0.6;
-      if (el.scrollTop >= loopH) el.scrollTop -= loopH;
+    const tick = (now) => {
+      const dt = (now - last) / 1000;
+      last = now;
+      y = (y + SPEED * dt) % loopH;
+      el.style.transform = `translate3d(0, ${-y}px, 0)`;
       animId = requestAnimationFrame(tick);
     };
 
-    const t = setTimeout(() => {
-      animId = requestAnimationFrame(tick);
-    }, 300);
-    return () => {
-      clearTimeout(t);
-      cancelAnimationFrame(animId);
-    };
+    animId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animId);
   }, [loopH]);
 
   return (
@@ -141,11 +140,7 @@ const styles = {
   },
   track: {
     width: "100%",
-    height: "100%",
-    overflowY: "hidden",
-    overflowX: "hidden",
-    scrollbarWidth: "none",
-    msOverflowStyle: "none",
+    willChange: "transform",
   },
   card: {
     position: "absolute",

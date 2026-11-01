@@ -59,12 +59,12 @@
       @include mixins.mobile {
         order: 1;
         width: calc(100% - 24px);
-        padding: 50px 0px;
+        padding: 100px 0px;
       }
       @include mixins.tabletPortrait {
         order: 1;
         width: calc(100% - 24px);
-        padding: 50px 0px;
+        padding: 100px 0px;
       }
 
       .text {
