@@ -57,8 +57,6 @@ export default function Contact() {
           <div className="fadeOverlayTop"></div>
           <Image
             src="https://bucket.outlinecommunity.com/resources/stone.jpg"
-            blurDataURL="https://bucket.outlinecommunity.com/resources/stone.jpg"
-            placeholder="blur"
             alt="Contact"
             fill
             style={{ objectFit: "cover" }}

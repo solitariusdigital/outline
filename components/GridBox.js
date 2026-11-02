@@ -115,8 +115,6 @@ export default function GridBox({ images = [] }) {
               {card.src && (
                 <Image
                   src={card.src}
-                  blurDataURL={card.src}
-                  placeholder="blur"
                   alt={card.alt}
                   fill
                   style={{ objectFit: "cover" }}

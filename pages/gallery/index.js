@@ -95,8 +95,6 @@ export default function Gallery() {
           <div className="fadeOverlayTop"></div>
           <Image
             src="https://bucket.outlinecommunity.com/resources/smoke.jpg"
-            blurDataURL="https://bucket.outlinecommunity.com/resources/smoke.jpg"
-            placeholder="blur"
             alt="Gallery"
             fill
             style={{ objectFit: "cover" }}
@@ -143,8 +141,6 @@ export default function Gallery() {
               <div className={classes.imageBox}>
                 <Image
                   src={pair.media[0].link}
-                  blurDataURL={pair.media[0].link}
-                  placeholder="blur"
                   alt={pair.category ?? "Process"}
                   fill
                   style={{ objectFit: "cover" }}

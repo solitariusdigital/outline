@@ -75,8 +75,6 @@ export default function Home() {
             <div className="fadeOverlayTop"></div>
             <Image
               src="https://bucket.outlinecommunity.com/resources/magnetic.jpg"
-              blurDataURL="https://bucket.outlinecommunity.com/resources/magnetic.jpg"
-              placeholder="blur"
               alt="Home"
               fill
               style={{ objectFit: "cover" }}

@@ -531,9 +531,7 @@ export default function FaceDiagram() {
                     <div className={classes.diagram}>
                       <Image
                         src={faceDiagram}
-                        blurDataURL={faceDiagram}
                         alt="faceDiagram"
-                        placeholder="blur"
                         fill
                         style={{ objectFit: "contain" }}
                         as="image"

@@ -87,8 +87,6 @@ export default function About() {
           <div className="fadeOverlayTop"></div>
           <Image
             src="https://bucket.outlinecommunity.com/resources/atomic.jpg"
-            blurDataURL="https://bucket.outlinecommunity.com/resources/atomic.jpg"
-            placeholder="blur"
             alt="About"
             fill
             style={{ objectFit: "cover" }}
@@ -140,8 +138,6 @@ export default function About() {
             <div className="fadeOverlayTop"></div>
             <Image
               src="https://bucket.outlinecommunity.com/resources/rockOne.jpg"
-              blurDataURL="https://bucket.outlinecommunity.com/resources/rockOne.jpg"
-              placeholder="blur"
               alt="About"
               fill
               style={{ objectFit: "cover" }}
@@ -156,8 +152,6 @@ export default function About() {
             <div className="fadeOverlayTop"></div>
             <Image
               src="https://bucket.outlinecommunity.com/resources/rockTwo.jpg"
-              blurDataURL="https://bucket.outlinecommunity.com/resources/rockTwo.jpg"
-              placeholder="blur"
               alt="About"
               fill
               style={{ objectFit: "cover" }}

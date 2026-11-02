@@ -1637,8 +1637,6 @@ export default function Method() {
           <div className="fadeOverlayTop"></div>
           <Image
             src="https://bucket.outlinecommunity.com/resources/earth.jpg"
-            blurDataURL="https://bucket.outlinecommunity.com/resources/earth.jpg"
-            placeholder="blur"
             alt="Method"
             fill
             style={{ objectFit: "cover" }}
