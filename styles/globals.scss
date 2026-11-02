@@ -184,3 +184,38 @@ label.file input[type="file"] {
   color: config.$blue;
   border: 1px solid config.$blue;
 }
+
+// swiper
+.custom-prev,
+.custom-next {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  color: config.$gold;
+  cursor: pointer;
+
+  @include mixins.allDesktop {
+    &:hover {
+      color: config.$gold;
+    }
+  }
+}
+.custom-prev {
+  left: 2.5%;
+}
+.custom-next {
+  right: 2.5%;
+}
+
+.custom-prev.swiper-button-disabled,
+.custom-next.swiper-button-disabled {
+  pointer-events: none;
+}
+
+.swiper-pagination-bullet-active.swiper-pagination-bullet {
+  background: config.$gold !important;
+}
+.swiper-pagination-bullet {
+  background: config.$white !important;
+}

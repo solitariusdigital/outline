@@ -20,6 +20,7 @@ export default function ProcessFrom() {
   const [description, setDescription] = useState("");
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
+  const [progress, setProgress] = useState(0);
   const sourceLink = "https://bucket.outlinecommunity.com";
 
   useEffect(() => {
@@ -27,11 +28,7 @@ export default function ProcessFrom() {
       let processData = await getSingleProcessApi(editProcess);
       setTitle(processData.title);
       setDescription(processData.description);
-      setImagePreview([
-        {
-          link: processData.media[0].link,
-        },
-      ]);
+      setImagePreview(processData.media);
     };
     if (editProcess) {
       fetchData();
@@ -51,22 +48,26 @@ export default function ProcessFrom() {
     }));
     setUploadImage(preview);
     setImagePreview(preview);
+    console.log(preview);
   };
 
   const handleSubmit = async () => {
-    if (!editProcess && uploadImage.length !== 1) {
+    if (!editProcess && uploadImage.length < 1) {
       showAlert("انتخاب تصویر");
       return;
     }
 
     setDisableButton(true);
 
-    if (!editProcess) {
-      let mediaLinks = [];
-      const mediaFolder = "process";
-      const processId = `prc${sixGenerator()}`;
-      const imageFormat = ".jpg";
+    const totalSteps = uploadImage.length;
+    const progressIncrement = 100 / totalSteps;
 
+    let mediaLinks = [];
+    const mediaFolder = "process";
+    const processId = `prc${sixGenerator()}`;
+    const imageFormat = ".jpg";
+
+    if (!editProcess) {
       for (const media of uploadImage) {
         const mediaId = `img${fourGenerator()}`;
         const mediaLink = `${sourceLink}/${mediaFolder}/${processId}/${mediaId}${imageFormat}`;
@@ -81,6 +82,7 @@ export default function ProcessFrom() {
           link: mediaLink,
           active: true,
         });
+        setProgress((prevProgress) => prevProgress + progressIncrement);
       }
     }
 
@@ -97,13 +99,15 @@ export default function ProcessFrom() {
       await createProcessApi(processObject);
     }
 
+    setProgress(100);
+    setDisableButton(false);
+    setProgress(0);
     showAlert("ذخیره شد");
     setTitle("");
     setDescription("");
     setImagePreview([]);
     setUploadImage([]);
     removeImageInputFile("inputImage");
-    setDisableButton(false);
 
     if (editProcess) {
       setEditProcess("");
@@ -179,22 +183,23 @@ export default function ProcessFrom() {
                   id="inputImage"
                   type="file"
                   accept="image/*"
+                  multiple
                 />
-                <p>Select Image</p>
+                <p>Select Images</p>
               </label>
             </>
           )}
           {imagePreview.length > 0 && (
-            <div className={classes.preview}>
+            <div className={classes.imageBox}>
               {imagePreview.map((image, index) => (
-                <Image
-                  key={index}
-                  src={image.link}
-                  fill
-                  style={{ objectFit: "cover" }}
-                  alt="image"
-                  priority
-                />
+                <div key={index} className={classes.image}>
+                  <Image
+                    src={image.link}
+                    fill
+                    style={{ objectFit: "cover" }}
+                    alt="image"
+                  />
+                </div>
               ))}
             </div>
           )}
@@ -207,6 +212,7 @@ export default function ProcessFrom() {
         </button>
       ) : (
         <div>
+          <p>Uploading {Math.round(progress)}%</p>
           <Image width={50} height={50} src={loaderImage} alt="isLoading" />
         </div>
       )}

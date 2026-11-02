@@ -32,10 +32,17 @@
     }
   }
 
-  .preview {
-    position: relative;
-    aspect-ratio: 3 / 4;
-    margin-top: 12px;
+  .imageBox {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25%, 1fr));
+    gap: 6px;
+    direction: ltr;
+
+    .image {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      margin-top: 12px;
+    }
   }
 
   .input {
