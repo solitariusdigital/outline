@@ -192,8 +192,8 @@ export default function Gallery() {
                   fontFamily: "Titillium-Thin",
                 }}
               >
-                <h3>BEFORE</h3>
-                <h3>AFTER</h3>
+                <h4>BEFORE</h4>
+                <h4>AFTER</h4>
               </div>
               {(pair.title || pair.description) && (
                 <>
