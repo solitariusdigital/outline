@@ -35,6 +35,45 @@
   margin: auto;
   width: fit-content;
   margin-top: 50px;
+  z-index: 10;
+  position: relative;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 16px;
+  margin: auto;
+  margin-top: 100px;
+  width: config.$content-width;
+  height: 100%;
+  direction: ltr;
+
+  @include mixins.mobile {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    width: calc(100% - 24px);
+  }
+  @include mixins.tabletPortrait {
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  }
+  @include mixins.tabletLandscape {
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  }
+
+  .image {
+    position: relative;
+    overflow: hidden;
+    height: 50dvh;
+    border: 1px solid config.$gold;
+    @include mixins.border-radius();
+
+    @include mixins.tabletPortrait {
+      height: 40dvh;
+    }
+    @include mixins.allDesktop {
+      height: 60dvh;
+    }
+  }
 }
 
 .category,

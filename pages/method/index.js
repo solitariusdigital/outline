@@ -8,22 +8,17 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { applyFontToEnglishWords } from "@/services/utility";
 import { RevealText } from "@/components/RevealText";
+import { getProcessApi } from "@/services/api";
 
 export default function Method() {
   const { language, setLanguage } = useContext(StateContext);
   const { languageType, setLanguageType } = useContext(StateContext);
   const { methodTypes, setMethodTypes } = useContext(StateContext);
   const [selectTopic, setSelectTopic] = useState("تزریق شقیقه");
-
+  const [displayProcess, setDisplayProcess] = useState([]);
   const targetBox = useRef(null);
 
-  const scrollToDivBox = () => {
-    if (targetBox.current) {
-      targetBox.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const texts = {
+  const typesContent = {
     "تزریق شقیقه": [
       {
         fa: "نقش شقیقه در زیبایی چهره",
@@ -1544,6 +1539,29 @@ export default function Method() {
     ],
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let process = await getProcessApi();
+        process.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setDisplayProcess(
+          process.filter(
+            (item) => methodTypes[item.type].item.fa === selectTopic,
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [selectTopic]);
+
+  const scrollToDivBox = () => {
+    if (targetBox.current) {
+      targetBox.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <Fragment>
       <NextSeo
@@ -1668,7 +1686,7 @@ export default function Method() {
             .slice(5, 9)}
         </div>
         <div className={classes.content}>
-          {texts[selectTopic]?.map((text, index) =>
+          {typesContent[selectTopic]?.map((text, index) =>
             text.title ? (
               <RevealText key={index} direction="up" delay={100}>
                 <h2
@@ -1708,6 +1726,20 @@ export default function Method() {
             ),
           )}
         </div>
+        {displayProcess.length > 0 && (
+          <div className={classes.gallery}>
+            {displayProcess.map((image, index) => (
+              <div key={index} className={classes.image}>
+                <Image
+                  src={image.media[0].link}
+                  alt={methodTypes[image.type].item.fa}
+                  fill
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
         <div className={classes.scrollUp} onClick={() => scrollToDivBox()}>
           <KeyboardArrowUpIcon
             className="iconSite"

@@ -177,7 +177,7 @@ export default function Gallery() {
                         <div className={classes.image}>
                           <Image
                             src={image.link}
-                            alt={pair.title}
+                            alt={methodTypes[pair.type].item.fa}
                             fill
                             style={{ objectFit: "cover" }}
                           />
