@@ -9,66 +9,10 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { applyFontToEnglishWords } from "@/services/utility";
 import { RevealText } from "@/components/RevealText";
 
-const methodTypes = [
-  {
-    item: {
-      fa: "تزریق شقیقه",
-      en: "Temple Injection",
-    },
-  },
-  {
-    item: {
-      fa: "تزریق میدفیس",
-      en: "Midface Injection",
-    },
-  },
-  {
-    item: {
-      fa: "اصلاح خط خنده و خط غم",
-      en: "Laugh Line & Marionette Line Correction",
-    },
-  },
-  {
-    item: {
-      fa: "اصلاح چانه و زاویه فک",
-      en: "Chin & Jawline Correction",
-    },
-  },
-  {
-    item: {
-      fa: "جوان‌ساز",
-      en: "Rejuvenation",
-    },
-  },
-  {
-    item: {
-      fa: "لیفت صورت با نخ",
-      en: "Thread Face Lift",
-    },
-  },
-  {
-    item: {
-      fa: "لیفت نان‌سرجیکال",
-      en: "Non-surgical Lift",
-    },
-  },
-  {
-    item: {
-      fa: "لیزر فرکشنال CO₂",
-      en: "Fractional CO₂ Laser",
-    },
-  },
-  {
-    item: {
-      fa: "لیزر Helios III Q-Switched",
-      en: "Helios III Q-Switched Laser",
-    },
-  },
-];
-
 export default function Method() {
   const { language, setLanguage } = useContext(StateContext);
   const { languageType, setLanguageType } = useContext(StateContext);
+  const { methodTypes, setMethodTypes } = useContext(StateContext);
   const [selectTopic, setSelectTopic] = useState("تزریق شقیقه");
 
   const targetBox = useRef(null);

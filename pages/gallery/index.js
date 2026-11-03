@@ -24,6 +24,7 @@ export default function Gallery() {
   const { language, setLanguage } = useContext(StateContext);
   const { screenSize, setScreenSize } = useContext(StateContext);
   const { editProcess, setEditProcess } = useContext(StateContext);
+  const { methodTypes, setMethodTypes } = useContext(StateContext);
   const [displayProcess, setDisplayProcess] = useState([]);
   const [hoveredId, setHoveredId] = useState(null);
   const [refresh, setRefresh] = useState(0);
@@ -195,31 +196,27 @@ export default function Gallery() {
                 <h4>BEFORE</h4>
                 <h4>AFTER</h4>
               </div>
-              {(pair.title || pair.description) && (
-                <>
-                  {fullSizeScreen && hoveredId === pair._id && (
-                    <div
-                      className={classes.overlay}
-                      style={{
-                        fontFamily: "Yekan-Regular",
-                      }}
-                    >
-                      <h2>{pair.title}</h2>
-                      <p>{pair.description}</p>
-                    </div>
-                  )}
-                  {!fullSizeScreen && (
-                    <div
-                      className={classes.overlay}
-                      style={{
-                        fontFamily: "Yekan-Regular",
-                      }}
-                    >
-                      <h2>{pair.title}</h2>
-                      <p>{pair.description}</p>
-                    </div>
-                  )}
-                </>
+              {fullSizeScreen && hoveredId === pair._id && (
+                <div
+                  className={classes.overlay}
+                  style={{
+                    fontFamily: "Yekan-Regular",
+                  }}
+                >
+                  <h3>{methodTypes[pair.type].item.fa}</h3>
+                  <p>{pair.description}</p>
+                </div>
+              )}
+              {!fullSizeScreen && (
+                <div
+                  className={classes.overlay}
+                  style={{
+                    fontFamily: "Yekan-Regular",
+                  }}
+                >
+                  <h3>{methodTypes[pair.type].item.fa}</h3>
+                  <p>{pair.description}</p>
+                </div>
               )}
             </div>
           ))}

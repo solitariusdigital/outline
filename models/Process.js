@@ -2,7 +2,7 @@ import { Schema, model, models } from "mongoose";
 
 const ProcessSchema = new Schema(
   {
-    title: String,
+    type: Number,
     description: String,
     media: [],
   },

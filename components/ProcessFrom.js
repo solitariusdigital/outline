@@ -14,9 +14,10 @@ import {
 
 export default function ProcessFrom() {
   const { editProcess, setEditProcess } = useContext(StateContext);
+  const { methodTypes, setMethodTypes } = useContext(StateContext);
   const [imagePreview, setImagePreview] = useState([]);
   const [uploadImage, setUploadImage] = useState([]);
-  const [title, setTitle] = useState("");
+  const [type, setType] = useState(null);
   const [description, setDescription] = useState("");
   const [alert, setAlert] = useState("");
   const [disableButton, setDisableButton] = useState(false);
@@ -26,7 +27,7 @@ export default function ProcessFrom() {
   useEffect(() => {
     const fetchData = async () => {
       let processData = await getSingleProcessApi(editProcess);
-      setTitle(processData.title);
+      setType(processData.type);
       setDescription(processData.description);
       setImagePreview(processData.media);
     };
@@ -48,16 +49,21 @@ export default function ProcessFrom() {
     }));
     setUploadImage(preview);
     setImagePreview(preview);
-    console.log(preview);
   };
 
   const handleSubmit = async () => {
-    if (!editProcess && uploadImage.length < 1) {
-      showAlert("انتخاب تصویر");
+    setDisableButton(true);
+
+    if (!type) {
+      showAlert("دسته‌بندی الزامیست");
+      setDisableButton(false);
       return;
     }
-
-    setDisableButton(true);
+    if (!editProcess && uploadImage.length < 1) {
+      showAlert("انتخاب تصویر");
+      setDisableButton(false);
+      return;
+    }
 
     const totalSteps = uploadImage.length;
     const progressIncrement = 100 / totalSteps;
@@ -87,7 +93,7 @@ export default function ProcessFrom() {
     }
 
     const processObject = {
-      title: title,
+      type: type,
       description: description,
       media: editProcess ? imagePreview : mediaLinks,
     };
@@ -103,7 +109,7 @@ export default function ProcessFrom() {
     setDisableButton(false);
     setProgress(0);
     showAlert("ذخیره شد");
-    setTitle("");
+    setType(null);
     setDescription("");
     setImagePreview([]);
     setUploadImage([]);
@@ -126,24 +132,33 @@ export default function ProcessFrom() {
     <div className={classes.form}>
       <div className={classes.input}>
         <div className={classes.bar}>
-          <p className={classes.label}>عنوان</p>
+          <p className={classes.label}>
+            دسته‌بندی
+            <span>*</span>
+          </p>
           <CloseIcon
             className="icon"
-            onClick={() => setTitle("")}
+            onClick={() => setType(null)}
             sx={{ fontSize: 16 }}
           />
         </div>
-        <input
-          placeholder="..."
-          type="text"
-          id="title"
-          name="title"
-          onChange={(e) => setTitle(e.target.value)}
-          maxLength={11}
-          value={title}
-          autoComplete="off"
-          dir="rtl"
-        />
+        <select
+          value={type || "default"}
+          onChange={(e) => {
+            setType(e.target.value);
+          }}
+        >
+          <option value="default" disabled>
+            انتخاب
+          </option>
+          {methodTypes.map((type, index) => {
+            return (
+              <option key={index} value={index}>
+                {type.item.fa}
+              </option>
+            );
+          })}
+        </select>
       </div>
       <div className={classes.input}>
         <div className={classes.bar}>

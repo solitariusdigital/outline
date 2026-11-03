@@ -77,6 +77,65 @@ export const StateProvider = (props) => {
       nav: false,
     },
   ]);
+
+  // types filter based on index
+  const [methodTypes, setMethodTypes] = useState([
+    {
+      item: {
+        fa: "تزریق شقیقه",
+        en: "Temple Injection",
+      },
+    },
+    {
+      item: {
+        fa: "تزریق میدفیس",
+        en: "Midface Injection",
+      },
+    },
+    {
+      item: {
+        fa: "اصلاح خط خنده و خط غم",
+        en: "Laugh Line & Marionette Line Correction",
+      },
+    },
+    {
+      item: {
+        fa: "اصلاح چانه و زاویه فک",
+        en: "Chin & Jawline Correction",
+      },
+    },
+    {
+      item: {
+        fa: "جوان‌ساز",
+        en: "Rejuvenation",
+      },
+    },
+    {
+      item: {
+        fa: "لیفت صورت با نخ",
+        en: "Thread Face Lift",
+      },
+    },
+    {
+      item: {
+        fa: "لیفت نان‌سرجیکال",
+        en: "Non-surgical Lift",
+      },
+    },
+    {
+      item: {
+        fa: "لیزر فرکشنال CO₂",
+        en: "Fractional CO₂ Laser",
+      },
+    },
+    {
+      item: {
+        fa: "لیزر Helios III Q-Switched",
+        en: "Helios III Q-Switched Laser",
+      },
+    },
+  ]);
+
   const stateContext = {
     language,
     setLanguage,
@@ -114,6 +173,8 @@ export const StateProvider = (props) => {
     setMenuDisplay,
     editProcess,
     setEditProcess,
+    methodTypes,
+    setMethodTypes,
   };
   return (
     <StateContext.Provider value={stateContext}>
