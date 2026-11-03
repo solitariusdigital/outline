@@ -592,21 +592,54 @@ export default function Reception({ records }) {
                           </>
                         );
                       })()}
-                      {record.status !== "vip" ? (
-                        <button
-                          className={classes.buttonVip}
-                          onClick={() => manageVIP(record["_id"], "vip")}
+                      <div
+                        className={classes.row}
+                        style={{
+                          marginTop: "4px",
+                        }}
+                      >
+                        <div
+                          className={classes.input}
+                          style={{
+                            width: "50%",
+                          }}
                         >
-                          Make VIP
-                        </button>
-                      ) : (
-                        <button
-                          className={classes.buttonVip}
-                          onClick={() => manageVIP(record["_id"], "regular")}
-                        >
-                          Remove VIP
-                        </button>
-                      )}
+                          <select
+                            defaultValue={"default"}
+                            onChange={(e) => {
+                              switchDoctor(record, e.target.value);
+                            }}
+                          >
+                            <option value="default" disabled>
+                              ارجاع بیمار
+                            </option>
+                            {doctors
+                              .filter((doctor) => currentUser.name !== doctor)
+                              .map((doctor, index) => {
+                                return (
+                                  <option key={index} value={doctor}>
+                                    {doctor}
+                                  </option>
+                                );
+                              })}
+                          </select>
+                        </div>
+                        {record.status !== "vip" ? (
+                          <button
+                            className={classes.buttonVip}
+                            onClick={() => manageVIP(record["_id"], "vip")}
+                          >
+                            Make VIP
+                          </button>
+                        ) : (
+                          <button
+                            className={classes.buttonVip}
+                            onClick={() => manageVIP(record["_id"], "regular")}
+                          >
+                            Remove VIP
+                          </button>
+                        )}
+                      </div>
                     </Fragment>
                   )}
                   {currentUser?.permission === "doctor" && (

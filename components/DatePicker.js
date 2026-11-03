@@ -151,13 +151,13 @@ export default function DatePicker({ visits }) {
         return;
       }
     }
-    if (!checkCategoryLimit()) {
-      window.alert(
-        "ظرفیت نوبت‌دهی برای موضوع انتخاب‌ شده در این زمان تکمیل است",
-      );
-      setDisableButton(false);
-      return;
-    }
+    // if (!checkCategoryLimit()) {
+    //   window.alert(
+    //     "ظرفیت نوبت‌دهی برای موضوع انتخاب‌ شده در این زمان تکمیل است",
+    //   );
+    //   setDisableButton(false);
+    //   return;
+    // }
 
     let colorCode = adminColorCode[currentUser["_id"]]?.color ?? "#EAD8B1";
     let userId = await setUserId(phoneEnglish);
