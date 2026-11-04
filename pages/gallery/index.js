@@ -10,13 +10,12 @@ import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 import { getProcessApi, deleteProcessApi } from "@/services/api";
 
 export default function Gallery() {
@@ -158,10 +157,8 @@ export default function Gallery() {
                 <Swiper
                   slidesPerView="auto"
                   spaceBetween={0}
-                  mousewheel={true}
                   loop={true}
-                  modules={[Navigation, Pagination]}
-                  pagination={true}
+                  modules={[Navigation]}
                   navigation={{
                     prevEl: navigationPrevRef.current,
                     nextEl: navigationNextRef.current,
@@ -193,8 +190,8 @@ export default function Gallery() {
                   fontFamily: "Titillium-Thin",
                 }}
               >
-                <h4>BEFORE</h4>
-                <h4>AFTER</h4>
+                <h5>BEFORE</h5>
+                <h5>AFTER</h5>
               </div>
               {fullSizeScreen && hoveredId === pair._id && (
                 <div
