@@ -212,10 +212,3 @@ label.file input[type="file"] {
 .custom-next.swiper-button-disabled {
   pointer-events: none;
 }
-
-.swiper-pagination-bullet-active.swiper-pagination-bullet {
-  background: config.$gold !important;
-}
-.swiper-pagination-bullet {
-  background: config.$white !important;
-}
